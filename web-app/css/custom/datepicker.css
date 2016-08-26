@@ -1,0 +1,8 @@
+.datepicker th {
+    background : inherit !important;
+    color      : inherit !important;
+}
+
+.datepicker-dropdown {
+    /*background-color : #efefef !important;*/
+}
