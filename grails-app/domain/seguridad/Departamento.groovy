@@ -24,7 +24,7 @@ class Departamento {
             id column: 'dpto__id'
             padre column: 'dptopdre'
             codigo column: 'dptocdgo'
-            nombre column: 'dptonmbr'
+            nombre column: 'dptodscr'
             telefono column: 'dptotelf'
             extension column: 'dptoextn'
             direccion column: 'dptodire'

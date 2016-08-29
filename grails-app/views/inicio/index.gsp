@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Bitácora</title>
+    <title>Quanto</title>
     <meta name="layout" content="main"/>
     <style type="text/css">
     @page {
@@ -13,7 +13,7 @@
 
     .item {
         width: 320px;
-        height: 220px;
+        height: 200px;
         float: left;
         margin: 4px;
         font-family: 'open sans condensed';
@@ -36,7 +36,7 @@
 
     .imagen {
         width: 200px;
-        height: 160px;
+        height: 130px;
         margin: auto;
         margin-top: 10px;
     }
@@ -83,7 +83,7 @@
 
     <div style="text-align: center;"><h2 class="titl">
             <p class="text-warning">${inst.institucion}</p>
-            <p class="text-warning">Base de Conocimiento y Agenda Empresarial</p>
+            <p class="text-warning">Quanto - Docentes</p>
         </h2>
     </div>
 
@@ -94,7 +94,7 @@
         <div class="ui-corner-all item fuera">
             <div class="ui-corner-all item">
                 <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'conocimiento.png')}" width="100%" height="100%"/>
+                    <img src="${resource(dir: 'images', file: 'q_docente.png')}" width="100%" height="100%"/>
                 </div>
 
                 <div class="texto">
