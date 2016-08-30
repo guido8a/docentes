@@ -1,26 +1,25 @@
 package docentes
 
-class Prte {
+class RespuestaPregunta {
 
+    Respuesta respuesta
     Pregunta pregunta
-    TipoEncuesta tipoEncuesta
-    int numero
-
+    Double valor
 
     static mapping = {
-        table 'prte'
+        table 'rppg'
         cache usage: 'read-write', include: 'non-lazy'
         id generator: 'identity'
         version false
 
         columns {
-            id column: 'prte__id'
+            id column: 'rppg__id'
+            respuesta column: 'resp__id'
             pregunta column: 'preg__id'
-            tipoEncuesta column: 'tpen__id'
-            numero column: 'prtenmro'
+            valor column: 'rppgvlor__id'
+
         }
     }
-
 
     static constraints = {
     }
