@@ -37,7 +37,7 @@
          sb << ' from="${' << "${property.type.name}?.values()" << '}"'
          sb << ' keys="${' << property.type.name << '.values()*.name()}"'
         if (isRequired()) sb << ' required=""'
-        sb << ' class="form-control input-sm'
+        sb << ' class="form-control'
         if (isRequired()) {
             sb << ' required'
         }
@@ -53,18 +53,14 @@
             return "<g:textField name=\"${property.name}\" value=\"\${${domainInstance}?.${property.name}}\" />"
         } else {
             def sb = new StringBuilder("")
-            def unique = property.name.contains('codigo') || property.name.contains('login') || property.name.contains('mail') || property.name.contains('email')
             if ("textarea" == cp.widget || (cp.maxSize > 250 && !cp.password && !cp.inList)) {
                 sb << '<g:textArea name="' << property.name << '"'
                  sb << ' cols="40" rows="5"'
                 if (cp.maxSize) sb << ' maxlength="' << cp.maxSize << '"'
                 if(isRequired()) sb << ' required=""'
-                sb << ' class="form-control input-sm'
+                sb << ' class="allCaps form-control'
                 if (isRequired()) {
                     sb << ' required'
-                }
-                if(unique) {
-                    sb << ' unique'
                 }
                 sb << '"'
                  sb << ' value="${' << "${domainInstance}?.${property.name}" << '}"'
@@ -73,12 +69,9 @@
                 sb << '<g:select name="' << property.name << '"'
                 sb << ' from="${' << "${domainInstance}.constraints.${property.name}.inList" << '}"'
                 if(isRequired()) sb << ' required=""'
-                sb << ' class="form-control input-sm'
+                sb << ' class="form-control'
                 if (isRequired()) {
                     sb << ' required'
-                }
-                if(unique) {
-                    sb << ' unique'
                 }
                 sb << '"'
                 sb << ' value="${' << "${domainInstance}?.${property.name}" << '}"'
@@ -86,15 +79,13 @@
                 sb << renderNoSelection(property)
                 sb << '/>'
             } else {
-                if (cp.password || property.name.contains('pass') || property.name.contains('password')) {
+                if (cp.password) {
                     sb << '<div class="input-group">'
                     sb << '<span class="input-group-addon"><i class="fa fa-lock"></i></span>'
                     sb << '<g:field type="password"'
                 } else if (cp.url) {
-                    sb << '<div class="input-group">'
-                    sb << '<span class="input-group-addon"><i class="fa fa-globe"></i></span>'
                     sb << '<g:field type="url"'
-                } else if (cp.email || property.name.contains('mail') || property.name.contains('email')) {
+                } else if (cp.email) {
                     sb << '<div class="input-group">'
                     sb << '<span class="input-group-addon"><i class="fa fa-envelope"></i></span>'
                     sb << '<g:field type="email"'
@@ -106,20 +97,14 @@
                 if (!cp.editable) sb << ' readonly="readonly"'
                 if (cp.matches) sb << ' pattern="${' << "${domainInstance}.constraints.${property.name}.matches" << '}"'
                 if(isRequired()) sb << ' required=""'
-                sb << ' class="form-control input-sm'
+                sb << ' class="allCaps form-control'
                 if (isRequired()) {
                     sb << ' required'
-                }
-                if(unique) {
-                    sb << ' unique'
-                }
-                if(cp.email || cp.url || property.name.contains('mail') || property.name.contains('email') || property.name.contains('login') || property.name.contains('user') || property.name.contains('usuario') || property.name.contains('codigo')) {
-                    sb << ' noEspacios'
                 }
                 sb << '"'
                 sb << ' value="${' << "${domainInstance}?.${property.name}" << '}"'
                 sb << '/>'
-                if(cp.password || cp.email || cp.url || property.name.contains('pass') || property.name.contains('password') || property.name.contains('mail') || property.name.contains('email')) {
+                if(cp.password || cp.email) {
                     sb << '</div>'
                 }
             }
@@ -142,7 +127,7 @@
              sb << ' optionKey="id"'
             if (isRequired()) sb << ' required=""'
              sb << ' value="${' << "${domainInstance}?.${property.name}" << '?.id}"'
-             sb << ' class="many-to-one form-control input-sm"'
+             sb << ' class="many-to-one form-control"'
              sb << renderNoSelection(property)
              sb << '/>'
             sb as String
@@ -166,7 +151,7 @@
             sb << ' size="5"'
             if (isRequired()) sb << ' required=""'
             sb << ' value="${' << "${domainInstance}?.${property.name}" << '*.id}"'
-            sb << ' class="many-to-many form-control input-sm'
+            sb << ' class="many-to-many form-control'
             if (isRequired()) {
                 sb << ' required'
             }
@@ -175,6 +160,7 @@
             sb as String
 
         }
+
     }
 
     private renderOneToMany(domainClass, property) {
@@ -204,7 +190,7 @@
             if (cp.range) {
                 sb << '<g:select name="' << property.name << '"'
                  sb << ' from="${' << "${cp.range.from}..${cp.range.to}" << '}"'
-                 sb << ' class="range form-control input-sm'
+                 sb << ' class="range form-control'
                  if (isRequired()) {
                     sb << ' required'
                 }
@@ -217,7 +203,7 @@
                 sb << '<g:select name="' << property.name << '"'
                  sb << ' from="${' << "${domainInstance}.constraints.${property.name}.inList" << '}"'
                 if (isRequired()) sb << ' required=""'
-                sb << ' class="inList form-control input-sm'
+                sb << ' class="inList form-control'
                  if (isRequired()) {
                     sb << ' required'
                 }
@@ -234,7 +220,7 @@
                     if (cp.min != null) sb << ' min="' << cp.min << '"'
                     if (cp.max != null) sb << ' max="' << cp.max << '"'
                     sb << ' value="${' << "fieldValue(bean: ${domainInstance}, field: '${property.name}')" << '}"'
-                    sb << ' class="number form-control input-sm '
+                    sb << ' class="number form-control '
                     if (isRequired()) {
                         sb << ' required'
                     }
@@ -244,7 +230,7 @@
                     if (cp.min != null) sb << ' min="' << cp.min << '"'
                     if (cp.max != null) sb << ' max="' << cp.max << '"'
                     sb << ' value="${' << domainInstance << '.' << property.name << '}"'
-                    sb << ' class="digits form-control input-sm'
+                    sb << ' class="digits form-control'
                     if (isRequired()) {
                         sb << ' required'
                     }
@@ -274,7 +260,7 @@
     private renderDateEditor(domainClass, property) {
         def precision = (property.type == Date || property.type == java.sql.Date || property.type == Calendar) ? "day" : "minute";
         if (!cp) {
-            return "<elm:datepicker name=\"${property.name}\" class=\"form-control input-sm span2\" value=\"\${${domainInstance}?.${property.name}}\"/>"
+            return "<elm:datepicker name=\"${property.name}\" class=\"form-control span2\" value=\"\${${domainInstance}?.${property.name}}\"/>"
         } else {
             if (!cp.editable) {
                 return "\${${domainInstance}?.${property.name}?.toString()}"
@@ -284,7 +270,7 @@
                 cp.attributes.each { k, v ->
                     sb << "${k}=\"${v}\" "
                 }
-                sb << ' class="datepicker form-control input-sm'
+                sb << ' class="datepicker form-control'
                 if (isRequired()) {
                     sb << ' required'
                 }
@@ -332,7 +318,7 @@
             return false
         }
         else {
-            cp.nullable || cp.propertyType in [boolean, Boolean]
+            cp.nullable || (cp.propertyType == String && cp.blank) || cp.propertyType in [boolean, Boolean]
         }
     }
 %>

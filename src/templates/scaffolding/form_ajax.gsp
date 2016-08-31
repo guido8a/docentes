@@ -5,23 +5,18 @@
     <elm:notFound elem="${domainClass.propertyName.capitalize()}" genero="o" />
 </g:if>
 <g:else>
-    <%  excludedProps = Event.allEvents.toList() << 'version' << 'dateCreated' << 'lastUpdated'
-    persistentPropNames = domainClass.persistentProperties*.name
-    boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate') || pluginManager?.hasGrailsPlugin('hibernate4')
-    if (hasHibernate) {
-        def GrailsDomainBinder = getClass().classLoader.loadClass('org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder')
-        if (GrailsDomainBinder.newInstance().getMapping(domainClass)?.identity?.generator == 'assigned') {
-            persistentPropNames << domainClass.identifier.name
-        }
-    }
-    props = domainClass.properties.findAll { persistentPropNames.contains(it.name) && !excludedProps.contains(it.name) && (domainClass.constrainedProperties[it.name] ? domainClass.constrainedProperties[it.name].display : true) }
-    uniques = []
-    %>
-    <div class="modal-contenido">
-    <g:form class="form-horizontal" name="frm${domainClass.propertyName.capitalize()}" role="form" action="save_ajax" method="POST">
+    <g:form class="form-horizontal" name="frm${domainClass.propertyName.capitalize()}" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="\${${propertyName}?.id}" />
-
-        <%
+        <%  excludedProps = Event.allEvents.toList() << 'version' << 'dateCreated' << 'lastUpdated'
+        persistentPropNames = domainClass.persistentProperties*.name
+        boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate') || pluginManager?.hasGrailsPlugin('hibernate4')
+        if (hasHibernate) {
+            def GrailsDomainBinder = getClass().classLoader.loadClass('org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder')
+            if (GrailsDomainBinder.newInstance().getMapping(domainClass)?.identity?.generator == 'assigned') {
+                persistentPropNames << domainClass.identifier.name
+            }
+        }
+        props = domainClass.properties.findAll { persistentPropNames.contains(it.name) && !excludedProps.contains(it.name) }
         Collections.sort(props, comparator.constructors[0].newInstance([domainClass] as Object[]))
         for (p in props) {
             if (p.embedded) {
@@ -38,36 +33,28 @@
             }
         }
         private renderFieldForProperty(p, owningClass, prefix = "") {
-            boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate') || pluginManager?.hasGrailsPlugin('hibernate4')
+            boolean hasHibernate = pluginManager?.hasGrailsPlugin('hibernate')
             boolean display = true
             boolean required = false
             boolean number = false
             boolean date = false
-            boolean unique = false
             int size = 6
             if (hasHibernate) {
                 cp = owningClass.constrainedProperties[p.name]
                 display = (cp ? cp.display : true)
-                required = (cp ? !(cp.propertyType in [boolean, Boolean]) && !cp.nullable : false)
+                required = (cp ? !(cp.propertyType in [boolean, Boolean]) && !cp.nullable && (cp.propertyType != String || !cp.blank) : false)
                 number = (cp ? Number.isAssignableFrom(cp.propertyType) || (cp.propertyType?.isPrimitive() && cp. propertyType != boolean) : false)
                 date = (cp ? (cp.propertyType == Date || cp.propertyType == java.sql.Date || cp.propertyType == java.sql.Time || cp.propertyType == Calendar) : false)
-                unique = p.name.contains('codigo') || p.name.contains('login') || p.name.contains('mail') || p.name.contains('email')
-                if(unique) {
-                    uniques += p
-                }
                 if(number){
                     size = 2
                 } else if(date) {
                     size = 4
                 }
-                if(props.size() >= 10) {
-                    size = size + 1
-                }
             }
             if (display) { %>
-        <div class="form-group keeptogether \${hasErrors(bean: ${propertyName}, field: '${prefix}${p.name}', 'error')} ${required ? 'required' : ''}">
+        <div class="form-group \${hasErrors(bean: ${propertyName}, field: '${prefix}${p.name}', 'error')} ${required ? 'required' : ''}">
             <span class="grupo">
-                <label for="${prefix}${p.name}" class="col-md-2 control-label">
+                <label for="${prefix}${p.name}" class="col-md-2 control-label text-info">
                     ${p.naturalName}
                 </label>
                 <div class="col-md-${size}">
@@ -78,7 +65,6 @@
         </div>
         <% }   } %>
     </g:form>
-        </div>
 
     <script type="text/javascript">
         var validator = \$("#frm${domainClass.propertyName.capitalize()}").validate({
@@ -94,36 +80,10 @@
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
             }
-            <% if(uniques.size() > 0) { %>
-            , rules          : {
-                <% int i=0
-                for (p in uniques) { %>
-                ${p.name}: {
-                    remote: {
-                        url: "\${createLink(action: 'validar_unique_${p.name}_ajax')}",
-                        type: "post",
-                        data: {
-                            id: "\${${propertyName}?.id}"
-                        }
-                    }
-                }${i < uniques.size()-1 ? ',' : ''}
-                <% i++
-                } %>
-            },
-            messages : {
-                <% i=0
-                for (p in uniques) { %>
-                ${p.name}: {
-                    remote: "Ya existe ${p.naturalName}"
-                }${i < uniques.size()-1 ? ',' : ''}
-                <% i++
-                } %>
-            }
-            <% } %>
         });
         \$(".form-control").keydown(function (ev) {
             if (ev.keyCode == 13) {
-                submitForm${domainClass.propertyName.capitalize()}();
+                submitForm();
                 return false;
             }
             return true;
