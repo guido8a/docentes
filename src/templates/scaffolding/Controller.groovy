@@ -1,102 +1,174 @@
-<%=packageName ? "package ${packageName}\n\n" : ''%>
+<%=packageName ? "package ${packageName}" : ''%>
 
-import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+import org.springframework.dao.DataIntegrityViolationException
+import <%=packageName.split("\\.")[0]%>.seguridad.Shield
+<% props = domainClass.properties %>
 
-@Transactional(readOnly = true)
-class ${className}Controller {
+/**
+ * Controlador que muestra las pantallas de manejo de ${className}
+ */
+class ${className}Controller extends Shield {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond ${className}.list(params), model:[${propertyName}Count: ${className}.count()]
+    /**
+     * Acción que redirecciona a la lista (acción "list")
+     */
+    def index() {
+        redirect(action:"list", params: params)
     }
 
-    def show(${className} ${propertyName}) {
-        respond ${propertyName}
-    }
-
-    def create() {
-        respond new ${className}(params)
-    }
-
-    @Transactional
-    def save(${className} ${propertyName}) {
-        if (${propertyName} == null) {
-            notFound()
-            return
+    /**
+     * Función que saca la lista de elementos según los parámetros recibidos
+     * @param params objeto que contiene los parámetros para la búsqueda:: max: el máximo de respuestas, offset: índice del primer elemento (para la paginación), search: para efectuar búsquedas
+     * @param all boolean que indica si saca todos los resultados, ignorando el parámetro max (true) o no (false)
+     * @return lista de los elementos encontrados
+     */
+    def getList(params, all) {
+        params = params.clone()
+        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
+        params.offset = params.offset ?: 0
+        if(all) {
+            params.remove("max")
+            params.remove("offset")
         }
-
-        if (${propertyName}.hasErrors()) {
-            respond ${propertyName}.errors, view:'create'
-            return
-        }
-
-        ${propertyName}.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), ${propertyName}.id])
-                redirect ${propertyName}
+        def list
+        if(params.search) {
+            def c = ${className}.createCriteria()
+            list = c.list(params) {
+                or {
+                    /* TODO: cambiar aqui segun sea necesario */
+                    <% for (p in props) {
+                if(p.type == String && !p.name.contains("pass")) { %>
+                    ilike("${p.name}", "%" + params.search + "%")  <% } } %>
+                }
             }
-            '*' { respond ${propertyName}, [status: CREATED] }
+        } else {
+            list = ${className}.list(params)
         }
+        if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
+            params.offset = params.offset.toInteger() - 1
+            list = getList(params, all)
+        }
+        return list
     }
 
-    def edit(${className} ${propertyName}) {
-        respond ${propertyName}
+    /**
+     * Acción que muestra la lista de elementos
+     * @return ${propertyName}List: la lista de elementos filtrados, ${propertyName}Count: la cantidad total de elementos (sin máximo)
+     */
+    def list() {
+        def ${propertyName}List = getList(params, false)
+        def ${propertyName}Count = getList(params, true).size()
+        return [${propertyName}List: ${propertyName}List, ${propertyName}Count: ${propertyName}Count]
     }
 
-    @Transactional
-    def update(${className} ${propertyName}) {
-        if (${propertyName} == null) {
-            notFound()
+    /**
+     * Acción llamada con ajax que muestra la información de un elemento particular
+     * @return ${propertyName} el objeto a mostrar cuando se encontró el elemento
+     * @render ERROR*[mensaje] cuando no se encontró el elemento
+     */
+    def show_ajax() {
+        if(params.id) {
+            def ${propertyName} = ${className}.get(params.id)
+            if(!${propertyName}) {
+                render "ERROR*No se encontró ${className}."
+                return
+            }
+            return [${propertyName}: ${propertyName}]
+        } else {
+            render "ERROR*No se encontró ${className}."
+        }
+    } //show para cargar con ajax en un dialog
+
+    /**
+     * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
+     * @return ${propertyName} el objeto a modificar cuando se encontró el elemento
+     * @render ERROR*[mensaje] cuando no se encontró el elemento
+     */
+    def form_ajax() {
+        def ${propertyName} = new ${className}()
+        if(params.id) {
+            ${propertyName} = ${className}.get(params.id)
+            if(!${propertyName}) {
+                render "ERROR*No se encontró ${className}."
+                return
+            }
+        }
+        ${propertyName}.properties = params
+        return [${propertyName}: ${propertyName}]
+    } //form para cargar con ajax en un dialog
+
+    /**
+     * Acción llamada con ajax que guarda la información de un elemento
+     * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
+     */
+    def save_ajax() {
+        def ${propertyName} = new ${className}()
+        if(params.id) {
+            ${propertyName} = ${className}.get(params.id)
+            if(!${propertyName}) {
+                render "ERROR*No se encontró ${className}."
+                return
+            }
+        }
+        ${propertyName}.properties = params
+        if(!${propertyName}.save(flush: true)) {
+            render "ERROR*Ha ocurrido un error al guardar ${className}: " + renderErrors(bean: ${propertyName})
             return
         }
+        render "SUCCESS*\${params.id ? 'Actualización' : 'Creación'} de ${className} exitosa."
+        return
+    } //save para grabar desde ajax
 
-        if (${propertyName}.hasErrors()) {
-            respond ${propertyName}.errors, view:'edit'
+    /**
+     * Acción llamada con ajax que permite eliminar un elemento
+     * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
+     */
+    def delete_ajax() {
+        if(params.id) {
+            def ${propertyName} = ${className}.get(params.id)
+            if (!${propertyName}) {
+                render "ERROR*No se encontró ${className}."
+                return
+            }
+            try {
+                ${propertyName}.delete(flush: true)
+                render "SUCCESS*Eliminación de ${className} exitosa."
+                return
+            } catch (DataIntegrityViolationException e) {
+                render "ERROR*Ha ocurrido un error al eliminar ${className}"
+                return
+            }
+        } else {
+            render "ERROR*No se encontró ${className}."
             return
         }
-
-        ${propertyName}.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: '${className}.label', default: '${className}'), ${propertyName}.id])
-                redirect ${propertyName}
+    } //delete para eliminar via ajax
+    <% for (p in props) {
+        unique = p.name.contains('codigo') || p.name.contains('login') || p.name.contains('mail') || p.name.contains('email')
+        if(unique) { %>
+    /**
+     * Acción llamada con ajax que valida que no se duplique la propiedad ${p.name}
+     * @render boolean que indica si se puede o no utilizar el valor recibido
+     */
+    def validar_unique_${p.name}_ajax() {
+        params.${p.name} = params.${p.name}.toString().trim()
+        if (params.id) {
+            def obj = ${className}.get(params.id)
+            if (obj.${p.name}.toLowerCase() == params.${p.name}.toLowerCase()) {
+                render true
+                return
+            } else {
+                render ${className}.countBy${p.name.capitalize()}Ilike(params.${p.name}) == 0
+                return
             }
-            '*'{ respond ${propertyName}, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def delete(${className} ${propertyName}) {
-
-        if (${propertyName} == null) {
-            notFound()
+        } else {
+            render ${className}.countBy${p.name.capitalize()}Ilike(params.${p.name}) == 0
             return
         }
-
-        ${propertyName}.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: '${className}.label', default: '${className}'), ${propertyName}.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
     }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: '${domainClass.propertyName}.label', default: '${className}'), params.id])
-                redirect action: "index", method: "GET"
-            }
-            '*'{ render status: NOT_FOUND }
-        }
+        <% }
     }
+    %>
 }
