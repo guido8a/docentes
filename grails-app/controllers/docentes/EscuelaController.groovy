@@ -5,9 +5,9 @@ import seguridad.Shield
 
 
 /**
- * Controlador que muestra las pantallas de manejo de Facultad
+ * Controlador que muestra las pantallas de manejo de Escuela
  */
-class FacultadController extends Shield {
+class EscuelaController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
@@ -34,7 +34,7 @@ class FacultadController extends Shield {
         }
         def list
         if(params.search) {
-            def c = Facultad.createCriteria()
+            def c = Escuela.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
@@ -44,7 +44,7 @@ class FacultadController extends Shield {
                 }
             }
         } else {
-            list = Facultad.list(params)
+            list = Escuela.list(params)
         }
         if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
             params.offset = params.offset.toInteger() - 1
@@ -55,92 +55,69 @@ class FacultadController extends Shield {
 
     /**
      * Acción que muestra la lista de elementos
-     * @return facultadInstanceList: la lista de elementos filtrados, facultadInstanceCount: la cantidad total de elementos (sin máximo)
+     * @return escuelaInstanceList: la lista de elementos filtrados, escuelaInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def facultadInstanceList = getList(params, false)
-        def facultadInstanceCount = getList(params, true).size()
-        return [facultadInstanceList: facultadInstanceList, facultadInstanceCount: facultadInstanceCount]
+        def escuelaInstanceList = getList(params, false)
+        def escuelaInstanceCount = getList(params, true).size()
+        return [escuelaInstanceList: escuelaInstanceList, escuelaInstanceCount: escuelaInstanceCount]
     }
 
     /**
      * Acción llamada con ajax que muestra la información de un elemento particular
-     * @return facultadInstance el objeto a mostrar cuando se encontró el elemento
+     * @return escuelaInstance el objeto a mostrar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
         if(params.id) {
-            def facultadInstance = Facultad.get(params.id)
-            if(!facultadInstance) {
-                render "ERROR*No se encontró Facultad."
+            def escuelaInstance = Escuela.get(params.id)
+            if(!escuelaInstance) {
+                render "ERROR*No se encontró Escuela."
                 return
             }
-            return [facultadInstance: facultadInstance]
+            return [escuelaInstance: escuelaInstance]
         } else {
-            render "ERROR*No se encontró Facultad."
+            render "ERROR*No se encontró Escuela."
         }
     } //show para cargar con ajax en un dialog
 
     /**
      * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
-     * @return facultadInstance el objeto a modificar cuando se encontró el elemento
+     * @return escuelaInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
-        def facultadInstance = new Facultad()
+        def escuelaInstance = new Escuela()
         if(params.id) {
-            facultadInstance = Facultad.get(params.id)
-            if(!facultadInstance) {
-                render "ERROR*No se encontró Facultad."
+            escuelaInstance = Escuela.get(params.id)
+            if(!escuelaInstance) {
+                render "ERROR*No se encontró Escuela."
                 return
             }
         }
-        facultadInstance.properties = params
-        return [facultadInstance: facultadInstance]
+        escuelaInstance.properties = params
+        return [escuelaInstance: escuelaInstance]
     } //form para cargar con ajax en un dialog
-
-
-    def validar_codigo_ajax () {
-        def codigoIngresado = params.codigo.toString()
-        def listaFacultades = Facultad.list().codigo
-        def res
-        if (params.id){
-           def codigoActual = Facultad.get(params.id).codigo
-            listaFacultades = listaFacultades - codigoActual
-            res = !listaFacultades.contains(codigoIngresado)
-            render res
-            return
-
-        }else{
-            res = !listaFacultades.contains(codigoIngresado)
-            render res
-            return
-        }
-    }
-
-
 
     /**
      * Acción llamada con ajax que guarda la información de un elemento
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-
-        def facultadInstance = new Facultad()
+        def escuelaInstance = new Escuela()
         if(params.id) {
-            facultadInstance = Facultad.get(params.id)
-            if(!facultadInstance) {
-                render "ERROR*No se encontró Facultad."
+            escuelaInstance = Escuela.get(params.id)
+            if(!escuelaInstance) {
+                render "ERROR*No se encontró Escuela."
                 return
             }
         }
-        facultadInstance.properties = params
-        facultadInstance.nombre = params.nombre.toUpperCase()
-        if(!facultadInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Facultad: " + renderErrors(bean: facultadInstance)
+        escuelaInstance.properties = params
+        if(!escuelaInstance.save(flush: true)) {
+            render "ERROR*Ha ocurrido un error al guardar Escuela: " + renderErrors(bean: escuelaInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Facultad exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Escuela exitosa."
         return
     } //save para grabar desde ajax
 
@@ -150,21 +127,21 @@ class FacultadController extends Shield {
      */
     def delete_ajax() {
         if(params.id) {
-            def facultadInstance = Facultad.get(params.id)
-            if (!facultadInstance) {
-                render "ERROR*No se encontró Facultad."
+            def escuelaInstance = Escuela.get(params.id)
+            if (!escuelaInstance) {
+                render "ERROR*No se encontró Escuela."
                 return
             }
             try {
-                facultadInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Facultad exitosa."
+                escuelaInstance.delete(flush: true)
+                render "SUCCESS*Eliminación de Escuela exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Facultad"
+                render "ERROR*Ha ocurrido un error al eliminar Escuela"
                 return
             }
         } else {
-            render "ERROR*No se encontró Facultad."
+            render "ERROR*No se encontró Escuela."
             return
         }
     } //delete para eliminar via ajax
@@ -176,18 +153,26 @@ class FacultadController extends Shield {
     def validar_unique_codigo_ajax() {
         params.codigo = params.codigo.toString().trim()
         if (params.id) {
-            def obj = Facultad.get(params.id)
+            def obj = Escuela.get(params.id)
             if (obj.codigo.toLowerCase() == params.codigo.toLowerCase()) {
                 render true
                 return
             } else {
-                render Facultad.countByCodigoIlike(params.codigo) == 0
+                render Escuela.countByCodigoIlike(params.codigo) == 0
                 return
             }
         } else {
-            render Facultad.countByCodigoIlike(params.codigo) == 0
+            render Escuela.countByCodigoIlike(params.codigo) == 0
             return
         }
+    }
+
+
+    def tablaEscuela_ajax() {
+println("params " + params)
+//        def
+//        def escuelas = Escuela.findAllByFacultad()
+
     }
         
 }

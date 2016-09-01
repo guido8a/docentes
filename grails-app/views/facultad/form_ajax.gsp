@@ -14,7 +14,7 @@
                     Código
                 </label>
                 <div class="col-md-3">
-                    <g:textField name="codigo" maxlength="8" required="" class="form-control required" value="${facultadInstance?.codigo}"/>
+                    <g:textField name="codigo" id="codigoId" maxlength="8" required="" class="allCaps form-control required" value="${facultadInstance?.codigo}"/>
                 </div>
                 
             </span>
@@ -47,6 +47,24 @@
             },
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
+            },
+            rules         : {
+                codigo : {
+                    remote: {
+                        url : "${createLink(action: 'validar_codigo_ajax')}",
+                        type: "post",
+                        data: {
+                            cod: $("#codigoId").val(),
+                            id: '${facultadInstance?.id}'
+
+                        }
+                    }
+                }
+            },
+            messages      : {
+                codigo : {
+                    remote: "Ya existe el código de facultad"
+                }
             }
         });
         $(".form-control").keydown(function (ev) {
