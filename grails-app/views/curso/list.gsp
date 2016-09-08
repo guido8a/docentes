@@ -1,10 +1,10 @@
 
-<%@ page import="docentes.Facultad" %>
+<%@ page import="docentes.Curso" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Facultad</title>
+        <title>Lista de Curso</title>
     </head>
     <body>
 
@@ -13,11 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-bank"></i> Nueva Facultad
-                </g:link>
-                <g:link controller="escuela" action="list" class="btn btn-primary">
-                    <i class="fa fa-graduation-cap"></i>  Ir a Escuelas
+                <g:link action="form" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -36,31 +33,27 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
-                    
                     <g:sortableColumn property="nombre" title="Nombre" />
                     
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${facultadInstanceList}" status="i" var="facultadInstance">
-                    <tr data-id="${facultadInstance.id}">
+                <g:each in="${cursoInstanceList}" status="i" var="cursoInstance">
+                    <tr data-id="${cursoInstance.id}">
                         
-                        <td>${fieldValue(bean: facultadInstance, field: "codigo")}</td>
-                        
-                        <td>${fieldValue(bean: facultadInstance, field: "nombre")}</td>
+                        <td>${fieldValue(bean: cursoInstance, field: "nombre")}</td>
                         
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${facultadInstanceCount}" params="${params}"/>
+        <elm:pagination total="${cursoInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmFacultad");
+                var $form = $("#frmCurso");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -69,14 +62,11 @@
                         url     : '${createLink(action:'save_ajax')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("*");
-                        if (parts[0] == "SUCCESS") {
-                            log("Facultad guardada correctamente","success")
-                            setTimeout(function () {
-                                location.reload(true);
-                            }, 1000);
+                        var parts = msg.split("_");
+                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                        if (parts[0] == "OK") {
+                            location.reload(true);
                         } else {
-                            log("Error al guardar la facultad","error")
                             spinner.replaceWith($btn);
                             return false;
                         }
@@ -89,7 +79,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Facultad seleccionada? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Curso seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -130,7 +120,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Facultad",
+                            title   : title + " Curso",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -163,70 +153,67 @@
                     return false;
                 });
 
-
-
-                $("tbody tr").contextMenu({
-                    items  : {
-                        header   : {
-                            label  : "Acciones",
-                            header : true
-                        },
-                        ver      : {
-                            label  : "Ver",
-                            icon   : "fa fa-search",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'show_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        bootbox.dialog({
-                                            title   : "Ver",
-                                            message : msg,
-                                            buttons : {
-                                                ok : {
-                                                    label     : "Aceptar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        editar   : {
-                            label  : "Editar",
-                            icon   : "fa fa-pencil",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                createEditRow(id);
-                            }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
-                            }
-                        }
-                    },
-                    onShow : function ($element) {
-                        $element.addClass("trHighlight");
-                    },
-                    onHide : function ($element) {
-                        $(".trHighlight").removeClass("trHighlight");
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
                     }
                 });
-
-
-
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Curso",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
             });
         </script>
 

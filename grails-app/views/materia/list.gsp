@@ -1,10 +1,10 @@
 
-<%@ page import="docentes.Facultad; docentes.Escuela" %>
+<%@ page import="docentes.Materia" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Escuela</title>
+        <title>Lista de Materia</title>
     </head>
     <body>
 
@@ -13,39 +13,30 @@
     <!-- botones -->
         %{--<div class="btn-toolbar toolbar">--}%
 
+    <div class="row" style="margin-bottom: 10px">
 
-        <div class="row" style="margin-bottom: 10px">
 
             <div class="btn-group">
                 <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-graduation-cap"></i> Nueva Escuela
-                </g:link>
-                <g:link controller="materia" action="list"  class="btn btn-primary">
-                    <i class="fa fa-book"></i> Ir a Materias
+                    <i class="fa fa-book"></i> Nueva Materia
                 </g:link>
             </div>
 
-            <div class="col-md-2 negrilla control-label">Facultad: </div>
-            <div class="col-md-7">
-                <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
-                          class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}"/>
-            </div>
+
+        <div class="col-md-1 negrilla control-label">Facultad: </div>
+        <div class="col-md-4">
+            <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
+                      class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}"/>
         </div>
 
 
-    <table class="table table-condensed table-bordered table-striped">
-        <thead>
-        <tr>
-            <th style="width: 15%">Código</th>
-            <th style="width: 85%">Nombre</th>
-        </tr>
-        </thead>
-    </table>
+        <div class="col-md-1 negrilla control-label">Escuela: </div>
+        <div class="col-md-4" id="divEscuela">
 
-
-    <div id="tablaEscuelas">
+        </div>
 
     </div>
+
 
             %{--<div class="btn-group pull-right col-md-3">--}%
                 %{--<div class="input-group">--}%
@@ -59,39 +50,41 @@
             %{--</div>--}%
         %{--</div>--}%
 
-        %{--<table class="table table-condensed table-bordered table-striped">--}%
-            %{--<thead>--}%
-                %{--<tr>--}%
-                    %{----}%
-                    %{--<g:sortableColumn property="codigo" title="Codigo" />--}%
-                    %{----}%
-                    %{--<g:sortableColumn property="nombre" title="Nombre" />--}%
-                    %{----}%
-                    %{--<th>Facultad</th>--}%
-                    %{----}%
-                %{--</tr>--}%
-            %{--</thead>--}%
+        <table class="table table-condensed table-bordered table-striped">
+            <thead>
+                <tr>
+
+                    <th style="width: 15%;">Código</th>
+                    <th style="width: 50%">Nombre</th>
+                    <th style="width: 31%">Escuela</th>
+
+                </tr>
+            </thead>
             %{--<tbody>--}%
-                %{--<g:each in="${escuelaInstanceList}" status="i" var="escuelaInstance">--}%
-                    %{--<tr data-id="${escuelaInstance.id}">--}%
+                %{--<g:each in="${materiaInstanceList}" status="i" var="materiaInstance">--}%
+                    %{--<tr data-id="${materiaInstance.id}">--}%
                         %{----}%
-                        %{--<td>${fieldValue(bean: escuelaInstance, field: "codigo")}</td>--}%
+                        %{--<td>${fieldValue(bean: materiaInstance, field: "codigo")}</td>--}%
                         %{----}%
-                        %{--<td>${fieldValue(bean: escuelaInstance, field: "nombre")}</td>--}%
+                        %{--<td>${fieldValue(bean: materiaInstance, field: "nombre")}</td>--}%
                         %{----}%
-                        %{--<td>${fieldValue(bean: escuelaInstance, field: "facultad")}</td>--}%
+                        %{--<td>${fieldValue(bean: materiaInstance, field: "escuela")}</td>--}%
                         %{----}%
                     %{--</tr>--}%
                 %{--</g:each>--}%
             %{--</tbody>--}%
-        %{--</table>--}%
+        </table>
 
-        %{--<elm:pagination total="${escuelaInstanceCount}" params="${params}"/>--}%
+    <div id="tablaMaterias">
+
+    </div>
+
+        %{--<elm:pagination total="${materiaInstanceCount}" params="${params}"/>--}%
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmEscuela");
+                var $form = $("#frmMateria");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -103,12 +96,12 @@
                         var parts = msg.split("*");
 //                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "SUCCESS") {
-                            log("Escuela guardada correctamente","success");
+                            log("Materia guardada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
                             }, 1000);
                         } else {
-                            log("Error al guardar la escuela","error");
+                            log("Error al guardar la materia","error");
                             spinner.replaceWith($btn);
                             return false;
                         }
@@ -121,7 +114,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la escuela seleccionada? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Materia seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -140,10 +133,15 @@
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        var parts = msg.split("*");
+//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                                        if (parts[0] == "SUCCESS") {
+                                            log("Materia borrada correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1000)
+                                        }else{
+                                            log("Error al borrar la materia","error");
                                         }
                                     }
                                 });
@@ -153,8 +151,9 @@
                 });
             }
             function createEditRow(id) {
+                var escuela = $("#escuelaId").val();
                 var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
+                var data = id ? { id: id, escuela: escuela } : {escuela:escuela};
                 $.ajax({
                     type    : "POST",
                     url     : "${createLink(action:'form_ajax')}",
@@ -162,7 +161,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Escuela",
+                            title   : title + " Materia",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -199,35 +198,33 @@
             });
 
 
-        </script>
+            cargarEscuela($("#facultadId").val());
 
 
-    <script type="text/javascript">
+            function cargarEscuela (facultad) {
+                $.ajax({
+                    type:'POST',
+                    url: '${createLink(controller: 'materia', action: 'escuela_ajax')}',
+                    data:{
+                        id: facultad
+                    },
+                    success: function (msg){
+                        $("#divEscuela").html(msg)
+                    }
+                })
+            }
 
 
-        cargarTabla($("#facultadId").val());
 
         $("#facultadId").change(function () {
             var facultad = $("#facultadId").val();
-            cargarTabla(facultad)
-        });
+            cargarEscuela(facultad)
+        })
 
 
-        function cargarTabla(facultad) {
-            $.ajax({
-                type:'post',
-                url:"${createLink(controller: 'escuela', action: 'tablaEscuela_ajax')}",
-                data:{
-                    id: facultad
-                },
-                success: function (msg){
-                    $("#tablaEscuelas").html(msg)
-                }
-            });
-        }
 
-    </script>
 
+        </script>
 
     </body>
 </html>

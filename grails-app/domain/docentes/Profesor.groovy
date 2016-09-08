@@ -13,6 +13,7 @@ class Profesor {
     String estado
     String observacion
     String evaluar
+    Escuela escuela
 
 
     static mapping = {
@@ -23,6 +24,7 @@ class Profesor {
 
         columns {
             id column: 'prof__id'
+            escuela column: 'escl__id'
             cedula column: 'profcdla'
             nombre column: 'profnmbr'
             apellido column: 'profapll'
@@ -43,5 +45,12 @@ class Profesor {
         cedula(blank: false, nullable: false)
         nombre(blank: false, nullable: false, size: 1..31)
         apellido(blank: false, nullable: false, size: 1..31)
+        observacion(blank: true, nullable: true)
+        titulo(blank: true, nullable: true)
+        fechaFin(nullable: true)
+        fechaNacimiento(nullable: true)
+        fechaInicio(nullable: true)
+
+
     }
 }

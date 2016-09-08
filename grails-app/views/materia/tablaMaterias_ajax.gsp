@@ -1,21 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: gato
-  Date: 01/09/16
+  Date: 02/09/16
   Time: 12:51
 --%>
-
-
 
 <div class="row-fluid"  style="width: 99.7%;height: 400px;overflow-y: auto;float: right;">
     <div class="span12">
         <div style="width: 1120px; height: 400px;">
             <table class="table table-condensed table-bordered table-striped">
                 <tbody>
-                <g:each in="${escuelas}" var="escuela">
-                    <tr data-id="${escuela.id}">
-                        <td style="width: 15%">${escuela?.codigo}</td>
-                        <td style="width: 85%">${escuela?.nombre}</td>
+                <g:each in="${materias}" var="materia">
+                    <tr data-id="${materia.id}">
+                        <td style="width: 15%">${materia?.codigo}</td>
+                        <td style="width: 50%">${materia?.nombre}</td>
+                        <td style="width: 30%">${materia?.escuela?.nombre}</td>
                     </tr>
                 </g:each>
                 </tbody>
@@ -23,8 +22,6 @@
         </div>
     </div>
 </div>
-
-
 
 <script type="text/javascript">
 

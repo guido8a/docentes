@@ -5,9 +5,9 @@ import seguridad.Shield
 
 
 /**
- * Controlador que muestra las pantallas de manejo de Escuela
+ * Controlador que muestra las pantallas de manejo de Materia
  */
-class EscuelaController extends Shield {
+class MateriaController extends Shield {
 
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
@@ -34,17 +34,17 @@ class EscuelaController extends Shield {
         }
         def list
         if(params.search) {
-            def c = Escuela.createCriteria()
+            def c = Materia.createCriteria()
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("codigo", "%" + params.search + "%")  
-                    ilike("nombre", "%" + params.search + "%")  
+
+                    ilike("codigo", "%" + params.search + "%")
+                    ilike("nombre", "%" + params.search + "%")
                 }
             }
         } else {
-            list = Escuela.list(params)
+            list = Materia.list(params)
         }
         if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
             params.offset = params.offset.toInteger() - 1
@@ -55,97 +55,81 @@ class EscuelaController extends Shield {
 
     /**
      * Acción que muestra la lista de elementos
-     * @return escuelaInstanceList: la lista de elementos filtrados, escuelaInstanceCount: la cantidad total de elementos (sin máximo)
+     * @return materiaInstanceList: la lista de elementos filtrados, materiaInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def escuelaInstanceList = getList(params, false)
-        def escuelaInstanceCount = getList(params, true).size()
-        return [escuelaInstanceList: escuelaInstanceList, escuelaInstanceCount: escuelaInstanceCount]
+        def materiaInstanceList = getList(params, false)
+        def materiaInstanceCount = getList(params, true).size()
+        return [materiaInstanceList: materiaInstanceList, materiaInstanceCount: materiaInstanceCount]
     }
 
     /**
      * Acción llamada con ajax que muestra la información de un elemento particular
-     * @return escuelaInstance el objeto a mostrar cuando se encontró el elemento
+     * @return materiaInstance el objeto a mostrar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
         if(params.id) {
-            def escuelaInstance = Escuela.get(params.id)
-            if(!escuelaInstance) {
-                render "ERROR*No se encontró Escuela."
+            def materiaInstance = Materia.get(params.id)
+            if(!materiaInstance) {
+                render "ERROR*No se encontró Materia."
                 return
             }
-            return [escuelaInstance: escuelaInstance]
+            return [materiaInstance: materiaInstance]
         } else {
-            render "ERROR*No se encontró Escuela."
+            render "ERROR*No se encontró Materia."
         }
     } //show para cargar con ajax en un dialog
 
     /**
      * Acción llamada con ajax que muestra un formaulario para crear o modificar un elemento
-     * @return escuelaInstance el objeto a modificar cuando se encontró el elemento
+     * @return materiaInstance el objeto a modificar cuando se encontró el elemento
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def form_ajax() {
-        def escuelaInstance = new Escuela()
-        if(params.id) {
-            escuelaInstance = Escuela.get(params.id)
-            if(!escuelaInstance) {
-                render "ERROR*No se encontró Escuela."
-                return
+
+        println("params form"  + params)
+
+        if(params.escuela){
+            def escuela = Escuela.get(params.id)
+
+            def materiaInstance = new Materia()
+            if(params.id) {
+                materiaInstance = Materia.get(params.id)
+                if(!materiaInstance) {
+                    render "ERROR*No se encontró Materia."
+                    return
+                }
             }
-        }
-        escuelaInstance.properties = params
-        return [escuelaInstance: escuelaInstance]
-    } //form para cargar con ajax en un dialog
-
-
-    def validar_codigoEscuela_ajax () {
-
-        println("params " + params)
-
-        def codigoIngresado = params.codigo.toString()
-        def listaCodigos = Escuela.list().codigo
-        def res
-        if (params.id){
-            def codigoActual = Escuela.get(params.id).codigo
-            listaCodigos = listaCodigos - codigoActual
-            res = !listaCodigos.contains(codigoIngresado)
-            render res
-            return
-
+            materiaInstance.properties = params
+            return [materiaInstance: materiaInstance, escuela: escuela]
         }else{
-            res = !listaCodigos.contains(codigoIngresado)
-            render res
-            return
+
         }
 
 
-
-    }
-
-
+    } //form para cargar con ajax en un dialog
 
     /**
      * Acción llamada con ajax que guarda la información de un elemento
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        def escuelaInstance = new Escuela()
+        def materiaInstance = new Materia()
         if(params.id) {
-            escuelaInstance = Escuela.get(params.id)
-            if(!escuelaInstance) {
-                render "ERROR*No se encontró Escuela."
+            materiaInstance = Materia.get(params.id)
+            if(!materiaInstance) {
+                render "ERROR*No se encontró Materia."
                 return
             }
         }
-        escuelaInstance.properties = params
-        escuelaInstance.nombre = params.nombre.toUpperCase()
-        if(!escuelaInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Escuela: " + renderErrors(bean: escuelaInstance)
+        materiaInstance.properties = params
+        materiaInstance.nombre = params.nombre.toUpperCase()
+        if(!materiaInstance.save(flush: true)) {
+            render "ERROR*Ha ocurrido un error al guardar Materia: " + renderErrors(bean: materiaInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Escuela exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Materia exitosa."
         return
     } //save para grabar desde ajax
 
@@ -155,25 +139,25 @@ class EscuelaController extends Shield {
      */
     def delete_ajax() {
         if(params.id) {
-            def escuelaInstance = Escuela.get(params.id)
-            if (!escuelaInstance) {
-                render "ERROR*No se encontró Escuela."
+            def materiaInstance = Materia.get(params.id)
+            if (!materiaInstance) {
+                render "ERROR*No se encontró Materia."
                 return
             }
             try {
-                escuelaInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Escuela exitosa."
+                materiaInstance.delete(flush: true)
+                render "SUCCESS*Eliminación de Materia exitosa."
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Escuela"
+                render "ERROR*Ha ocurrido un error al eliminar Materia"
                 return
             }
         } else {
-            render "ERROR*No se encontró Escuela."
+            render "ERROR*No se encontró Materia."
             return
         }
     } //delete para eliminar via ajax
-    
+
     /**
      * Acción llamada con ajax que valida que no se duplique la propiedad codigo
      * @render boolean que indica si se puede o no utilizar el valor recibido
@@ -181,34 +165,48 @@ class EscuelaController extends Shield {
     def validar_unique_codigo_ajax() {
         params.codigo = params.codigo.toString().trim()
         if (params.id) {
-            def obj = Escuela.get(params.id)
+            def obj = Materia.get(params.id)
             if (obj.codigo.toLowerCase() == params.codigo.toLowerCase()) {
                 render true
                 return
             } else {
-                render Escuela.countByCodigoIlike(params.codigo) == 0
+                render Materia.countByCodigoIlike(params.codigo) == 0
                 return
             }
         } else {
-            render Escuela.countByCodigoIlike(params.codigo) == 0
+            render Materia.countByCodigoIlike(params.codigo) == 0
             return
         }
     }
 
 
-    def tablaEscuela_ajax() {
-        println("params " + params)
+    def escuela_ajax () {
+//        println("params " + params)
         def facultad
         def escuelas
+
         if(params.id){
             facultad = Facultad.get(params.id)
-            escuelas = Escuela.findAllByFacultad(facultad, [sort: 'nombre', order: 'asc'])
+            escuelas = Escuela.findAllByFacultad(facultad)
         }else{
             escuelas = null
         }
 
-        return [escuelas:escuelas]
-
+        return [escuelas: escuelas]
     }
-        
+
+    def tablaMaterias_ajax () {
+        def escuela
+        def materias
+        if(params.id){
+            escuela = Escuela.get(params.id)
+            materias = Materia.findAllByEscuela(escuela)
+        }else{
+            materias = null
+        }
+
+        return [materias: materias]
+    }
+
+
 }

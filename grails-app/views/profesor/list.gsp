@@ -1,10 +1,10 @@
 
-<%@ page import="docentes.Facultad" %>
+<%@ page import="docentes.Profesor" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Facultad</title>
+        <title>Lista de Profesor</title>
     </head>
     <body>
 
@@ -13,11 +13,11 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-bank"></i> Nueva Facultad
-                </g:link>
-                <g:link controller="escuela" action="list" class="btn btn-primary">
-                    <i class="fa fa-graduation-cap"></i>  Ir a Escuelas
+                %{--<g:link action="form" class="btn btn-info btnCrear">--}%
+                    %{--<i class="fa fa-user"></i> Nuevo Profesor--}%
+                %{--</g:link>--}%
+                <g:link controller="profesor" action="profesor" class="btn btn-info">
+                    <i class="fa fa-user"></i> Nuevo Profesor
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -36,31 +36,47 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    <g:sortableColumn property="cedula" title="Cedula" />
                     
                     <g:sortableColumn property="nombre" title="Nombre" />
+                    
+                    <g:sortableColumn property="apellido" title="Apellido" />
+                    
+                    <g:sortableColumn property="estado" title="Estado" />
+                    
+                    <g:sortableColumn property="evaluar" title="Evaluar" />
+                    
+                    <g:sortableColumn property="fechaFin" title="Fecha Fin" />
                     
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${facultadInstanceList}" status="i" var="facultadInstance">
-                    <tr data-id="${facultadInstance.id}">
+                <g:each in="${profesorInstanceList}" status="i" var="profesorInstance">
+                    <tr data-id="${profesorInstance.id}">
                         
-                        <td>${fieldValue(bean: facultadInstance, field: "codigo")}</td>
+                        <td>${fieldValue(bean: profesorInstance, field: "cedula")}</td>
                         
-                        <td>${fieldValue(bean: facultadInstance, field: "nombre")}</td>
+                        <td>${fieldValue(bean: profesorInstance, field: "nombre")}</td>
+                        
+                        <td>${fieldValue(bean: profesorInstance, field: "apellido")}</td>
+                        
+                        <td>${fieldValue(bean: profesorInstance, field: "estado")}</td>
+                        
+                        <td>${fieldValue(bean: profesorInstance, field: "evaluar")}</td>
+                        
+                        <td><g:formatDate date="${profesorInstance.fechaFin}" format="dd-MM-yyyy" /></td>
                         
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${facultadInstanceCount}" params="${params}"/>
+        <elm:pagination total="${profesorInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmFacultad");
+                var $form = $("#frmProfesor");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -69,14 +85,11 @@
                         url     : '${createLink(action:'save_ajax')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("*");
-                        if (parts[0] == "SUCCESS") {
-                            log("Facultad guardada correctamente","success")
-                            setTimeout(function () {
-                                location.reload(true);
-                            }, 1000);
+                        var parts = msg.split("_");
+                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                        if (parts[0] == "OK") {
+                            location.reload(true);
                         } else {
-                            log("Error al guardar la facultad","error")
                             spinner.replaceWith($btn);
                             return false;
                         }
@@ -89,7 +102,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Facultad seleccionada? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Profesor seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -130,7 +143,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Facultad",
+                            title   : title + " Profesor",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -162,7 +175,6 @@
                     createEditRow();
                     return false;
                 });
-
 
 
                 $("tbody tr").contextMenu({
@@ -204,7 +216,8 @@
                             icon   : "fa fa-pencil",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                createEditRow(id);
+//                                createEditRow(id);
+                                location.href='${createLink(controller: 'profesor', action: 'profesor')}/' + id;
                             }
                         },
                         eliminar : {
