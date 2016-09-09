@@ -16,6 +16,9 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
+        <g:link controller="profesor" action="list" class="btn btn-primary" title="Regresar a la lista de profesores">
+            <i class="fa fa-chevron-left"></i> Lista
+        </g:link>
         <a href="#" class="btn btn-success btnGuardar" >
             <i class="fa fa-save"></i> Guardar
         </a>
@@ -105,27 +108,27 @@
 
 <div class="panel panel-info col-md-12 ${!profesorInstance ? 'hidden' : ''}" style="margin-top: 20px" >
     <div class="panel-heading">
-        <h3 class="panel-title" style="height: 35px; padding-left: 310px; padding-right: 310px">
-            Materias Asignadas para el período
-            <div class="col-md-5" style="float: right"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+        <h3 class="panel-title" style="height: 35px; padding-left: 110px; padding-right: 110px">
+            <div class="col-md-4" style="float: left">
+                Materias Asignadas para el período
+            </div>
+
+            <div class="col-md-4"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                                                                   class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
 
 
-
-            <div class="btn-group">
-                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Copiar Período <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <g:each in="${Periodo.list()}" var="periodo" >
-                        <li><a href="#">${periodo?.nombre}</a></li>
-                    </g:each>
-                    %{--<li role="separator" class="divider"></li>--}%
-                    %{--<li><a href="#">Separated link</a></li>--}%
-                </ul>
+            <div class="col-md-3" style="float: right">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Copiar Período <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <g:each in="${Periodo.list()}" var="periodo" >
+                            <li><a href="#">${periodo?.nombre}</a></li>
+                        </g:each>
+                    </ul>
+                </div>
             </div>
-
-
         </h3>
     </div>
     <div class="panel-body">
@@ -166,9 +169,10 @@
                 <tr>
                     <th style="width: 8%">Código</th>
                     <th style="width: 33%">Materia</th>
-                    <th style="width: 8%">Paralelo</th>
                     <th style="width: 14%">Curso</th>
+                    <th style="width: 8%">Paralelo</th>
                     <th style="width: 25%">Escuela</th>
+                    <th style="width: 5%">Acciones</th>
 
                 </tr>
                 </thead>
@@ -302,6 +306,42 @@
 
 
     $("#btnAgregar").click(function () {
+
+
+        var materia = $("#materiasId").val();
+        var curso = $("#cursoId").val();
+        var paralelo = $("#paraleloId").val();
+        var periodo = $("#periodoId").val();
+
+
+        if(paralelo != ""){
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'profesor', action: 'agregarMateria_ajax')}',
+                data:{
+                    id: '${profesorInstance?.id}',
+                    materia: materia,
+                    curso: curso,
+                    paralelo: paralelo,
+                    periodo: periodo
+                },
+                success: function (msg){
+                    var parts = msg.split("_");
+                    if(parts[0] == 'ok'){
+                        log(parts[1],"success");
+                        cargarTablaMaterias($("#periodoId").val());
+                    }else{
+                        log(parts[1],"error")
+                    }
+
+                }
+            });
+        }else{
+            log("Ingrese el paralelo","error");
+        }
+
+
+
 
     });
 

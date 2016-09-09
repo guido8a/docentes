@@ -38,15 +38,15 @@ class ProfesorController extends Shield {
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("apellido", "%" + params.search + "%")  
-                    ilike("cedula", "%" + params.search + "%")  
-                    ilike("estado", "%" + params.search + "%")  
-                    ilike("evaluar", "%" + params.search + "%")  
-                    ilike("nombre", "%" + params.search + "%")  
-                    ilike("observacion", "%" + params.search + "%")  
-                    ilike("sexo", "%" + params.search + "%")  
-                    ilike("titulo", "%" + params.search + "%")  
+
+                    ilike("apellido", "%" + params.search + "%")
+                    ilike("cedula", "%" + params.search + "%")
+                    ilike("estado", "%" + params.search + "%")
+                    ilike("evaluar", "%" + params.search + "%")
+                    ilike("nombre", "%" + params.search + "%")
+                    ilike("observacion", "%" + params.search + "%")
+                    ilike("sexo", "%" + params.search + "%")
+                    ilike("titulo", "%" + params.search + "%")
                 }
             }
         } else {
@@ -246,5 +246,47 @@ class ProfesorController extends Shield {
         def materias = Materia.findAllByEscuela(profesor.escuela, [sort: 'nombre', order: 'asc'])
         return [materias: materias]
     }
-    
+
+    def agregarMateria_ajax () {
+        println("params agregar m " + params)
+        def profesor = Profesor.get(params.id)
+        def materia = Materia.get(params.materia)
+        def curso = Curso.get(params.curso)
+        def periodo = Periodo.get(params.periodo)
+        def paralelo = params.paralelo.toInteger()
+
+        def existente = Dictan.findAllByProfesorAndPeriodoAndCursoAndMateriaAndParalelo(profesor, periodo, curso, materia, paralelo)
+
+        if(existente){
+            render "no_No se puede asignar la materia, ya se encuentra asignada a este profesor!"
+        }else{
+            def dicta = new Dictan()
+            dicta.profesor = profesor
+            dicta.materia = materia
+            dicta.curso = curso
+            dicta.periodo = periodo
+            dicta.paralelo = params.paralelo.toInteger()
+
+            try {
+                dicta.save(flush:true)
+                render "ok_Materia asignada correctamente"
+            }catch (e){
+                render "no_Error al asignar la materia"
+                println("error al guardar las materias del profesor " + dicta.errors)
+            }
+        }
+
+    }
+
+    def borrarMateria_ajax (){
+        def dicta = Dictan.get(params.id)
+        try{
+            dicta.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al desasignar una materia " + dicta.errors)
+        }
+    }
+
 }
