@@ -188,7 +188,7 @@ class MenuTagLib {
         html += '<span class="icon-bar"></span>'
         html += '</button>'
         html += '<a class="navbar-brand navbar-logo" href="' + g.createLink(controller: 'inicio', action: 'index') +
-                '"><img src="' + resource(dir: 'images', file: 'logo.png') + '" height="32px"/></a>'
+                '"><img src="' + resource(dir: 'images', file: 'logo.png') + '" height="40px"/ style="float:left; margin-top:-10px;"></a>'
         html += '</div>'
 
         // Collect the nav links, forms, and other content for toggling
