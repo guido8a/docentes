@@ -13,7 +13,7 @@
 
     .item {
         width: 320px;
-        height: 200px;
+        height: 230px;
         float: left;
         margin: 4px;
         font-family: 'open sans condensed';
@@ -87,7 +87,7 @@
         </h2>
     </div>
 
-    <div class="body ui-corner-all" style="width: 680px;position: relative;margin: auto;margin-top: 40px;height: 280px; ">
+    <div class="body ui-corner-all" style="width: 1200px;position: relative;margin: auto;margin-top: 40px;height: 280px; ">
 
 
         <a href= "${createLink(controller:'buscarBase', action: 'busquedaBase')}" style="text-decoration: none">
@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="texto">
-                    <span class="text-success"><strong>Base de conocimiento</strong></span></div>
+                    <span class="text-success"><strong>Evaluación al Docente</strong> por Pares, Directivos, Estudiantes y Autoevaluación</span></div>
             </div>
         </div>
         </a>
@@ -107,31 +107,66 @@
         <div class="ui-corner-all item fuera">
             <div class="ui-corner-all item">
                 <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'agenda.png')}" width="100%" height="100%"/>
+                    <img src="${resource(dir: 'images', file: 'preguntas.png')}" width="100%" height="100%"/>
                 </div>
 
                 <div class="texto">
-                    <span class="text-success"><strong>Buscar actividades</strong></span></div>
+                    <span class="text-success"><strong>Encuestas</strong> preguntas y estructura de los distintos tipos de encuesta a aplicarse</span></div>
             </div>
         </div>
         </a>
 
-
-        <a href= "${createLink(controller:'actividad', action: 'list')}" style="text-decoration: none">
-            <div class="ui-corner-all item2 fuera">
-                <div class="ui-corner-all item2">
-                    <div class="imagen2">
-                        <img src="${resource(dir: 'images', file: 'actividades.png')}" width="100%" height="100%"/>
-                    </div>
-
-                    <div style="margin-top: 50px; margin-left: 140px;">
-                        <span class="text-success" style="font-size: large"><strong>Mis Actividades</strong></span></div>
-                        <span class="text-success" style="margin-top: 20px; margin-left: 30px; width: 400px; display: block"><strong>Actividades en las que estoy involucrado o pertenecen a mi grupo de trabajo</strong></span></div>
+        <a href= "${createLink(controller:'profesor', action: 'list')}" style="text-decoration: none">
+        <div class="ui-corner-all item fuera">
+            <div class="ui-corner-all item">
+                <div class="imagen">
+                    <img src="${resource(dir: 'images', file: 'profesor.png')}" width="100%" height="100%"/>
                 </div>
+
+                <div class="texto">
+                    <span class="text-success"><strong>Docentes</strong> registro de personal docente y materias que dicta</span></div>
             </div>
+        </div>
         </a>
 
+        <a href= "${createLink(controller:'buscarActividad', action: 'busquedaActividad')}" style="text-decoration: none">
+        <div class="ui-corner-all item fuera">
+            <div class="ui-corner-all item">
+                <div class="imagen">
+                    <img src="${resource(dir: 'images', file: 'estudiante.png')}" width="100%" height="100%"/>
+                </div>
 
+                <div class="texto">
+                    <span class="text-success"><strong>Estudiantes</strong> registro de estudiantes y matrícula</span></div>
+            </div>
+        </div>
+        </a>
+
+        <a href= "${createLink(controller:'buscarActividad', action: 'busquedaActividad')}" style="text-decoration: none">
+        <div class="ui-corner-all item fuera">
+            <div class="ui-corner-all item">
+                <div class="imagen">
+                    <img src="${resource(dir: 'images', file: 'datos.png')}" width="100%" height="100%"/>
+                </div>
+
+                <div class="texto">
+                    <span class="text-success"><strong>Cargar datos</strong> cargar datos desde archivos de hoja de cálculo</span></div>
+            </div>
+        </div>
+        </a>
+
+        <a href= "${createLink(controller:'buscarActividad', action: 'busquedaActividad')}" style="text-decoration: none">
+        <div class="ui-corner-all item fuera">
+            <div class="ui-corner-all item">
+                <div class="imagen">
+                    <img src="${resource(dir: 'images', file: 'reportes.png')}" width="100%" height="100%"/>
+                </div>
+
+                <div class="texto">
+                    <span class="text-success"><strong>Reportes</strong> reportes del desempeño académico</span></div>
+            </div>
+        </div>
+        </a>
 
     </div>
 

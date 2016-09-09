@@ -16,7 +16,7 @@ class RespuestaPregunta {
             id column: 'rppg__id'
             respuesta column: 'resp__id'
             pregunta column: 'preg__id'
-            valor column: 'rppgvlor__id'
+            valor column: 'rppgvlor'
 
         }
     }
