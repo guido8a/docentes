@@ -28,6 +28,8 @@ class MateriaController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
+        params.sort = 'codigo'
+        params.order = 'asc'
         if(all) {
             params.remove("max")
             params.remove("offset")
@@ -200,7 +202,7 @@ class MateriaController extends Shield {
         def materias
         if(params.id){
             escuela = Escuela.get(params.id)
-            materias = Materia.findAllByEscuela(escuela)
+            materias = Materia.findAllByEscuela(escuela, [sort: 'nombre'])
         }else{
             materias = null
         }

@@ -26,7 +26,8 @@
         <div class="col-md-1 negrilla control-label">Facultad: </div>
         <div class="col-md-4">
             <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
-                      class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}"/>
+                      class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}"
+                      value="${params.facl}"/>
         </div>
 
 
@@ -98,7 +99,8 @@
                         if (parts[0] == "SUCCESS") {
                             log("Materia guardada correctamente","success");
                             setTimeout(function () {
-                                location.reload(true);
+//                                location.reload(true);
+                                $("#escuelaId").change();
                             }, 1000);
                         } else {
                             log("Error al guardar la materia","error");
