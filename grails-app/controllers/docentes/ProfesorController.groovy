@@ -233,7 +233,7 @@ class ProfesorController extends Shield {
         def materias
         if(params.idProfe){
             profesor = Profesor.get(params.idProfe)
-            materias = Dictan.findAllByPeriodoAndProfesor(periodo, profesor)
+            materias = Dictan.findAllByPeriodoAndProfesor(periodo, profesor, [sort: 'materia.nombre',order: 'asc'])
         }else{
             materias = null
         }
@@ -286,6 +286,73 @@ class ProfesorController extends Shield {
         }catch (e){
             render "no"
             println("error al desasignar una materia " + dicta.errors)
+        }
+    }
+
+    def copiar_ajax () {
+        def periodo = Periodo.get(params.periodo)
+        def lista = Periodo.list() - periodo
+        def profesor = Profesor.get(params.idProfe)
+
+        return  [lista: lista, profesor: profesor, periodo: periodo]
+    }
+
+    def verificar_ajax () {
+        def profesor = Profesor.get(params.profesor)
+        def periodo = Periodo.get(params.periodo)
+
+        def asignadas = Dictan.findAllByProfesorAndPeriodo(profesor, periodo)
+
+        if(asignadas){
+            render "no"
+        }else{
+            render "ok"
+        }
+
+    }
+
+    def dialogoCopiar_ajax () {
+        def periodoActual = Periodo.get(params.periodoActual)
+        def periodoCopiar = Periodo.get(params.periodoCopiar)
+        def profesor = Profesor.get(params.id)
+
+        def lista = Dictan.findAllByProfesorAndPeriodo(profesor, periodoCopiar, [sort: 'materia.nombre', order: 'asc'] )
+
+
+        return[actual: periodoActual, copiar: periodoCopiar, materias: lista]
+    }
+
+
+    def guardarCopia_ajax () {
+        def periodoActual = Periodo.get(params.actual)
+        def periodoCopiar = Periodo.get(params.copiar)
+        def profesor = Profesor.get(params.idProfe)
+        def errores = ''
+
+        def lista = Dictan.findAllByProfesorAndPeriodo(profesor, periodoCopiar, [sort: 'materia.nombre', order: 'asc'] )
+        def dicta
+        lista.each { m->
+            dicta = new Dictan()
+            dicta.materia = m.materia
+            dicta.profesor = profesor
+            dicta.periodo = periodoActual
+            dicta.curso = m.curso
+            dicta.paralelo = m.paralelo
+
+            try {
+                dicta.save(flush: true)
+
+            }catch (e){
+                errores += dicta.errors
+                println("error al copiar")
+            }
+
+        }
+
+        if(errores == ''){
+            render 'ok'
+        }else{
+            render "no"
         }
     }
 

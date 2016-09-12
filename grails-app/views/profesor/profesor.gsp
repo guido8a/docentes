@@ -117,17 +117,8 @@
                                                                   class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
 
 
-            <div class="col-md-3" style="float: right">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Copiar Período <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <g:each in="${Periodo.list()}" var="periodo" >
-                            <li><a href="#">${periodo?.nombre}</a></li>
-                        </g:each>
-                    </ul>
-                </div>
+            <div class="col-md-3" style="float: right" id="divCopiar">
+
             </div>
         </h3>
     </div>
@@ -215,11 +206,13 @@
     }
 
     cargarTablaMaterias($("#periodoId").val());
+    cargarBotonCopiar($("#periodoId").val());
 
 
     $("#periodoId").change(function () {
         var periodo = $(this).val();
         cargarTablaMaterias(periodo);
+        cargarBotonCopiar(periodo)
     });
 
 
@@ -236,6 +229,23 @@
             }
         });
     }
+
+
+    function cargarBotonCopiar (periodo) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'profesor', action: 'copiar_ajax')}',
+            data:{
+                periodo: periodo,
+                idProfe: '${profesorInstance?.id}'
+            },
+            success: function (msg) {
+                $("#divCopiar").html(msg)
+            }
+        });
+    }
+
+
 
     cargarEscuela($("#facultadId").val());
 
@@ -259,6 +269,9 @@
         var facultad = $("#facultadId").val();
         cargarEscuela(facultad)
     });
+
+
+
 
 
     $(".btnGuardar").click(function () {
