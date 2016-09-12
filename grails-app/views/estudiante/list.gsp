@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nuevo estudiante
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
