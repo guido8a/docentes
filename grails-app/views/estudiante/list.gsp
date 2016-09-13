@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Nuevo estudiante
+                <g:link action="estudiante" class="btn btn-info btnCrear">
+                    <i class="fa fa-user"></i> Nuevo estudiante
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -161,8 +161,9 @@
             $(function () {
 
                 $(".btnCrear").click(function() {
-                    createEditRow();
-                    return false;
+//                    createEditRow();
+                    location.href='${createLink(controller: 'estudiante', action: 'estudiante')}'
+//                    return false;
                 });
 
                 $("tbody tr").contextMenu({
@@ -204,7 +205,8 @@
                             icon   : "fa fa-pencil",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                createEditRow(id);
+//                                createEditRow(id);
+                                location.href='${createLink(controller: 'estudiante', action: 'estudiante')}/' + id
                             }
                         },
                         eliminar : {

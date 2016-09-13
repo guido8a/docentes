@@ -12,99 +12,93 @@
     <title>Profesor</title>
 </head>
 
-<body>
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link controller="profesor" action="list" class="btn btn-primary" title="Regresar a la lista de profesores">
-            <i class="fa fa-chevron-left"></i> Lista
-        </g:link>
-        <a href="#" class="btn btn-success btnGuardar" >
-            <i class="fa fa-save"></i> Guardar
-        </a>
-        <div class="btn-group">
-            <g:link controller="profesor" action="profesor" class="btn btn-info">
-                <i class="fa fa-file-o"></i> Nuevo
-            </g:link>
+<g:link controller="profesor" action="list" class="btn btn-primary" title="Regresar a la lista de profesores">
+    <i class="fa fa-chevron-left"></i> Lista
+</g:link>
+<a href="#" class="btn btn-success btnGuardar" >
+    <i class="fa fa-save"></i> Guardar
+</a>
+<div class="btn-group">
+    <g:link controller="profesor" action="profesor" class="btn btn-info">
+        <i class="fa fa-file-o"></i> Nuevo
+    </g:link>
+</div>
+</div>
+
+</div>
+
+<g:form class="form-horizontal" name="frmProfesor" role="form" action="save" method="POST">
+
+    <div class="row">
+        <div class="col-md-1 negrilla control-label">Facultad: </div>
+        <div class="col-md-5">
+            <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
+                      class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" value="${profesorInstance?.escuela?.facultad?.id}"/>
+        </div>
+        <div class="col-md-1 negrilla control-label">Escuela: </div>
+        <div class="col-md-5" id="divEscuela">
+
         </div>
     </div>
 
-</div>
 
+    <div class="row">
+        <div class="col-md-1 negrilla control-label">Nombres: </div>
+        <div class="col-md-5">
+            <g:textField name="nombre_name" id="nombreProfesor" value="${profesorInstance ? profesorInstance?.nombre : ''}" class="form-control required" maxlength="31"/>
+        </div>
+        <div class="col-md-1 negrilla control-label">Apellidos: </div>
+        <div class="col-md-5">
+            <g:textField name="apellido_name" id="apellidoProfesor" value="${profesorInstance ? profesorInstance?.apellido : ''}" class="form-control required" maxlength="31"/>
+        </div>
+    </div>
 
-<div class="row">
-    <div class="col-md-1 negrilla control-label">Facultad: </div>
-    <div class="col-md-5">
-        <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
-                  class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" value="${profesorInstance?.escuela?.facultad?.id}"/>
+    <div class="row">
+        <div class="col-md-1 negrilla control-label">Cédula: </div>
+        <div class="col-md-2">
+            <g:textField name="cedula_name" id="cedulaProfesor" value="${profesorInstance ? profesorInstance?.cedula : ''}" class="form-control number required" maxlength="15"/>
+        </div>
+        <div class="col-md-1 negrilla control-label">Título: </div>
+        <div class="col-md-2">
+            <g:textField name="titulo_name" id="tituloProfesor" value="${profesorInstance ? profesorInstance?.titulo : ''}" class="allCaps form-control" maxlength="8"/>
+        </div>
+        <div class="col-md-1 negrilla control-label">Sexo: </div>
+        <div class="col-md-2">
+            <g:if test="${profesorInstance}">
+                <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${profesorInstance?.sexo == 'M' ? 'M' : 'F'}"  optionKey="key" optionValue="value"/>
+            </g:if>
+            <g:else>
+                <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${''}"  optionKey="key" optionValue="value"/>
+            </g:else>
+        </div>
+        <div class="col-md-1 negrilla control-label">Evalua: </div>
+        <div class="col-md-2">
+            <g:if test="${profesorInstance}">
+                <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="${profesorInstance?.evaluar == 'S' ? 'S' : profesorInstance?.evaluar == 'P' ? 'P' : 'N'}" />
+            </g:if>
+            <g:else>
+                <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="" />
+            </g:else>
+        </div>
     </div>
-    <div class="col-md-1 negrilla control-label">Escuela: </div>
-    <div class="col-md-5" id="divEscuela">
 
-    </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-1 negrilla control-label">Nombres: </div>
-    <div class="col-md-5">
-        <g:textField name="nombre_name" id="nombreProfesor" value="${profesorInstance ? profesorInstance?.nombre : ''}" class="form-control required" maxlength="31"/>
-    </div>
-    <div class="col-md-1 negrilla control-label">Apellidos: </div>
-    <div class="col-md-5">
-        <g:textField name="apellido_name" id="apellidoProfesor" value="${profesorInstance ? profesorInstance?.apellido : ''}" class="form-control required" maxlength="31"/>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-1 negrilla control-label">Cédula: </div>
-    <div class="col-md-2">
-        <g:textField name="cedula_name" id="cedulaProfesor" value="${profesorInstance ? profesorInstance?.cedula : ''}" class="form-control number required" maxlength="15"/>
-    </div>
-    <div class="col-md-1 negrilla control-label">Título: </div>
-    <div class="col-md-2">
-        <g:textField name="titulo_name" id="tituloProfesor" value="${profesorInstance ? profesorInstance?.titulo : ''}" class="allCaps form-control" maxlength="8"/>
-    </div>
-    <div class="col-md-1 negrilla control-label">Sexo: </div>
-    <div class="col-md-2">
-        <g:if test="${profesorInstance}">
-            <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${profesorInstance?.sexo == 'M' ? 'M' : 'F'}"  optionKey="key" optionValue="value"/>
-        </g:if>
-        <g:else>
-            <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${''}"  optionKey="key" optionValue="value"/>
-        </g:else>
-    </div>
-    <div class="col-md-1 negrilla control-label">Evalua: </div>
-    <div class="col-md-2">
-        <g:if test="${profesorInstance}">
-            <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="${profesorInstance?.evaluar == 'S' ? 'S' : profesorInstance?.evaluar == 'P' ? 'P' : 'N'}" />
-        </g:if>
-        <g:else>
-            <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="" />
-        </g:else>
-    </div>
-</div>
-
-<div class="row">
-    %{--<div class="col-md-1 negrilla control-label">Fecha de Nacimiento: </div>--}%
-    %{--<div class="col-md-3">--}%
-    %{--<elm:datepicker name="name_nacimiento" id="nacimientoProfesor" class="datepicker form-control" value=""  />--}%
-    %{--</div>--}%
-    %{--<div class="col-md-1 negrilla control-label">Fecha de Inicio: </div>--}%
-    %{--<div class="col-md-3">--}%
-    %{--<elm:datepicker name="name_inicio" id="inicioProfesor"  class="datepicker form-control" value=""  />--}%
-    %{--</div>--}%
-</div>
-
-<div class="row">
-    <div class="col-md-1 negrilla control-label">Observaciones: </div>
-    <div class="col-md-11">
-        <g:textField name="name_observaciones" id="profesorObser" value="${profesorInstance ? profesorInstance?.observacion : ''}" class="form-control" style="resize: none" maxlength="127"/>
+    <div class="row">
 
     </div>
-</div>
+
+    <div class="row">
+        <div class="col-md-1 negrilla control-label">Observaciones: </div>
+        <div class="col-md-11">
+            <g:textField name="name_observaciones" id="profesorObser" value="${profesorInstance ? profesorInstance?.observacion : ''}" class="form-control" style="resize: none" maxlength="127"/>
+
+        </div>
+    </div>
 
 
+</g:form>
 
 <div class="panel panel-info col-md-12 ${!profesorInstance ? 'hidden' : ''}" style="margin-top: 20px" >
     <div class="panel-heading">
@@ -114,7 +108,7 @@
             </div>
 
             <div class="col-md-4"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                                                  class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
+                                             class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
 
 
             <div class="col-md-3" style="float: right" id="divCopiar">
@@ -125,17 +119,7 @@
     <div class="panel-body">
         <div class="list-group" style="text-align: center">
 
-
-            %{--<div class="row">--}%
-            %{--<div class="col-md-1 negrilla control-label">Período: </div>--}%
-            %{--<div class="col-md-2">--}%
-            %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-            %{--class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
-            %{--</div>--}%
-            %{--</div>--}%
-
             <div class="row ${!profesorInstance ? 'hidden' : ''}" id="divMateria">
-
                 <div class="col-md-1 negrilla control-label">Materias: </div>
                 <div class="col-md-4" id="divMaterias">
 
@@ -176,13 +160,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
 
 
 <script type="text/javascript">
@@ -285,36 +262,40 @@
         var inicio = $("#inicioProfesor").val();
         var evalua = $("#evaluaProfesor").val();
         var observa = $("#profesorObser").val();
-        var idProfesor = ${profesorInstance?.id}
-                $.ajax({
-                    type: 'POST',
-                    url: '${createLink(controller: 'profesor', action: 'saveProfesor_ajax')}',
-                    data:{
-                        escuela: escuela,
-                        nombre: nombre,
-                        apellido: apellido,
-                        cedula: cedula,
-                        titulo: titulo,
-                        sexo: sexo,
-                        nacimiento: nacimiento,
-                        inicio: inicio,
-                        evalua: evalua,
-                        id: idProfesor,
-                        observacion: observa
-                    },
-                    success: function (msg){
-                        var parts = msg.split("_");
-                        if(parts[0] == 'ok'){
-                            log("Información guardada correctamente","success")
-                            setTimeout(function () {
-                                location.href='${createLink(controller: 'profesor', action: 'profesor')}/' + parts[1]
-                            }, 500);
-                        }else{
-                            log("Error al guardar la información","error")
-                        }
+        var idProfesor = '${profesorInstance?.id}';
 
+        var $form = $("#frmProfesor");
+        if ($form.valid()) {
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'profesor', action: 'saveProfesor_ajax')}',
+                data:{
+                    escuela: escuela,
+                    nombre: nombre,
+                    apellido: apellido,
+                    cedula: cedula,
+                    titulo: titulo,
+                    sexo: sexo,
+                    nacimiento: nacimiento,
+                    inicio: inicio,
+                    evalua: evalua,
+                    id: idProfesor,
+                    observacion: observa
+                },
+                success: function (msg){
+                    var parts = msg.split("_");
+                    if(parts[0] == 'ok'){
+                        log("Información guardada correctamente","success")
+                        setTimeout(function () {
+                            location.href='${createLink(controller: 'profesor', action: 'profesor')}/' + parts[1]
+                        }, 500);
+                    }else{
+                        log("Error al guardar la información","error")
                     }
-                });
+
+                }
+            });
+        }
     });
 
 
@@ -353,9 +334,21 @@
             log("Ingrese el paralelo","error");
         }
 
+    });
 
-
-
+    var validator = $("#frmProfesor").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        }
     });
 
 

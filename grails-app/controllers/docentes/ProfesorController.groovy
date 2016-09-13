@@ -153,7 +153,7 @@ class ProfesorController extends Shield {
     } //delete para eliminar via ajax
 
     def profesor () {
-        println("params profe " + params)
+//        println("params profe " + params)
         def profesor
         if(params.id){
             profesor = Profesor.get(params.id)
@@ -191,8 +191,8 @@ class ProfesorController extends Shield {
             profesor = Profesor.get(params.id)
             escuela = Escuela.get(params.escuela)
             profesor.escuela = escuela
-            profesor.nombre = params.nombre
-            profesor.apellido = params.apellido
+            profesor.nombre = params.nombre.toUpperCase()
+            profesor.apellido = params.apellido.toUpperCase()
             profesor.titulo = params.titulo.toUpperCase()
             profesor.cedula = params.cedula
             profesor.sexo = params.sexo.toString()
@@ -204,8 +204,8 @@ class ProfesorController extends Shield {
             profesor = new Profesor()
             escuela = Escuela.get(params.escuela)
             profesor.escuela = escuela
-            profesor.nombre = params.nombre
-            profesor.apellido = params.apellido
+            profesor.nombre = params.nombre.toUpperCase()
+            profesor.apellido = params.apellido.toUpperCase()
             profesor.titulo = params.titulo.toUpperCase()
             profesor.cedula = params.cedula
             profesor.sexo = params.sexo.toString()
@@ -216,7 +216,7 @@ class ProfesorController extends Shield {
 
         try {
             profesor.save(flush: true)
-            println("profesor " + profesor)
+//            println("profesor " + profesor)
             render 'ok_'+ profesor?.id
         }catch (e){
             render 'no'

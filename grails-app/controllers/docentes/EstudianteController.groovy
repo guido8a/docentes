@@ -152,5 +152,46 @@ class EstudianteController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+
+    def estudiante () {
+        def estudiante
+        if(params.id){
+            estudiante = Estudiante.get(params.id)
+        }
+        return [estudianteInstance: estudiante]
+    }
+
+    def saveEstudiante_ajax () {
+
+        def estudiante
+        if(params.id){
+            estudiante = Estudiante.get(params.id)
+            estudiante.nombre = params.nombre.toUpperCase()
+            estudiante.apellido = params.apellido.toUpperCase()
+            estudiante.cedula = params.cedula
+        }else{
+            estudiante = new Estudiante()
+            estudiante.nombre = params.nombre.toUpperCase()
+            estudiante.apellido = params.apellido.toUpperCase()
+            estudiante.cedula = params.cedula
+        }
+
+        try {
+            estudiante.save(flush: true)
+            render 'ok_'+ estudiante?.id
+        }catch (e){
+            render 'no'
+            println("error al guardar el profesor " + estudiante.errors)
+        }
+    }
+
+
+    def materias_ajax () {
+        def periodo = Periodo.get(params.periodo)
+        def dicta = Dictan.findAllByPeriodo(periodo, [sort: 'materia.nombre', order: 'asc'])
+
+        return [dicta: dicta]
+    }
     
 }
