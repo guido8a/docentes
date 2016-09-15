@@ -111,9 +111,12 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                                        if (parts[0] == "SUCCESS") {
+                                            log("Tipo de encuesta borrada correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
                                         }
                                     }
                                 });
