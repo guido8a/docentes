@@ -114,6 +114,8 @@ class TipoEncuestaController extends Shield {
             }
         }
         tipoEncuestaInstance.properties = params
+        tipoEncuestaInstance.descripcion = params.descripcion.toUpperCase()
+        tipoEncuestaInstance.codigo = params.codigo.toUpperCase()
         if(!tipoEncuestaInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar TipoEncuesta: " + renderErrors(bean: tipoEncuestaInstance)
             return

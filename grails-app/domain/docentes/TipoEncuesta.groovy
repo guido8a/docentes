@@ -24,6 +24,6 @@ class TipoEncuesta {
     static constraints = {
         codigo(nullable: false, blank: false)
         descripcion(nullable: false, blank: false)
-        estado inList: ['Activa','No Activa']
+        estado inList: [ 'R','N']
     }
 }

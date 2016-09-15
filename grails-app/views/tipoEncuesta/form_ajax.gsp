@@ -11,7 +11,7 @@
         <div class="form-group ${hasErrors(bean: tipoEncuestaInstance, field: 'codigo', 'error')} ">
             <span class="grupo">
                 <label for="codigo" class="col-md-2 control-label text-info">
-                    Codigo
+                    Código
                 </label>
                 <div class="col-md-6">
                     <g:textField name="codigo" required="" class="allCaps form-control required" value="${tipoEncuestaInstance?.codigo}"/>
@@ -23,7 +23,7 @@
         <div class="form-group ${hasErrors(bean: tipoEncuestaInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label text-info">
-                    Descripcion
+                    Descripción
                 </label>
                 <div class="col-md-6">
                     <g:textField name="descripcion" required="" class="allCaps form-control required" value="${tipoEncuestaInstance?.descripcion}"/>
@@ -38,7 +38,7 @@
                     Estado
                 </label>
                 <div class="col-md-6">
-                    <g:select name="estado" from="${tipoEncuestaInstance.constraints.estado.inList}" class="form-control" value="${tipoEncuestaInstance?.estado}" valueMessagePrefix="tipoEncuesta.estado" noSelection="['': '']"/>
+                    <g:select name="estado" from="${tipoEncuestaInstance.constraints.estado.inList}" class="form-control" value="${tipoEncuestaInstance?.estado}" valueMessagePrefix="tipoEncuesta.estado"/>
                 </div>
                 
             </span>

@@ -70,12 +70,16 @@
                         url     : '${createLink(action:'save_ajax')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "OK") {
-                            location.reload(true);
+                        var parts = msg.split("*");
+//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                        if (parts[0] == "SUCCESS") {
+                            log("Tipo de encuesta creada correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
+
                         } else {
-                            spinner.replaceWith($btn);
+                            log("Error al crear el tipo de encuesta","error");
                             return false;
                         }
                     }
@@ -87,7 +91,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el TipoEncuesta seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Tipo de Encuesta seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
