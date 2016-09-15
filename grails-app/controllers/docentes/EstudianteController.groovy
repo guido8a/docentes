@@ -190,8 +190,55 @@ class EstudianteController extends Shield {
     def materias_ajax () {
         def periodo = Periodo.get(params.periodo)
         def dicta = Dictan.findAllByPeriodo(periodo, [sort: 'materia.nombre', order: 'asc'])
+        def estudiante = Estudiante.get(params.id)
 
-        return [dicta: dicta]
+        return [dicta: dicta, periodo: periodo, estudiante:estudiante]
     }
+
+    def borrarMateriaMatriculada_ajax () {
+        def matriculado = Matriculado.get(params.id)
+        try{
+            matriculado.delete(flush:true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println ("error al borrar la materia matriculada " + matriculado.errors)
+        }
+
+    }
+
+    def asignarMateria_ajax () {
+        println("entro asignar materia " + params)
+        def estudiante = Estudiante.get(params.estudiante)
+        def dicta = Dictan.get(params.id)
+//        def mat = Matriculado.findAllByEstudianteAndMateriaDictada(estudiante, dicta)
+        def mat  = Matriculado.withCriteria {
+                    eq("estudiante",estudiante)
+                    materiaDictada {
+                      eq("materia", dicta.materia)
+                    }
+        }
+
+        def nueva
+
+        if(mat){
+            render "no_No se pudo asignar la materia. </br> Esta materia ya se encuentra asignada al estudiante"
+        }else{
+            nueva = new Matriculado()
+            nueva.estudiante = estudiante
+            nueva.materiaDictada = dicta
+            try {
+                nueva.save(flush: true)
+                render "ok_Materia asignada correctamente"
+            }catch (e){
+                render "no_Error al asignar la materia"
+                println("errro al asignar materia " + nueva.errors)
+            }
+        }
+
+    }
+
+
+
     
 }

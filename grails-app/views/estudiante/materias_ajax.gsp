@@ -7,18 +7,10 @@
 
 
 
-    <g:select name="materias_name" id="materiasId" optionKey="id" optionValue="${{it.materia.nombre + ' - Curso: ' + it.curso.nombre + ' - Paralelo: ' + it.paralelo + ' - Profesor: ' + it.profesor.nombre + " " + it.profesor.apellido}}"
-              class="form-control" from="${dicta}"/>
+%{--<g:select name="materias_name" id="materiasId" optionKey="id" optionValue="${{it.materia.nombre + ' - Curso: ' + it.curso.nombre + ' - Paralelo: ' + it.paralelo + ' - Profesor: ' + it.profesor.nombre + " " + it.profesor.apellido}}"--}%
+              %{--class="form-control" from="${dicta}"/>--}%
 
-%{--<div class="col-md-1 negrilla control-label">Nivel: </div>--}%
-%{--<div class="col-md-2">--}%
-
-%{--</div>--}%
-
-%{--<div class="col-md-1 negrilla control-label">Paralelo: </div>--}%
-%{--<div class="col-md-1">--}%
-    %{--<g:textField name="paralelo_name" id="paraleloId" class="form-control number" maxlength="2"/>--}%
-%{--</div>--}%
+<g:textField name="materias_name" id="materiasId" class="form-control" placeholder="Seleccione la materia..."/>
 
 
 <script type="text/javascript">
@@ -26,16 +18,39 @@
 
 
 
-    $("#materiasId").change(function () {
+    $("#materiasId").click(function () {
+
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'materia', action:'buscarMateria_ajax')}",
+            data    : {
+                periodo: '${periodo?.id}',
+                id: '${estudiante?.id}'
+            },
+            success : function (msg) {
+                var b =  bootbox.dialog({
+                    id      : "dlgBuscadorMaterias",
+                    title   : "Buscar Materia",
+                    class   : "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
 
     });
 
 
-    function cargarDatos () {
-        $.ajax({
-
-        });
-    }
 
 
 </script>

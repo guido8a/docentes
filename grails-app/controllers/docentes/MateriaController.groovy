@@ -210,5 +210,52 @@ class MateriaController extends Shield {
         return [materias: materias]
     }
 
+    def buscarMateria_ajax () {
+        def periodo = Periodo.get(params.periodo)
+        def estudiante = Estudiante.get(params.id)
+        return [periodo: periodo, estudiante: estudiante]
+    }
+
+    def tablaBusqueda_ajax () {
+
+        def periodo = Periodo.get(params.periodo)
+        def estudiante = Estudiante.get(params.id)
+        def codigo = params.codigo.toString().trim()
+        def nombreMateria = params.materia.toString().trim()
+
+        def dicta = Dictan.withCriteria {
+
+            eq("periodo",periodo)
+
+            materia{
+                ilike("codigo","%$codigo%")
+                ilike("nombre","%$nombreMateria%")
+
+                order("nombre","asc")
+            }
+        }
+
+        return [materias: dicta, estudiante: estudiante]
+
+    }
+
+    def tablaMateriasAsignadas_ajax () {
+        def estudiante = Estudiante.get(params.id)
+        def periodo = Periodo.get(params.periodo)
+
+        def matriculados = Matriculado.withCriteria {
+
+            eq("estudiante",estudiante)
+
+            materiaDictada {
+                eq('periodo',periodo)
+            }
+
+        }
+
+        return [materias: matriculados]
+
+    }
+
 
 }

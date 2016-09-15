@@ -77,22 +77,18 @@
                 <div class="col-md-9" id="divMaterias">
 
                 </div>
-
-                <a href="#" id="btnAgregar" class="btn btn-success" title="Agregar materia ha ser dictada por el profesor">
-                    <i class="fa fa-plus"></i> Agregar
-                </a>
             </div>
 
 
             <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
                 <thead>
                 <tr>
-                    <th style="width: 8%">Código</th>
-                    <th style="width: 33%">Materia</th>
-                    <th style="width: 33%">Profesor</th>
-                    <th style="width: 14%">Curso</th>
+                    <th style="width: 7%">Código</th>
+                    <th style="width: 28%">Materia</th>
+                    <th style="width: 11%">Curso</th>
                     <th style="width: 8%">Paralelo</th>
-                    <th style="width: 25%">Escuela</th>
+                    <th style="width: 20%">Profesor</th>
+                    <th style="width: 8%">Escuela</th>
                     <th style="width: 5%">Acciones</th>
 
                 </tr>
@@ -110,8 +106,18 @@
 
 <script type="text/javascript">
 
+
+    $("#periodoId").change(function () {
+       var per = $(this).val();
+        cargarMaterias(per);
+        cargarMatriculados(per)
+    });
+
+
+
     if('${estudianteInstance}'){
         cargarMaterias($("#periodoId").val());
+        cargarMatriculados($("#periodoId").val());
     }
 
 
@@ -120,10 +126,26 @@
            type: 'POST',
             url: '${createLink(controller: 'estudiante', action: 'materias_ajax')}',
             data:{
-                periodo: periodo
+                periodo: periodo,
+                id: '${estudianteInstance?.id}'
             },
             success: function (msg){
                 $("#divMaterias").html(msg)
+            }
+        });
+    }
+
+
+    function  cargarMatriculados(periodo){
+        $.ajax ({
+            type: 'POST',
+            url: '${createLink(controller: 'materia', action: 'tablaMateriasAsignadas_ajax')}',
+            data:{
+                periodo: periodo,
+                id: '${estudianteInstance?.id}'
+            },
+            success: function (msg){
+                $("#divTabla").html(msg)
             }
         });
     }
