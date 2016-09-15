@@ -66,91 +66,28 @@
 <div class="row">
     <div class="col-md-1 negrilla control-label">Pregunta: </div>
     <div class="col-md-9">
-        <g:textArea name="descripcion_name" id="descripcionPregunta" value="" class="form-control required" maxlength="255" style="height: 200px; resize: none"/>
+        <g:textArea name="descripcion_name" id="descripcionPregunta" value="" class="form-control required" maxlength="255" style="height: 200px; resize: none; margin-bottom: 20px"/>
     </div>
 </div>
 
-
-
 <div class="col-md-12">
     <ul class="nav nav-pills">
-        <li class="active"><a data-toggle="tab" href="#home">Usuarios</a></li>
-        <li><a data-toggle="tab" href="#menu1">Estación</a></li>
-        <li><a data-toggle="tab" href="#menu4">Metodología</a></li>
+        <li class="active col-md-5"><a data-toggle="tab" href="#home">Respuestas</a></li>
+        <li class="col-md-5"><a data-toggle="tab" href="#menu1">Items</a></li>
     </ul>
 
     <div class="tab-content">
         <div id="home" class="tab-pane fade in active">
             <ul class="fa-ul">
                 <li class="margen">
-                    <g:link controller="prfl" class="over" action="list">
-                        <i class="fa fa-credit-card"> Perfiles de usuario </i>
-                    </g:link>
-                    <div class="descripcion hidden">
-                        <h4>Perfiles</h4>
-                        <p>Administración de los perfiles, los cuales se asignan a los usuarios para acceder al sistema SADA.
-                        </p>
-                    </div>
-                </li>
 
-                <li class="margen">
-                    <g:link controller="consultora" class="over" action="list">
-                        <i class="fa fa-leaf"> Consultora ambiental </i>
-                    </g:link>
-                    <div class="descripcion hidden">
-                        <h4>Consultora</h4>
-
-                        <p>Administración de la Consultora ambiental a la cual pertenece el usuario del sistema o el personal que realizará la auditoría.
-                        </p>
-                    </div>
                 </li>
             </ul>
         </div>
         <div id="menu1" class="tab-pane fade">
             <ul class="fa-ul">
                 <li class="margen">
-                    <g:link controller="comercializadora" class="over" action="list">
-                        <i class="fa fa-car"> Comercializadora </i>
-                    </g:link>
-                    <div class="descripcion hidden">
-                        <h4>Comercializadora</h4>
 
-                        <p>Comercializadora de combustibles a la cual pertenece una estación de servicios
-                        </p>
-                    </div>
-                </li>
-                <li class="margen">
-                    <g:link controller="provincia" class="over" action="list">
-                        <i class="fa fa-map-marker"> Provincia </i>
-                    </g:link>
-                    <div class="descripcion hidden">
-                        <h4>Provincia</h4>
-                        <p>Administración de la provincia en la que se encuentra ubicada la estación de servicio.
-                        </p>
-                    </div>
-                </li>
-                <li class="margen">
-                    <g:link controller="canton" class="over" action="list">
-                        <i class="fa fa-map-marker"> Cantón </i>
-                    </g:link>
-                    <div class="descripcion hidden">
-                        <h4>Cantón</h4>
-                        <p>Administración del cantón donde encuentra ubicada la estación de servicio.
-                        </p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-         <div id="menu4" class="tab-pane fade">
-            <ul class="fa-ul">
-                <li class="margen">
-                    <g:link controller="metodologia" class="over" action="metodologia">
-                        <i class="fa fa-book"> Metodología</i>
-                    </g:link>
-                    <div class="descripcion hidden">
-                        <h4> Metodología </h4>
-                        <p>Metodología usada en la auditoría ambiental</p>
-                    </div>
                 </li>
             </ul>
         </div>
