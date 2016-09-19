@@ -38,11 +38,11 @@ class PreguntaController extends Shield {
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("codigo", "%" + params.search + "%")  
-                    ilike("descripcion", "%" + params.search + "%")  
-                    ilike("estado", "%" + params.search + "%")  
-                    ilike("estrategia", "%" + params.search + "%")  
+
+                    ilike("codigo", "%" + params.search + "%")
+                    ilike("descripcion", "%" + params.search + "%")
+                    ilike("estado", "%" + params.search + "%")
+                    ilike("estrategia", "%" + params.search + "%")
                 }
             }
         } else {
@@ -61,6 +61,7 @@ class PreguntaController extends Shield {
      */
     def list() {
         def preguntaInstanceList = getList(params, false)
+//        def preguntaInstanceList = Pregunta.list([sort: 'codigo', order: 'asc'])
         def preguntaInstanceCount = getList(params, true).size()
         return [preguntaInstanceList: preguntaInstanceList, preguntaInstanceCount: preguntaInstanceCount]
     }
@@ -147,7 +148,7 @@ class PreguntaController extends Shield {
             return
         }
     } //delete para eliminar via ajax
-    
+
     /**
      * Acción llamada con ajax que valida que no se duplique la propiedad codigo
      * @render boolean que indica si se puede o no utilizar el valor recibido
@@ -171,7 +172,156 @@ class PreguntaController extends Shield {
 
 
     def pregunta () {
-
+        def pregunta
+        if(params.id){
+            pregunta = Pregunta.get(params.id)
+        }
+        return [preguntaInstance: pregunta]
     }
-        
+
+    def tablaRespuestas_ajax () {
+        def pregunta = Pregunta.get(params.id)
+        def respuestas = RespuestaPregunta.findAllByPregunta(pregunta)
+        return [respuestas: respuestas, pregunta: pregunta]
+    }
+
+    def valoracion_ajax () {
+        def respuesta = Respuesta.get(params.id)
+        return [respuesta: respuesta]
+    }
+
+    def codigo_ajax () {
+        def respuesta = Respuesta.get(params.id)
+        return [respuesta: respuesta]
+    }
+
+    def respuesta_ajax () {
+        def pregunta
+        def respuestas
+        def lista
+        def filtrados
+        if(params.id){
+            pregunta = Pregunta.get(params.id)
+            respuestas = RespuestaPregunta.findAllByPregunta(pregunta).respuesta
+            lista = Respuesta.list([sort: 'descripcion', order: 'asc']).id - respuestas.id
+            filtrados = Respuesta.findAllByIdInList(lista)
+        }
+        return [preguntaInstance: pregunta, lista: filtrados]
+    }
+
+    def agregarRespuesta_ajax () {
+
+//        println("params " + params)
+
+        def respuesta = Respuesta.get(params.respuesta)
+        def pregunta = Pregunta.get(params.id)
+        def preguntaRespuesta
+
+        preguntaRespuesta = new RespuestaPregunta()
+        preguntaRespuesta.respuesta = respuesta
+        preguntaRespuesta.pregunta = pregunta
+        preguntaRespuesta.valor = params.valor.toDouble()
+
+        try {
+            preguntaRespuesta.save(flush: true)
+            render "ok"
+
+        }catch (e){
+            render "no"
+            println("error al guardar la respuesta" + preguntaRespuesta.errors)
+        }
+    }
+
+    def borrarRespuesta_ajax () {
+        def respuestaPregunta = RespuestaPregunta.get(params.id)
+        try{
+            respuestaPregunta.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al borrar la respuesta " + respuestaPregunta.errors)
+        }
+    }
+
+    def guardarPregunta_ajax () {
+//        println("params guardar " + params)
+        def pregunta
+        def tipoRespuesta = TipoRespuesta.get(params.valoracion)
+        def variable = Variables.get(params.variable)
+        if(params.id){
+            pregunta = Pregunta.get(params.id)
+            pregunta.codigo = params.codigo
+            pregunta.descripcion = params.pregunta
+            pregunta.estrategia = params.estrategia
+            pregunta.tipoRespuesta = tipoRespuesta
+            pregunta.variables = variable
+            pregunta.numeroRespuestas = params.numero.toInteger()
+
+        }else{
+            pregunta = new Pregunta()
+            pregunta.codigo = params.codigo
+            pregunta.descripcion = params.pregunta
+            pregunta.estrategia = params.estrategia
+            pregunta.tipoRespuesta = tipoRespuesta
+            pregunta.variables = variable
+            pregunta.numeroRespuestas = params.numero.toInteger()
+            pregunta.estado = 'N'
+        }
+
+        try {
+            pregunta.save(flush: true)
+            render "ok_" + pregunta?.id
+        }catch (e){
+            render "no_error"
+            println("error al guardar la pregunta " + pregunta.errors)
+        }
+    }
+
+    def desregistrar_ajax () {
+        def pregunta = Pregunta.get(params.id)
+            pregunta.estado = 'N'
+
+        try {
+            pregunta.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al desregistrar " + pregunta.errors)
+        }
+    }
+
+    def registrar_ajax () {
+        def pregunta = Pregunta.get(params.id)
+        pregunta.estado = 'R'
+
+        try {
+            pregunta.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al registrar " + pregunta.errors)
+        }
+    }
+
+    def editarRespuesta_ajax () {
+        def respuesta = RespuestaPregunta.get(params.id)
+        return [respuesta: respuesta]
+    }
+
+    def editarSave_ajax () {
+        println(params)
+        def respuesta = RespuestaPregunta.get(params.id)
+        if(params.valor != " " || params.valor != null){
+            respuesta.valor = params.valor.toDouble();
+            try{
+                respuesta.save(flush: true)
+                render "ok"
+            }catch (e){
+                render "no"
+            }
+        }else{
+            render 'no'
+        }
+    }
+
 }

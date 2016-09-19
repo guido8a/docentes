@@ -31,6 +31,7 @@ class Pregunta {
     static constraints = {
         codigo(nullable: false, blank: false, size: 1..8)
         descripcion(nullable: false, blank: false, size: 1..255)
+        estrategia(nullable: true, blank: true)
 
     }
 }

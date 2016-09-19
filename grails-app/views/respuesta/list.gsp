@@ -1,10 +1,10 @@
 
-<%@ page import="docentes.Pregunta" %>
+<%@ page import="docentes.Respuesta" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Preguntas</title>
+        <title>Lista de Respuestas</title>
     </head>
     <body>
 
@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link controller="pregunta" action="pregunta" class="btn btn-info">
-                    <i class="fa fa-question"></i> Nueva Pregunta
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nueva Respuesta
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -33,47 +33,35 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    <g:sortableColumn property="codigo" title="Código" />
                     
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    <g:sortableColumn property="descripcion" title="Descripción" />
                     
-                    <g:sortableColumn property="estado" title="Estado" />
-                    
-                    <g:sortableColumn property="estrategia" title="Estrategia" />
-                    
-                    <g:sortableColumn property="numeroRespuestas" title="Numero Respuestas" />
-                    
-                    <th>Tipo Respuesta</th>
+                    <g:sortableColumn property="valor" title="Valor" />
                     
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${preguntaInstanceList}" status="i" var="preguntaInstance">
-                    <tr data-id="${preguntaInstance.id}">
+                <g:each in="${respuestaInstanceList}" status="i" var="respuestaInstance">
+                    <tr data-id="${respuestaInstance.id}">
                         
-                        <td>${fieldValue(bean: preguntaInstance, field: "codigo")}</td>
+                        <td>${fieldValue(bean: respuestaInstance, field: "codigo")}</td>
                         
-                        <td>${fieldValue(bean: preguntaInstance, field: "descripcion")}</td>
+                        <td>${fieldValue(bean: respuestaInstance, field: "descripcion")}</td>
                         
-                        <td>${fieldValue(bean: preguntaInstance, field: "estado")}</td>
-                        
-                        <td>${fieldValue(bean: preguntaInstance, field: "estrategia")}</td>
-                        
-                        <td>${fieldValue(bean: preguntaInstance, field: "numeroRespuestas")}</td>
-                        
-                        <td>${preguntaInstance?.tipoRespuesta?.descripcion}</td>
+                        <td>${fieldValue(bean: respuestaInstance, field: "valor")}</td>
                         
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${preguntaInstanceCount}" params="${params}"/>
+        <elm:pagination total="${respuestaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmPregunta");
+                var $form = $("#frmRespuesta");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -83,11 +71,14 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "OK") {
-                            location.reload(true);
+//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                        if (parts[0] == "SUCCESS") {
+                            log("Respuesta creada correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
                         } else {
-                            spinner.replaceWith($btn);
+                            log("Error al crear la respuesta","error")
                             return false;
                         }
                     }
@@ -99,7 +90,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Pregunta seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Respuesta seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -119,9 +110,14 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                                        if (parts[0] == "SUCCESS") {
+                                            log("Respuesta borrada correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else{
+                                            log("Error al borrar la respuesta")
                                         }
                                     }
                                 });
@@ -140,7 +136,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Pregunta",
+                            title   : title + " Respuesta",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -172,7 +168,6 @@
                     createEditRow();
                     return false;
                 });
-
 
 
                 $("tbody tr").contextMenu({
@@ -214,8 +209,7 @@
                             icon   : "fa fa-pencil",
                             action : function ($element) {
                                 var id = $element.data("id");
-//                                createEditRow(id);
-                                location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + id
+                                createEditRow(id);
                             }
                         },
                         eliminar : {
@@ -235,9 +229,6 @@
                         $(".trHighlight").removeClass("trHighlight");
                     }
                 });
-
-
-
             });
         </script>
 
