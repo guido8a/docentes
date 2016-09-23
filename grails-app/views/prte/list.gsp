@@ -1,10 +1,10 @@
 
-<%@ page import="docentes.TipoEncuesta" %>
+<%@ page import="docentes.Prte" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Tipos de Encuestas</title>
+        <title>Lista de Prte</title>
     </head>
     <body>
 
@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Nuevo tipo de encuesta
+                <g:link action="form" class="btn btn-default btnCrear">
+                    <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -33,35 +33,35 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    <g:sortableColumn property="numero" title="Numero" />
                     
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    <th>Pregunta</th>
                     
-                    <g:sortableColumn property="estado" title="Estado" />
+                    <th>Tipo Encuesta</th>
                     
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${tipoEncuestaInstanceList}" status="i" var="tipoEncuestaInstance">
-                    <tr data-id="${tipoEncuestaInstance.id}">
+                <g:each in="${prteInstanceList}" status="i" var="prteInstance">
+                    <tr data-id="${prteInstance.id}">
                         
-                        <td>${fieldValue(bean: tipoEncuestaInstance, field: "codigo")}</td>
+                        <td>${fieldValue(bean: prteInstance, field: "numero")}</td>
                         
-                        <td>${fieldValue(bean: tipoEncuestaInstance, field: "descripcion")}</td>
+                        <td>${fieldValue(bean: prteInstance, field: "pregunta")}</td>
                         
-                        <td>${fieldValue(bean: tipoEncuestaInstance, field: "estado")}</td>
+                        <td>${fieldValue(bean: prteInstance, field: "tipoEncuesta")}</td>
                         
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${tipoEncuestaInstanceCount}" params="${params}"/>
+        <elm:pagination total="${prteInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmTipoEncuesta");
+                var $form = $("#frmPrte");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -70,16 +70,12 @@
                         url     : '${createLink(action:'save_ajax')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("*");
-//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "SUCCESS") {
-                            log("Tipo de encuesta creada correctamente","success");
-                            setTimeout(function () {
-                                location.reload(true);
-                            }, 800);
-
+                        var parts = msg.split("_");
+                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                        if (parts[0] == "OK") {
+                            location.reload(true);
                         } else {
-                            log("Error al crear el tipo de encuesta","error");
+                            spinner.replaceWith($btn);
                             return false;
                         }
                     }
@@ -91,7 +87,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Tipo de Encuesta seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Prte seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -111,12 +107,9 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "SUCCESS") {
-                                            log("Tipo de encuesta borrada correctamente","success");
-                                            setTimeout(function () {
-                                                location.reload(true);
-                                            }, 800);
+                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                                        if (parts[0] == "OK") {
+                                            location.reload(true);
                                         }
                                     }
                                 });
@@ -135,7 +128,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " TipoEncuesta",
+                            title   : title + " Prte",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -168,77 +161,67 @@
                     return false;
                 });
 
-
-                $("tbody tr").contextMenu({
-                    items  : {
-                        header   : {
-                            label  : "Acciones",
-                            header : true
-                        },
-                        preguntas   : {
-                            label  : "Preguntas",
-                            icon   : "fa fa-question",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                location.href="${createLink(controller: 'prte', action: 'definir')}/" + id
-                            }
-                        },
-                        ver      : {
-                            label  : "Ver",
-                            icon   : "fa fa-search",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'show_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        bootbox.dialog({
-                                            title   : "Ver",
-                                            message : msg,
-                                            buttons : {
-                                                ok : {
-                                                    label     : "Aceptar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        editar   : {
-                            label  : "Editar",
-                            icon   : "fa fa-pencil",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                createEditRow(id);
-                            }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
-                            }
-                        }
-                    },
-                    onShow : function ($element) {
-                        $element.addClass("trHighlight");
-                    },
-                    onHide : function ($element) {
-                        $(".trHighlight").removeClass("trHighlight");
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
                     }
                 });
-
-
-
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Prte",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
             });
         </script>
 

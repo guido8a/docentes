@@ -279,7 +279,7 @@ class PreguntaController extends Shield {
 
     def desregistrar_ajax () {
         def pregunta = Pregunta.get(params.id)
-            pregunta.estado = 'N'
+        pregunta.estado = 'N'
 
         try {
             pregunta.save(flush: true)
@@ -322,6 +322,102 @@ class PreguntaController extends Shield {
         }else{
             render 'no'
         }
+    }
+
+    def tablaItems_ajax() {
+        def pregunta = Pregunta.get(params.id)
+//        def items = ItemPregunta.findAllByPregunta(pregunta)
+        def items = ItemPregunta.withCriteria {
+            eq("pregunta",pregunta)
+            ne("descripcion",'ITEM_UNICO')
+
+            order("orden","asc")
+        }
+
+        return [items: items, pregunta: pregunta]
+    }
+
+
+    def guardarItem_ajax () {
+        println("params g item " + params)
+        def pregunta = Pregunta.get(params.pregunta)
+        def itemPregunta
+        def ordenActual = params.orden.toInteger()
+
+        def itemsFiltrados
+        def items = ItemPregunta.findAllByPregunta(pregunta)
+        def orden = items.orden
+
+
+        itemsFiltrados = ItemPregunta.findAllByPreguntaAndOrdenGreaterThanEquals(pregunta, ordenActual, [sort: 'orden', order: 'desc'])
+        def itemsFiltrados2 = ItemPregunta.findAllByPreguntaAndOrdenGreaterThan(pregunta, ordenActual, [sort: 'orden', order: 'desc'])
+        println("items " + itemsFiltrados.orden)
+
+
+
+
+        if(params.id){
+            itemPregunta = ItemPregunta.get(params.id)
+
+            if(itemPregunta.orden != ordenActual){
+                itemsFiltrados.each {p->
+                    if(p.id != itemPregunta.id){
+                        p.orden = p.orden + 1
+                        p.save(flush: true)
+                    }else{
+                        println("no hace nada, mismo id")
+                    }
+                }
+            }else{
+                println("no hace nada, mismo orden")
+            }
+
+
+            itemPregunta.descripcion = params.descripcion
+            itemPregunta.orden = params.orden.toInteger()
+            itemPregunta.tipo = params.tipo.toUpperCase()
+        }else {
+            itemPregunta = new ItemPregunta()
+
+            itemsFiltrados.each{q->
+                q.orden = q.orden + 1
+                q.save(flush: true)
+            }
+
+            itemPregunta.pregunta = pregunta
+            itemPregunta.descripcion = params.descripcion
+            itemPregunta.orden = params.orden.toInteger()
+            itemPregunta.tipo = params.tipo.toUpperCase()
+        }
+
+
+
+
+        try {
+            itemPregunta.save(flush: true)
+           render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el item "  +  itemPregunta.errors )
+        }
+    }
+
+
+    def borrarItem_ajax () {
+        def item = ItemPregunta.get(params.id)
+        try{
+            item.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
+    }
+
+    def editarItem_ajax () {
+
+        def item = ItemPregunta.get(params.id)
+
+        return [item: item]
     }
 
 }

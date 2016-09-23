@@ -5,17 +5,10 @@
   Time: 12:51
 --%>
 
-
-
-%{--<g:select name="materias_name" id="materiasId" optionKey="id" optionValue="${{it.materia.nombre + ' - Curso: ' + it.curso.nombre + ' - Paralelo: ' + it.paralelo + ' - Profesor: ' + it.profesor.nombre + " " + it.profesor.apellido}}"--}%
-              %{--class="form-control" from="${dicta}"/>--}%
-
 <g:textField name="materias_name" id="materiasId" class="form-control" placeholder="Seleccione la materia..."/>
 
 
 <script type="text/javascript">
-
-
 
 
     $("#materiasId").click(function () {

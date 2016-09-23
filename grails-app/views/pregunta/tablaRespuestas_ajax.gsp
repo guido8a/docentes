@@ -23,7 +23,7 @@
                             <td style="width: 8%">${respuesta?.respuesta?.codigo}</td>
                             <td style="width: 32%">${respuesta.respuesta?.descripcion}</td>
                             <td style="width: 14%">${respuesta?.valor}</td>
-                            <td style="width: 6%">
+                            <td style="width: 6%" class="${pregunta?.estado == 'N' ? '' : 'hidden'}">
                             <a href="#" class="btn btn-success btnEditar ${pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${respuesta.id}"  title="Editar la respuesta">
                                 <i class="fa fa-pencil"></i>
                             </a>

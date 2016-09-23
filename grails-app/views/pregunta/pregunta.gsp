@@ -10,8 +10,6 @@
 <head>
     <meta name="layout" content="main">
     <title>Preguntas a aplicarse en la encuesta</title>
-
-
 </head>
 
 <body>
@@ -65,7 +63,7 @@
     </div>
     <div class="col-md-1 negrilla control-label">Estado: </div>
     <div class="col-md-1">
-        <g:textField name="estado_name" id="estadoPregunta" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="Estado registro"/>
+        <g:textField name="estado_name" id="estadoPregunta" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
     </div>
 </div>
 
@@ -86,14 +84,14 @@
 <div class="row">
     <div class="col-md-1 negrilla control-label">Pregunta: </div>
     <div class="col-md-9">
-        <g:textArea name="descripcion_name" id="descripcionPregunta" value="${preguntaInstance?.descripcion}" class="form-control required" maxlength="255" style="height: 100px; resize: none; margin-bottom: 20px" readonly="${preguntaInstance?.estado == 'R'}"/>
+        <g:textArea name="descripcion_name" id="descripcionPregunta" value="${preguntaInstance?.descripcion}" class="form-control required" maxlength="255" style="height: 80px; resize: none; margin-bottom: 20px" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 
 <div class="col-md-12 ${preguntaInstance ? '' : 'hidden'}">
     <ul class="nav nav-pills">
         <li class="active col-md-5"><a data-toggle="tab" href="#home">Respuestas</a></li>
-        <li class="col-md-5"><a data-toggle="tab" href="#menu1">Items</a></li>
+        <li class="col-md-5"><a data-toggle="tab" href="#itemsTab">Items</a></li>
     </ul>
 
     <div class="tab-content">
@@ -107,13 +105,11 @@
 
                 <div class="col-md-1 negrilla control-label">Código: </div>
                 <div class="col-md-1" id="divCodigo">
-
                 </div>
 
                 <div class="col-md-1 negrilla control-label">Valoración: </div>
                 <div class="col-md-1" id="divValoracion">
                 </div>
-
 
                 <a href="#" id="btnAgregar" class="btn btn-success ${preguntaInstance?.estado == 'N' ? '' : 'hidden'}" title="">
                     <i class="fa fa-plus"></i>
@@ -127,7 +123,7 @@
                         <th style="width: 8%">Código</th>
                         <th style="width: 33%">Respuesta</th>
                         <th style="width: 14%">Valoración</th>
-                        <th style="width: 8%">Acciones</th>
+                        <th style="width: 8%" class="${preguntaInstance?.estado == 'N' ? '' : 'hidden'}">Acciones</th>
                     </tr>
                     </thead>
                 </table>
@@ -138,17 +134,86 @@
             </div>
 
         </div>
-        <div id="menu1" class="tab-pane fade">
-            <ul class="fa-ul">
-                <li class="margen">
+        <div id="itemsTab" class="tab-pane fade">
 
-                </li>
-            </ul>
+            <div class="row ${preguntaInstance?.estado == 'R' ? 'hidden' : ''}">
+
+                <div class="col-md-1 negrilla control-label">Descripción: </div>
+                <div class="col-md-5">
+                    <g:textField name="descripcionItem_name" id="descripcionItem" class="form-control required" maxlength="127" />
+                </div>
+
+                <div class="col-md-1 negrilla control-label">Orden: </div>
+                <div class="col-md-1">
+                    <g:textField name="ordenItem_name" id="ordenItem" class="form-control required number" maxlength="2" />
+                </div>
+
+                <div class="col-md-1 negrilla control-label">Tipo: </div>
+                <div class="col-md-1">
+                    %{--<g:textField name="tipoItem_name" id="tipoItem" class="allCaps form-control required" maxlength="1"/>--}%
+                    <g:select name="tipoItem_name" id="tipoItem" class="form-control" from="${['A','B']}"/>
+                </div>
+
+                <a href="#" id="btnAgregarItem" class="btn btn-success ${preguntaInstance?.estado == 'N' ? '' : 'hidden'}" title="">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+
+
+            <div class="col-md-11">
+                <table class="table table-condensed table-bordered table-striped" style="margin-top: 20px">
+                    <thead>
+                    <tr>
+                        %{--<th style="width: 8%">Pregunta</th>--}%
+                        <th style="width: 8%">Orden</th>
+                        <th style="width: 30%">Descripción</th>
+                        <th style="width: 8%">Tipo</th>
+                        <th style="width: 9%" class="${preguntaInstance?.estado == 'N' ? '' : 'hidden'}">Acciones</th>
+                    </tr>
+                    </thead>
+                </table>
+
+                <div id="divTablaItems">
+
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
+
+    $("#btnAgregarItem").click(function () {
+        var descripcion = $("#descripcionItem").val();
+        var orden = $("#ordenItem").val();
+        var tipo = $("#tipoItem").val();
+
+        if(descripcion == '' || orden == ''){
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar todos los datos solicitados!")
+            return false;
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'pregunta', action : 'guardarItem_ajax')}',
+                data:{
+                    pregunta: '${preguntaInstance?.id}',
+                    descripcion: descripcion,
+                    orden: orden,
+                    tipo: tipo
+                },
+                success: function (msg){
+                    if(msg == 'ok'){
+                        log("Item agregado correctamente","success");
+                        cargarTablaItems();
+                    }else{
+                        log("Error al agregar el item","error")
+                    }
+                }
+            })
+        }
+    });
 
     $(".btnRegistrar").click(function () {
         var idPregunta = ${preguntaInstance?.id}
@@ -177,27 +242,27 @@
 
     $(".btnDesregistrar").click(function () {
         var idPregunta = ${preguntaInstance?.id}
-        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de desregistrar esta pregunta?", function (result) {
-            if (result) {
-                $.ajax({
-                    type: 'POST',
-                    url: '${createLink(controller: 'pregunta', action: 'desregistrar_ajax')}',
-                    data:{
-                        id: '${preguntaInstance?.id}'
-                    },
-                    success: function (msg){
-                        if(msg == 'ok'){
-                            log("Pregunta desregistrada correctamente","success");
-                            setTimeout(function () {
-                                location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + idPregunta
-                            }, 800);
-                        }else{
-                            log("Error al desregistrar la pregunta","error")
-                        }
+                bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de desregistrar esta pregunta?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '${createLink(controller: 'pregunta', action: 'desregistrar_ajax')}',
+                            data:{
+                                id: '${preguntaInstance?.id}'
+                            },
+                            success: function (msg){
+                                if(msg == 'ok'){
+                                    log("Pregunta desregistrada correctamente","success");
+                                    setTimeout(function () {
+                                        location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + idPregunta
+                                    }, 800);
+                                }else{
+                                    log("Error al desregistrar la pregunta","error")
+                                }
+                            }
+                        });
                     }
                 });
-            }
-        });
 
 
     });
@@ -275,7 +340,8 @@
 
     if('${preguntaInstance}'){
         cargarRespuesta ();
-        cargarTablaRespuestas()
+        cargarTablaRespuestas();
+        cargarTablaItems();
     }
 
 
@@ -288,6 +354,19 @@
             },
             success: function(msg){
                 $("#divTablaRespuestas").html(msg)
+            }
+        });
+    }
+
+    function cargarTablaItems () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'pregunta', action: 'tablaItems_ajax')}',
+            data:{
+                id: '${preguntaInstance?.id}'
+            },
+            success: function(msg){
+                $("#divTablaItems").html(msg)
             }
         });
     }
