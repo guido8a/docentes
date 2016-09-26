@@ -33,25 +33,86 @@
 
 <script type="text/javascript">
     $(".btnBorrarPregunta").click(function () {
-        var idItem = $(this).data("id");
+        var idPre = $(this).data("id");
         bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar esta pregunta?", function (result) {
             if (result) {
                 $.ajax({
                     type: 'POST',
                     url: '${createLink(controller: 'prte', action: 'borrarPregunta_ajax')}',
                     data:{
-                        id: idItem
+                        id: idPre
                     },
                     success: function (msg){
                         if(msg == 'ok'){
-                            log("Item borrado correctamente","success");
-                            cargarTablaItems();
+                            log("Pregunta borrada correctamente","success");
+                            cargarTablaPrte();
                         }else{
-                            log("Error al borrar el item","error")
+                            log("Error al borrar la pregunta","error")
                         }
                     }
                 });
             }
         });
+    });
+
+    $(".btnEditarPregunta").click(function () {
+        var idPreg = $(this).data("id");
+
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'prte', action: 'editarPregunta_ajax')}',
+            data:{
+                id: idPreg
+            },
+            success: function (msg){
+                var b =  bootbox.dialog({
+                    id      : "dlgEditarPregunta",
+                    title   : "Editar Pregunta",
+                    class   : "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "Aceptar",
+                            className : "btn-success",
+                            callback  : function () {
+
+                                if($("#valoracionEditar").val() == ''){
+                                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar un valor numérico en valoración!")
+                                    return false;
+                                }else{
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: '${createLink(controller: 'prte', action: 'asignarPregunta_ajax')}',
+                                        data:{
+                                            id: idPreg,
+                                            orden: $("#ordenEditar").val()
+                                        },
+                                        success: function (msg){
+                                            if(msg == 'ok'){
+                                                log("Información guardada correctamente","success");
+                                                cargarTablaPrte();
+                                            }else{
+                                                log("Error al guardar la información","error")
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+
+
+
+
     });
 </script>

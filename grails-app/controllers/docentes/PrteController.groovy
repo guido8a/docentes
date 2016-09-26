@@ -223,6 +223,9 @@ class PrteController extends Shield {
 
     def asignarPregunta_ajax () {
 
+        println("params editar pregunta " + params)
+
+
         def pregunta = Pregunta.get(params.pregunta)
         def encuesta = TipoEncuesta.get(params.encuesta)
         def prte
@@ -248,7 +251,21 @@ class PrteController extends Shield {
     }
 
     def borrarPregunta_ajax () {
+        def pregunta = Prte.get(params.id)
 
+        try{
+            pregunta.delete(flush: true)
+            render "ok"
+        }catch (e){
+                render "no"
+            println("error al borrar la pregunta de la tabla prte " + pregunta.errors)
+        }
+
+    }
+
+    def editarPregunta_ajax () {
+        def pregunta = Prte.get(params.id)
+        return [pregunta: pregunta]
     }
 
 }
