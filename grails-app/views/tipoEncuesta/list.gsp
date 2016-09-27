@@ -73,13 +73,13 @@
                         var parts = msg.split("*");
 //                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "SUCCESS") {
-                            log("Tipo de encuesta creada correctamente","success");
+                            log("Tipo de ponePregunta creada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
                             }, 800);
 
                         } else {
-                            log("Error al crear el tipo de encuesta","error");
+                            log("Error al crear el tipo de ponePregunta","error");
                             return false;
                         }
                     }
@@ -113,7 +113,7 @@
                                         var parts = msg.split("_");
 //                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "SUCCESS") {
-                                            log("Tipo de encuesta borrada correctamente","success");
+                                            log("Tipo de ponePregunta borrada correctamente","success");
                                             setTimeout(function () {
                                                 location.reload(true);
                                             }, 800);

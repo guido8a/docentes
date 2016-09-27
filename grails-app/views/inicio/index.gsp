@@ -90,7 +90,7 @@
     <div class="body ui-corner-all" style="width: 1020px;position: relative;margin: auto;margin-top: 40px;height: 280px; ">
 
 
-        <a href= "${createLink(controller:'buscarBase', action: 'busquedaBase')}" style="text-decoration: none">
+        <a href= "${createLink(controller:'encuesta', action: 'inicio')}" style="text-decoration: none">
         <div class="ui-corner-all item fuera">
             <div class="ui-corner-all item">
                 <div class="imagen">

@@ -9,7 +9,7 @@ class Encuesta {
     Profesor directivo
     Profesor par
     Date fecha
-    String estado
+    String estado = 'N'
 
 
     static mapping = {
@@ -31,7 +31,14 @@ class Encuesta {
         }
     }
 
-
     static constraints = {
+        teti(blank: false, nullable: false)
+        profesor(blank: true, nullable: true)
+        estudiante(blank: true, nullable: true)
+        materiaDictada(blank: true, nullable: true)
+        directivo(blank: true, nullable: true)
+        par(blank: true, nullable: true)
+        fecha(nullable: false)
+        estado(nullable: false)
     }
 }
