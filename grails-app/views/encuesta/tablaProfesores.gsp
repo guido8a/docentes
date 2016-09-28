@@ -14,25 +14,30 @@ th, td {
 
 <g:set var="clase" value="${'principal'}"/>
 
-<div class="" style="width: 99.7%;height: ${msg == '' ? 600 : 585}px; overflow-y: auto;float: right; margin-top: -20px">
+    <div style="overflow-y: auto; height:${msg == '' ? 300 : 275}px; margin-top: -20px">
     <table class="table-bordered table-condensed table-hover" width="1060px">
         <g:each in="${bases}" var="dato" status="z">
 
             <tr id="${dato.id}" data-id="${dato.id}" class="${clase}">
-                <td width="120px">
-                    ${dato?.tema}
+                <td width="340px">
+                    ${dato?.profesor}
                 </td>
 
-                <td width="240px" style="color:#186063">
-                    ${dato?.clave}
+                <td width="400px" style="color:#186063">
+                    ${dato?.matedscr}
                 </td>
 
-                <td width="240px">
-                    ${dato.problema}
+                <td width="160px">
+                    ${dato.crsodscr}
                 </td>
 
-                <td width="460px" class="text-info">
-                    ${dato.solucion}
+                <td width="60px" class="text-info">
+                    ${dato.dctaprll}
+                </td>
+                <td width="60px" class="text-info" style="text-align: center">
+                    <a href="#" class="btn btn-info btn-xs btnEncuesta" title="Evaluar" data-id="${dato.id}"
+                        data-profesor="${dato?.profesor} <br>Materia: ${dato.matedscr} <br>Curso: ${dato.crsodscr}<br>Paralelo: ${dato.dctaprll}">
+                        <i class="fa fa-pencil"></i></a>
                 </td>
             </tr>
         </g:each>
@@ -41,15 +46,24 @@ th, td {
 
 
 <script type="text/javascript">
-    $(function () {
-        $("tr").contextMenu({
-            items  : createContextMenu,
-            onShow : function ($element) {
-                $element.addClass("trHighlight");
-            },
-            onHide : function ($element) {
-                $(".trHighlight").removeClass("trHighlight");
+
+    $(".btnEncuesta").click(function () {
+        var id = $(this).data('id');
+        var profesor = $(this).data('profesor');
+        var accion = ""
+        var titulo = "Evbaluar al profesor<br><br><strong>" + profesor + "<stromng>"
+        if(${session.par}) {
+            accion = "${createLink(action: 'encuestaPR')}"
+        } else {
+            accion = "${createLink(action: 'encuestaDR')}"
+        }
+
+        bootbox.confirm(titulo, function (result) {
+            if (result) {
+                console.log("llama a ", accion);
+                location.href = accion + "?prof__id=" + id
             }
         });
     });
+
 </script>

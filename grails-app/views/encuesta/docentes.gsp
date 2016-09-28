@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="layout" content="main" />
+    <meta name="layout" content="main_q" />
     <title>Quanto Docentes</title>
 
     <style>
@@ -53,7 +53,7 @@
     <div class="contenedor">
         %{--<div class="logo"><img src="${resource(dir:'images',file:'universidad.jpeg')}" height="100px"></div>--}%
         %{--<div class="logo_tx"><h1>${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1></div>--}%
-        <h1>Evaluación de Pares</h1>
+        <h1>${titulo}</h1>
     </div>
         %{--<br>Sistema para uso exclusivo de la esta Universidad</div>--}%
     <p class="bs-component">
@@ -84,18 +84,18 @@
         </div>
     </div>
 
-    <div style="margin-top: 30px; min-height: 250px" class="vertical-container">
+    <div style="margin-top: 30px; min-height: 350px" class="vertical-container">
         <p class="css-vertical-text">Profesores
 
         <div class="linea"></div>
-        <table class="table table-bordered table-hover table-condensed" style="width: 100%">
+        <table class="table table-bordered table-hover table-condensed" style="width: 1070px">
             <thead>
             <tr>
                 <th class="alinear" style="width: 360px">Profesor</th>
-                <th class="alinear" style="width: 420px">Materia</th>
+                <th class="alinear" style="width: 400px">Materia</th>
                 <th class="alinear" style="width: 160px">Curso</th>
-                <th class="alinear" style="width: 60px">Paralelo</th>
-                <th class="alinear" style="width: 60px">Evaluar</th>
+                <th class="alinear" style="width: 70px">Paralelo</th>
+                <th class="alinear" style="width: 70px">Evaluar</th>
             </tr>
             </thead>
         </table>
@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <div><strong>Nota</strong>: Si existen muchos registros que coinciden con el criterio de búsqueda, se retorna como máximo 20
+    <div><strong>Nota</strong>: Si existen muchos docentes  que coinciden con el criterio de búsqueda, se retorna como máximo 20
     </div>
 
     <div class="modal fade " id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -158,6 +158,8 @@
             $(".btnBusqueda").click();
         }
     });
+
+
 
 
 </script>

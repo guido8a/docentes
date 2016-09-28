@@ -7,7 +7,7 @@
 
 <html lang="es">
   <head>
-    <meta name="layout" content="main" />
+    <meta name="layout" content="main_q" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Quanto</title>
       <style>

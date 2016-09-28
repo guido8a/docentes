@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="layout" content="main" />
+    <meta name="layout" content="main_q" />
     <title>Quanto Docentes</title>
 
     <style>
@@ -43,12 +43,12 @@
     <g:link action="encuestaAD" class="btn btn-primary"><i class="fa fa-pencil"></i> Autoevaluación</g:link>
     </g:if>
     <g:if test="${pares}">
-        <a href="${g.createLink(action: 'docentes')}" class="btn btn-primary" title="Evaluación de los Pares a los Profesores">
+        <a href="${g.createLink(action: 'docentes', params: [tipo: 'PR'])}" class="btn btn-primary" title="Evaluación de los Pares a los Profesores">
             <i class="fa fa-pencil"></i>
             Evaluación de los Pares a los Profesores</a>
     </g:if>
     <g:if test="${drtv}">
-        <a href="#" class="btn btn-primary" id="btnDrtv" title="Evaluación de los Directivos a los Profesores">
+        <a href="${g.createLink(action: 'docentes', params: [tipo: 'DR'])}" class="btn btn-primary" id="btnDrtv" title="Evaluación de los Directivos a los Profesores">
             <i class="fa fa-pencil"></i>
             Evaluación de los Directivos a los Profesores</a>
     </g:if>

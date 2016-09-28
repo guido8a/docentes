@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="layout" content="main" />
+    <meta name="layout" content="main_q" />
     <title>Quanto Docentes</title>
 
     <style>
@@ -31,7 +31,7 @@
 <div style="text-align: center;">
     %{--Para personalizar: UNACH: universidad1.jpg, UPEC universidad.jpg y en messages_es.properties la universidad--}%
     <div class="contenedor">
-        <div class="logo"><img src="${resource(dir:'images',file:'universidad.jpeg')}" height="150px"></div>
+        <div class="logo"><img src="${resource(dir:'images',file:'universidad.jpeg')}" height="100px"></div>
         <div class="logo_tx"><h1>${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>
         %{--<br>Sistema para uso exclusivo de la esta Universidad</div>--}%
 
@@ -40,6 +40,7 @@
     </p>
 
     <g:if test="${matr}">
+        <h3>Evaluación al Docente</h3> Elija al docente que desea evaluar y haga clic en el botón Evaluar correspondiente.
         <table class="table table-condensed table-bordered table-striped">
             <thead>
             <tr>

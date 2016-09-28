@@ -316,7 +316,7 @@ class LoginController {
     }
 
     def logout() {
-        println "sesion out: $session.id"  //activo
+        println "sesion out: $session?.id"  //activo
 
         session.usuario = null
         session.perfil = null

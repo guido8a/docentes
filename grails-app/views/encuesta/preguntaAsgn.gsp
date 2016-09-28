@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="layout" content="main" />
+    <meta name="layout" content="main_q" />
 
     %{--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">--}%
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'jquery-ui-1.12.0.css')}" rel="stylesheet">
@@ -160,7 +160,7 @@
             resizable:true,
             title: 'Seleccione una materia',
             modal:true,
-            width: "420px",
+            width: "620px",
             height: "auto",
             position: { my: "left top", at: "left top-40px", of: boton },  //izquierda arriba del boton-40px
 //            open: function(event, ui) {
@@ -190,8 +190,9 @@
             modal: true,
             title: 'Confirme la orden',
             buttons: {
-                "Aceptar": function() {
-                    $( this ).dialog( "close" );
+                "Aceptar": function () {
+                    $(this).dialog("close");
+                    location.href = "${createLink(action: 'previa')}";
                 },
                 Cancelar: function() {
                     $( this ).dialog( "close" );

@@ -10,6 +10,7 @@ class Encuesta {
     Profesor par
     Date fecha
     String estado = 'N'
+    Periodo periodo
 
 
     static mapping = {
@@ -28,6 +29,7 @@ class Encuesta {
             par column: 'prof_par'
             fecha column: 'encufcha'
             estado column: 'encuetdo'
+            periodo column: 'prdo__id'
         }
     }
 
@@ -40,5 +42,6 @@ class Encuesta {
         par(blank: true, nullable: true)
         fecha(nullable: false)
         estado(nullable: false)
+        periodo(nullable: false)
     }
 }
