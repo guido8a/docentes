@@ -23,10 +23,44 @@
 
 <script type="text/javascript">
     $("#imprimirNoEvaluados").click(function () {
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}";
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url;--}%
-        return false
+
+        $.ajax({
+           type: 'POST',
+            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
+            data:{
+
+            },
+            success: function (msg) {
+                var b =  bootbox.dialog({
+                    id      : "dlgPeriodo",
+                    title   : "Seleccionar Período",
+//                    class   : "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "<i class='fa fa-print'></i> Imprimir",
+                            className : "btn-success",
+                            callback  : function () {
+                                var periodo = $("#periodoReporte").val();
+                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo;
+                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
+//                                return false
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+
+
+
     });
 </script>
 
