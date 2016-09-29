@@ -144,5 +144,13 @@ class RecomendacionController extends Shield {
             return
         }
     } //delete para eliminar via ajax
+
+    def recomendacion_ajax () {
+
+        def pregunta = Pregunta.get(params.id)
+        def rcpr = Rcpr.findByPregunta(pregunta)
+
+        return [rcpr: rcpr, pregunta: pregunta]
+    }
     
 }

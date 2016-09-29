@@ -37,6 +37,11 @@
                     <i class="fa fa-check-circle-o"></i> Desregistrar
                 </a>
             </g:else>
+
+            <a href="#" class="btn btn-primary btnRecomendacion" title="Recomendación referente a la pregunta">
+                <i class="fa fa-thumb-tack"></i> Recomendación
+            </a>
+
         </g:if>
         <g:else>
             <a href="#" class="btn btn-success btnGuardar" >
@@ -63,7 +68,7 @@
     </div>
     <div class="col-md-1 negrilla control-label">Estado: </div>
     <div class="col-md-1">
-        <g:textField name="estado_name" id="estadoPregunta" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
+        <g:textField name="estado_name" id="estadoPregunta" style="text-align: center" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
     </div>
 </div>
 
@@ -370,6 +375,57 @@
             }
         });
     }
+
+
+    $(".btnRecomendacion").click(function () {
+        $.ajax({
+           type: 'POST',
+            url: "${createLink(controller: 'recomendacion', action: 'recomendacion_ajax')}",
+            data:{
+                id: '${preguntaInstance?.id}'
+            },
+            success: function (msg){
+
+                var b =  bootbox.dialog({
+                    id      : "dlgRecomendacion",
+                    title   : "Recomendación de la Pregunta",
+//                    class   : "long",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        aceptar : {
+                            label     : "Asignar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var recomendacion = $("#recomendacionId").val();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '${createLink(controller: 'pregunta', action: 'asociarRecomendacion_ajax')}',
+                                    data:{
+                                        id: '${preguntaInstance?.id}',
+                                        recomendacion: recomendacion
+                                    },
+                                    success: function (msg){
+                                        if(msg == 'ok'){
+                                            log("Recomendación asociada a la pregunta correctamente","success")
+                                        }else{
+                                            log("Error al asociar la recomendación","error")
+                                        }
+                                    }
+                                })
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
 
 </script>
 

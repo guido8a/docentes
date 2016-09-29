@@ -414,10 +414,36 @@ class PreguntaController extends Shield {
     }
 
     def editarItem_ajax () {
-
         def item = ItemPregunta.get(params.id)
-
         return [item: item]
+    }
+
+    def asociarRecomendacion_ajax () {
+        def pregunta = Pregunta.get(params.id)
+        def recomendacion
+        def rcpr
+        if(params.recomendacion){
+              recomendacion = Recomendacion.get(params.recomendacion)
+              rcpr = Rcpr.findByPregunta(pregunta)
+            if(rcpr){
+                rcpr.recomendacion = recomendacion
+            }else{
+                rcpr = new Rcpr()
+                rcpr.pregunta = pregunta
+                rcpr.recomendacion = recomendacion
+            }
+
+            try {
+                rcpr.save(flush: true)
+                render "ok"
+            }catch (e){
+                render "no"
+            }
+
+        }else{
+            render "no"
+        }
+
     }
 
 }
