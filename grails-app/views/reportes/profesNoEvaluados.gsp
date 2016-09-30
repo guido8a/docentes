@@ -65,6 +65,12 @@
     .alineado {
         text-align: center;
     }
+
+    .roto{
+        page-break-after: always;
+    }
+
+
     </style>
 
 </head>
@@ -73,35 +79,56 @@
 
 
 <p class="alineado">
-    <strong><util:renderHTML html="${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}"/></strong>
 </p>
 
 
+<p class="alineado">
+    <strong style="font-size: 14pt"><util:renderHTML html="${titulo}"/></strong>
+</p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
-    <thead>
 
-    <tr>
-        <th class="back" rowspan="2" style="width: 7%">Cédula</th>
-        <th class="back" rowspan="2" style="width: 35%">Nombres y Apellidos</th>
-        <th class="back" rowspan="2" style="width: 25%">Materia</th>
-        <th class="back" rowspan="2" style="width: 10%">Curso</th>
-        <th class="back" rowspan="2" style="width: 7%">Paralelo</th>
-    </tr>
+<g:each in="${escuelas}" var="e" status="j">
 
-    </thead>
-    <tbody>
-    <g:each in="${res}" var="r">
-    <tr>
-            <td style="width: 7%">${r?.profcdla}</td>
-            <td style="width: 35%">${r?.profesor}</td>
-            <td style="width: 25%">${r?.matedscr}</td>
-            <td style="width: 10%" class="alineado">${r?.crsodscr}</td>
-            <td style="width: 7%" class="alineado">${r?.dctaprll}</td>
-    </tr>
-    </g:each>
-    </tbody>
-</table>
+    <p class="alineado">
+        <strong style="font-size: 14pt"><util:renderHTML html="${e}"/></strong>
+    </p>
+
+    <table class="table table-condensed table-bordered table-striped table-hover roto" style="width: 100%">
+        <thead>
+
+        <tr>
+            <th class="back" rowspan="2" style="width: 7%">Cédula</th>
+            <th class="back" rowspan="2" style="width: 35%">Nombres y Apellidos</th>
+            <th class="back" rowspan="2" style="width: 25%">Materia</th>
+            <th class="back" rowspan="2" style="width: 10%">Curso</th>
+            <th class="back" rowspan="2" style="width: 7%">Paralelo</th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <g:each in="${res}" var="r">
+            <g:if test="${e == r.escldscr}">
+                <tr>
+                    <td style="width: 7%">${r[1]}</td>
+                    <td style="width: 35%">${r[2]}</td>
+                    <td style="width: 25%">${r[3]}</td>
+                    <td style="width: 10%" class="alineado">${r[4]}</td>
+                    <td style="width: 7%" class="alineado">${r[5]}</td>
+                </tr>
+            </g:if>
+            <g:else>
+                %{--<tr class="roto"></tr>--}%
+            </g:else>
+        </g:each>
+        </tbody>
+    </table>
+</g:each>
+
+
+
+
+
 
 
 </body>
