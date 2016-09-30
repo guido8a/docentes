@@ -6,7 +6,7 @@
 <!-- los favicon de todos los tamaños -->
 <elm:favicon/>
 
-<title><g:layoutTitle default="Bitácora"/></title>
+<title><g:layoutTitle default="Quanto"/></title>
 
 <!-- Bootstrap core CSS 3.1.1 -->
 <elm:bootstrapCss/>
@@ -15,60 +15,60 @@
 
 <!-- JQuery -->
 <script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.9.1.js')}"></script>
-<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.3.custom.min.js')}"></script>
-<link href="${resource(dir: 'js/jquery/css/ui-lightness', file: 'jquery-ui-1.10.3.custom.min.css')}" rel="stylesheet">
+%{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.3.custom.min.js')}"></script>--}%
+%{--<link href="${resource(dir: 'js/jquery/css/ui-lightness', file: 'jquery-ui-1.10.3.custom.min.css')}" rel="stylesheet">--}%
 
 <!-- funciones de JS -->
-<script src="${resource(dir: 'js', file: 'functions.js')}"></script>
-<script src="${resource(dir: 'js', file: 'funciones.js')}"></script>
-<script src="${resource(dir: 'js', file: 'loader.js')}"></script>
+%{--<script src="${resource(dir: 'js', file: 'functions.js')}"></script>--}%
+%{--<script src="${resource(dir: 'js', file: 'funciones.js')}"></script>--}%
+%{--<script src="${resource(dir: 'js', file: 'loader.js')}"></script>--}%
 
 <!-- plugins -->
 <script src="${resource(dir: 'js/plugins/bootbox/js', file: 'bootbox.js')}"></script>
 
 %{--<!-- el datepicker -->--}%
-<script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js', file: 'bootstrap-datepicker.js')}"></script>
-<script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js/locales', file: 'bootstrap-datepicker.es.js')}"></script>
-<link href="${resource(dir: 'js/plugins/bootstrap-datepicker/css', file: 'datepicker.css')}" rel="stylesheet">
+%{--<script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js', file: 'bootstrap-datepicker.js')}"></script>--}%
+%{--<script src="${resource(dir: 'js/plugins/bootstrap-datepicker/js/locales', file: 'bootstrap-datepicker.es.js')}"></script>--}%
+%{--<link href="${resource(dir: 'js/plugins/bootstrap-datepicker/css', file: 'datepicker.css')}" rel="stylesheet">--}%
 
 <!-- lo q muestra la cantidad restante de caracteres en los texts -->
 <script src="${resource(dir: 'js/plugins/bootstrap-maxlength/js', file: 'bootstrap-maxlength.js')}"></script>
 
 <!-- la validacion del lado del cliente -->
-<script src="${resource(dir: 'js/plugins/jquery-validation-1.11.1/js', file: 'jquery.validate.min.js')}"></script>
-<script src="${resource(dir: 'js/plugins/jquery-validation-1.11.1/localization', file: 'messages_es.js')}"></script>
-<script src="${resource(dir: 'js', file: 'jquery.validate.custom.js')}"></script>
+%{--<script src="${resource(dir: 'js/plugins/jquery-validation-1.11.1/js', file: 'jquery.validate.min.js')}"></script>--}%
+%{--<script src="${resource(dir: 'js/plugins/jquery-validation-1.11.1/localization', file: 'messages_es.js')}"></script>--}%
+%{--<script src="${resource(dir: 'js', file: 'jquery.validate.custom.js')}"></script>--}%
 
 <!-- las alertas growl -->
-<script src="${resource(dir: 'js/plugins/pines/js', file: 'jquery.pnotify.js')}"></script>
-<link href="${resource(dir: 'js/plugins/pines/css', file: 'jquery.pnotify.default.css')}" rel="stylesheet">
+%{--<script src="${resource(dir: 'js/plugins/pines/js', file: 'jquery.pnotify.js')}"></script>--}%
+%{--<link href="${resource(dir: 'js/plugins/pines/css', file: 'jquery.pnotify.default.css')}" rel="stylesheet">--}%
 
 <!-- context menu para el click derecho -->
-<script type="text/javascript" src="${resource(dir: 'js/plugins/lzm.context/js', file: 'lzm.context-0.5.js')}"></script>
-<link href="${resource(dir: 'js/plugins/lzm.context/css', file: 'lzm.context-0.5.css')}" rel="stylesheet">
+%{--<script type="text/javascript" src="${resource(dir: 'js/plugins/lzm.context/js', file: 'lzm.context-0.5.js')}"></script>--}%
+%{--<link href="${resource(dir: 'js/plugins/lzm.context/css', file: 'lzm.context-0.5.css')}" rel="stylesheet">--}%
 
 
 %{--<link href='${resource(dir: "font/open", file: "stylesheet.css")}' rel='stylesheet' type='text/css'>--}%
 <link href='${resource(dir: "font-tulpen", file: "stylesheet.css")}' rel='stylesheet' type='text/css'>
 
 <!-- el manager de fechas -->
-<script src="${resource(dir: 'js/plugins', file: 'date.js')}"></script>
+%{--<script src="${resource(dir: 'js/plugins', file: 'date.js')}"></script>--}%
 
 <!-- los tooltips bonitos -->
-<script src="${resource(dir: 'js/plugins/jquery.qtip-2.2.0', file: 'jquery.qtip.min.js')}"></script>
-<link href='${resource(dir: "js/plugins/jquery.qtip-2.2.0", file: "jquery.qtip.min.css")}' rel='stylesheet' type='text/css'>
+%{--<script src="${resource(dir: 'js/plugins/jquery.qtip-2.2.0', file: 'jquery.qtip.min.js')}"></script>--}%
+%{--<link href='${resource(dir: "js/plugins/jquery.qtip-2.2.0", file: "jquery.qtip.min.css")}' rel='stylesheet' type='text/css'>--}%
 
 <!-- Custom styles -->
 <link href="${resource(dir: 'css', file: 'custom.css')}" rel="stylesheet">
 <link href="${resource(dir: 'css', file: 'custom/loader.css')}" rel="stylesheet">
 <link href="${resource(dir: 'css', file: 'custom/modals.css')}" rel="stylesheet">
 <link href="${resource(dir: 'css', file: 'custom/tablas.css')}" rel="stylesheet">
-<link href="${resource(dir: 'css', file: 'custom/datepicker.css')}" rel="stylesheet">
-<link href="${resource(dir: 'css', file: 'custom/context.css')}" rel="stylesheet">
+%{--<link href="${resource(dir: 'css', file: 'custom/datepicker.css')}" rel="stylesheet">--}%
+%{--<link href="${resource(dir: 'css', file: 'custom/context.css')}" rel="stylesheet">--}%
 <link href='${resource(dir: "css", file: "CustomSvt.css")}' rel='stylesheet' type='text/css'>
 <link href='${resource(dir: "css", file: "custom/pnotify.css")}' rel='stylesheet' type='text/css'>
 %{--Buscador--}%
-<link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>
+%{--<link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>--}%
 
 <script type="text/javascript">
   var spinner24Url = "${resource(dir:'images/spinners', file:'spinner_24.GIF')}";
@@ -111,13 +111,11 @@
 </div> <!-- /container -->
 
 
-
-
-
 <elm:bootstrapJs/>
 
 <!-- funciones de ui (tooltips, maxlength, bootbox,
 contextmenu, validacion en keydown para los numeros) -->
+%{--
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
 <script type="text/javascript">
 
@@ -136,9 +134,18 @@ contextmenu, validacion en keydown para los numeros) -->
       }
     }
   });
+--}%
 
+<script type="text/javascript">
+  $(document).ready(function(){
+    initControls();
+  });
 
+  function initControls(){
+    window.location.hash="no-back-button";
+    window.location.hash="Again-No-back-button" //chrome
+    window.onhashchange=function(){window.location.hash="no-back-button";}
+  }
 </script>
-
 </body>
 </html>

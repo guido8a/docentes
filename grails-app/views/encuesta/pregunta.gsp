@@ -49,7 +49,7 @@
 <body>
 <div class="container ui-widget-content ui-corner-all" style="height: auto">
     <p style="text-align: center; font-size: large; color: #495a6b">${tpen.descripcion}</p>
-    <p style="text-align: center; color: #495a6b">Docente: <strong>${profesor}</strong> &nbsp; ${materia? "Materia: <strong>$materia</strong>": ""}</p>
+    <p style="text-align: center; color: #495a6b">Docente: <strong>${profesor}</strong> &nbsp; ${materia? "Materia: $materia": ""}</p>
 
     <g:form name="forma" role="form" action="respuesta" controller="encuesta" method="POST">
         <input type="hidden" name="encu__id" value="${encu}">

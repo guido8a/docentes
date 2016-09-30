@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link controller="pregunta" action="pregunta" class="btn btn-info">
-                    <i class="fa fa-question"></i> Nueva Pregunta
+                    <i class="fa fa-file"></i> Nueva Pregunta
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -33,15 +33,13 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    <g:sortableColumn property="codigo" title="Código" />
                     
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    <g:sortableColumn property="descripcion" title="Descripción" />
                     
                     <g:sortableColumn property="estado" title="Estado" />
                     
-                    <g:sortableColumn property="estrategia" title="Estrategia" />
-                    
-                    <g:sortableColumn property="numeroRespuestas" title="Numero Respuestas" />
+                    <g:sortableColumn property="numeroRespuestas" title="Número Respuestas" />
                     
                     <th>Tipo Respuesta</th>
                     
@@ -56,8 +54,6 @@
                         <td>${fieldValue(bean: preguntaInstance, field: "descripcion")}</td>
                         
                         <td>${fieldValue(bean: preguntaInstance, field: "estado")}</td>
-                        
-                        <td>${fieldValue(bean: preguntaInstance, field: "estrategia")}</td>
                         
                         <td>${fieldValue(bean: preguntaInstance, field: "numeroRespuestas")}</td>
                         
@@ -194,7 +190,7 @@
                                     },
                                     success : function (msg) {
                                         bootbox.dialog({
-                                            title   : "Ver",
+                                            title   : "Ver Pregunta",
                                             message : msg,
                                             buttons : {
                                                 ok : {

@@ -25,7 +25,7 @@
                 Descripcion
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-10">
                 <g:fieldValue bean="${preguntaInstance}" field="descripcion"/>
             </div>
             
@@ -77,8 +77,8 @@
                 Tipo Respuesta
             </div>
             
-            <div class="col-md-3">
-                ${preguntaInstance?.tipoRespuesta?.encodeAsHTML()}
+            <div class="col-md-10">
+                ${preguntaInstance?.tipoRespuesta?.descripcion}
             </div>
             
         </div>
@@ -90,11 +90,24 @@
                 Variables
             </div>
             
-            <div class="col-md-3">
-                ${preguntaInstance?.variables?.encodeAsHTML()}
+            <div class="col-md-10">
+                ${preguntaInstance?.variables?.descripcion}
             </div>
             
         </div>
     </g:if>
     
+    <g:if test="${preguntaInstance?.estrategia}">
+        <div class="row">
+            <div class="col-md-2 text-info">
+                Estrategia
+            </div>
+
+            <div class="col-md-10">
+                ${preguntaInstance?.estrategia}
+            </div>
+
+        </div>
+    </g:if>
+
 </g:else>

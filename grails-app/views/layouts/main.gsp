@@ -8,7 +8,7 @@
 	<!-- los favicon de todos los tamaños -->
 	<elm:favicon/>
 
-	<title><g:layoutTitle default="Bitácora"/></title>
+	<title><g:layoutTitle default="Quanto"/></title>
 
 	<!-- Bootstrap core CSS 3.1.1 -->
 	<elm:bootstrapCss/>
