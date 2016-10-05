@@ -1,13 +1,23 @@
 package utilitarios
 
+import com.itextpdf.awt.DefaultFontMapper
+import com.itextpdf.awt.PdfGraphics2D
 import com.itextpdf.text.pdf.PdfContentByte
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfPCellEvent
+import com.itextpdf.text.pdf.PdfTemplate
 import com.itextpdf.text.pdf.codec.Base64
 import docentes.Escuela
 import docentes.Periodo
+import org.jfree.chart.plot.PlotOrientation
+import org.jfree.data.category.DefaultCategoryDataset
 
-import javax.imageio.ImageIO
+import java.awt.Graphics2D
 import java.awt.Image
+import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO
+
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -215,8 +225,6 @@ class ReportesController {
 
 
     public JFreeChart getChart() {
-        //create dummy data
-        //taken from http://www.java2s.com/Code/Java/Chart/JFreeChartPieChartDemo1.htm
         DefaultPieDataset dataset = new DefaultPieDataset();
         dataset.setValue("One", new Double(43.2));
         dataset.setValue("Two", new Double(10.0));
@@ -226,9 +234,8 @@ class ReportesController {
         dataset.setValue("Six", new Double(19.4));
 
         //use the ChartFactory to create a pie chart
-        JFreeChart chart =
-                ChartFactory.createPieChart(
-                        "Dummy Data", dataset, true, true, false);
+        JFreeChart chart = ChartFactory.createPieChart("Pastel", dataset, true, true, false);
+
         return chart;
     }
 
@@ -366,19 +373,19 @@ class ReportesController {
         int width = 300;
         int height = 300;
         JFreeChart chart = getChart();
-//        BufferedImage bufferedImage = chart.createBufferedImage(width, height);
-        Image image1 = Image.getInstance("https://2.bp.blogspot.com/-S8doo3jjcGE/VbEDpARtd6I/AAAAAAAADc0/qgQefN-cBNU/s640/Java%2B8%2BFeatures.jpg")
-//        Image image = Image.getInstance(bufferedImage);
+        java.awt.image.BufferedImage bufferedImage = chart.createBufferedImage(width, height);
+        def imagen = Image.getInstance(grailsApplication.mainContext.getResource("images/bitacora.png").URL)
 //        document.add(bufferedImage);
-        document.add(image1);
-
-/*
-        File layoutFolder = ApplicationHolder.application.parentContext.getResource("images/agenda.png").file
-        def absolutePath = layoutFolder.absolutePath
-        def imagen = absolutePath
+//        document.add(imagen);
+        preface.add(bufferedImage);
+//        preface.add(imagen);
         document.add(imagen);
-*/
 
+//        java.awt.Image file = ImageIO.read(grailsApplication.mainContext.getResource("images/bitacora.png").URL)
+//        java.awt.image.BufferedImage bimage = new java.awt.image.BufferedImage(file.getWidth(null), file.getHeight(null), file.type);
+//        def path = servletContext.getRealPath("/")
+//        println "path: ${path + 'prueba.jpg'}"
+//        javax.imageio.ImageIO.write(bimage, "jpg", new File(path + "prueba.jpg" ));
 
 
 
@@ -531,8 +538,94 @@ class ReportesController {
     }
 
 
+    public static JFreeChart generateBarChart() {
+        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+        dataSet.setValue(791, "Population", "1750 AD");
+        dataSet.setValue(978, "Population", "1800 AD");
+        dataSet.setValue(1262, "Population", "1850 AD");
+        dataSet.setValue(1650, "Population", "1900 AD");
+        dataSet.setValue(2519, "Population", "1950 AD");
+        dataSet.setValue(6070, "Population", "2000 AD");
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "World Population growth", "Year", "Population in millions",
+                dataSet, PlotOrientation.VERTICAL, false, true, false);
+
+        return chart;
+    }
+
+    public static JFreeChart generatePieChart() {
+        DefaultPieDataset dataSet = new DefaultPieDataset();
+        dataSet.setValue("China", 19.64);
+        dataSet.setValue("India", 17.3);
+        dataSet.setValue("United States", 4.54);
+        dataSet.setValue("Indonesia", 3.4);
+        dataSet.setValue("Brazil", 2.83);
+        dataSet.setValue("Pakistan", 2.48);
+        dataSet.setValue("Bangladesh", 2.38);
+
+        JFreeChart chart = ChartFactory.createPieChart(
+                "World Population by countries", dataSet, true, true, false);
+
+        return chart;
+    }
+
+    def grafica() {
+        def baos = new ByteArrayOutputStream()
+//        PdfWriter writer = null;
+
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        def chart = generateBarChart()
+        def chart2 = generatePieChart()
+        def ancho = 500
+        def alto = 300
+
+        try {
+//            writer = PdfWriter.getInstance(document, new FileOutputStream("prueba.pdf"));
+            document.open();
+//            PdfContentByte contentByte = writer.getDirectContent();
+            PdfContentByte contentByte = pdfw.getDirectContent();
+
+            Paragraph parrafo1 = new Paragraph();
+            Paragraph parrafo2 = new Paragraph();
 
 
+            PdfTemplate template = contentByte.createTemplate(ancho, alto);
+            PdfTemplate template2 = contentByte.createTemplate(ancho, alto);
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper());
+            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto, new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
+            Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto);
+
+            chart.draw(graphics2d, rectangle2d);
+
+            graphics2d.dispose();
+            Image chartImage = Image.getInstance(template);
+            parrafo1.add(chartImage);
+
+
+            chart2.draw(graphics2d2, rectangle2d2);
+            graphics2d2.dispose();
+            Image chartImage2 = Image.getInstance(template2);
+            parrafo2.add(chartImage2);
+
+            document.add(parrafo1)
+            document.add(parrafo2)
+//            contentByte.addTemplate(template, 20, 350);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
 
 
 }

@@ -29,6 +29,10 @@
     <i class="fa fa-check-circle-o"></i> Click 2
 </a>
 
+<a href="${createLink(controller: 'reportes' , action: 'grafica')}" class="btn btn-warning" title="">
+    <i class="fa fa-check-circle-o"></i> Doble gráfica
+</a>
+
 
 <img src="${createLink(controller: 'reportes', action: 'getChart')}" width="80%" height="80%"/>
 
@@ -43,8 +47,6 @@
 <script type="text/javascript">
 
     $(".btnChart").click(function () {
-
-
 
         $.ajax({
             type: 'POST',
