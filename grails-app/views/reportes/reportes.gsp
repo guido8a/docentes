@@ -204,17 +204,16 @@
     });
 
     $("#imprimirEstudiante").click(function () {
-
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
+            url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
             data:{
 
             },
             success: function (msg) {
                 var b =  bootbox.dialog({
-                    id      : "dlgPeriodo",
-                    title   : "Seleccionar Período",
+                    id      : "dlgFacultad",
+                    title   : "Seleccionar Escuela y Período",
 //                    class   : "long",
                     message : msg,
                     buttons : {
@@ -229,8 +228,9 @@
                             className : "btn-success",
                             callback  : function () {
                                 var periodo = $("#periodoReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 5;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesEvaluacion.pdf";
+                                var escuela = $("#escuelaReporte").val();
+                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 5 + "Wescuela=" + escuela;
+                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
 //                                return false
                             }
                         }
@@ -242,17 +242,16 @@
     });
 
     $("#imprimirNoEstudiante").click(function () {
-
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
+            url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
             data:{
 
             },
             success: function (msg) {
                 var b =  bootbox.dialog({
-                    id      : "dlgPeriodo",
-                    title   : "Seleccionar Período",
+                    id      : "dlgFacultad",
+                    title   : "Seleccionar Escuela y Período",
 //                    class   : "long",
                     message : msg,
                     buttons : {
@@ -267,7 +266,8 @@
                             className : "btn-success",
                             callback  : function () {
                                 var periodo = $("#periodoReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 6;
+                                var escuela = $("#escuelaReporte").val();
+                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 6 + "Wescuela=" + escuela;
                                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
 //                                return false
                             }
