@@ -1,68 +1,26 @@
 package utilitarios
 
+import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.codec.Base64
-import com.lowagie.text.Element
-import com.lowagie.text.Font
-import com.lowagie.text.PageSize
-import com.lowagie.text.Paragraph
-import com.lowagie.text.pdf.PdfContentByte
-import com.lowagie.text.pdf.PdfPTable
 import docentes.Escuela
 import docentes.Periodo
-import java.awt.image.*
 
-import javax.swing.JPanel;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.general.PieDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
-
-
-
-import org.jfree.chart.ChartFactory
-
-import org.jfree.chart.ChartPanel
-
-import org.jfree.chart.JFreeChart
-
-import org.jfree.chart.plot.PlotOrientation
-
-import org.jfree.chart.plot.XYPlot
-
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
-
-import org.jfree.ui.ApplicationFrame
-
-import org.jfree.ui.RefineryUtilities
-
-import org.jfree.data.category.DefaultCategoryDataset
-
-import java.awt.Color
+import javax.imageio.ImageIO
+import java.awt.Image
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
+import org.codehaus.groovy.grails.commons.*
 import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.FileOutputStream;
-
+import com.itextpdf.text.*
 
 class ReportesController {
 
@@ -356,7 +314,7 @@ class ReportesController {
         def baos = new ByteArrayOutputStream()
 //        def name = "planilla_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
 //
-        Font fontTituloGad = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font fontTituloGad = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
 //        Font info = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL)
 //        Font fontTh = new Font(Font.TIMES_ROMAN, 9, Font.BOLD);
 //        Font fontTd = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL);
@@ -374,10 +332,10 @@ class ReportesController {
 //        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(logoPath);
 //        logo.setAlignment(com.lowagie.text.Image.LEFT | com.lowagie.text.Image.TEXTWRAP)
 
-        com.lowagie.text.Document document
+        Document document
 //        document = new com.lowagie.text.Document(PageSize.A4.rotate());
-        document = new com.lowagie.text.Document(PageSize.A4);
-        def pdfw = com.lowagie.text.pdf.PdfWriter.getInstance(document, baos);
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
@@ -408,9 +366,18 @@ class ReportesController {
         int width = 300;
         int height = 300;
         JFreeChart chart = getChart();
-        BufferedImage bufferedImage = chart.createBufferedImage(width, height);
+//        BufferedImage bufferedImage = chart.createBufferedImage(width, height);
+        Image image1 = Image.getInstance("https://2.bp.blogspot.com/-S8doo3jjcGE/VbEDpARtd6I/AAAAAAAADc0/qgQefN-cBNU/s640/Java%2B8%2BFeatures.jpg")
 //        Image image = Image.getInstance(bufferedImage);
-        document.add(bufferedImage);
+//        document.add(bufferedImage);
+        document.add(image1);
+
+/*
+        File layoutFolder = ApplicationHolder.application.parentContext.getResource("images/agenda.png").file
+        def absolutePath = layoutFolder.absolutePath
+        def imagen = absolutePath
+        document.add(imagen);
+*/
 
 
 
