@@ -29,8 +29,20 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.FileOutputStream;
 import com.itextpdf.text.*
+
+
+
+import java.awt.Dimension;
+import javax.swing.JPanel;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.SpiderWebPlot;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.*;
 
 class ReportesController {
 
@@ -240,76 +252,46 @@ class ReportesController {
     }
 
 
-//    public void create(OutputStream outputStream) throws DocumentException, IOException {
-//        println("entro create")
-//        Document document = null;
-//        PdfWriter writer = null;
-//
-//        try {
-//            //instantiate document and writer
-//            document = new Document();
-////            writer = PdfWriter.getInstance(document, outputStream);
-//
-//            PdfWriter wr = PdfWriter.getInstance(document,
-//                    new FileOutputStream("Image.pdf"));
-//
-//            //open document
-//            document.open();
-//
-//            //add image
-//            int width = 300;
-//            int height = 300;
-//            JFreeChart chart = getChart();
-//            BufferedImage bufferedImage = chart.createBufferedImage(width, height);
-//            Image image = Image.getInstance(wr, bufferedImage, 1.0f);
-//            document.add(image);
-//
-//            //release resources
-//            document.close();
-//            println("document "  + document)
-////            document = null;
-//
-////            writer.close();
-////            writer = null;
-//        } catch(DocumentException de) {
-//            println("de ")
-//            throw de;
-//        } catch (IOException ioe) {
-//            println("ioe ")
-//            throw ioe;
-//        } finally {
-//            //release resources
-////            if(null != document) {
-////                try { document.close(); }
-////                catch(Exception ex) { }
-////            }
-////
-////            if(null != writer) {
-////                try { writer.close(); }
-////                catch(Exception ex) { }
-////            }
-//        }
-//    }
 
-
-
-//    public static void main(String[] args) throws FileNotFoundException, DocumentException, IOException {
-//        (new ReportesController()).create(
-//                new FileOutputStream(
-//                        new File("demo.pdf")));
-//    }
-
-    def nn() {
-
-//        def k = main()
-
-       def k =  new ReportesController().create(new FileOutputStream(new File("demo.pdf")))
-
-        println("k " + k)
-
-        return false
-
+    private static CategoryDataset createDataset()
+    {
+        String s = "First";
+        String s1 = "Second";
+        String s2 = "Third";
+        String s3 = "Category 1";
+        String s4 = "Category 2";
+        String s5 = "Category 3";
+        String s6 = "Category 4";
+        String s7 = "Category 5";
+        DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
+        defaultcategorydataset.addValue(1.0D, s, s3);
+        defaultcategorydataset.addValue(4D, s, s4);
+        defaultcategorydataset.addValue(3D, s, s5);
+        defaultcategorydataset.addValue(5D, s, s6);
+        defaultcategorydataset.addValue(5D, s, s7);
+        defaultcategorydataset.addValue(5D, s1, s3);
+        defaultcategorydataset.addValue(7D, s1, s4);
+        defaultcategorydataset.addValue(6D, s1, s5);
+        defaultcategorydataset.addValue(8D, s1, s6);
+        defaultcategorydataset.addValue(4D, s1, s7);
+        defaultcategorydataset.addValue(4D, s2, s3);
+        defaultcategorydataset.addValue(3D, s2, s4);
+        defaultcategorydataset.addValue(2D, s2, s5);
+        defaultcategorydataset.addValue(3D, s2, s6);
+        defaultcategorydataset.addValue(6D, s2, s7);
+        return defaultcategorydataset;
     }
+
+    private static JFreeChart createChart(CategoryDataset categorydataset)
+    {
+        SpiderWebPlot spiderwebplot = new SpiderWebPlot(categorydataset);
+        JFreeChart jfreechart = new JFreeChart("Spider Chart Demo", TextTitle.DEFAULT_FONT, spiderwebplot, false);
+        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
+        legendtitle.setPosition(RectangleEdge.BOTTOM);
+        jfreechart.addSubtitle(legendtitle);
+        return jfreechart;
+    }
+
 
     def reportedePrueba() {
 //        def planilla = Planilla.get(params.id)
@@ -353,44 +335,35 @@ class ReportesController {
         document.addCreator("Tedein SA");
 
         Paragraph preface = new Paragraph();
-//        addEmptyLine(preface, 1);
-//        preface.setAlignment(Element.ALIGN_CENTER);
         preface.add(new Paragraph("Reporte jfreechart de prueba", fontTituloGad));
-//        preface.add(new Paragraph("PLANILLA DE ${planilla.tipoPlanilla.nombre.toUpperCase()} DE LA OBRA " + obra.nombre, fontTituloGad));
-//        addEmptyLine(preface, 1);
-//        Paragraph preface2 = new Paragraph();
-//        preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
-//        addEmptyLine(preface2, 1);
-//        document.add(logo)
 
+//        int width = 300;
+//        int height = 300;
+//        JFreeChart chart = getChart();
+//        java.awt.image.BufferedImage bufferedImage = chart.createBufferedImage(width, height);
+//        def imagen = Image.getInstance(grailsApplication.mainContext.getResource("images/bitacora.png").URL)
+//        preface.add(bufferedImage);
+//        document.add(imagen);
+//        document.add(preface);
 
-//        PdfWriter writer = PdfWriter.getInstance(document,new FileOutputStream("Image.pdf"));
-//
-//        PdfWriter wr = PdfWriter.getInstance(document,
-//                    new FileOutputStream("Image.pdf"));
 
 
         int width = 300;
         int height = 300;
-        JFreeChart chart = getChart();
+        JFreeChart chart = createChart(createDataset());
         java.awt.image.BufferedImage bufferedImage = chart.createBufferedImage(width, height);
-        def imagen = Image.getInstance(grailsApplication.mainContext.getResource("images/bitacora.png").URL)
-//        document.add(bufferedImage);
-//        document.add(imagen);
+        def imagen = Image.getInstance(grailsApplication.mainContext.getResource("images/spider.png").URL)
         preface.add(bufferedImage);
-//        preface.add(imagen);
         document.add(imagen);
-
-//        java.awt.Image file = ImageIO.read(grailsApplication.mainContext.getResource("images/bitacora.png").URL)
-//        java.awt.image.BufferedImage bimage = new java.awt.image.BufferedImage(file.getWidth(null), file.getHeight(null), file.type);
-//        def path = servletContext.getRealPath("/")
-//        println "path: ${path + 'prueba.jpg'}"
-//        javax.imageio.ImageIO.write(bimage, "jpg", new File(path + "prueba.jpg" ));
-
-
-
         document.add(preface);
-//        document.add(preface2);
+
+
+
+
+
+
+
+
 
 //        def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
 //        def prmsTdBorder = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
@@ -579,6 +552,7 @@ class ReportesController {
 
         def chart = generateBarChart()
         def chart2 = generatePieChart()
+        def chart3 = createChart(createDataset());
         def ancho = 500
         def alto = 300
 
@@ -606,10 +580,17 @@ class ReportesController {
             parrafo1.add(chartImage);
 
 
-            chart2.draw(graphics2d2, rectangle2d2);
+//            chart2.draw(graphics2d2, rectangle2d2);
+//            graphics2d2.dispose();
+//            Image chartImage2 = Image.getInstance(template2);
+//            parrafo2.add(chartImage2);
+
+
+            chart3.draw(graphics2d2, rectangle2d2);
             graphics2d2.dispose();
-            Image chartImage2 = Image.getInstance(template2);
-            parrafo2.add(chartImage2);
+            Image chartImage3 = Image.getInstance(template2);
+            parrafo2.add(chartImage3);
+
 
             document.add(parrafo1)
             document.add(parrafo2)

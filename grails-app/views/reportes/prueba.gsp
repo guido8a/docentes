@@ -34,7 +34,7 @@
 </a>
 
 
-<img src="${createLink(controller: 'reportes', action: 'getChart')}" width="80%" height="80%"/>
+<img src="${imagen}" width="80%" height="80%"/>
 
 
 
