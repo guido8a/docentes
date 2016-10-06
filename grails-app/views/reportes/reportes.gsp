@@ -47,11 +47,25 @@
 </div>
 
 
+<div class="row">
+    <a href="${createLink(controller: 'reportes' , action: 'reportedePrueba')}" class="btn btn-info" title="">
+        <i class="fa fa-graduation-cap"></i> Profesor
+    </a>
+
+    <a href="${createLink(controller: 'reportes' , action: 'grafica')}" class="btn btn-warning" title="">
+        <i class="fa fa-map-marker"></i> Doble gráfica
+    </a>
+
+</div>
+
+
+
+
 <script type="text/javascript">
     $("#imprimirNoEvaluados").click(function () {
 
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
             data:{
 

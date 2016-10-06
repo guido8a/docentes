@@ -1,5 +1,7 @@
 package utilitarios
 
+import docentes.Periodo
+
 class Auxiliares {
 
     int numeroRondas
@@ -16,8 +18,10 @@ class Auxiliares {
     int maximoPares
     int maximoDirectivos
     int maximoEstudiantes
-
-
+    String password
+    Periodo periodo
+    int cuelloBotella
+    int factorExterno
 
     static mapping = {
         table 'auxl'
@@ -38,13 +42,19 @@ class Auxiliares {
             ajusteModerado column: 'ajstpnmo'
             ajusteExagerado column: 'ajstpnex'
             maximoAutoevaluacion column: 'auxlauto'
-            maximoPares column: 'auxl_para'
+            maximoPares column: 'auxl_par'
             maximoDirectivos column: 'auxldire'
             maximoEstudiantes column: 'auxlestd'
+            password column: 'pass'
+            periodo column: 'prdo__id'
+            cuelloBotella column: 'pcntcbb'
+            factorExterno column: 'pcntfcex'
         }
     }
 
 
     static constraints = {
+
+
     }
 }
