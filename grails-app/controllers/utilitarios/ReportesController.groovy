@@ -255,30 +255,18 @@ class ReportesController {
 
     private static CategoryDataset createDataset()
     {
-        String s = "First";
-        String s1 = "Second";
-        String s2 = "Third";
+        String s = "Desempeño";
         String s3 = "Category 1";
         String s4 = "Category 2";
         String s5 = "Category 3";
         String s6 = "Category 4";
         String s7 = "Category 5";
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
-        defaultcategorydataset.addValue(1.0D, s, s3);
-        defaultcategorydataset.addValue(4D, s, s4);
-        defaultcategorydataset.addValue(3D, s, s5);
-        defaultcategorydataset.addValue(5D, s, s6);
-        defaultcategorydataset.addValue(5D, s, s7);
-        defaultcategorydataset.addValue(5D, s1, s3);
-        defaultcategorydataset.addValue(7D, s1, s4);
-        defaultcategorydataset.addValue(6D, s1, s5);
-        defaultcategorydataset.addValue(8D, s1, s6);
-        defaultcategorydataset.addValue(4D, s1, s7);
-        defaultcategorydataset.addValue(4D, s2, s3);
-        defaultcategorydataset.addValue(3D, s2, s4);
-        defaultcategorydataset.addValue(2D, s2, s5);
-        defaultcategorydataset.addValue(3D, s2, s6);
-        defaultcategorydataset.addValue(6D, s2, s7);
+        defaultcategorydataset.addValue(5, s, s3);
+        defaultcategorydataset.addValue(4.8, s, s4);
+        defaultcategorydataset.addValue(3.6, s, s5);
+        defaultcategorydataset.addValue(5, s, s6);
+        defaultcategorydataset.addValue(2.45, s, s7);
         return defaultcategorydataset;
     }
 

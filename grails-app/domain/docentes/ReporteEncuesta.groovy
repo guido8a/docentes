@@ -9,7 +9,7 @@ class ReporteEncuesta {
     Double ddac
     Double ddhd
     Double ddci
-    Double ddni
+    Double dcni
     Double d_ea
     Double promedio
     String clase
@@ -35,7 +35,7 @@ class ReporteEncuesta {
             ddac column: 'ddac'
             ddhd column: 'ddhd'
             ddci column: 'ddci'
-            ddni column: 'ddni'
+            dcni column: 'dcni'
             d_ea column: 'd_ea'
             promedio column: 'promedio'
             clase column: 'clase'
