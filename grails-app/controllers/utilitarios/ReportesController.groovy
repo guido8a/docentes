@@ -12,6 +12,7 @@ import docentes.Periodo
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.data.category.DefaultCategoryDataset
 
+import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Image
 import java.awt.geom.Rectangle2D
@@ -28,6 +29,9 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.*;
 
 import com.itextpdf.text.*
 
@@ -43,6 +47,19 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.*;
+
+import com.itextpdf.awt.PdfGraphics2D;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.awt.Graphics2D;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 class ReportesController {
 
@@ -83,19 +100,19 @@ class ReportesController {
                         "order by escldscr, profapll, profnmbr"
                 titulo = "Profesores que NO han sido evaluados por los alumnos"
                 break;
-             case '2':
-                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                         "from dcta, mate, prof, crso, escl " +
-                         "where dcta.prdo__id = '${periodo?.id}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                         "mate.mate__id = dcta.mate__id and prof.prof__id in ( " +
-                         "select prof__id from encu where prof__id is not null and prdo__id = '${periodo?.id}') and " +
-                         "escl.escl__id = prof.escl__id " +
-                         "order by escldscr, profapll, profnmbr"
-                 titulo = "Profesores que han sido evaluados por los alumnos"
-                 break;
+            case '2':
+                sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
+                        "from dcta, mate, prof, crso, escl " +
+                        "where dcta.prdo__id = '${periodo?.id}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
+                        "mate.mate__id = dcta.mate__id and prof.prof__id in ( " +
+                        "select prof__id from encu where prof__id is not null and prdo__id = '${periodo?.id}') and " +
+                        "escl.escl__id = prof.escl__id " +
+                        "order by escldscr, profapll, profnmbr"
+                titulo = "Profesores que han sido evaluados por los alumnos"
+                break;
             case '3':
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                       "from dcta, mate, prof, crso, escl " +
+                        "from dcta, mate, prof, crso, escl " +
                         "where dcta.prdo__id = '${periodo?.id}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                         "mate.mate__id = dcta.mate__id and prof.prof__id in ( " +
                         "select prof__id from encu where prof__id is not null and prdo__id = '${periodo?.id}' and teti__id = 1) and " +
@@ -115,13 +132,13 @@ class ReportesController {
                 break;
             case '5':
                 sql = "select escldscr, estdcdla, estdnmbr||' '||estdapll profesor, matedscr, crsodscr, dctaprll " +
-                    "from dcta, mate, estd, crso, escl, matr " +
-                    "where dcta.prdo__id = '${periodo?.id}' and escl.escl__id = '${escuela?.id}' and crso.crso__id = dcta.crso__id and estd.estd__id = matr.estd__id and " +
-                    "dcta.dcta__id = matr.dcta__id and " +
-                    "mate.mate__id = dcta.mate__id and estd.estd__id in ( " +
-                    "select estd__id from encu where estd__id is not null and prdo__id = '${periodo?.id}' and teti__id = 2) and " +
-                    "escl.escl__id = mate.escl__id " +
-                    "order by escldscr, estdapll, estdnmbr"
+                        "from dcta, mate, estd, crso, escl, matr " +
+                        "where dcta.prdo__id = '${periodo?.id}' and escl.escl__id = '${escuela?.id}' and crso.crso__id = dcta.crso__id and estd.estd__id = matr.estd__id and " +
+                        "dcta.dcta__id = matr.dcta__id and " +
+                        "mate.mate__id = dcta.mate__id and estd.estd__id in ( " +
+                        "select estd__id from encu where estd__id is not null and prdo__id = '${periodo?.id}' and teti__id = 2) and " +
+                        "escl.escl__id = mate.escl__id " +
+                        "order by escldscr, estdapll, estdnmbr"
                 titulo = "Estudiantes que han realizado la evaluación"
                 break;
             case '6':
@@ -206,6 +223,115 @@ class ReportesController {
     }
 
 
+    private static int[] arregloEnteros(array) {
+        int[] ia = new int[array.size()]
+        array.eachWithIndex { it, i ->
+            ia[i] = it.toInteger()
+        }
+
+        return ia
+    }
+
+//    private static void addCellTabla(com.lowagie.text.pdf.PdfPTable table, paragraph, params) {
+    private static void addCellTabla(PdfPTable table, paragraph, params) {
+        PdfPCell cell = new PdfPCell(paragraph);
+        if (params.height) {
+            cell.setFixedHeight(params.height.toFloat());
+        }
+//        if (params.border) {
+//            cell.setBorderColor(params.border);
+//        }
+        if (params.bg) {
+            cell.setBackgroundColor(params.bg);
+        }
+        if (params.colspan) {
+            cell.setColspan(params.colspan);
+        }
+        if (params.align) {
+            cell.setHorizontalAlignment(params.align);
+        }
+        if (params.valign) {
+            cell.setVerticalAlignment(params.valign);
+        }
+        if (params.w) {
+            cell.setBorderWidth(params.w);
+            cell.setUseBorderPadding(true);
+        }
+        if (params.bwl) {
+            cell.setBorderWidthLeft(params.bwl.toFloat());
+            cell.setUseBorderPadding(true);
+        }
+        if (params.bwb) {
+            cell.setBorderWidthBottom(params.bwb.toFloat());
+            cell.setUseBorderPadding(true);
+        }
+        if (params.bwr) {
+            cell.setBorderWidthRight(params.bwr.toFloat());
+            cell.setUseBorderPadding(true);
+        }
+        if (params.bwt) {
+            cell.setBorderWidthTop(params.bwt.toFloat());
+            cell.setUseBorderPadding(true);
+        }
+        if (params.bcl) {
+            cell.setBorderColorLeft(params.bcl);
+        }
+        if (params.bcb) {
+            cell.setBorderColorBottom(params.bcb);
+        }
+        if (params.bcr) {
+            cell.setBorderColorRight(params.bcr);
+        }
+        if (params.bct) {
+            cell.setBorderColorTop(params.bct);
+        }
+        if (params.padding) {
+            cell.setPadding(params.padding.toFloat());
+        }
+        if (params.pl) {
+            cell.setPaddingLeft(params.pl.toFloat());
+        }
+        if (params.pr) {
+            cell.setPaddingRight(params.pr.toFloat());
+        }
+        if (params.pt) {
+            cell.setPaddingTop(params.pt.toFloat());
+        }
+        if (params.pb) {
+            cell.setPaddingBottom(params.pb.toFloat());
+        }
+
+        table.addCell(cell);
+    }
+
+
+    private String numero(num, decimales, cero) {
+        if (num == 0 && cero.toString().toLowerCase() == "hide") {
+            return " ";
+        }
+        if (decimales == 0) {
+            return formatNumber(number: num, minFractionDigits: decimales, maxFractionDigits: decimales, locale: "ec")
+        } else {
+            def format
+            if (decimales == 2) {
+                format = "##,##0"
+            } else if (decimales == 3) {
+                format = "##,###0"
+            }
+            return formatNumber(number: num, minFractionDigits: decimales, maxFractionDigits: decimales, locale: "ec", format: format)
+        }
+    }
+
+    private String numero(num, decimales) {
+        return numero(num, decimales, "show")
+    }
+
+    private String numero(num) {
+        return numero(num, 3)
+    }
+
+
+
     def reportedePrueba() {
 //        def planilla = Planilla.get(params.id)
 //        def obra = planilla.contrato.oferta.concurso.obra
@@ -216,12 +342,12 @@ class ReportesController {
         def baos = new ByteArrayOutputStream()
 //        def name = "planilla_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
 //
-        Font fontTituloGad = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
 //        Font info = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL)
 //        Font fontTh = new Font(Font.TIMES_ROMAN, 9, Font.BOLD);
 //        Font fontTd = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL);
 //        Font fontThFirmas = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-//        Font fontThUsar = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 //        Font fontTdUsar = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
 //        Font fontResumen = new Font(Font.TIMES_ROMAN, 11, Font.BOLD);
 //
@@ -241,179 +367,105 @@ class ReportesController {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Planillas de la obra ");
-        document.addSubject("Generado por el sistema Janus");
+        document.addTitle(" ");
+        document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, janus, planillas");
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
 
         Paragraph preface = new Paragraph();
-        preface.add(new Paragraph("Reporte jfreechart de prueba", fontTituloGad));
-
-//        int width = 300;
-//        int height = 300;
-//        JFreeChart chart = getChart();
-//        java.awt.image.BufferedImage bufferedImage = chart.createBufferedImage(width, height);
-//        def imagen = Image.getInstance(grailsApplication.mainContext.getResource("images/bitacora.png").URL)
-//        preface.add(bufferedImage);
-//        document.add(imagen);
-//        document.add(preface);
+        preface.add(new Paragraph("Reporte DDSC", fontTitulo));
 
 
+        def sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = 1;"
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
 
-        int width = 300;
-        int height = 300;
-        JFreeChart chart = createChart(createDataset());
-        java.awt.image.BufferedImage bufferedImage = chart.createBufferedImage(width, height);
-        def imagen = Image.getInstance(grailsApplication.mainContext.getResource("images/spider.png").URL)
-        preface.add(bufferedImage);
-        document.add(imagen);
-        document.add(preface);
-
-
-
-
-
-
-
-
-
-//        def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-//        def prmsTdBorder = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-//        def prmsNmBorder = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsTdBorder = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
         /* ************************************************************* HEADER PLANILLA ***************************************************************************/
-//        PdfPTable tablaHeaderPlanilla = new PdfPTable(5);
-//        tablaHeaderPlanilla.setWidthPercentage(100);
-//        tablaHeaderPlanilla.setWidths(arregloEnteros([12, 24, 10, 12, 24]))
-//        tablaHeaderPlanilla.setWidthPercentage(100);
-//
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Obra", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(obra.nombre, fontTdUsar), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
-//
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Lugar", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph((obra.lugar?.descripcion ?: ""), fontTdUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Planilla", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(planilla.numero, fontTdUsar), prmsTdNoBorder)
-//
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Ubicación", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(obra.parroquia?.nombre + " - Cantón " + obra.parroquia?.canton?.nombre, fontTdUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Monto contrato", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(numero(planilla.contrato.monto, 2), fontTdUsar), prmsTdNoBorder)
-//
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Contratista", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(planilla.contrato.oferta.proveedor.nombre, fontTdUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Fecha", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(fechaConFormato(planilla.fechaPresentacion, "dd-MMM-yyyy"), fontTdUsar), prmsTdNoBorder)
-//
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("Plazo", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph(numero(planilla.contrato.plazo, 0) + " días", fontTdUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontThUsar), prmsTdNoBorder)
-//        addCellTabla(tablaHeaderPlanilla, new Paragraph("", fontTdUsar), prmsTdNoBorder)
-//
-//        document.add(tablaHeaderPlanilla);
-        /* ************************************************************* FIN HEADER PLANILLA ***************************************************************************/
+        PdfPTable tablaD = new PdfPTable(4);
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([30, 40, 20, 10]))
+//        tablaD.setWidthPercentage(100);
 
-        /* ************************************************************* TABLA DE DATOS ***************************************************************************/
-//        def tabla = new PdfPTable(8);
-//        tabla.setWidthPercentage(100);
-//        tabla.setWidths(arregloEnteros([10, 40, 10, 10, 10, 10, 10, 10]))
-//        tabla.setWidthPercentage(100);
-//        tabla.setSpacingAfter(1f);
-//        tabla.setSpacingBefore(10f);
-//
-//        addCellTabla(tabla, new Paragraph("Factura N.", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("Descripción del rubro", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("U.", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("Cantidad", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("Valor sin IVA", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("Valor con IVA", fontTh), prmsTablaHead)
-////        addCellTabla(tabla, new Paragraph("% de indirectos (" + numero(detalles[0].indirectos, 0) + "%)", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("% de indirectos (" + contrato?.indirectos + "%)", fontTh), prmsTablaHead)
-//        addCellTabla(tabla, new Paragraph("Valor total", fontTh), prmsTablaHead)
-//
-//        def total = 0
-//        def totalSinIva = 0
-//        def totalConIva = 0
-//        def totalIndirectos = 0
 
-//        detalles.each { det ->
-////            def tot = det.montoIndirectos + det.montoIva
-//            def tot = det.monto + det.montoIndirectos
-//            total += tot
-//            totalSinIva += det.monto
-//            totalConIva += det.montoIva
-//            totalIndirectos += det.montoIndirectos
+        def baos1 = new ByteArrayOutputStream()
+        def pdfw1 = PdfWriter.getInstance(document, baos1);
+        document.open()
+
+
+        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsTdNoBorder)
+
+
+//        PdfTemplate template = pdfw1.getDirectContent().createTemplate(100,10) ;
+//        template.setColorFill(BaseColor.BLUE);
 //
-//            addCellTabla(tabla, new Paragraph(det.factura, fontTd), prmsTabla)
-//            addCellTabla(tabla, new Paragraph(det.rubro, fontTd), prmsTabla)
-//            addCellTabla(tabla, new Paragraph(det.unidad.codigo, fontTd), centrado)
-//            addCellTabla(tabla, new Paragraph(numero(det.cantidad,2), fontTd), prmsTablaNum)
-//            addCellTabla(tabla, new Paragraph(numero(det.monto, 2), fontTd), prmsTablaNum)
-//            addCellTabla(tabla, new Paragraph(numero(det.montoIva, 2), fontTd), prmsTablaNum)
-//            addCellTabla(tabla, new Paragraph(numero(det.montoIndirectos, 2), fontTd), prmsTablaNum)
-//            addCellTabla(tabla, new Paragraph(numero(tot, 2), fontTd), prmsTablaNum)
+//        res.each { p->
+//
+//            addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
+//            addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
+//
+//
+//            template.rectangle(1, 1,5f, 5f);
+//            template.fill();
+//            pdfw1.releaseTemplate(template);
+//            PdfPCell cell = new PdfPCell(Image.getInstance(template), true);
+//
+//            tablaD.addCell(cell);
+//
 //        }
-//        addCellTabla(tabla, new Paragraph("TOTALES", fontTh), [bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4])
-//        addCellTabla(tabla, new Paragraph(numero(totalSinIva, 2), fontTh), [bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tabla, new Paragraph(numero(totalConIva, 2), fontTh), [bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tabla, new Paragraph(numero(totalIndirectos, 2), fontTh), [bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tabla, new Paragraph(numero(total, 2), fontTh), [bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-//        document.add(tabla)
-        /* ************************************************************* FIN TABLA DE DATOS ***************************************************************************/
 
-        /* ************************************************************* TABLAS DE RESUMEN ***************************************************************************/
-//        def tablaResumen1 = new PdfPTable(2);
-//        tablaResumen1.setWidthPercentage(100);
-//        tablaResumen1.setWidths(arregloEnteros([80, 20]))
-//        tablaResumen1.setSpacingAfter(1f);
-//        tablaResumen1.setSpacingBefore(10f);
-//
-//        def totalCostoPorcentaje = totalConIva+totalIndirectos
-//
-//        addCellTabla(tablaResumen1, new Paragraph("TOTAL OBRAS BAJO LA MODALIDAD COSTO + PORCENTAJE (NO INCLUYE IVA)", fontResumen), [padding: 5, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaResumen1, new Paragraph(numero(total, 2), fontResumen), [padding: 5, border: 2, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-////        addCellTabla(tablaResumen1, new Paragraph(numero(totalCostoPorcentaje, 2), fontResumen), [padding: 5, border: 2, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//
-//        document.add(tablaResumen1)
-//
-//        def tablaResumen2 = new PdfPTable(2);
-//        tablaResumen2.setWidthPercentage(100);
-//        tablaResumen2.setWidths(arregloEnteros([80, 20]))
-//        tablaResumen2.setSpacingAfter(1f);
-//        tablaResumen2.setSpacingBefore(10f);
-//
-//        def porcentaje = total / contrato.monto
-//
-//        addCellTabla(tablaResumen2, new Paragraph("% TOTAL OBRAS ADICIONALES NO CONTRACTUALES", fontResumen), [padding: 5, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaResumen2, new Paragraph(numero(porcentaje*100, 2) + " %", fontResumen), [padding: 5, border: 2, bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//
-//        document.add(tablaResumen2)
-        /* ************************************************************* FIN TABLAS DE RESUMEN ***************************************************************************/
 
-        /* ************************************************************* TABLA DE FIRMAS ***************************************************************************/
-//        def tablaFirmas = new PdfPTable(3);
-//        tablaFirmas.setWidthPercentage(100);
-//
-//        def fiscalizador = planilla.fiscalizador
-//        def strFiscalizador = nombrePersona(fiscalizador) + "\nFiscalizador"
-//        tablaFirmas.setWidths(arregloEnteros([40, 20, 40]))
-//
-//        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 50, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 50, bwb: 1, bcb: Color.BLACK, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [height: 50, border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//
-//        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaFirmas, new Paragraph(strFiscalizador, fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaFirmas, new Paragraph("", fontThFirmas), [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
-//
-//        document.add(tablaFirmas)
-        /* ************************************************************* FIN TABLA DE FIRMAS ***************************************************************************/
+        PdfPTable table = new PdfPTable(1);
+        table.setTotalWidth(450);
 
+        res.eachWithIndex { p , j ->
+//            println(p.ddsc*100)
+
+            addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
+
+            def valor = ((p.ddsc).toDouble()*100).toInteger()
+
+            PdfTemplate template = cb.createTemplate(valor*7, 150);
+            if(valor < 100){
+                if(valor >= 50)
+                template.setColorFill(BaseColor.ORANGE);
+                else
+                template.setColorFill(BaseColor.RED);
+            }else{
+                template.setColorFill(BaseColor.GREEN);
+            }
+
+
+//            template.setLineWidth(1.5f);
+
+//            template.rectangle(5,5,(((p.ddsc)*100)).toDouble(),25);
+
+            template.rectangle(5,5,valor*150, 35);
+//            template.rectangle(5,5,250,25);
+
+//            println("--> " + (100 - ((p.ddsc).toDouble()*100)).toInteger())
+//            template.stroke();
+            template.fill();
+            Image img = Image.getInstance(template);
+            Chunk chunk = new Chunk(img, 10f, 2f);
+            PdfPCell cell1 = new PdfPCell();
+            cell1.setFixedHeight(9)
+            cell1.addElement(chunk);
+            tablaD.addCell(cell1);
+
+            addCellTabla(tablaD, new Paragraph(numero(p.ddsc*100, 2), fontThUsar), prmsTdNoBorder)
+
+        }
+
+        document.add(tablaD);
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
