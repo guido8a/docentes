@@ -5,6 +5,7 @@ import com.itextpdf.awt.PdfGraphics2D
 import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPCellEvent
+import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfTemplate
 import com.itextpdf.text.pdf.codec.Base64
 import docentes.Escuela
@@ -433,21 +434,20 @@ class ReportesController {
 
             template.setShadingFill(shading)
 
-            template.rectangle(5,5,1100,65);
+            template.rectangle(20,20,1100,70);
 
             template.fill();
             Image img = Image.getInstance(template);
             img.setRotationDegrees(180)
 
-            Chunk chunk = new Chunk(img, 10f, 2f);
+//            Chunk chunk = new Chunk(img, 6, 1);
+            Chunk chunk = new Chunk(img, 6, -2);
 
             PdfPCell cell1 = new PdfPCell();
-            cell1.setPaddingTop(4)
-//            cell1s.setUseBorderPadding(true)
-            cell1.setPaddingBottom(4)
-            cell1.addElement(chunk);
+            cell1.setPaddingTop(4);
+            cell1.addElement(chunk)
 
-            tablaD.addCell(cell1);
+            tablaD.addCell(cell1)
 
             addCellTabla(tablaD, new Paragraph(numero(p.ddsc*100, 2), fontThUsar), prmsTdNoBorder)
 
@@ -520,11 +520,11 @@ class ReportesController {
 
 
             PdfTemplate template = contentByte.createTemplate(ancho, alto);
-            PdfTemplate template2 = contentByte.createTemplate(ancho, alto);
+            PdfTemplate template2 = contentByte.createTemplate(ancho, alto/10);
             Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper());
-            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto, new DefaultFontMapper());
+            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto/10, new DefaultFontMapper());
             Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
-            Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto);
+            Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto/10);
 
             chart.draw(graphics2d, rectangle2d);
 
@@ -547,11 +547,37 @@ class ReportesController {
 
             document.add(parrafo1)
             document.add(parrafo2)
+            document.add(parrafo2)
+            document.add(parrafo2)
+
+
+
 //            contentByte.addTemplate(template, 20, 350);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        PdfPTable table = new PdfPTable(3); // 3 columns.
+
+        PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 1"));
+        PdfPCell cell2 = new PdfPCell(new Paragraph("Cell 2"));
+        PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
+
+        PdfPTable nestedTable = new PdfPTable(1);
+        nestedTable.setWidthPercentage(51);
+        nestedTable.addCell(new Paragraph("Nested Cell 1"));
+
+        cell3.addElement(nestedTable);
+        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+        table.addCell(cell1);
+        table.addCell(cell2);
+        table.addCell(cell3);
+
+        document.add(table);
+
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
