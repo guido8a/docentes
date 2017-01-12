@@ -330,51 +330,41 @@ class ReportesController {
         return numero(num, 3)
     }
 
+    def colores (valorX,valorY,pdfw,cb){
+
+        float x = valorX;
+        float y = valorY + (360-valorX);
+//        float y = 1100;
+        float side = 10;
+        PdfShading axial = PdfShading.simpleAxial(pdfw,x,y,(x+side).toFloat(),y,BaseColor.ORANGE,BaseColor.BLUE)
+        PdfShadingPattern shading = new PdfShadingPattern(axial);
+        cb.closePathFillStroke();
+
+        return shading
+    }
+
 
 
     def reportedePrueba() {
-//        def planilla = Planilla.get(params.id)
-//        def obra = planilla.contrato.oferta.concurso.obra
-//        def contrato = planilla.contrato
-
-//        def detalles = DetallePlanillaCosto.findAllByPlanilla(planilla)
 
         def baos = new ByteArrayOutputStream()
-//        def name = "planilla_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-//
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
-//        Font info = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL)
-//        Font fontTh = new Font(Font.TIMES_ROMAN, 9, Font.BOLD);
-//        Font fontTd = new Font(Font.TIMES_ROMAN, 9, Font.NORMAL);
-//        Font fontThFirmas = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
-//        Font fontTdUsar = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
-//        Font fontResumen = new Font(Font.TIMES_ROMAN, 11, Font.BOLD);
-//
-//        def prmsTablaHead = [bg: Color.LIGHT_GRAY, border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-//        def prmsTabla = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-//        def centrado  = [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-//        def prmsTablaNum = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-//
-//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
-//        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(logoPath);
-//        logo.setAlignment(com.lowagie.text.Image.LEFT | com.lowagie.text.Image.TEXTWRAP)
 
         Document document
-//        document = new com.lowagie.text.Document(PageSize.A4.rotate());
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle(" ");
+        document.addTitle(" Reporte desempeño profesores");
         document.addSubject("Generado por el sistema");
-        document.addKeywords("reporte, janus, planillas");
-        document.addAuthor("Janus");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
         document.addCreator("Tedein SA");
 
         Paragraph preface = new Paragraph();
-        preface.add(new Paragraph("Reporte DDSC", fontTitulo));
+        preface.add(new Paragraph("Reporte", fontTitulo));
 
 
         def sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = 1;"
@@ -389,11 +379,11 @@ class ReportesController {
         PdfPTable tablaD = new PdfPTable(4);
         tablaD.setWidthPercentage(100);
         tablaD.setWidths(arregloEnteros([30, 40, 20, 10]))
-//        tablaD.setWidthPercentage(100);
 
+//        def baos1 = new ByteArrayOutputStream()
+//        def pdfw1 = PdfWriter.getInstance(document, baos1);
+//        PdfContentByte cb1 = pdfw1.getDirectContent();
 
-        def baos1 = new ByteArrayOutputStream()
-        def pdfw1 = PdfWriter.getInstance(document, baos1);
         document.open()
 
 
@@ -403,62 +393,60 @@ class ReportesController {
         addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsTdNoBorder)
 
 
-//        PdfTemplate template = pdfw1.getDirectContent().createTemplate(100,10) ;
-//        template.setColorFill(BaseColor.BLUE);
-//
-//        res.each { p->
-//
-//            addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
-//            addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
-//
-//
-//            template.rectangle(1, 1,5f, 5f);
-//            template.fill();
-//            pdfw1.releaseTemplate(template);
-//            PdfPCell cell = new PdfPCell(Image.getInstance(template), true);
-//
-//            tablaD.addCell(cell);
-//
-//        }
+
 
 
         PdfPTable table = new PdfPTable(1);
         table.setTotalWidth(450);
 
+
+//        float x = 360;
+//        float y = 740;
+//        float side = 0;
+//        PdfShading axial = PdfShading.simpleAxial(pdfw,x,y,(x+side).toFloat(),y,BaseColor.ORANGE,BaseColor.BLUE)
+//        PdfShadingPattern shading = new PdfShadingPattern(axial);
+////        cb.setShadingFill(shading);
+////        cb.moveTo(x,y);
+////        cb.lineTo(x + side, y);
+////        cb.lineTo(x + (side / 2), (float)(y + (side * Math.sin(Math.PI / 3))));
+//        cb.closePathFillStroke();
+
+
+
         res.eachWithIndex { p , j ->
-//            println(p.ddsc*100)
+
 
             addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
 
             def valor = ((p.ddsc).toDouble()*100).toInteger()
 
-            PdfTemplate template = cb.createTemplate(valor*7, 150);
-            if(valor < 100){
-                if(valor >= 50)
-                template.setColorFill(BaseColor.ORANGE);
-                else
-                template.setColorFill(BaseColor.RED);
-            }else{
-                template.setColorFill(BaseColor.GREEN);
-            }
+//            println("nuevo valor " + valor)
 
+//            PdfTemplate template = cb.createTemplate(valor*7, 150);
+            PdfTemplate template = cb.createTemplate(700, 150);
 
-//            template.setLineWidth(1.5f);
+            valor = 740*(valor/100)
+            valor = 740 - valor
 
-//            template.rectangle(5,5,(((p.ddsc)*100)).toDouble(),25);
+            PdfShadingPattern shading = colores(valor,740,pdfw,cb)
 
-            template.rectangle(5,5,valor*150, 35);
-//            template.rectangle(5,5,250,25);
+            template.setShadingFill(shading)
 
-//            println("--> " + (100 - ((p.ddsc).toDouble()*100)).toInteger())
-//            template.stroke();
+            template.rectangle(5,5,1100,65);
+
             template.fill();
             Image img = Image.getInstance(template);
+            img.setRotationDegrees(180)
+
             Chunk chunk = new Chunk(img, 10f, 2f);
+
             PdfPCell cell1 = new PdfPCell();
-            cell1.setFixedHeight(9)
+            cell1.setPaddingTop(4)
+//            cell1s.setUseBorderPadding(true)
+            cell1.setPaddingBottom(4)
             cell1.addElement(chunk);
+
             tablaD.addCell(cell1);
 
             addCellTabla(tablaD, new Paragraph(numero(p.ddsc*100, 2), fontThUsar), prmsTdNoBorder)
