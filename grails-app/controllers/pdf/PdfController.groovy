@@ -10,6 +10,7 @@ class PdfController extends Shield {
     def index = { redirect(action: demo) }
 
     def pdfLink = {
+        println ".......link: $params"
         try {
             byte[] b
             def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
@@ -23,7 +24,6 @@ class PdfController extends Shield {
                 println "sin plugin --> params url " + params.url
                 def url = baseUri + params.url
                 println "URL --> " + url
-
                 b = pdfService.buildPdf(url, baseUri)
 //                b = pdfService.buildPdf(params.url, baseUri)
             }

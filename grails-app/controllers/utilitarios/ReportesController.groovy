@@ -335,13 +335,13 @@ class ReportesController {
         return numero(num, 3)
     }
 
-    def colores (valorX,valorY,pdfw,cb){
 
+    def colores (valorX,valorY,pdfw,cb){
         float x = valorX;
         float y = valorY + (360-valorX);
 //        float y = 1100;
         float side = 10;
-        PdfShading axial = PdfShading.simpleAxial(pdfw,x,y,(x+side).toFloat(),y,BaseColor.ORANGE,BaseColor.BLUE)
+        PdfShading axial = PdfShading.simpleAxial(pdfw,x,y,(x+side).toFloat(), y, new BaseColor(209,124,71), new BaseColor(74, 126, 152))
         PdfShadingPattern shading = new PdfShadingPattern(axial);
         cb.closePathFillStroke();
 
@@ -372,7 +372,8 @@ class ReportesController {
         preface.add(new Paragraph("Reporte", fontTitulo));
 
 
-        def sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = 1;"
+        def sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = 1;"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 
@@ -434,7 +435,7 @@ class ReportesController {
             valor = 740*(valor/100)
             valor = 740 - valor
 
-            PdfShadingPattern shading = colores(valor,740,pdfw,cb)
+            PdfShadingPattern shading = colores(valor, 740, pdfw, cb)
 
             template.setShadingFill(shading)
 

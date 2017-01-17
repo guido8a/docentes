@@ -1,7 +1,7 @@
 package pdf
 
-import com.lowagie.text.FontFactory
-import com.lowagie.text.pdf.BaseFont
+import com.itextpdf.text.FontFactory
+import com.itextpdf.text.pdf.BaseFont
 import org.xhtmlrenderer.pdf.ITextFontResolver
 import org.xhtmlrenderer.pdf.ITextRenderer
 
@@ -81,7 +81,7 @@ class PdfService {
 */
 
 
-//        println "123123123 " + url
+        println "123123123 " + url
         try {
 
             renderer.setDocument(url)
