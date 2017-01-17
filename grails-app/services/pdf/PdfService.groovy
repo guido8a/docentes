@@ -6,6 +6,8 @@ import org.xhtmlrenderer.pdf.ITextFontResolver
 import org.xhtmlrenderer.pdf.ITextRenderer
 
 
+
+
 /**
  * Servicio para hacer PDFs
  */
@@ -26,8 +28,6 @@ class PdfService {
         ITextRenderer renderer = new ITextRenderer();
 
         FontFactory.registerDirectories();
-
-
 
         def pf = pathFonts + "${g.resource(dir: 'fonts/PT/PT_Sans')}/"
         def font = pf + "PT_Sans-Web-Regular.ttf"

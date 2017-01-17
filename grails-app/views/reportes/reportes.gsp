@@ -87,6 +87,7 @@
                             label     : "<i class='fa fa-print'></i> Imprimir",
                             className : "btn-success",
                             callback  : function () {
+                                console.log("entro")
                                 var periodo = $("#periodoReporte").val();
                                 var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 1;
                                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";

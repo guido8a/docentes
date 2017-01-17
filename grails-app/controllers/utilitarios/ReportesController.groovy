@@ -10,6 +10,8 @@ import com.itextpdf.text.pdf.PdfTemplate
 import com.itextpdf.text.pdf.codec.Base64
 import docentes.Escuela
 import docentes.Periodo
+import docentes.Profesor
+import docentes.TipoEncuesta
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.data.category.DefaultCategoryDataset
 
@@ -62,6 +64,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
+
 class ReportesController {
 
     def dbConnectionService
@@ -70,7 +74,7 @@ class ReportesController {
 
     def profesNoEvaluados () {
 
-        println("params " + params)
+//        println("params>>>>>>>> " + params)
 
         def periodo
         def cn = dbConnectionService.getConnection()
@@ -585,6 +589,146 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+    }
+
+    def informes () {
+
+    }
+
+    def desempeno () {
+
+    }
+
+    def tablaProfesores_ajax () {
+//        println("---> " + params)
+        def res
+
+        params.nombres = params.nombres + '%'
+        params.apellidos = params.apellidos + '%'
+
+        if(params.cedula){
+            res = Profesor.withCriteria {
+                and{
+                    eq("cedula", params.cedula)
+                    ilike("nombre", params.nombres)
+                    ilike("apellido", params.apellidos)
+                }
+            }
+        }else{
+            res = Profesor.withCriteria {
+                and{
+                    ilike("nombre", params.nombres)
+                    ilike("apellido", params.apellidos)
+                }
+            }
+        }
+
+
+        def alumnos = TipoEncuesta.findByCodigo("DC")
+        def auto = TipoEncuesta.findByCodigo("AD")
+        def directivos = TipoEncuesta.findByCodigo("DI")
+        def pares = TipoEncuesta.findByCodigo("PR")
+        def promedio = TipoEncuesta.findByCodigo("FE")
+
+
+        return [profesores: res, alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio]
+    }
+
+    def desempenoAlumnos () {
+        println("params alum " + params)
+
+        def baos = new ByteArrayOutputStream()
+//        PdfWriter writer = null;
+
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        def chart = generateBarChart()
+        def chart2 = generatePieChart()
+        def chart3 = createChart(createDataset());
+        def ancho = 500
+        def alto = 300
+
+        try {
+//            writer = PdfWriter.getInstance(document, new FileOutputStream("prueba.pdf"));
+            document.open();
+//            PdfContentByte contentByte = writer.getDirectContent();
+            PdfContentByte contentByte = pdfw.getDirectContent();
+
+            Paragraph parrafo1 = new Paragraph();
+            Paragraph parrafo2 = new Paragraph();
+
+
+            PdfTemplate template = contentByte.createTemplate(ancho, alto);
+            PdfTemplate template2 = contentByte.createTemplate(ancho, alto);
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper());
+            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto, new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
+            Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto);
+
+            chart.draw(graphics2d, rectangle2d);
+
+            graphics2d.dispose();
+            Image chartImage = Image.getInstance(template);
+            parrafo1.add(chartImage);
+
+
+//            chart2.draw(graphics2d2, rectangle2d2);
+//            graphics2d2.dispose();
+//            Image chartImage2 = Image.getInstance(template2);
+//            parrafo2.add(chartImage2);
+
+
+            chart3.draw(graphics2d2, rectangle2d2);
+            graphics2d2.dispose();
+            Image chartImage3 = Image.getInstance(template2);
+            parrafo2.add(chartImage3);
+
+
+
+
+            document.add(parrafo1)
+            document.add(parrafo2)
+//            document.add(parrafo2)
+//            document.add(parrafo2)
+
+
+
+//            contentByte.addTemplate(template, 20, 350);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        PdfPTable table = new PdfPTable(3); // 3 columns.
+//
+//        PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 1"));
+//        PdfPCell cell2 = new PdfPCell(new Paragraph("Cell 2"));
+//        PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
+//
+//        PdfPTable nestedTable = new PdfPTable(1);
+//        nestedTable.setWidthPercentage(51);
+//        nestedTable.addCell(new Paragraph("Nested Cell 1"));
+//
+//        cell3.addElement(nestedTable);
+//        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+//        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+//
+//        table.addCell(cell1);
+//        table.addCell(cell2);
+//        table.addCell(cell3);
+
+//        document.add(table);
+
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+
     }
 
 
