@@ -23,6 +23,7 @@ function openLoader(msg){
 
 }
 function closeLoader(){
-    $('#modalTabelGray').hide(1000);
+    // $('#modalTabelGray').hide(1000);
+    $('#modalTabelGray').hide();
     $("#modalDiv").hide();
 }

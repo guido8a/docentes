@@ -63,7 +63,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.IOException
+import java.text.DecimalFormat
+import java.text.FieldPosition
+import java.text.NumberFormat
+import java.text.ParsePosition;
 
 
 
@@ -222,13 +226,20 @@ class ReportesController {
 
     private static CategoryDataset createDataset(titulo,valor1, valor2, valor3, valor4, valor5, valor6)
     {
+        Integer v1 = Math.round(valor1*100)
+        Integer v2 = Math.round(valor2*100)
+        Integer v3 = Math.round(valor3*100)
+        Integer v4 = Math.round(valor4*100)
+        Integer v5 = Math.round(valor5*100)
+        Integer v6 = Math.round(valor6*100)
+
         String s = titulo;
-        String s3 = "D-DSC";
-        String s4 = "D-DAC";
-        String s5 = "D-DHD";
-        String s6 = "D-DCI";
-        String s7 = "D-CNI";
-        String s8 = "D-EA";
+        String s3 = "D-DSC (${v1} %) ";
+        String s4 = "D-DAC (${v2} %)";
+        String s5 = "D-DHD (${v3} %)";
+        String s6 = "D-DCI (${v4} %)";
+        String s7 = "D-CNI (${v5} %)";
+        String s8 = "D-EA (${v6} %)";
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         defaultcategorydataset.addValue(valor1, s, s3);
         defaultcategorydataset.addValue(valor2, s, s4);
@@ -620,6 +631,8 @@ class ReportesController {
 
     def desempeno () {
 
+        println("prams " + params)
+
     }
 
     def tablaProfesores_ajax () {
@@ -628,11 +641,12 @@ class ReportesController {
 
         params.nombres = params.nombres + '%'
         params.apellidos = params.apellidos + '%'
+        params.cedula = params.cedula + '%'
 
         if(params.cedula){
             res = Profesor.withCriteria {
                 and{
-                    eq("cedula", params.cedula)
+                    ilike("cedula", params.cedula)
                     ilike("nombre", params.nombres)
                     ilike("apellido", params.apellidos)
                 }
@@ -658,32 +672,27 @@ class ReportesController {
     }
 
     def desempenoAlumnos () {
-        println("params alum " + params)
+//        println("params alum " + params)
 
         def profesor = Profesor.get(params.id)
         def encuestaAlumnos = TipoEncuesta.findByCodigo('DC')
         def rpec = ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor,encuestaAlumnos)
-
-
         def baos = new ByteArrayOutputStream()
         Document document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
         def chart = generateBarChart()
-        def chart2 = generatePieChart()
+//        def chart2 = generatePieChart()
         def chart3 = createChart( createDataset("Evaluación del Desempeño Académico (Alumnos)",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea));
         def ancho = 500
         def alto = 300
 
         try {
-//            writer = PdfWriter.getInstance(document, new FileOutputStream("prueba.pdf"));
             document.open();
-//            PdfContentByte contentByte = writer.getDirectContent();
             PdfContentByte contentByte = pdfw.getDirectContent();
 
             Paragraph parrafo1 = new Paragraph();
             Paragraph parrafo2 = new Paragraph();
-
 
             PdfTemplate template = contentByte.createTemplate(ancho, alto);
             PdfTemplate template2 = contentByte.createTemplate(ancho, alto);
@@ -698,53 +707,17 @@ class ReportesController {
             Image chartImage = Image.getInstance(template);
             parrafo1.add(chartImage);
 
-
-//            chart2.draw(graphics2d2, rectangle2d2);
-//            graphics2d2.dispose();
-//            Image chartImage2 = Image.getInstance(template2);
-//            parrafo2.add(chartImage2);
-
-
             chart3.draw(graphics2d2, rectangle2d2);
             graphics2d2.dispose();
             Image chartImage3 = Image.getInstance(template2);
             parrafo2.add(chartImage3);
 
-
-
-
-//            document.add(parrafo1)
             document.add(parrafo2)
-//            document.add(parrafo2)
-//            document.add(parrafo2)
 
-
-
-//            contentByte.addTemplate(template, 20, 350);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        PdfPTable table = new PdfPTable(3); // 3 columns.
-//
-//        PdfPCell cell1 = new PdfPCell(new Paragraph("Cell 1"));
-//        PdfPCell cell2 = new PdfPCell(new Paragraph("Cell 2"));
-//        PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
-//
-//        PdfPTable nestedTable = new PdfPTable(1);
-//        nestedTable.setWidthPercentage(51);
-//        nestedTable.addCell(new Paragraph("Nested Cell 1"));
-//
-//        cell3.addElement(nestedTable);
-//        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
-//        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-//
-//        table.addCell(cell1);
-//        table.addCell(cell2);
-//        table.addCell(cell3);
-
-//        document.add(table);
 
         document.close();
         pdfw.close()
@@ -753,9 +726,8 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
+
 
 
 }

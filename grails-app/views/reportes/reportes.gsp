@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 26/09/16
+  Time: 12:28
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -73,7 +80,7 @@
         </div>
 
         <div class="col-md-1">Facultad:</div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <g:select from="${docentes.Escuela.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre" optionKey="id"
                       name="facultad_name" id="facultad" class="form-control"/>
         </div>
@@ -151,8 +158,8 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirEvaluados">
-                    <span class="text-success"><strong>Informe del desempeño académico</strong> de los profosores
+                <div class="texto" id="imprimirDesempeno">
+                    <span class="text-success"><strong>Informe del desempeño académico</strong> de los profesores
                     </span>
                 </div>
             </a>
@@ -206,15 +213,26 @@
 %{--<i class="fa fa-graduation-cap"></i> Profesor--}%
 %{--</a>--}%
 
-<a href="${createLink(controller: 'reportes', action: 'grafica')}" class="btn btn-warning" title="">
-    <i class="fa fa-map-marker"></i> Doble gráfica
-</a>
+%{--<a href="${createLink(controller: 'reportes', action: 'grafica')}" class="btn btn-warning" title="">--}%
+    %{--<i class="fa fa-map-marker"></i> Doble gráfica--}%
+%{--</a>--}%
 
+</div>
 
 
 
 
 <script type="text/javascript">
+
+
+    $("#imprimirDesempeno").click(function () {
+        var per = $("#periodoId").val();
+        var fac = $("#facultad").val();
+        location.href="${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + per + "&facultad=" + fac;
+    });
+
+
+
     $("#imprimirNoEvaluados").click(function () {
 
         $.ajax({
@@ -234,11 +252,10 @@
                             callback: function () {
                             }
                         },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                console.log("entro")
+                        aceptar : {
+                            label     : "<i class='fa fa-print'></i> Imprimir",
+                            className : "btn-success",
+                            callback  : function () {
                                 var periodo = $("#periodoReporte").val();
                                 var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 1;
                                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
@@ -437,6 +454,10 @@
 
 
 </script>
+
+
+
+
 
 </body>
 </html>

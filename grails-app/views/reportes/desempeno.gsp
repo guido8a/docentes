@@ -25,7 +25,9 @@
 <div class="panel panel-info col-md-12" style="margin-top: 10px;" >
     <div class="panel-heading">
         <h3 class="panel-title" style="height: 30px; text-align: center">
+
                 Informe de Desempeño
+
         </h3>
     </div>
 
@@ -44,7 +46,7 @@
                 <div class="col-md-3">
                     <g:textField name="apellidos" id="apellidosBusqueda" class="form-control"/>
                 </div>
-                <a href="#" id="btnAgregar" class="btn btn-info" title="Buscar">
+                <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar">
                     <i class="fa fa-search-plus"></i> Buscar
                 </a>
             </div>
@@ -74,24 +76,37 @@
 
 <script type="text/javascript">
 
-    $("#btnAgregar").click(function () {
+
+
+    function buscar () {
+        openLoader("Buscando...");
         var ced = $("#cedulaBusqueda").val();
         var nom = $("#nombresBusqueda").val();
         var ape = $("#apellidosBusqueda").val();
-       $.ajax({
-           type: 'POST',
-           url: "${createLink(controller: 'reportes', action: 'tablaProfesores_ajax')}",
-           data:{
-               cedula: ced,
-               nombres: nom,
-               apellidos: ape
-           },
-           success: function (msg){
-//                openLoader("CARGANDO...");
-               $("#divTablaProfesores").html(msg)
-//               closeLoader();
-           }
-       }) ;
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'reportes', action: 'tablaProfesores_ajax')}",
+            data:{
+                cedula: ced,
+                nombres: nom,
+                apellidos: ape
+            },
+            success: function (msg){
+                $("#divTablaProfesores").html(msg);
+                closeLoader();
+
+            }
+        }) ;
+    }
+
+    $("#btnBuscar").click(function () {
+        buscar();
+    });
+
+    $("input").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            buscar();
+        }
     });
 </script>
 
