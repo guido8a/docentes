@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 26/09/16
-  Time: 12:28
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -80,8 +73,10 @@
         </div>
 
         <div class="col-md-1">Facultad:</div>
+
         <div class="col-md-5">
-            <g:select from="${docentes.Escuela.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre" optionKey="id"
+            <g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"
+                      optionKey="id"
                       name="facultad_name" id="facultad" class="form-control"/>
         </div>
 
@@ -98,14 +93,14 @@
                 </div>
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirNoEvaluados">
-                        <span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong> profosores que no cuentan con evaluaciones
+                        <span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong> profesores que no cuentan con evaluaciones
                         </span>
                     </div>
                 </a>
 
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirEvaluados">
-                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profosores que no tienen almenos una evaluaciones
+                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que no tienen almenos una evaluaciones
                         </span>
                     </div>
                 </a>
@@ -214,7 +209,7 @@
 %{--</a>--}%
 
 %{--<a href="${createLink(controller: 'reportes', action: 'grafica')}" class="btn btn-warning" title="">--}%
-    %{--<i class="fa fa-map-marker"></i> Doble gráfica--}%
+%{--<i class="fa fa-map-marker"></i> Doble gráfica--}%
 %{--</a>--}%
 
 </div>
@@ -224,160 +219,42 @@
 
 <script type="text/javascript">
 
-
     $("#imprimirDesempeno").click(function () {
-        var per = $("#periodoId").val();
-        var fac = $("#facultad").val();
-        location.href="${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + per + "&facultad=" + fac;
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl;
     });
 
 
-
     $("#imprimirNoEvaluados").click(function () {
-
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
-            data: {},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgPeriodo",
-                    title: "Seleccionar Período",
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar : {
-                            label     : "<i class='fa fa-print'></i> Imprimir",
-                            className : "btn-success",
-                            callback  : function () {
-                                var periodo = $("#periodoReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 1;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
-//                                return false
-                            }
-                        }
-
-                    } //buttons
-                }); //dialog
-            }
-        });
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
     });
 
 
     $("#imprimirEvaluados").click(function () {
-
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
-            data: {},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgPeriodo",
-                    title: "Seleccionar Período",
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                var periodo = $("#periodoReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 2;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
-//                                return false
-                            }
-                        }
-
-                    } //buttons
-                }); //dialog
-            }
-        });
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 2;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
     });
 
 
     $("#imprimirNoAutoeva").click(function () {
-
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
-            data: {},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgPeriodo",
-                    title: "Seleccionar Período",
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                var periodo = $("#periodoReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 3;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";
-//                                return false
-                            }
-                        }
-
-                    } //buttons
-                }); //dialog
-            }
-        });
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";
     });
 
 
     $("#imprimirAutoeva").click(function () {
-
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'periodo_ajax')}',
-            data: {},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgPeriodo",
-                    title: "Seleccionar Período",
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                var periodo = $("#periodoReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 4;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";
-//                                return false
-                            }
-                        }
-
-                    } //buttons
-                }); //dialog
-            }
-        });
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";
     });
 
     $("#imprimirEstudiante").click(function () {
@@ -454,10 +331,6 @@
 
 
 </script>
-
-
-
-
 
 </body>
 </html>
