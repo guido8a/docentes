@@ -16,8 +16,8 @@
 
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link controller="reportes" action="informes" class="btn btn-primary" title="Regresar a lista de informes">
-            <i class="fa fa-chevron-left"></i> Lista
+        <g:link controller="reportes" action="reportes" class="btn btn-primary" title="Regresar a lista de informes">
+            <i class="fa fa-chevron-left"></i> Reportes
         </g:link>
     </div>
 </div>
@@ -83,6 +83,8 @@
         var ced = $("#cedulaBusqueda").val();
         var nom = $("#nombresBusqueda").val();
         var ape = $("#apellidosBusqueda").val();
+        var fac = ${facultad?.id};
+        var per = ${periodo?.id}
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes', action: 'tablaProfesores_ajax')}",

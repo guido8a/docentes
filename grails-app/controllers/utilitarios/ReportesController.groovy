@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfTemplate
 import com.itextpdf.text.pdf.codec.Base64
 import docentes.Escuela
+import docentes.Facultad
 import docentes.Periodo
 import docentes.Profesor
 import docentes.ReporteEncuesta
@@ -631,7 +632,11 @@ class ReportesController {
 
     def desempeno () {
 
-        println("prams " + params)
+//        println("prams " + params)
+        def facultad =  Facultad.get(params.facultad)
+        def periodo = Periodo.get(params.periodo)
+
+        return [facultad: facultad, periodo: periodo]
 
     }
 
