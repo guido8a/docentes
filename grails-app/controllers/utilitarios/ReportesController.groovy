@@ -395,7 +395,7 @@ class ReportesController {
 
 
         def sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = 1;"
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 
