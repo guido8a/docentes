@@ -11,6 +11,7 @@ import com.itextpdf.text.pdf.codec.Base64
 import docentes.Escuela
 import docentes.Periodo
 import docentes.Profesor
+import docentes.ReporteEncuesta
 import docentes.TipoEncuesta
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.data.category.DefaultCategoryDataset
@@ -200,20 +201,41 @@ class ReportesController {
 
 
 
-    private static CategoryDataset createDataset()
+//    private static CategoryDataset createDataset()
+//    {
+//        String s = "Desempeño";
+//        String s3 = "D-DSC";
+//        String s4 = "D-DAC";
+//        String s5 = "D-DHD";
+//        String s6 = "D-DCI";
+//        String s7 = "D-CNI";
+//        String s8 = "D-EA";
+//        DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
+//        defaultcategorydataset.addValue(5, s, s3);
+//        defaultcategorydataset.addValue(4.8, s, s4);
+//        defaultcategorydataset.addValue(3.6, s, s5);
+//        defaultcategorydataset.addValue(5, s, s6);
+//        defaultcategorydataset.addValue(2.45, s, s7);
+//        defaultcategorydataset.addValue(4.45, s, s8);
+//        return defaultcategorydataset;
+//    }
+
+    private static CategoryDataset createDataset(titulo,valor1, valor2, valor3, valor4, valor5, valor6)
     {
-        String s = "Desempeño";
-        String s3 = "Category 1";
-        String s4 = "Category 2";
-        String s5 = "Category 3";
-        String s6 = "Category 4";
-        String s7 = "Category 5";
+        String s = titulo;
+        String s3 = "D-DSC";
+        String s4 = "D-DAC";
+        String s5 = "D-DHD";
+        String s6 = "D-DCI";
+        String s7 = "D-CNI";
+        String s8 = "D-EA";
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
-        defaultcategorydataset.addValue(5, s, s3);
-        defaultcategorydataset.addValue(4.8, s, s4);
-        defaultcategorydataset.addValue(3.6, s, s5);
-        defaultcategorydataset.addValue(5, s, s6);
-        defaultcategorydataset.addValue(2.45, s, s7);
+        defaultcategorydataset.addValue(valor1, s, s3);
+        defaultcategorydataset.addValue(valor2, s, s4);
+        defaultcategorydataset.addValue(valor3, s, s5);
+        defaultcategorydataset.addValue(valor4, s, s6);
+        defaultcategorydataset.addValue(valor5, s, s7);
+        defaultcategorydataset.addValue(valor6, s, s8);
         return defaultcategorydataset;
     }
 
@@ -638,15 +660,18 @@ class ReportesController {
     def desempenoAlumnos () {
         println("params alum " + params)
 
-        def baos = new ByteArrayOutputStream()
-//        PdfWriter writer = null;
+        def profesor = Profesor.get(params.id)
+        def encuestaAlumnos = TipoEncuesta.findByCodigo('DC')
+        def rpec = ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor,encuestaAlumnos)
 
+
+        def baos = new ByteArrayOutputStream()
         Document document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
         def chart = generateBarChart()
         def chart2 = generatePieChart()
-        def chart3 = createChart(createDataset());
+        def chart3 = createChart( createDataset("Evaluación del Desempeño Académico (Alumnos)",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea));
         def ancho = 500
         def alto = 300
 
@@ -688,7 +713,7 @@ class ReportesController {
 
 
 
-            document.add(parrafo1)
+//            document.add(parrafo1)
             document.add(parrafo2)
 //            document.add(parrafo2)
 //            document.add(parrafo2)
