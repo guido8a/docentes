@@ -18,28 +18,28 @@
                         <td style="width: 5%">${profesor?.titulo}</td>
                         <td style="width: 20%; text-align: center">
                             <a href="#" class="btn btn-info btnAlumnos"
-                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor, alumnos)?.promedio > 0 ? '' : 'disabled='}
+                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,alumnos,periodo)?.promedio > 0 ? '' : 'disabled='}
                                data-id="${profesor.id}"  title="Evaluación Alumnos">
                                 <i class="fa fa-dashboard"></i>
                             </a>
                             <a href="#" class="btn btn-info btnAuto"
-                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor, auto)?.promedio > 0 ? '' : 'disabled='}
+                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,auto,periodo)?.promedio > 0 ? '' : 'disabled='}
                                data-id="${profesor.id}"  title="Auto Evaluación">
                                 <i class="fa fa-car"></i>
                             </a>
                             <a href="#" class="btn btn-info btnDirectivos"
-                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor, directivos)?.promedio > 0 ? '' : 'disabled='}
+                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,directivos,periodo)?.promedio > 0 ? '' : 'disabled='}
                                data-id="${profesor.id}"  title="Evaluación Directivos">
                                 <i class="fa fa-star"></i>
                             </a>
                             <a href="#" class="btn btn-info btnPares"
-                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor, pares)?.promedio > 0 ? '' : 'disabled='}
+                                ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)?.promedio > 0 ? '' : 'disabled='}
                                data-id="${profesor.id}"  title="Evaluación Pares">
                                 <i class="fa fa-cubes"></i>
                             </a>
                             <a href="#" class="btn btn-info btnPromedio"
                                data-id="${profesor.id}"
-                                ${docentes.ReporteEncuesta.findAllByProfesor(profesor)?.size() == 4 ? '' : 'disabled='}  title="Promedio General">
+                                ${docentes.ReporteEncuesta.findAllByProfesorAndPeriodo(profesor,periodo)?.size() == 4 ? '' : 'disabled='}  title="Promedio General">
                                 <i class="fa fa-pie-chart"></i>
                             </a>
                         </td>
@@ -55,7 +55,8 @@
 
     $(".btnAlumnos").click(function () {
         var idProfe = $(this).data('id');
-         location.href="${createLink(controller: 'reportes', action: 'desempenoAlumnos')}/" + idProfe
+        var perio = ${periodo?.id};
+         location.href="${createLink(controller: 'reportes', action: 'desempenoAlumnos')}?profe=" + idProfe + "&periodo=" + perio
     });
 
 

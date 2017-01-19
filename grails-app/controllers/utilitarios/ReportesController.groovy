@@ -15,6 +15,7 @@ import docentes.Profesor
 import docentes.ReporteEncuesta
 import docentes.TipoEncuesta
 import org.jfree.chart.plot.PlotOrientation
+import org.jfree.chart.title.Title
 import org.jfree.data.category.DefaultCategoryDataset
 
 import java.awt.Color
@@ -253,13 +254,13 @@ class ReportesController {
         return defaultcategorydataset;
     }
 
-    private static JFreeChart createChart(CategoryDataset categorydataset)
+    private static JFreeChart createChart(CategoryDataset categorydataset,titulo)
     {
         SpiderWebPlot spiderwebplot = new SpiderWebPlot(categorydataset);
-        JFreeChart jfreechart = new JFreeChart("Spider Chart Demo", TextTitle.DEFAULT_FONT, spiderwebplot, false);
-        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
-        legendtitle.setPosition(RectangleEdge.BOTTOM);
-        jfreechart.addSubtitle(legendtitle);
+        JFreeChart jfreechart = new JFreeChart(titulo, TextTitle.DEFAULT_FONT, spiderwebplot, false);
+//        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
+//        legendtitle.setPosition(RectangleEdge.BOTTOM);
+//        jfreechart.addSubtitle(legendtitle);
         return jfreechart;
     }
 
@@ -279,9 +280,10 @@ class ReportesController {
         if (params.height) {
             cell.setFixedHeight(params.height.toFloat());
         }
-//        if (params.border) {
+        if (params.border) {
 //            cell.setBorderColor(params.border);
-//        }
+            cell.setBorderColor(BaseColor.WHITE);
+        }
         if (params.bg) {
             cell.setBackgroundColor(params.bg);
         }
@@ -726,27 +728,47 @@ class ReportesController {
         def promedio = TipoEncuesta.findByCodigo("FE")
 
 
-        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio]
+        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo]
     }
 
     def desempenoAlumnos () {
 //        println("params alum " + params)
+        Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
 
-        def profesor = Profesor.get(params.id)
+        def profesor = Profesor.get(params.profe)
+        def periodo = Periodo.get(params.periodo)
         def encuestaAlumnos = TipoEncuesta.findByCodigo('DC')
-        def rpec = ReporteEncuesta.findByProfesorAndTipoEncuesta(profesor,encuestaAlumnos)
+        def rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,encuestaAlumnos,periodo)
         def baos = new ByteArrayOutputStream()
         Document document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
-        def chart = generateBarChart()
-//        def chart2 = generatePieChart()
-        def chart3 = createChart( createDataset("Evaluación del Desempeño Académico (Alumnos)",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea));
+        document.open();
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
+        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + profesor?.escuela?.facultad?.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (rpec?.promedio*100) + " %", fontNormal)
+        document.add(parrafoUniversidad)
+        document.add(parrafoProfesor)
+        document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
+        document.add(parrafoPromedio)
+
+        def chart3 = createChart( createDataset("Referencias: ",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea), "Evaluación del Desempeño Académico (Alumnos)");
         def ancho = 500
         def alto = 300
 
         try {
-            document.open();
+
             PdfContentByte contentByte = pdfw.getDirectContent();
 
             Paragraph parrafo1 = new Paragraph();
@@ -776,6 +798,29 @@ class ReportesController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //pie
+        PdfPTable tablaD = new PdfPTable(3);
+
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([49, 2, 49]))
+        addCellTabla(tablaD, new Paragraph("REFERENCIAS:", fontNormal), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("D-DSC: DESARROLLO DE SABERES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("D-DCI: DESARROLLO DE CAPACIDAD DE INVESTIGAR", fontNormal8), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("D-DAC: DESAROLLO DE ACTITUDES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("D-CNI: CUMPLIMIENTO DE LA NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("D-DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("D-EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+
+        document.add(tablaD);
 
         document.close();
         pdfw.close()
