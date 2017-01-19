@@ -650,20 +650,71 @@ class ReportesController {
         params.apellidos = params.apellidos + '%'
         params.cedula = params.cedula + '%'
 
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad = Facultad.get(params.facultad)
+
         if(params.cedula){
-            res = Profesor.withCriteria {
-                and{
-                    ilike("cedula", params.cedula)
-                    ilike("nombre", params.nombres)
-                    ilike("apellido", params.apellidos)
+//            res = Profesor.withCriteria {
+//                and{
+//                    ilike("cedula", params.cedula)
+//                    ilike("nombre", params.nombres)
+//                    ilike("apellido", params.apellidos)
+//                }
+//            }
+
+
+
+            res = ReporteEncuesta.withCriteria {
+
+                eq("periodo",periodo)
+
+                profesor{
+
+                    escuela {
+                        eq("facultad",facultad)
+                    }
+
+                    and{
+                        ilike("cedula", params.cedula)
+                        ilike("nombre", params.nombres)
+                        ilike("apellido", params.apellidos)
+                    }
                 }
+
+
             }
+
+
+
+
         }else{
-            res = Profesor.withCriteria {
-                and{
-                    ilike("nombre", params.nombres)
-                    ilike("apellido", params.apellidos)
+//            res = Profesor.withCriteria {
+//                and{
+//                    ilike("nombre", params.nombres)
+//                    ilike("apellido", params.apellidos)
+//                }
+//            }
+
+
+            res = ReporteEncuesta.withCriteria {
+
+                eq("periodo",periodo)
+
+                profesor{
+
+                    escuela {
+                        eq("facultad",facultad)
+                    }
+
+                    and{
+//                        ilike("cedula", params.cedula)
+                        ilike("nombre", params.nombres)
+                        ilike("apellido", params.apellidos)
+                    }
                 }
+
+
             }
         }
 
@@ -675,7 +726,7 @@ class ReportesController {
         def promedio = TipoEncuesta.findByCodigo("FE")
 
 
-        return [profesores: res, alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio]
+        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio]
     }
 
     def desempenoAlumnos () {

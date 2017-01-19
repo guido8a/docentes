@@ -91,7 +91,9 @@
             data:{
                 cedula: ced,
                 nombres: nom,
-                apellidos: ape
+                apellidos: ape,
+                facultad: fac,
+                periodo: per
             },
             success: function (msg){
                 $("#divTablaProfesores").html(msg);
