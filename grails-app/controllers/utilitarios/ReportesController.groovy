@@ -735,6 +735,7 @@ class ReportesController {
 
     def desempenoAlumnos () {
 //        println("params alum " + params)
+
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
         Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
@@ -742,11 +743,36 @@ class ReportesController {
 
         def profesor = Profesor.get(params.profe)
         def periodo = Periodo.get(params.periodo)
-        def encuestaAlumnos = TipoEncuesta.findByCodigo('DC')
-        def rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,encuestaAlumnos,periodo)
+        def alumnos = TipoEncuesta.findByCodigo("DC")
+        def auto = TipoEncuesta.findByCodigo("AD")
+        def directivos = TipoEncuesta.findByCodigo("DI")
+        def pares = TipoEncuesta.findByCodigo("PR")
+//        def rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,encuestaAlumnos,periodo)
         def baos = new ByteArrayOutputStream()
         Document document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
+        def tipo = params.tipo
+        def subtitulo = ''
+        def rpec
+
+        switch(tipo){
+            case '1':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,alumnos,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Alumnos)"
+                break;
+            case '2':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,auto,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Autoevaluación)"
+                break;
+            case '3':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,directivos,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Evaluación Directivos)"
+                break;
+            case '4':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Evaluación por Pares)"
+                break;
+        }
 
         document.open();
 
@@ -765,7 +791,7 @@ class ReportesController {
         document.add(parrafoEscuela)
         document.add(parrafoPromedio)
 
-        def chart3 = createChart( createDataset("Referencias: ",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea), "Evaluación del Desempeño Académico (Alumnos)");
+        def chart3 = createChart( createDataset("Referencias: ",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea), subtitulo);
         def ancho = 500
         def alto = 300
 
