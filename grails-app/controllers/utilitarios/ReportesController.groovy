@@ -146,22 +146,22 @@ class ReportesController {
             case '5':
                 sql = "select escldscr, estdcdla, estdnmbr||' '||estdapll profesor, matedscr, crsodscr, dctaprll " +
                         "from dcta, mate, estd, crso, escl, matr " +
-                        "where dcta.prdo__id = '${params.periodo}' and escl.escl__id = '${escuela?.id}' and crso.crso__id = dcta.crso__id and estd.estd__id = matr.estd__id and " +
-                        "dcta.dcta__id = matr.dcta__id and " +
+                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
+                        "estd.estd__id = matr.estd__id and dcta.dcta__id = matr.dcta__id and " +
                         "mate.mate__id = dcta.mate__id and estd.estd__id in ( " +
                         "select estd__id from encu where estd__id is not null and prdo__id = '${params.periodo}' and teti__id = 2) and " +
-                        "escl.escl__id = mate.escl__id " +
+                        "escl.escl__id = mate.escl__id and facl__id = ${params.facl} " +
                         "order by escldscr, estdapll, estdnmbr"
                 titulo = "Estudiantes que han realizado la evaluación"
                 break;
             case '6':
                 sql = "select escldscr, estdcdla, estdnmbr||' '||estdapll profesor, matedscr, crsodscr, dctaprll " +
                         "from dcta, mate, estd, crso, escl, matr " +
-                        "where dcta.prdo__id = '${params.periodo}' and escl.escl__id = '${escuela?.id}' and crso.crso__id = dcta.crso__id and estd.estd__id = matr.estd__id and " +
-                        "dcta.dcta__id = matr.dcta__id and " +
+                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
+                        "estd.estd__id = matr.estd__id and dcta.dcta__id = matr.dcta__id and " +
                         "mate.mate__id = dcta.mate__id and estd.estd__id not in ( " +
                         "select estd__id from encu where estd__id is not null and prdo__id = '${params.periodo}' and teti__id = 2) and " +
-                        "escl.escl__id = mate.escl__id " +
+                        "escl.escl__id = mate.escl__id and escl.escl__id = ${params.escl} " +
                         "order by escldscr, estdapll, estdnmbr"
                 titulo = "Estudiantes que no han realizado la evaluación"
                 break;
@@ -188,7 +188,9 @@ class ReportesController {
     }
 
     def facultad_ajax () {
-
+        println "facultad_ajax params: $params"
+        def escl = Escuela.findAllByFacultad(Facultad.get(params.facl), [sort: 'nombre'])
+        [escuelas: escl]
     }
 
 

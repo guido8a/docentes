@@ -24,17 +24,13 @@
     .imagen {
         width: 200px;
         height: 130px;
-        /*height: 100%;*/
         float: left;
         padding: 20px;
     }
 
     .texto {
         width: 95%;
-        /*height: 45px;*/
         padding-top: 10px;
-        /*margin: auto;*/
-        /*margin: 8px;*/
         font-size: 15px;
         font-style: normal;
     }
@@ -42,7 +38,6 @@
     .fuera {
         margin-left: 15px;
         margin-top: 10px;
-        /*background-color: #317fbf; */
         background-color: rgba(114, 131, 147, 0.9);
         border: none;
     }
@@ -65,7 +60,8 @@
     </div>
 
     <div class="row">
-        <div class="col-md-3">Seleccione el periodo de evaluaciones:</div>
+        <div class="col-md-1"></div>
+        <div class="col-md-2">Seleccione el periodo de evaluaciones:</div>
 
         <div class="col-sm-2"><g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                                         class="form-control"
@@ -203,7 +199,6 @@
 </div>
 
 
-
 %{--<a href="${createLink(controller: 'reportes', action: 'reportedePrueba')}" class="btn btn-info" title="">--}%
 %{--<i class="fa fa-graduation-cap"></i> Profesor--}%
 %{--</a>--}%
@@ -258,46 +253,19 @@
     });
 
     $("#imprimirEstudiante").click(function () {
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
-            data: {},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgFacultad",
-                    title: "Seleccionar Escuela y Período",
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                var periodo = $("#periodoReporte").val();
-                                var escuela = $("#escuelaReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 5 + "Wescuela=" + escuela;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
-//                                return false
-                            }
-                        }
-
-                    } //buttons
-                }); //dialog
-            }
-        });
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
     });
 
     $("#imprimirNoEstudiante").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
-            data: {},
+            data: {facl: facl},
             success: function (msg) {
                 var b = bootbox.dialog({
                     id: "dlgFacultad",
@@ -315,9 +283,8 @@
                             label: "<i class='fa fa-print'></i> Imprimir",
                             className: "btn-success",
                             callback: function () {
-                                var periodo = $("#periodoReporte").val();
-                                var escuela = $("#escuelaReporte").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + periodo + "Wtipo=" + 6 + "Wescuela=" + escuela;
+                                var escuela = $("#escuelaRprt").val();
+                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela;
                                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
 //                                return false
                             }

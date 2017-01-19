@@ -94,15 +94,15 @@
         <strong style="font-size: 14pt"><util:renderHTML html="${e}"/></strong>
     </p>
 
-    <table class="table table-condensed table-bordered table-striped table-hover roto" style="width: 100%">
+    <table class="table table-condensed table-bordered table-striped table-hover ${escuelas.size() > (j+1)? 'roto' : ''}" style="width: 100%">
         <thead>
 
         <tr>
-            <th class="back" rowspan="2" style="width: 7%">Cédula</th>
-            <th class="back" rowspan="2" style="width: 35%">Nombres y Apellidos</th>
-            <th class="back" rowspan="2" style="width: 25%">Materia</th>
-            <th class="back" rowspan="2" style="width: 10%">Curso</th>
-            <th class="back" rowspan="2" style="width: 7%">Paralelo</th>
+            <th class="back" rowspan="2" style="width: 10%">Cédula</th>
+            <th class="back" rowspan="2" style="width: 33%">Nombres y Apellidos</th>
+            <th class="back" rowspan="2" style="width: 36%">Materia</th>
+            <th class="back" rowspan="2" style="width: 17%">Curso</th>
+            <th class="back" rowspan="2" style="width: 4%">Par.</th>
         </tr>
 
         </thead>
@@ -110,11 +110,11 @@
         <g:each in="${res}" var="r">
             <g:if test="${e == r.escldscr}">
                 <tr>
-                    <td style="width: 7%">${r[1]}</td>
-                    <td style="width: 35%">${r[2]}</td>
-                    <td style="width: 25%">${r[3]}</td>
-                    <td style="width: 10%" class="alineado">${r[4]}</td>
-                    <td style="width: 7%" class="alineado">${r[5]}</td>
+                    <td style="width: 10%">${r[1]}</td>
+                    <td style="width: 33%">${r[2]}</td>
+                    <td style="width: 36%">${r[3]}</td>
+                    <td style="width: 17%; font-size: 9pt">${r[4]}</td>
+                    <td style="width: 4%" class="alineado">${r[5]}</td>
                 </tr>
             </g:if>
             <g:else>
@@ -124,12 +124,6 @@
         </tbody>
     </table>
 </g:each>
-
-
-
-
-
-
 
 </body>
 </html>
