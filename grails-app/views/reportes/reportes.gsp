@@ -59,16 +59,16 @@
     </h2>
     </div>
 
-    <div class="row">
+    <div class="row text-info" style="font-size: 11pt">
         <div class="col-md-1"></div>
         <div class="col-md-2">Seleccione el periodo de evaluaciones:</div>
 
         <div class="col-sm-2"><g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                        class="form-control"
+                                        class="form-control" style="width: 90px"
                                         from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>
         </div>
 
-        <div class="col-md-1"><br/>Facultad:</div>
+        <div class="col-md-1" style="margin-top: 10px">Facultad:</div>
 
         <div class="col-md-5">
             <g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"
@@ -140,8 +140,8 @@
                 <img src="${resource(dir: 'images', file: 'evaluar-3.png')}" width="150px" height="auto"
                      style=" margin-top:20px"/>
             </div>
-            <a href="${createLink(controller: 'reportes', action: 'reportedePrueba')}" style="text-decoration: none">
-                <div class="texto" id="bton_variables">
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="btonVariables">
                     <span class="text-success"><strong>Desempeño académico</strong> de los profesores por variables
                     </span>
                 </div>
@@ -256,6 +256,13 @@
         var facl = $("#facultad").val();
         var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
+    });
+
+    $("#btonVariables").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl;
+        location.href = url;
     });
 
     $("#imprimirNoEstudiante").click(function () {

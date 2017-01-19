@@ -283,8 +283,8 @@ class ReportesController {
             cell.setFixedHeight(params.height.toFloat());
         }
         if (params.border) {
-//            cell.setBorderColor(params.border);
-            cell.setBorderColor(BaseColor.WHITE);
+            cell.setBorderColor(params.border);
+//            cell.setBorderColor(BaseColor.WHITE);
         }
         if (params.bg) {
             cell.setBackgroundColor(params.bg);
@@ -390,8 +390,8 @@ class ReportesController {
 
 
 
-    def reportedePrueba() {
-
+    def reporteVariables() {
+        println "reporteVariables $params"
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -402,7 +402,7 @@ class ReportesController {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle(" Reporte desempeño profesores");
+        document.addTitle("Reporte desempeño profesores");
         document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, docentes, profesores");
         document.addAuthor("Docentes");
@@ -411,36 +411,51 @@ class ReportesController {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        /* todo: Parwametrizar para obtener la variable de la base de datos y modificar el sql */
+        Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: Desarrollo de Saberes Conscientes", fontTitulo)
+        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(lineaTitulo)
+        document.add(lineaVacia)
+
 
         def sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id"
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                "prdo__id = ${params.periodo}"
+
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 
-        def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsTdBorder = [border: Color.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsNmBorder = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsTdNoBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsTdBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
         /* ************************************************************* HEADER PLANILLA ***************************************************************************/
         PdfPTable tablaD = new PdfPTable(4);
         tablaD.setWidthPercentage(100);
-        tablaD.setWidths(arregloEnteros([30, 40, 20, 10]))
+        tablaD.setWidths(arregloEnteros([37, 35, 20, 6]))
 
 //        def baos1 = new ByteArrayOutputStream()
 //        def pdfw1 = PdfWriter.getInstance(document, baos1);
 //        PdfContentByte cb1 = pdfw1.getDirectContent();
 
-        document.open()
+//        document.open()
 
-
-        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsTdNoBorder)
-
-
-
-
+        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
 
         PdfPTable table = new PdfPTable(1);
         table.setTotalWidth(450);
@@ -467,9 +482,7 @@ class ReportesController {
 
             def valor = ((p.ddsc).toDouble()*100).toInteger()
 
-//            println("nuevo valor " + valor)
-
-//            PdfTemplate template = cb.createTemplate(valor*7, 150);
+//            PdfTemplate template = cb.createTemplate(700, 150);
             PdfTemplate template = cb.createTemplate(700, 150);
 
             valor = 740*(valor/100)
@@ -494,7 +507,7 @@ class ReportesController {
 
             tablaD.addCell(cell1)
 
-            addCellTabla(tablaD, new Paragraph(numero(p.ddsc*100, 2), fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(numero(p.ddsc*100, 2), fontThUsar), prmsNmBorder)
 
         }
 
