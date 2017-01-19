@@ -68,12 +68,11 @@
                                         from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>
         </div>
 
-        <div class="col-md-1">Facultad:</div>
+        <div class="col-md-1"><br/>Facultad:</div>
 
         <div class="col-md-5">
             <g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"
-                      optionKey="id"
-                      name="facultad_name" id="facultad" class="form-control"/>
+                      optionKey="id" name="facultad_name" id="facultad" class="form-control"/>
         </div>
 
     </div>
@@ -262,6 +261,7 @@
     $("#imprimirNoEstudiante").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
+        var facultad = $("#facultad").find("option:selected").text();
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
@@ -269,7 +269,7 @@
             success: function (msg) {
                 var b = bootbox.dialog({
                     id: "dlgFacultad",
-                    title: "Seleccionar Escuela y Período",
+                    title: "Seleccionar Escuela de: " + facultad,
 //                    class   : "long",
                     message: msg,
                     buttons: {

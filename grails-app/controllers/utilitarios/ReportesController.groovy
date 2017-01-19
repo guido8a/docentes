@@ -793,7 +793,7 @@ class ReportesController {
 
         def chart3 = createChart( createDataset("Referencias: ",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea), subtitulo);
         def ancho = 500
-        def alto = 300
+        def alto = 540
 
         try {
 
