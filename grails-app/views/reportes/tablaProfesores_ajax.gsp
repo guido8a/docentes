@@ -39,7 +39,7 @@
                             </a>
                             <a href="#" class="btn btn-info btnPromedio"
                                data-id="${profesor.id}"
-                                ${docentes.ReporteEncuesta.findAllByProfesorAndPeriodo(profesor,periodo)?.size() == 4 ? '' : 'disabled='}  title="Promedio General">
+                                ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled='}  title="Promedio General">
                                 <i class="fa fa-pie-chart"></i>
                             </a>
                         </td>

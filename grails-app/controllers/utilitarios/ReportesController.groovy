@@ -820,9 +820,10 @@ class ReportesController {
         def directivos = TipoEncuesta.findByCodigo("DI")
         def pares = TipoEncuesta.findByCodigo("PR")
         def promedio = TipoEncuesta.findByCodigo("FE")
+        def total = TipoEncuesta.findByCodigo("TT")
 
 
-        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo]
+        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo, total: total]
     }
 
     def desempenoAlumnos () {
