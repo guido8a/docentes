@@ -14,6 +14,7 @@ import docentes.Periodo
 import docentes.Profesor
 import docentes.ReporteEncuesta
 import docentes.TipoEncuesta
+import docentes.Variables
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.title.Title
 import org.jfree.data.category.DefaultCategoryDataset
@@ -392,6 +393,9 @@ class ReportesController {
 
     def reporteVariables() {
         println "reporteVariables $params"
+
+        def tipo = Variables.get(params.tipo)
+
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -417,7 +421,8 @@ class ReportesController {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        /* todo: Parwametrizar para obtener la variable de la base de datos y modificar el sql */
+        /* todo: Parametrizar para obtener la variable de la base de datos y modificar el sql */
+//        Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: Desarrollo de Saberes Conscientes", fontTitulo)
         Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: Desarrollo de Saberes Conscientes", fontTitulo)
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -871,6 +876,15 @@ class ReportesController {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
+
+    def variables_ajax () {
+        def factores = Variables.findByCodigo('FE')
+        def botella = Variables.findByCodigo('CCB')
+        def variables = Variables.list() - factores - botella
+
+        return [variables: variables]
+    }
+
 
 
 

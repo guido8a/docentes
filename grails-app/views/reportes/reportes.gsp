@@ -141,15 +141,15 @@
                      style=" margin-top:20px"/>
             </div>
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="btonVariables">
-                    <span class="text-success"><strong>Desempeño académico</strong> de los profesores por variables
+                <div class="texto" id="imprimirPorAvariables">
+                    <span class="text-success"><i class="fa fa-graduation-cap"></i><strong> Desempeño académico</strong> de los profesores por variables
                     </span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirDesempeno">
-                    <span class="text-success"><strong>Informe del desempeño académico</strong> de los profesores
+                    <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Informe del desempeño académico</strong> de los profesores
                     </span>
                 </div>
             </a>
@@ -294,6 +294,44 @@
                                 var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela;
                                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
 //                                return false
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    $("#imprimirPorAvariables").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var facultad = $("#facultad").find("option:selected").text();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
+            data: {facl: facl},
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id: "dlgVariables",
+                    title: "Seleccionar de Variables de Desempeño",
+//                    class   : "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar: {
+                            label: "<i class='fa fa-print'></i> Imprimir",
+                            className: "btn-success",
+                            callback: function () {
+                                var prdo = $("#periodoId").val();
+                                var facl = $("#facultad").val();
+                                var tipo = $("#variableDesem").val();
+                                location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
                             }
                         }
 
