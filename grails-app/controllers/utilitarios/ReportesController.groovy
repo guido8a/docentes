@@ -241,12 +241,12 @@ class ReportesController {
         Integer v6 = Math.round(valor6*100)
 
         String s = titulo;
-        String s3 = "D-DSC (${v1} %) ";
-        String s4 = "D-DAC (${v2} %)";
-        String s5 = "D-DHD (${v3} %)";
-        String s6 = "D-DCI (${v4} %)";
-        String s7 = "D-CNI (${v5} %)";
-        String s8 = "D-EA (${v6} %)";
+        String s3 = "D-DSC (${v1}%) ";
+        String s4 = "D-DAC (${v2}%)";
+        String s5 = "D-DHD (${v3}%)";
+        String s6 = "D-DCI (${v4}%)";
+        String s7 = "D-CNI (${v5}%)";
+        String s8 = "D-EA (${v6}%)";
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         defaultcategorydataset.addValue(valor1, s, s3);
         defaultcategorydataset.addValue(valor2, s, s4);
@@ -882,7 +882,7 @@ class ReportesController {
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
         Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
         parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (rpec?.promedio*100) + " %", fontNormal)
+        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (rpec?.promedio*100) + "%", fontNormal)
         document.add(parrafoUniversidad)
         document.add(parrafoProfesor)
         document.add(parrafoFacultad)
@@ -890,7 +890,7 @@ class ReportesController {
         document.add(parrafoPromedio)
 
         def chart3 = createChart( createDataset("Referencias: ",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea), subtitulo);
-        def ancho = 500
+        def ancho = 540
         def alto = 540
 
         try {
