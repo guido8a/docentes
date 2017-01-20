@@ -37,8 +37,8 @@
                                data-id="${profesor.id}" data-tipo="4" title="Evaluación Pares">
                                 <i class="fa fa-cubes"></i>
                             </a>
-                            <a href="#" class="btn btn-info btnPromedio"
-                               data-id="${profesor.id}"
+                            <a href="#" class="btn btn-info btnAlumnos"
+                               data-id="${profesor.id}" data-tipo="5"
                                 ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled='}  title="Promedio General">
                                 <i class="fa fa-pie-chart"></i>
                             </a>

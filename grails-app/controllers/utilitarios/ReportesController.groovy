@@ -840,6 +840,7 @@ class ReportesController {
         def auto = TipoEncuesta.findByCodigo("AD")
         def directivos = TipoEncuesta.findByCodigo("DI")
         def pares = TipoEncuesta.findByCodigo("PR")
+        def totales = TipoEncuesta.findByCodigo("TT")
 //        def rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,encuestaAlumnos,periodo)
         def baos = new ByteArrayOutputStream()
         Document document = new Document(PageSize.A4);
@@ -864,6 +865,10 @@ class ReportesController {
             case '4':
                 rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)
                 subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Evaluación por Pares)"
+                break;
+            case '5':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,totales,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Total)"
                 break;
         }
 
