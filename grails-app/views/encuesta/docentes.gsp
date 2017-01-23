@@ -70,8 +70,14 @@
         <div class="linea"></div>
 
         <div>
+
             <div class="col-md-12" style="margin-top: -10px;">
-                Buscar el profesor a evaluar:
+                <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones"
+                   style="margin-left: -80px">
+                    <i class="fa fa-arrow-left"></i>
+                    Cancelar</a>
+                <span style="margin-left: 60px;">Buscar el profesor a evaluar:</span>
+
                 <div class="btn-group">
                     <input id="buscar" type="search" class="form-control"
                            placeholder="digite parte del nombre o del apellido del docente">

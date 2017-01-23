@@ -541,8 +541,9 @@ class EncuestaController {
     }
 
     def finalizaEncuesta(encu) {
+        println "llega encu: $encu, tipo: ${session.tipoPersona} encuesta: ${session.tipoEncuesta.codigo}"
         encuestaService.poneFinalizado(encu)
-//        println "tipo: ${session.tipoPersona} encuesta: ${session.tipoEncuesta.codigo}"
+
         if(session.tipoPersona == 'E' && (session.tipoEncuesta.codigo == 'FE')){
             //continuar con evaluacion a profesores
             redirect action: 'previa'

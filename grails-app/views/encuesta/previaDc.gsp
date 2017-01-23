@@ -39,6 +39,11 @@
         <span class="btn btn-primary btn-md btn-block disabled" style="cursor: default; color: #ffffc0 ">
             <strong>Usted se ha identificado como ${session.informante}</strong></span>
     </p>
+
+    <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
+        <i class="fa fa-arrow-left"></i>
+        Cancelar</a>
+
     <g:if test="${auto}">
     <g:link action="encuestaAD" class="btn btn-primary"><i class="fa fa-pencil"></i> Autoevaluación</g:link>
     </g:if>

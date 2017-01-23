@@ -11,7 +11,7 @@
 
     .item {
         width: 940px;
-        height: 250px;
+        height: 280px;
         float: left;
         margin: 4px;
         font-family: 'open sans condensed';
@@ -123,6 +123,13 @@
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirNoEstudiante">
                         <span class="text-success"><strong>Estudiantes que NO han realizado la evaluación</strong>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="asignaturas">
+                        <span class="text-success"><strong>Asignaturas que faltan por evaluar</strong>
                         </span>
                     </div>
                 </a>
@@ -292,6 +299,44 @@
                             callback: function () {
                                 var escuela = $("#escuelaRprt").val();
                                 var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela;
+                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
+//                                return false
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    $("#asignaturas").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var facultad = $("#facultad").find("option:selected").text();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
+            data: {facl: facl},
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id: "dlgFacultad",
+                    title: "Seleccionar Escuela de: " + facultad,
+//                    class   : "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar: {
+                            label: "<i class='fa fa-print'></i> Imprimir",
+                            className: "btn-success",
+                            callback: function () {
+                                var escuela = $("#escuelaRprt").val();
+                                var url = "${createLink(controller: 'reportes', action: 'asignaturas')}?periodo=" + prdo + "Wtipo=" + 7 + "Wescl=" + escuela;
                                 location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
 //                                return false
                             }

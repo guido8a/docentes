@@ -34,12 +34,22 @@
         <div class="logo"><img src="${resource(dir:'images',file:'universidad.jpeg')}" height="100px"></div>
         <div class="logo_tx"><h1>${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>
         %{--<br>Sistema para uso exclusivo de la esta Universidad</div>--}%
+        </div>
+    </div>
+    <div class="bs-component col-sm-12 panel panel-info ">
+        <div class="panel-heading" style="height: 45px; width: 100%">
+            <div class="col-md-2" style="margin-top: -5px"><a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
+                <i class="fa fa-arrow-left"></i>
+                Cancelar</a>
+            </div>
+            <div class="disabled col-sm-10 panel-title">Usted se ha identificado como ${session.informante}</div>
+        </div>
+    </div>
 
-    <p class="bs-component">
-        <span class="btn btn-default btn-md btn-block disabled">Usted se ha identificado como ${session.informante}</span>
-    </p>
 
-    <g:if test="${matr}">
+
+
+            <g:if test="${matr}">
         <h3>Evaluación al Docente</h3> Elija al docente que desea evaluar y haga clic en el botón Evaluar correspondiente.
         <table class="table table-condensed table-bordered table-striped">
             <thead>
@@ -86,10 +96,10 @@
         var id = $(this).data('id');
         var profesor = $(this).data('profesor');
         var prof = $(this).data('prof');
-        var titulo = "Evbaluar al profesor<br><br><strong>" + profesor + "<stromng>"
+        var titulo = "Evaluar al profesor<br><br><strong>" + profesor + "<stromng>"
         bootbox.confirm(titulo, function (result) {
             if (result) {
-                console.log("prof__id", prof, "dcta:", id);
+//                console.log("prof__id", prof, "dcta:", id, profesor);
                 location.href = "${createLink(action: 'encuestaDC')}" + "?prof__id=" + prof + "&dcta__id=" + id
             }
         });

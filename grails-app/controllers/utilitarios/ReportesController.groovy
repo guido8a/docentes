@@ -80,6 +80,35 @@ class ReportesController {
 
     def index() { }
 
+    def asignaturas () {
+        println "asignaturas $params"
+
+        def periodo
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def tipo = params.tipo
+        def titulo
+
+        sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
+                "from dcta, mate, prof, crso, escl " +
+                "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
+                "mate.mate__id = dcta.mate__id and prof.prof__id not in ( " +
+                "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
+                "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
+                "order by escldscr, profapll, profnmbr"
+        titulo = "Profesores que NO han sido evaluados por los alumnos"
+
+        println "sql: $sql"
+
+        def res = cn.rows(sql.toString());
+        def escuelas = res.escldscr.unique()
+
+//        println("escuelas " + escuelas)
+//        println("sql " + sql)
+
+        return [res: res, escuelas: escuelas, titulo: titulo]
+    }
+
     def profesNoEvaluados () {
         println "profesNoEvaluados $params"
 
@@ -88,19 +117,6 @@ class ReportesController {
         def sql
         def tipo = params.tipo
         def titulo
-        def escuela
-
-        if(params.periodo){
-            periodo = Periodo.get(params.periodo)
-        }else{
-            periodo = null
-        }
-
-        if(params.escuela){
-            escuela = Escuela.get(params.escuela)
-        }else{
-            escuela = null
-        }
 
         switch(tipo){
             case '1':
@@ -166,7 +182,6 @@ class ReportesController {
                         "order by escldscr, estdapll, estdnmbr"
                 titulo = "Estudiantes que no han realizado la evaluación"
                 break;
-
         }
 
         println "sql: $sql"

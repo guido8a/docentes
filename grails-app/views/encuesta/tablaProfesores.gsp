@@ -36,7 +36,7 @@ th, td {
                 </td>
                 <td width="60px" class="text-info" style="text-align: center">
                     <a href="#" class="btn btn-info btn-xs btnEncuesta" title="Evaluar" data-id="${dato.id}"
-                        data-profesor="${dato?.profesor} <br>Materia: ${dato.matedscr} <br>Curso: ${dato.crsodscr}<br>Paralelo: ${dato.dctaprll}">
+                        data-profesor="${dato?.profesor}<br><ul><li>Materia: ${dato.matedscr} </li><li>Curso: ${dato.crsodscr}</li><li>Paralelo: ${dato.dctaprll}</li></ul>">
                         <i class="fa fa-pencil"></i></a>
                 </td>
             </tr>
@@ -51,7 +51,7 @@ th, td {
         var id = $(this).data('id');
         var profesor = $(this).data('profesor');
         var accion = ""
-        var titulo = "Evbaluar al profesor<br><br><strong>" + profesor + "<stromng>"
+        var titulo = "<span style='font-size: 18px; color:#004166'>Evaluar al profesor<br><br><strong>" + profesor + "<stromng></span>"
         if(${session.par}) {
             accion = "${createLink(action: 'encuestaPR')}"
         } else {
