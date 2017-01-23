@@ -89,22 +89,21 @@ class ReportesController {
         def tipo = params.tipo
         def titulo
 
-        sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                "from dcta, mate, prof, crso, escl " +
+        sql = "select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, escldscr " +
+                "from prof, mate, crso, escl, dcta " +
                 "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                 "mate.mate__id = dcta.mate__id and prof.prof__id not in ( " +
-                "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
-                "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
+                "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}' and teti__id = 2 and " +
+                "dcta__id = dcta.dcta__id) and " +
+                "escl.escl__id = mate.escl__id and escl.escl__id = ${params.escl} " +
                 "order by escldscr, profapll, profnmbr"
-        titulo = "Profesores que NO han sido evaluados por los alumnos"
 
-        println "sql: $sql"
+        titulo = "Asignaturas que Faltan por Evaluar los Estudiantes"
+
+//        println "sql: $sql"
 
         def res = cn.rows(sql.toString());
         def escuelas = res.escldscr.unique()
-
-//        println("escuelas " + escuelas)
-//        println("sql " + sql)
 
         return [res: res, escuelas: escuelas, titulo: titulo]
     }

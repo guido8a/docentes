@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 26/09/16
-  Time: 12:02
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -98,11 +91,9 @@
         <thead>
 
         <tr>
-            <th class="back" rowspan="2" style="width: 10%">Cédula</th>
-            <th class="back" rowspan="2" style="width: 33%">Nombres y Apellidos</th>
-            <th class="back" rowspan="2" style="width: 36%">Materia</th>
-            <th class="back" rowspan="2" style="width: 17%">Curso</th>
-            <th class="back" rowspan="2" style="width: 4%">Par.</th>
+            <th class="back" rowspan="2" style="width: 40%">Materia</th>
+            <th class="back" rowspan="2" style="width: 40%">Profesor</th>
+            <th class="back" rowspan="2" style="width: 20%">Curso</th>
         </tr>
 
         </thead>
@@ -110,11 +101,9 @@
         <g:each in="${res}" var="r">
             <g:if test="${e == r.escldscr}">
                 <tr>
-                    <td style="width: 10%">${r[1]}</td>
-                    <td style="width: 33%">${r[2]}</td>
-                    <td style="width: 36%">${r[3]}</td>
-                    <td style="width: 17%; font-size: 9pt">${r[4]}</td>
-                    <td style="width: 4%" class="alineado">${r[5]}</td>
+                    <td style="width: 40%">${r[0]}</td>
+                    <td style="width: 40%">${r[1]}</td>
+                    <td style="width: 20%; font-size: 9pt">${r[2]}</td>
                 </tr>
             </g:if>
             <g:else>
