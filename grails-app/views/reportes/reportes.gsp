@@ -179,7 +179,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirNoEvaluados">
+                <div class="texto" id="imprimirTotales">
                     <span class="text-success"><strong>Totales del desempeño académico</strong> de los profesores por variables
                     </span>
                 </div>
@@ -332,6 +332,44 @@
                                 var facl = $("#facultad").val();
                                 var tipo = $("#variableDesem").val();
                                 location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    $("#imprimirTotales").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var facultad = $("#facultad").find("option:selected").text();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
+            data: {facl: facl},
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id: "dlgVariablesTotales",
+                    title: "Seleccionar Variables",
+//                    class   : "long",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar: {
+                            label: "<i class='fa fa-print'></i> Imprimir",
+                            className: "btn-success",
+                            callback: function () {
+                                var prdo = $("#periodoId").val();
+                                var facl = $("#facultad").val();
+                                var tipo = $("#variableDesem").val();
+                                location.href = "${createLink(controller: 'reportes', action: 'reporteTotalesDesempeno')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
                             }
                         }
 
