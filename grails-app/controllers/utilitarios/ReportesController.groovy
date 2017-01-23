@@ -992,7 +992,7 @@ class ReportesController {
 
     def reporteTotalesDesempeno () {
 
-        println "reporteVariables $params"
+        println "reporteTotalDes $params"
 
         def tipo = Variables.get(params.tipo)
 
@@ -1021,7 +1021,6 @@ class ReportesController {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-//        Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: Desarrollo de Saberes Conscientes", fontTitulo)
         Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: " + tipo?.descripcion, fontTitulo)
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -1032,15 +1031,53 @@ class ReportesController {
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
-
+        def val
         def sql
 
-
-        sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
+        switch(tipo?.codigo){
+            case 'CNI':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                val = 'dcni'
 
+                break;
+            case 'DAC':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                val = 'ddac'
+                break;
+            case 'DCI':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                val = 'ddsc'
 
+                break;
+            case 'DHD':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                val = 'ddhd'
+
+                break;
+            case 'DSC':
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                val = 'ddsc'
+
+                break;
+            case 'EA':
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                val = 'd_ea'
+                break;
+        }
 
 
         println("---> " + sql)
@@ -1059,7 +1096,6 @@ class ReportesController {
         tablaD.setWidthPercentage(100);
         tablaD.setWidths(arregloEnteros([37, 35, 20, 6]))
 
-
         addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
@@ -1068,7 +1104,6 @@ class ReportesController {
         PdfPTable table = new PdfPTable(1);
         table.setTotalWidth(450);
 
-
         res.eachWithIndex { p , j ->
 
 
@@ -1076,31 +1111,45 @@ class ReportesController {
             addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
 
 //            def valor = ((p.ddsc).toDouble()*100).toInteger()
-            def valor = ((p.dcni).toDouble()*100).toInteger()
+            def valor
+            switch(tipo?.codigo){
+                case 'CNI':
+                    valor = ((p.dcni).toDouble()*100).toInteger()
+                    break;
+                case 'DAC':
+                    valor = ((p.ddac).toDouble()*100).toInteger()
+                    break;
+                case 'DCI':
+                    valor = ((p.ddci).toDouble()*100).toInteger()
+                    break;
+                case 'DHD':
+                    valor = ((p.ddhd).toDouble()*100).toInteger()
+                    break;
+                case 'DSC':
+                    valor = ((p.ddsc).toDouble()*100).toInteger()
+                    break;
+                case 'EA':
+                    valor = ((p.d_ea).toDouble()*100).toInteger()
+                    break;
+            }
 
             PdfTemplate template = cb.createTemplate(700, 150);
 
             def valorFinal = 740*(valor/100)
             valorFinal = 740 - valorFinal
-
             PdfShadingPattern shading = colores(valorFinal, 740, pdfw, cb)
-
             template.setShadingFill(shading)
-
             template.rectangle(20,20,1100,70);
-
             template.fill();
+
             Image img = Image.getInstance(template);
             img.setRotationDegrees(180)
-
             Chunk chunk = new Chunk(img, 6, -2);
 
             PdfPCell cell1 = new PdfPCell();
             cell1.setPaddingTop(4);
             cell1.addElement(chunk)
-
             tablaD.addCell(cell1)
-
             addCellTabla(tablaD, new Paragraph(numero(valor, 2), fontThUsar), prmsNmBorder)
 
         }
