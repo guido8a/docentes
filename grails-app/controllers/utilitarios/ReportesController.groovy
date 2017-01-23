@@ -233,20 +233,24 @@ class ReportesController {
 
     private static CategoryDataset createDataset(titulo,valor1, valor2, valor3, valor4, valor5, valor6)
     {
-        Integer v1 = Math.round(valor1*100)
-        Integer v2 = Math.round(valor2*100)
-        Integer v3 = Math.round(valor3*100)
-        Integer v4 = Math.round(valor4*100)
-        Integer v5 = Math.round(valor5*100)
-        Integer v6 = Math.round(valor6*100)
+
+        def patternDecimal = "###.##%"
+        def percentform1 = new DecimalFormat(patternDecimal)
+
+        def v1 = percentform1.format(valor1)
+        def v2 = percentform1.format(valor2)
+        def v3 = percentform1.format(valor3)
+        def v4 = percentform1.format(valor4)
+        def v5 = percentform1.format(valor5)
+        def v6 = percentform1.format(valor6)
 
         String s = titulo;
-        String s3 = "D-DSC (${v1}%) ";
-        String s4 = "D-DAC (${v2}%)";
-        String s5 = "D-DHD (${v3}%)";
-        String s6 = "D-DCI (${v4}%)";
-        String s7 = "D-CNI (${v5}%)";
-        String s8 = "D-EA (${v6}%)";
+        String s3 = "D-DSC (${v1}) ";
+        String s4 = "D-DAC (${v2})";
+        String s5 = "D-DHD (${v3})";
+        String s6 = "D-DCI (${v4})";
+        String s7 = "D-CNI (${v5})";
+        String s8 = "D-EA (${v6})";
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         defaultcategorydataset.addValue(valor1, s, s3);
         defaultcategorydataset.addValue(valor2, s, s4);
@@ -848,6 +852,10 @@ class ReportesController {
         def tipo = params.tipo
         def subtitulo = ''
         def rpec
+        def pattern1 = "###.##%"
+        def percentform = new DecimalFormat(pattern1)
+
+
 
         switch(tipo){
             case '1':
@@ -882,7 +890,8 @@ class ReportesController {
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
         Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
         parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (rpec?.promedio*100) + "%", fontNormal)
+//        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + ((rpec?.promedio*100)) + "%", fontNormal)
+        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (percentform.format(rpec?.promedio)), fontNormal)
         document.add(parrafoUniversidad)
         document.add(parrafoProfesor)
         document.add(parrafoFacultad)
