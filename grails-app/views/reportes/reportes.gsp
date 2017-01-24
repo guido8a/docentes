@@ -95,7 +95,7 @@
 
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirEvaluados">
-                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que no tienen almenos una evaluaciones
+                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que no tienen al menos una evaluaciones
                         </span>
                     </div>
                 </a>
@@ -141,8 +141,8 @@
 <div class="body ui-corner-all"
      style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 300px; ">
 
-    <div class="ui-corner-all item fuera" style="height: 280px">
-        <div class="ui-corner-all item" style="height: 280px">
+    <div class="ui-corner-all item fuera" style="height: 290px">
+        <div class="ui-corner-all item" style="height: 290px">
             <div class="imagen" style="height: 100%; width: 200px;">
                 <img src="${resource(dir: 'images', file: 'evaluar-3.png')}" width="150px" height="auto"
                      style=" margin-top:20px"/>
@@ -187,7 +187,7 @@
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirTotales">
-                    <span class="text-success"><strong>Totales del desempeño académico</strong> de los profesores por variables
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Totales del desempeño académico</strong> de los profesores por variables
                     </span>
                 </div>
             </a>
@@ -199,6 +199,12 @@
                 </div>
             </a>
 
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirCatego">
+                    <span class="text-success"><i class="fa fa-bars"></i><strong> Ordenamiento por variables </strong> de profesores
+                    </span>
+                </div>
+            </a>
         </div>
     </div>
 </div>
@@ -423,6 +429,43 @@
             }
         });
     });
+
+    $("#imprimirCatego").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var facultad = $("#facultad").find("option:selected").text();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
+            data: {facl: facl},
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id: "dlgVariablesCate",
+                    title: "Seleccionar de Variables de Desempeño",
+                    message: msg,
+                    buttons: {
+                        cancelar: {
+                            label: "Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        },
+                        aceptar: {
+                            label: "<i class='fa fa-print'></i> Imprimir",
+                            className: "btn-success",
+                            callback: function () {
+                                var prdo = $("#periodoId").val();
+                                var facl = $("#facultad").val();
+                                var tipo = $("#variableDesem").val();
+                                location.href = "${createLink(controller: 'reportes', action: 'reporteOrdenamiento')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
+                            }
+                        }
+
+                    } //buttons
+                }); //dialog
+            }
+        });
+    })
 
 
 </script>

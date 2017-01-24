@@ -458,27 +458,27 @@ class ReportesController {
             case 'CNI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'dcni'
 
                 break;
             case 'DAC':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'ddac'
                 break;
             case 'DCI':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
             case 'DHD':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'ddhd'
 
                 break;
@@ -486,7 +486,7 @@ class ReportesController {
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
@@ -494,7 +494,7 @@ class ReportesController {
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'd_ea'
                 break;
         }
@@ -1020,7 +1020,7 @@ class ReportesController {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: " + tipo?.descripcion, fontTitulo)
+        Paragraph lineaTitulo = new Paragraph(tipo?.descripcion + " Total General", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
@@ -1037,27 +1037,27 @@ class ReportesController {
             case 'CNI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'dcni'
 
                 break;
             case 'DAC':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddac'
                 break;
             case 'DCI':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
             case 'DHD':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddhd'
 
                 break;
@@ -1065,7 +1065,7 @@ class ReportesController {
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
@@ -1073,13 +1073,13 @@ class ReportesController {
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT'"
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'd_ea'
                 break;
         }
 
 
-        println("---> " + sql)
+//        println("---> " + sql)
 
 
         def cn = dbConnectionService.getConnection()
@@ -1166,6 +1166,180 @@ class ReportesController {
     }
 
 
+    def reporteOrdenamiento () {
 
+
+        println "reporteOrdenamiento $params"
+
+        def tipo = Variables.get(params.tipo)
+
+        def baos = new ByteArrayOutputStream()
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte desempeño profesores");
+        document.addSubject("Generado por el sistema");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.add(new Paragraph("Reporte", fontTitulo));
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo = new Paragraph("Reporte: " + tipo?.descripcion, fontTitulo )
+        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(lineaTitulo)
+        document.add(lineaVacia)
+
+        def val
+        def sql
+
+        switch(tipo?.codigo){
+            case 'CNI':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by dcni DESC"
+                val = 'dcni'
+
+                break;
+            case 'DAC':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddac DESC"
+                val = 'ddac'
+                break;
+            case 'DCI':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddci DESC"
+                val = 'ddsc'
+
+                break;
+            case 'DHD':
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddhd DESC"
+                val = 'ddhd'
+
+                break;
+            case 'DSC':
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddsc DESC"
+                val = 'ddsc'
+
+                break;
+            case 'EA':
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by d_ea DESC"
+                val = 'd_ea'
+                break;
+        }
+
+
+//        println("---> " + sql)
+
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def prmsTdNoBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsTdBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        /* ************************************************************* HEADER PLANILLA ***************************************************************************/
+        PdfPTable tablaD = new PdfPTable(4);
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([37, 35, 20, 6]))
+
+        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
+
+        PdfPTable table = new PdfPTable(1);
+        table.setTotalWidth(450);
+
+        res.eachWithIndex { p , j ->
+
+
+            addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
+
+//            def valor = ((p.ddsc).toDouble()*100).toInteger()
+            def valor
+            switch(tipo?.codigo){
+                case 'CNI':
+                    valor = ((p.dcni).toDouble()*100).toInteger()
+                    break;
+                case 'DAC':
+                    valor = ((p.ddac).toDouble()*100).toInteger()
+                    break;
+                case 'DCI':
+                    valor = ((p.ddci).toDouble()*100).toInteger()
+                    break;
+                case 'DHD':
+                    valor = ((p.ddhd).toDouble()*100).toInteger()
+                    break;
+                case 'DSC':
+                    valor = ((p.ddsc).toDouble()*100).toInteger()
+                    break;
+                case 'EA':
+                    valor = ((p.d_ea).toDouble()*100).toInteger()
+                    break;
+            }
+
+            PdfTemplate template = cb.createTemplate(700, 150);
+
+            def valorFinal = 740*(valor/100)
+            valorFinal = 740 - valorFinal
+            PdfShadingPattern shading = colores(valorFinal, 740, pdfw, cb)
+            template.setShadingFill(shading)
+            template.rectangle(20,20,1100,70);
+            template.fill();
+
+            Image img = Image.getInstance(template);
+            img.setRotationDegrees(180)
+            Chunk chunk = new Chunk(img, 6, -2);
+
+            PdfPCell cell1 = new PdfPCell();
+            cell1.setPaddingTop(4);
+            cell1.addElement(chunk)
+            tablaD.addCell(cell1)
+            addCellTabla(tablaD, new Paragraph(numero(valor, 2), fontThUsar), prmsNmBorder)
+
+        }
+
+        document.add(tablaD);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+    }
 
 }
