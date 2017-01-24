@@ -747,13 +747,9 @@ class ReportesController {
     }
 
     def desempeno () {
-
-//        println("prams " + params)
         def facultad =  Facultad.get(params.facultad)
         def periodo = Periodo.get(params.periodo)
-
-        return [facultad: facultad, periodo: periodo]
-
+        return [facultad: facultad, periodo: periodo, pantalla: params.pantalla]
     }
 
     def tablaProfesores_ajax () {
@@ -769,15 +765,6 @@ class ReportesController {
         def facultad = Facultad.get(params.facultad)
 
         if(params.cedula){
-//            res = Profesor.withCriteria {
-//                and{
-//                    ilike("cedula", params.cedula)
-//                    ilike("nombre", params.nombres)
-//                    ilike("apellido", params.apellidos)
-//                }
-//            }
-
-
 
             res = ReporteEncuesta.withCriteria {
 
@@ -795,21 +782,8 @@ class ReportesController {
                         ilike("apellido", params.apellidos)
                     }
                 }
-
-
             }
-
-
-
-
         }else{
-//            res = Profesor.withCriteria {
-//                and{
-//                    ilike("nombre", params.nombres)
-//                    ilike("apellido", params.apellidos)
-//                }
-//            }
-
 
             res = ReporteEncuesta.withCriteria {
 
@@ -822,13 +796,10 @@ class ReportesController {
                     }
 
                     and{
-//                        ilike("cedula", params.cedula)
                         ilike("nombre", params.nombres)
                         ilike("apellido", params.apellidos)
                     }
                 }
-
-
             }
         }
 
@@ -841,7 +812,27 @@ class ReportesController {
         def total = TipoEncuesta.findByCodigo("TT")
 
 
-        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo, total: total]
+        def cn = dbConnectionService.getConnection()
+        def existe = []
+        res.profesor.unique().each {p->
+        def sql = "select * from informe(${p?.id},${periodo?.id})"
+            println("sql " + sql)
+        def q = cn.rows(sql.toString());
+            if(q){
+                existe += '1'
+            }else{
+                existe += '2'
+            }
+
+        }
+
+
+        println("existe " + existe)
+
+
+        def pantalla = params.pantalla
+
+        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo, total: total, pantalla: pantalla]
     }
 
     def desempenoAlumnos () {
@@ -1340,6 +1331,12 @@ class ReportesController {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
+    }
+
+    def recomendacion () {
+        def facultad =  Facultad.get(params.facultad)
+        def periodo = Periodo.get(params.periodo)
+        return [facultad: facultad, periodo: periodo]
     }
 
 }

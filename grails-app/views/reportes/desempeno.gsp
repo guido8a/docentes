@@ -84,7 +84,8 @@
         var nom = $("#nombresBusqueda").val();
         var ape = $("#apellidosBusqueda").val();
         var fac = ${facultad?.id};
-        var per = ${periodo?.id}
+        var per = ${periodo?.id};
+        var pantalla = ${pantalla};
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes', action: 'tablaProfesores_ajax')}",
@@ -93,7 +94,8 @@
                 nombres: nom,
                 apellidos: ape,
                 facultad: fac,
-                periodo: per
+                periodo: per,
+                pantalla: pantalla
             },
             success: function (msg){
                 $("#divTablaProfesores").html(msg);

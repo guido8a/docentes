@@ -162,8 +162,8 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirNoAutoeva">
-                    <span class="text-success"><strong>Recomendaciones</strong></span>
+                <div class="texto" id="imprimirReco">
+                    <span class="text-success"><i class="fa fa-star"></i><strong> Recomendaciones</strong></span>
                 </div>
             </a>
 
@@ -229,7 +229,7 @@
     $("#imprimirDesempeno").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl;
+        location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 1;
     });
 
 
@@ -465,7 +465,13 @@
                 }); //dialog
             }
         });
-    })
+    });
+
+    $("#imprimirReco").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 2;
+    });
 
 
 </script>
