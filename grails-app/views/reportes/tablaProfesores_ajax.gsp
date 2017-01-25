@@ -10,7 +10,7 @@
         <div style="width: 1060px; height: 300px;">
             <table class="table table-condensed table-bordered table-striped">
                 <tbody>
-                <g:each in="${profesores}" var="profesor">
+                <g:each in="${profesores}" var="profesor" status="j">
                     <tr data-id="${profesor.id}">
                         <td style="width: 5%">${profesor?.cedula}</td>
                         <td style="width: 18%">${profesor?.nombre}</td>
@@ -46,8 +46,7 @@
                             </g:if>
                             <g:else>
                                 <a href="#" class="btn btn-warning btnRecomendaciones"
-                                   data-id="${profesor.id}" data-tipo="5"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled='}  title="Recomendaciones">
+                                   data-id="${profesor.id}" ${existe[j] == '1' ? '' : 'disabled='}  title="Recomendaciones">
                                     <i class="fa fa-star"></i>
                                 </a>
                             </g:else>
@@ -67,6 +66,13 @@
         var perio = ${periodo?.id};
         var tipo = $(this).data('tipo');
         location.href="${createLink(controller: 'reportes', action: 'desempenoAlumnos')}?profe=" + idProfe + "&periodo=" + perio + "&tipo=" + tipo
+    });
+
+    $(".btnRecomendaciones").click(function () {
+        var idProfe = $(this).data('id');
+        var periodo = ${periodo?.id};
+        var facul = ${facultad?.id};
+        location.href="${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
     });
 
 

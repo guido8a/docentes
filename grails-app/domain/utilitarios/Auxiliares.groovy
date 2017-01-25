@@ -47,7 +47,7 @@ class Auxiliares {
             maximoEstudiantes column: 'auxlestd'
             password column: 'pass'
             periodo column: 'prdo__id'
-            cuelloBotella column: 'pcntcbb'
+            cuelloBotella column: 'pcntccbb'
             factorExterno column: 'pcntfcex'
         }
     }

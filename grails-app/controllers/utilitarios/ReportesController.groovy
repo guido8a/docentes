@@ -816,23 +816,21 @@ class ReportesController {
         def existe = []
         res.profesor.unique().each {p->
         def sql = "select * from informe(${p?.id},${periodo?.id})"
-            println("sql " + sql)
+//            println("sql " + sql)
         def q = cn.rows(sql.toString());
+//            println("qqq " + q)
             if(q){
                 existe += '1'
             }else{
                 existe += '2'
             }
-
         }
 
-
-        println("existe " + existe)
-
+//        println("existe " + existe)
 
         def pantalla = params.pantalla
 
-        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo, total: total, pantalla: pantalla]
+        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, existe: existe, facultad: facultad]
     }
 
     def desempenoAlumnos () {
