@@ -136,7 +136,7 @@ class Reportes2Controller {
     def recomendaciones () {
 
 
-        println "reporteRecomendaciones $params"
+//        println "reporteRecomendaciones $params"
         def periodo = Periodo.get(params.periodo)
         def profesor = Profesor.get(params.profe)
 
@@ -151,7 +151,7 @@ class Reportes2Controller {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Reporte desempeño profesores");
+        document.addTitle("Reporte recomendaciones profesores");
         document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, docentes, profesores");
         document.addAuthor("Docentes");
@@ -166,6 +166,9 @@ class Reportes2Controller {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facultad).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
+        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Recomendaciones", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -173,13 +176,13 @@ class Reportes2Controller {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoProfesor)
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
         def sql =  "select * from informe(${profesor?.id},${periodo?.id})"
 
-
-        println("---> " + sql)
+//        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -200,8 +203,8 @@ class Reportes2Controller {
 
         res.eachWithIndex { p , j ->
 
-            addCellTabla(tablaD, new Paragraph(p.rcnmdscr, fontThUsar), prmsTdNoBorder)
-            addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(p.rcmndscr, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsCrBorder)
 
         }
 
