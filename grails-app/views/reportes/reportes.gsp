@@ -168,8 +168,8 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirAutoeva">
-                    <span class="text-success"><strong>Cuellos de botella</strong></span>
+                <div class="texto" id="imprimirBotella">
+                    <span class="text-success"><i class="fa fa-flask"></i><strong> Cuellos de botella</strong></span>
                 </div>
             </a>
 
@@ -471,6 +471,12 @@
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 2;
+    });
+
+    $("#imprimirBotella").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes2', action: 'botella')}?periodo=" + prdo + "&facultad=" + facl;
     });
 
 
