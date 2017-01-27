@@ -18,7 +18,9 @@ import com.itextpdf.text.Document;
 
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfWriter
+import org.fusesource.jansi.Ansi
+import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders;
 
 
 class Reportes2Controller {
@@ -232,7 +234,12 @@ class Reportes2Controller {
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold4 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLDITALIC);
+
         fontNormalBold.setColor(BaseColor.BLUE)
+        fontNormalBold3.setColor(BaseColor.WHITE)
+
 
         Document document
         document = new Document(PageSize.A4);
@@ -277,34 +284,26 @@ class Reportes2Controller {
         def res = cn.rows(sql.toString());
 
         def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: BaseColor.BLUE]
+        def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsIzBorderAzul = [border: BaseColor.BLUE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-        /* ************************************************************* HEADER PLANILLA ***************************************************************************/
-//        PdfPTable tablaC = new PdfPTable(2);
-//        tablaC.setWidthPercentage(100);
-//        tablaC.setWidths(arregloEnteros([70, 30]))
-
-//        PdfPTable tablaD = new PdfPTable(3);
-//        tablaD.setWidthPercentage(100);
-//        tablaD.setWidths(arregloEnteros([60, 10, 30]))
 
         def varProf
         def varMate
 
         res.eachWithIndex { p , j ->
 
-//            println("------> " + j)
-
             if(p?.prof != varProf){
                 PdfPTable tablaC = new PdfPTable(2);
                 tablaC.setWidthPercentage(100);
                 tablaC.setWidths(arregloEnteros([63, 37]))
 
-                addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold), prmsIzBorder)
-                addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold), prmsIzBorder)
+                addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold3), prmsIzBorder)
+                addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold3), prmsIzBorder)
                 document.add(tablaC);
             }
 
@@ -313,9 +312,9 @@ class Reportes2Controller {
                 tablaD.setWidthPercentage(100);
                 tablaD.setWidths(arregloEnteros([50,13,37 ]))
 
-                addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder)
-                addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder)
-                addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder)
+                addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+                addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
+                addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
 
                 document.add(tablaD);
 
@@ -323,33 +322,26 @@ class Reportes2Controller {
                 tablaF.setWidthPercentage(100);
                 tablaF.setWidths(arregloEnteros([85, 15]))
 
-                addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold2), prmsCrBorder)
-                addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold2), prmsCrBorder)
+                addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
+                addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold4), prmsCrBorder)
 
                 document.add(tablaF);
 
             }
 
-
-
             PdfPTable tablaE = new PdfPTable(2);
             tablaE.setWidthPercentage(100);
             tablaE.setWidths(arregloEnteros([85, 15]))
 
-//            addCellTabla(tablaE, new Paragraph("Causa", fontNormalBold), prmsTdNoBorder)
-//            addCellTabla(tablaE, new Paragraph("Frecuencias", fontNormalBold), prmsTdNoBorder)
-
-            addCellTabla(tablaE, new Paragraph(p?.causa, fontThUsar), prmsIzBorder)
+            addCellTabla(tablaE, new Paragraph(p?.causa, fontThUsar), prmsIzBorder3)
             addCellTabla(tablaE, new Paragraph(numero(p?.frec,0), fontThUsar), prmsCrBorder)
             document.add(tablaE);
 
             varProf = p.prof
             varMate = p.mate
 
-//            document.
         }
 
-//        document.add(tablaD);
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
