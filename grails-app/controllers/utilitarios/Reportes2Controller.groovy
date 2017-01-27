@@ -221,8 +221,6 @@ class Reportes2Controller {
     }
 
     def botella () {
-
-
         println "reporteBotella $params"
 
         def periodo = Periodo.get(params.periodo)
@@ -237,7 +235,7 @@ class Reportes2Controller {
         Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold4 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLDITALIC);
 
-        fontNormalBold.setColor(BaseColor.BLUE)
+        fontNormalBold.setColor(new BaseColor(70, 88, 107))
         fontNormalBold3.setColor(BaseColor.WHITE)
 
 
@@ -284,7 +282,7 @@ class Reportes2Controller {
         def res = cn.rows(sql.toString());
 
         def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: BaseColor.BLUE]
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: new BaseColor(95, 113, 132)]
         def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
         def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsIzBorderAzul = [border: BaseColor.BLUE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
