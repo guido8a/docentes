@@ -174,14 +174,14 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirEstudiante">
-                    <span class="text-success"><strong>Factores de potenciación</strong></span>
+                <div class="texto" id="imprimirPotencia">
+                    <span class="text-success"><i class="fa fa-flash"></i><strong>  Factores de potenciación</strong></span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirNoEstudiante">
-                    <span class="text-success"><strong>Factores de éxito</strong></span>
+                <div class="texto" id="imprimirExito">
+                    <span class="text-success"><i class="fa fa-sun-o"></i><strong> Factores de éxito</strong></span>
                 </div>
             </a>
 
@@ -193,8 +193,8 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirNoEvaluados">
-                    <span class="text-success"><strong>Clasificación del desempeño académico</strong> de los profesores
+                <div class="texto" id="imprimirClasificacion">
+                    <span class="text-success"><i class="fa fa-signal"></i><strong> Clasificación del desempeño académico</strong> de los profesores
                     </span>
                 </div>
             </a>
@@ -477,6 +477,24 @@
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         location.href = "${createLink(controller: 'reportes2', action: 'botella')}?periodo=" + prdo + "&facultad=" + facl;
+    });
+
+    $("#imprimirPotencia").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes2', action: 'potencia')}?periodo=" + prdo + "&facultad=" + facl;
+    });
+
+    $("#imprimirExito").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes2', action: 'exito')}?periodo=" + prdo + "&facultad=" + facl;
+    });
+
+    $("#imprimirClasificacion").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes2', action: 'clasificacion')}?periodo=" + prdo + "&facultad=" + facl;
     });
 
 
