@@ -208,6 +208,36 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<div class="body ui-corner-all"
+     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 150px; ">
+
+    <div class="ui-corner-all item fuera" style="height: 150px">
+        <div class="ui-corner-all item" style="height: 150px">
+            <div class="imagen" style="height: 100%; width: 200px;">
+                <img src="${resource(dir: 'images', file: 'survey.png')}" width="100px" height="auto"
+                     style=" margin-top:0px; margin-left: 30px"/>
+            </div>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirEncuesta">
+                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Encuestas </strong> de profesores
+                    </span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 </div>
 
 
@@ -497,6 +527,11 @@
         location.href = "${createLink(controller: 'reportes2', action: 'clasificacion')}?periodo=" + prdo + "&facultad=" + facl;
     });
 
+    $("#imprimirEncuesta").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 3;
+    });
 
 </script>
 

@@ -699,4 +699,97 @@ class Reportes2Controller {
 
 
     }
+
+    def encuesta () {
+
+        //        println "reporteClasificacion $params"
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad = Facultad.get(params.facultad)
+
+
+        def baos = new ByteArrayOutputStream()
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold4 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLDITALIC);
+
+        fontNormalBold.setColor(new BaseColor(70, 88, 107))
+        fontNormalBold3.setColor(BaseColor.WHITE)
+
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte Factores de éxito");
+        document.addSubject("Generado por el sistema");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.add(new Paragraph("Reporte", fontTitulo));
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo = new Paragraph("Factores de éxito", fontTitulo )
+        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(lineaTitulo)
+        document.add(lineaVacia)
+
+        def sql = "select facldscr, profapll||' '||profnmbr prof, clase from rpec, prof, escl, facl where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl.facl__id = escl.facl__id and clase is not null order by facldscr, profapll;"
+
+        println("---> " + sql)
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: new BaseColor(95, 113, 132)]
+        def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder4 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_CENTER,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorderAzul = [border: BaseColor.BLUE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        PdfPTable tablaD = new PdfPTable(3);
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([50,40,10]))
+
+        addCellTabla(tablaD, new Paragraph("Asignatura", fontNormalBold), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Profesor", fontNormalBold), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Clase", fontNormalBold), prmsIzBorder4)
+
+
+        res.eachWithIndex { p , j ->
+            addCellTabla(tablaD, new Paragraph(p?.facldscr, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.prof, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.clase, fontThUsar), prmsCrBorder)
+
+        }
+        document.add(tablaD);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'clasificacion')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+    }
 }

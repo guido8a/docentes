@@ -44,10 +44,16 @@
                                     <i class="fa fa-pie-chart"></i>
                                 </a>
                             </g:if>
-                            <g:else>
+                            <g:elseif test="${pantalla == '2'}">
                                 <a href="#" class="btn btn-warning btnRecomendaciones"
                                    data-id="${profesor.id}" ${existe[j] == '1' ? '' : 'disabled='}  title="Recomendaciones">
                                     <i class="fa fa-star"></i>
+                                </a>
+                            </g:elseif>
+                            <g:else>
+                                <a href="#" class="btn btn-success btnEncuesta"
+                                   data-id="${profesor.id}" title="Encuesta">
+                                    <i class="fa fa-bar-chart"></i>
                                 </a>
                             </g:else>
                         </td>
@@ -73,6 +79,13 @@
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
         location.href="${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
+    });
+
+    $("#btnEncuesta").click(function () {
+        var idProfe = $(this).data('id');
+        var periodo = ${periodo?.id};
+        var facul = ${facultad?.id};
+        location.href="${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
     });
 
 

@@ -26,7 +26,16 @@
     <div class="panel-heading">
         <h3 class="panel-title" style="height: 30px; text-align: center">
 
+            <g:if test="${pantalla == '1'}">
                 Informe de Desempeño
+            </g:if>
+            <g:elseif test="${pantalla == '2'}">
+                Recomendaciones
+            </g:elseif>
+            <g:else>
+                Encuestas
+            </g:else>
+
 
         </h3>
     </div>
