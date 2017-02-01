@@ -743,10 +743,10 @@ class Reportes2Controller {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph parrafoProfesor = new Paragraph("Profesor: " + profesor?.apellido + " " + profesor?.nombre, fontTitulo)
+        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.apellido + " " + profesor?.nombre, fontTitulo)
         parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Evaluación del desempeño académico: Encuesta Evaluación Docente", fontTitulo )
+        Paragraph lineaTitulo = new Paragraph("Evaluación del desempeño académico: Evaluación del Desempeño Docente", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph uso = new Paragraph("(SOLO PARA USO INTERNO)", fontTitulo2)
@@ -763,7 +763,7 @@ class Reportes2Controller {
 
         def sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = 2;"
 
-        println("---> " + sql)
+//        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def cn2 = dbConnectionService.getConnection()
@@ -774,18 +774,13 @@ class Reportes2Controller {
         def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
         def prmsIzBorder4 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_CENTER,bg: BaseColor.LIGHT_GRAY]
         def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsIzBorderAzul = [border: BaseColor.BLUE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder5 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-
-        PdfPTable tablaD = new PdfPTable(1);
-        tablaD.setWidthPercentage(100);
-        tablaD.setWidths(arregloEnteros([100]))
-
-
         def sql2
-
+        def variable
+        def sumatoria = 0
         res.each {p->
 
             sql2 = "select * from encuesta(${p?.encu__id});"
@@ -793,15 +788,76 @@ class Reportes2Controller {
             def res2 = cn2.rows(sql2.toString());
 
             res2.each {q->
-                addCellTabla(tablaD, new Paragraph(q.vrbldscr + " " + q.nmro, fontThUsar), prmsIzBorder3)
-                addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontThUsar), prmsIzBorder)
-                addCellTabla(tablaD, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder4)
-                addCellTabla(tablaD, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+
+                if((q?.vrbldscr != variable) && (q.nmro != 1)){
+
+                    PdfPTable tablaT = new PdfPTable(2);
+                    tablaT.setWidthPercentage(100);
+                    tablaT.setWidths(arregloEnteros([85,15]))
+                    addCellTabla(tablaT, new Paragraph("TOTAL", fontNormalBold2), prmsIzBorder3)
+                    addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
+                    document.add(tablaT);
+
+                    sumatoria = 0
+
+                    PdfPTable tablaD = new PdfPTable(1);
+                    tablaD.setWidthPercentage(100);
+                    tablaD.setWidths(arregloEnteros([100]))
+                    addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
+                    document.add(tablaD);
+                    PdfPTable tablaF = new PdfPTable(2);
+                    tablaF.setWidthPercentage(100);
+                    tablaF.setWidths(arregloEnteros([85, 15]))
+                    addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
+                    addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+                    document.add(tablaF);
+
+                    sumatoria += q.vlor
+                }else{
+                    if( res2.size() == q.nmro){
+                        PdfPTable tablaD = new PdfPTable(1);
+                        tablaD.setWidthPercentage(100);
+                        tablaD.setWidths(arregloEnteros([100]))
+                        addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
+                        document.add(tablaD);
+                        PdfPTable tablaF = new PdfPTable(2);
+                        tablaF.setWidthPercentage(100);
+                        tablaF.setWidths(arregloEnteros([85, 15]))
+                        addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
+                        addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+                        document.add(tablaF);
+                        sumatoria += q.vlor
+                        PdfPTable tablaT = new PdfPTable(2);
+                        tablaT.setWidthPercentage(100);
+                        tablaT.setWidths(arregloEnteros([85,15]))
+                        addCellTabla(tablaT, new Paragraph("TOTAL", fontNormalBold2), prmsIzBorder3)
+                        addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
+                        document.add(tablaT);
+                    }else{
+                        PdfPTable tablaD = new PdfPTable(1);
+                        tablaD.setWidthPercentage(100);
+                        tablaD.setWidths(arregloEnteros([100]))
+                        addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
+                        document.add(tablaD);
+                        PdfPTable tablaF = new PdfPTable(2);
+                        tablaF.setWidthPercentage(100);
+                        tablaF.setWidths(arregloEnteros([85, 15]))
+                        addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
+                        addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+                        document.add(tablaF);
+                        sumatoria += q.vlor
+                    }
+
+
+                }
+                variable = q?.vrbldscr
+
+
             }
         }
 
 
-        document.add(tablaD);
+//        document.add(tablaD);
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
