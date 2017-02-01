@@ -81,7 +81,7 @@
         location.href="${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
     });
 
-    $("#btnEncuesta").click(function () {
+    $(".btnEncuesta").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
