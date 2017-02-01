@@ -708,7 +708,6 @@ class Reportes2Controller {
         def facultad = Facultad.get(params.facultad)
         def profesor = Profesor.get(params.profe)
 
-
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         Font fontTitulo2 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -720,6 +719,7 @@ class Reportes2Controller {
 
         fontNormalBold.setColor(new BaseColor(70, 88, 107))
         fontNormalBold3.setColor(BaseColor.WHITE)
+        fontNormalBold2.setColor(new BaseColor(70, 88, 177))
         fontTitulo2.setColor(BaseColor.LIGHT_GRAY)
 
         Document document
@@ -746,7 +746,25 @@ class Reportes2Controller {
         Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.apellido + " " + profesor?.nombre, fontTitulo)
         parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Evaluación del desempeño académico: Evaluación del Desempeño Docente", fontTitulo )
+        def titulo = ''
+
+        switch(params.tipo){
+            case '1':
+                titulo="Autoevaluación Docentes"
+                break;
+            case '2':
+                titulo="Evaluación de Desempeño Docente"
+                break;
+            case '3':
+                titulo="Evaluación Directivo a Docente"
+                break;
+            case '5':
+                titulo="Evaluación de Pares"
+                break;
+        }
+
+
+        Paragraph lineaTitulo = new Paragraph("Evaluación del desempeño académico: " + titulo, fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph uso = new Paragraph("(SOLO PARA USO INTERNO)", fontTitulo2)
@@ -761,7 +779,7 @@ class Reportes2Controller {
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
-        def sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = 2;"
+        def sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
 
 //        println("---> " + sql)
 
@@ -794,7 +812,7 @@ class Reportes2Controller {
                     PdfPTable tablaT = new PdfPTable(2);
                     tablaT.setWidthPercentage(100);
                     tablaT.setWidths(arregloEnteros([85,15]))
-                    addCellTabla(tablaT, new Paragraph("TOTAL", fontNormalBold2), prmsIzBorder3)
+                    addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + variable, fontNormalBold2), prmsIzBorder3)
                     addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
                     document.add(tablaT);
 
@@ -830,7 +848,7 @@ class Reportes2Controller {
                         PdfPTable tablaT = new PdfPTable(2);
                         tablaT.setWidthPercentage(100);
                         tablaT.setWidths(arregloEnteros([85,15]))
-                        addCellTabla(tablaT, new Paragraph("TOTAL", fontNormalBold2), prmsIzBorder3)
+                        addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + q.vrbldscr, fontNormalBold2), prmsIzBorder3)
                         addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
                         document.add(tablaT);
                     }else{
@@ -862,7 +880,7 @@ class Reportes2Controller {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaEvaluacionDocente')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaEvaluacionDesempeno')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 

@@ -51,9 +51,21 @@
                                 </a>
                             </g:elseif>
                             <g:else>
-                                <a href="#" class="btn btn-success btnEncuesta"
-                                   data-id="${profesor.id}" title="Encuesta">
-                                    <i class="fa fa-bar-chart"></i>
+                                <a href="#" class="btn btn-success btnEncuestaDC"
+                                   data-id="${profesor.id}" title="Evaluación de Desempeño Docente">
+                                    <i class="fa fa-cab"></i>
+                                </a>
+                                <a href="#" class="btn btn-success btnEncuestaDI"
+                                   data-id="${profesor.id}" title="Evaluación Directivo a Docente">
+                                    <i class="fa fa-bus"></i>
+                                </a>
+                                <a href="#" class="btn btn-success btnEncuestaPR"
+                                   data-id="${profesor.id}" title="Evaluación de Pares">
+                                    <i class="fa fa-bicycle"></i>
+                                </a>
+                                <a href="#" class="btn btn-success btnEncuestaAD"
+                                   data-id="${profesor.id}" title="Autoevaluación Docentes">
+                                    <i class="fa fa-car"></i>
                                 </a>
                             </g:else>
                         </td>
@@ -81,12 +93,35 @@
         location.href="${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
     });
 
-    $(".btnEncuesta").click(function () {
+    $(".btnEncuestaDC").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href="${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
+        location.href="${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 2
     });
+
+    $(".btnEncuestaDI").click(function () {
+        var idProfe = $(this).data('id');
+        var periodo = ${periodo?.id};
+        var facul = ${facultad?.id};
+        location.href="${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 3
+    });
+
+    $(".btnEncuestaPR").click(function () {
+        var idProfe = $(this).data('id');
+        var periodo = ${periodo?.id};
+        var facul = ${facultad?.id};
+        location.href="${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 5
+    });
+
+    $(".btnEncuestaAD").click(function () {
+        var idProfe = $(this).data('id');
+        var periodo = ${periodo?.id};
+        var facul = ${facultad?.id};
+        location.href="${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 1
+    });
+
+
 
 
 </script>
