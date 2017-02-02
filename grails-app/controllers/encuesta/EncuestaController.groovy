@@ -47,7 +47,7 @@ class EncuestaController {
                 return
             } else {
 //                println "---------------- No matriculado"
-                flash.message = "Usted no se halla registrado en el sistema como matriculado en alguna materia"
+                flash.message = "El número de cédula proporcionado no se halla registrado en el sistema, como matriculado en alguna materia"
                 redirect(action: "inicio", params: params)
             }
         } else if (params.tipo == 'P') {

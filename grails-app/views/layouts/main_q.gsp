@@ -106,7 +106,7 @@
 </div>
 %{--<mn:menu title="${g.layoutTitle(default: 'Bitácora')}"/>--}%
 
-<div class="container" style="min-width: 1000px !important;">
+<div class="container" style="min-width: 540px !important;">
   <g:layoutBody/>
 </div> <!-- /container -->
 

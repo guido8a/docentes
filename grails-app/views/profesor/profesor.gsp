@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 05/09/16
-  Time: 12:22
---%>
-
 <%@ page import="docentes.Periodo" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>

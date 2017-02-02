@@ -1,13 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 20/09/16
-  Time: 16:34
---%>
-
 <div class="row">
     <div class="col-md-1 negrilla control-label">Descripción: </div>
-    <div class="col-md-5">
+    <div class="col-md-7">
         <g:textField name="editarDescripcion_name" id="descripcionItemEditar" class="form-control required" maxlength="127" value="${item?.descripcion}"/>
     </div>
 

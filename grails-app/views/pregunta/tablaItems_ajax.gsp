@@ -77,7 +77,7 @@
             success: function (msg){
                 var b =  bootbox.dialog({
                     id      : "dlgEditarItem",
-                    title   : "Editar Item",
+                    title   : "Editar Item de la Pregunta",
                     class   : "long",
                     message : msg,
                     buttons : {

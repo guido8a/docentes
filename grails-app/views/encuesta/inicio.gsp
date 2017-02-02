@@ -23,6 +23,46 @@
         margin-top: 40px;
         margin: auto;
     }
+
+    .logotipo{
+        max-width: 20%;
+        /*height: auto;*/
+    }
+
+    @media (min-width: @screen-sm-min) {
+
+        .h1-sm,
+        .h2-sm,
+        .h3-sm {
+            margin-top: @line-height-computed;
+            margin-bottom: (@line-height-computed / 2);
+
+        small,
+        .small {
+            font-size: 85%;
+        }
+    }
+
+    .h4-sm,
+    .h5-sm,
+    .h6-sm {
+        margin-top: (@line-height-computed / 2);
+        margin-bottom: (@line-height-computed / 2);
+
+    small,
+    .small {
+        font-size: 75%;
+    }
+    }
+
+    .h1-sm { font-size: @font-size-h1; }
+    .h2-sm { font-size: @font-size-h2; }
+    .h3-sm { font-size: @font-size-h3; }
+    .h4-sm { font-size: @font-size-h4; }
+    .h5-sm { font-size: @font-size-h5; }
+    .h6-sm { font-size: @font-size-h6; }
+    }
+
     </style>
 </head>
 <body>
@@ -33,35 +73,40 @@
 
 <div style="text-align: center;">
     %{--Para personalizar: UNACH: universidad1.jpg, UPEC universidad.jpg y en messages_es.properties la universidad--}%
-        <div class="logo"><img src="${resource(dir:'images',file:'universidad.jpeg')}" height="150px"></div>
-        <div class="logo_tx"><h1>${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>
-            <br>Sistema para uso exclusivo de la esta Universidad</div>
-        <div class="login bs-component" style="height: 200px; width: 500px; margin: auto">
+        <div><img src="${resource(dir:'images',file:'universidad.jpeg')}" class="logotipo"></div>
+        <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>
+            <h4>Sistema para uso exclusivo de la esta Universidad</h4>
+        <div class="col-md-6 col-xs-12 center-block" style="float: inherit; margin: auto">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Ingrese sus datos personales</h3>
+                    <span class="panel-title">Ingrese sus datos personales</span>
                 </div>
             <div class="panel-body">
                 <g:form action="ingreso" method="post" class="frma">
                     <input type="hidden" hidden name="tipo" id="tipoIf" value="">
-                    <fieldset style="width: 460px; height: 80px; margin-top: 4px; border-color: black;" >
-                        <div class="fila der " style="margin-top: 10px;">
-                            <label>Cédula de Identidad:</label><input class="cedula" type="text" name="cdla" maxlength="15" size="20">
-                            <br><span class="error">Verifique el número de su cédula de identidad</span>
+                    <fieldset>
+                        <div style="margin-top: 10px;">
+                            %{--<label class="col-md-6 col-xs-6">Cédula de Identidad:</label>--}%
+                            <div class="col-md-6 col-xs-6 negrilla control-label">Cédula de Identidad:</div>
+                            <div class=" col-md-6 col-xs-6">
+                                <g:textField name="cdla" class="form-control required cedula" maxlength="15" size="20"/>
+                            </div>
+                            %{--<input class="col-md-6 col-xs-6 cedula" type="text" name="cdla" maxlength="15" size="20">--}%
+                            <br><span class="error ">Verifique el número de su cédula de identidad</span>
                         </div>
-                        <div class="fila">
-                            <input class="btn btn-primary submit" value="Soy Docente" tipo="P">
-                            <input class="btn btn-info submit" value="Soy Estudiante" tipo="E" style="margin-left: 20px">
+                        <div style="margin-top: 6%;" class="col-md-12 col-xs-12 center-block">
+                            <input class="btn btn-primary submit col-md-6 col-xs-6" value="Soy Docente" tipo="P">
+                            <input class="btn btn-info submit col-md-5 col-xs-5" value="Soy Estudiante" tipo="E" style="margin-left: 20px">
                         </div>
                     </fieldset>
                     </div>
                 </g:form>
             </div>
         </div>
-
-        <div class="pie"> Desarrollado por: TEDEIN SA &nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://www.tedein.com.ec">www.tedein.com.ec</a></div>
+            <div class="col-md-12 col-xs-12"> Desarrollado por: TEDEIN SA &nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://www.tedein.com.ec">www.tedein.com.ec</a></div>
 
 </div>
+
 
     %{--<script type="text/javascript" src="${resource(dir:'js/jquery/js',file:'jquery-1.4.2.min.js')}"></script>--}%
     <script type="text/javascript">
@@ -85,12 +130,35 @@
                         $(".frma").submit();
                     }
                 } else {
+
+                    bootbox.confirm({
+                        title: "Alerta Cédula",
+                        message: "El número de cédula ingresado no es ECUATORIANO<h5>¿Desea continuar?</h5>",
+                        buttons: {
+                            cancel: {
+                                label: '<i class="fa fa-times"></i> Cancelar'
+                            },
+                            confirm: {
+                                label: '<i class="fa fa-check"></i> Aceptar',
+                                className: 'btn-success'
+                            }
+                        },
+                        callback: function (result) {
+                            if(result) {
+//                                $('.error').hide();
+                                $(".frma").submit();
+                            }
+                        }
+                    });
+
+/*
                     if (confirm("El número de cédula ingresado no es ECUATORIANO\nDesea continuar??")) {
                         $('.error').hide();
                         $(".frma").submit();
                     } else {
                         event.preventDefault();
                     }
+*/
                 }
             });
         });

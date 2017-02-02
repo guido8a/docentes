@@ -1,15 +1,26 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 15/09/16
-  Time: 12:15
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
     <title>Preguntas a aplicarse en la encuesta</title>
+
+    <style>
+        .tabrow {
+            text-align: center;
+            list-style: none;
+            margin: 0;
+            padding: 10px;
+            line-height: 25px;
+        }
+        .tabrow li {
+            background: linear-gradient(to bottom, #deedfc 33%, #a0a0a0 100%);
+            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
+            text-shadow: 0 1px #FFF;
+            /*margin: 0 -5px;*/
+            padding: 0 20px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -93,10 +104,10 @@
     </div>
 </div>
 
-<div class="col-md-12 ${preguntaInstance ? '' : 'hidden'}">
-    <ul class="nav nav-pills">
-        <li class="active col-md-5"><a data-toggle="tab" href="#home">Respuestas</a></li>
-        <li class="col-md-5"><a data-toggle="tab" href="#itemsTab">Items</a></li>
+<div class="col-md-12 ${preguntaInstance ? '' : 'hidden'}" >
+    <ul class="nav nav-pills tabrow">
+        <li class="active col-md-5"><a data-toggle="tab" href="#home">Respuestas de la Pregunta</a></li>
+        <li class="col-md-5"><a data-toggle="tab" href="#itemsTab">Items de la Pregunta</a></li>
     </ul>
 
     <div class="tab-content">

@@ -32,20 +32,22 @@
         width: 20%;
     }
 
-    .radio-toolbar input[type="radio"] {
+
+    .radio-toolbar input[type="radio"], label {
         cursor: pointer;
     }
 
     .radio-toolbar label {
-        padding: 4px 3px;
-        font-size: 12px;
+        line-height: 1.0em;
+        padding: 0 3px;
+        margin-top: -2px;
         font-weight: normal;
         border-radius: 8px;
     }
 
     .radio-toolbar input[type="radio"]:checked + label {
         font-weight: bold;
-        background-color: #c7d9eb;
+        background-color: #ffe869;
     }
 
     </style>
@@ -79,10 +81,10 @@
 
             <div class="panel-body">
                 <g:each in="${prit}" var="pr">
-                    <div style="width: 90%; height: 20px" class="radio-toolbar">
-                        <input style="float: left;" type="radio" value="${pr.id}"
-                               name="causas" ${(pr.id == resp[2] ? 'checked' : ' ')}>
-                        <label>${pr.dscr}</label>
+                    <div class="radio-toolbar">
+                        <input type="radio" name="causas" value="${pr.id}"
+                               ${(pr.id == resp[2] ? 'checked' : ' ')} id="${pr.id}">
+                        <label for="${pr.id}">${pr.dscr}</label>
                     </div>
                 </g:each>
             </div>
@@ -97,18 +99,21 @@
 
             <div class="panel-body">
                 <g:each in="${rp}" var="respuesta">
-                    <div style="width: 150px; height: 30px;cursor:pointer; " class="radio-toolbar">
-                        <input style="float: left;" type="radio" value="${respuesta.id}"
-                               name="respuestas" ${(respuesta.id == resp[0] ? 'checked' : ' ')}>
-                        <label>${respuesta.dscr.split(' ')[0]}</label>
+                    <div class="radio-toolbar" style="margin-bottom: 1.5em;">
+                        <input type="radio" name="respuestas" value="${respuesta.id}"
+                                ${(respuesta.id == resp[0] ? 'checked' : ' ')} id="${respuesta.id}">
+                        <label for="${respuesta.id}">${respuesta.dscr.split(' ')[0]}</label>
                     </div>
                 </g:each>
             </div>
+
+
         </div>
 
     </g:form>
 
 </div>
+
 
 <div class="bs-component" style="margin-bottom: 15px;">
     <div class="btn-group btn-group-justified">
@@ -145,6 +150,9 @@
         una opción de <strong>Seleccione una Respuesta</strong>.
     </div>
 </div>
+
+
+
 
 <script type="text/javascript">
     $(function () {
@@ -192,6 +200,7 @@
             buttons: {
                 "Aceptar": function () {
                     $(this).dialog("close");
+                    location.href = "${createLink(action: 'previa')}";
                 },
                 Cancelar: function () {
                     $(this).dialog("close");
@@ -259,6 +268,31 @@
                 return true;
             }
         });
+
+/*
+        $(".radio-toolbar").mousedown(function(e) { // allows radio button deselection
+            var $self = $(this);
+            alert("clic:" + $self.prop('checked'));
+            if ($self.is(':checked')) {
+                var uncheck = function() {
+                    setTimeout(function() {
+                        $self.removeAttr('checked');
+                    }, 0);
+                };
+                var unbind = function() {
+                    $self.unbind('mouseup', up);
+                };
+                var up = function() {
+                    uncheck();
+                    unbind();
+                };
+                $self.bind('mouseup', up);
+                $self.one('mouseout', unbind);
+            }
+        });
+*/
+
+
 
     });
 </script>

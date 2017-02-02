@@ -79,6 +79,7 @@
                         }
                     });
                 });
+
                 $("#cargaAccn").click(function () {
                     //alert("crear un perfil");
                     bootbox.confirm("Cargar acciones desde Grails?", function (result) {
