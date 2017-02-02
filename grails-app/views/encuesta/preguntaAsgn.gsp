@@ -46,7 +46,7 @@
         font-weight: bold;
         background-color: #ffe869;
     }
-    .radio-toolbar label.marca > input[type="radio"]:checked {
+    .radio-toolbar .marca > input[type="radio"]:checked {
         font-weight: bold;
         background-color: #ffe869;
     }
