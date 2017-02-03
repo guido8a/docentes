@@ -715,11 +715,10 @@ class Reportes2Controller {
         Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
-        Font fontNormalBold4 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLDITALIC);
 
         fontNormalBold.setColor(new BaseColor(70, 88, 107))
         fontNormalBold3.setColor(BaseColor.WHITE)
-        fontNormalBold2.setColor(new BaseColor(70, 88, 177))
+        fontNormalBold2.setColor(new BaseColor(30, 68, 177))
         fontTitulo2.setColor(BaseColor.LIGHT_GRAY)
 
         Document document
@@ -764,9 +763,6 @@ class Reportes2Controller {
         }
 
 
-        Paragraph lineaTitulo = new Paragraph("Evaluación del desempeño académico: " + titulo, fontTitulo )
-        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-
         Paragraph uso = new Paragraph("(SOLO PARA USO INTERNO)", fontTitulo2)
         uso.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -776,8 +772,6 @@ class Reportes2Controller {
         document.add(parrafoFacultad)
         document.add(parrafoProfesor)
         document.add(uso)
-        document.add(lineaTitulo)
-        document.add(lineaVacia)
 
         def sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
 
@@ -801,22 +795,47 @@ class Reportes2Controller {
         def sumatoria = 0
         res.each {p->
 
-            sql2 = "select * from encuesta(${p?.encu__id});"
+            Paragraph lineaTitulo = new Paragraph(titulo, fontTitulo )
+            lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+            Paragraph lineaEncuesta = new Paragraph("Encuesta N°: " + p?.encu__id, fontTitulo )
+            lineaEncuesta.setAlignment(com.lowagie.text.Element.ALIGN_RIGHT);
+
+            document.add(lineaTitulo)
+            document.add(lineaEncuesta)
+            document.add(lineaVacia)
+
+            sql2 = "select * from encuesta(${p?.encu__id}) ORDER BY vrbl__id;"
 //            println("sql2  " + sql2)
             def res2 = cn2.rows(sql2.toString());
 
             res2.each {q->
 
-                if((q?.vrbldscr != variable) && (q.nmro != 1)){
+                if(res2.first().nmro == q?.nmro){
+                    PdfPTable tablaD = new PdfPTable(1);
+                    tablaD.setWidthPercentage(100);
+                    tablaD.setWidths(arregloEnteros([100]))
+                    addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
+                    document.add(tablaD);
+                    PdfPTable tablaF = new PdfPTable(2);
+                    tablaF.setWidthPercentage(100);
+                    tablaF.setWidths(arregloEnteros([85, 15]))
+                    addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
+                    addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+                    document.add(tablaF);
+                    sumatoria += q?.vlor
+                }else{
+                    if((q?.vrbldscr != variable)){
 
-                    PdfPTable tablaT = new PdfPTable(2);
-                    tablaT.setWidthPercentage(100);
-                    tablaT.setWidths(arregloEnteros([85,15]))
-                    addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + variable, fontNormalBold2), prmsIzBorder3)
-                    addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
-                    document.add(tablaT);
+                        PdfPTable tablaT = new PdfPTable(2);
+                        tablaT.setWidthPercentage(100);
+                        tablaT.setWidths(arregloEnteros([85,15]))
+                        addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + variable, fontNormalBold2), prmsIzBorder3)
+                        addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
+                        document.add(tablaT);
 
-                    sumatoria = 0
+                        sumatoria = 0
+                    }
 
                     PdfPTable tablaD = new PdfPTable(1);
                     tablaD.setWidthPercentage(100);
@@ -829,58 +848,199 @@ class Reportes2Controller {
                     addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
                     addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
                     document.add(tablaF);
-
                     sumatoria += q.vlor
-                }else{
-                    if( res2.size() == q.nmro){
-                        PdfPTable tablaD = new PdfPTable(1);
-                        tablaD.setWidthPercentage(100);
-                        tablaD.setWidths(arregloEnteros([100]))
-                        addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
-                        document.add(tablaD);
-                        PdfPTable tablaF = new PdfPTable(2);
-                        tablaF.setWidthPercentage(100);
-                        tablaF.setWidths(arregloEnteros([85, 15]))
-                        addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
-                        addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
-                        document.add(tablaF);
-                        sumatoria += q.vlor
+
+                    if( res2.last().nmro == q.nmro){
+
                         PdfPTable tablaT = new PdfPTable(2);
                         tablaT.setWidthPercentage(100);
                         tablaT.setWidths(arregloEnteros([85,15]))
                         addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + q.vrbldscr, fontNormalBold2), prmsIzBorder3)
                         addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
                         document.add(tablaT);
-                    }else{
-                        PdfPTable tablaD = new PdfPTable(1);
-                        tablaD.setWidthPercentage(100);
-                        tablaD.setWidths(arregloEnteros([100]))
-                        addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
-                        document.add(tablaD);
-                        PdfPTable tablaF = new PdfPTable(2);
-                        tablaF.setWidthPercentage(100);
-                        tablaF.setWidths(arregloEnteros([85, 15]))
-                        addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
-                        addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
-                        document.add(tablaF);
-                        sumatoria += q.vlor
                     }
-
-
                 }
                 variable = q?.vrbldscr
-
-
             }
         }
 
-
-//        document.add(tablaD);
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaEvaluacionDesempeno')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+    }
+
+    def factores () {
+
+        //        println "reporteClasificacion $params"
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad = Facultad.get(params.facultad)
+
+        def baos = new ByteArrayOutputStream()
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+
+        fontNormalBold.setColor(new BaseColor(70, 88, 107))
+        fontNormalBold3.setColor(BaseColor.WHITE)
+        fontNormalBold2.setColor(new BaseColor(30, 68, 177))
+        fontTitulo2.setColor(BaseColor.LIGHT_GRAY)
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte encuesta factores");
+        document.addSubject("Generado por el sistema");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.add(new Paragraph("Reporte", fontTitulo));
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+
+//        def titulo = ''
+//
+//        switch(params.tipo){
+//            case '1':
+//                titulo="Autoevaluación Docentes"
+//                break;
+//            case '2':
+//                titulo="Evaluación de Desempeño Docente"
+//                break;
+//            case '3':
+//                titulo="Evaluación Directivo a Docente"
+//                break;
+//            case '5':
+//                titulo="Evaluación de Pares"
+//                break;
+//        }
+
+
+        Paragraph uso = new Paragraph("(SOLO PARA USO INTERNO)", fontTitulo2)
+        uso.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(uso)
+
+        /*todo: facultad!*/
+        def sql = "select encu__id from encu where encuetdo = 'C' and teti__id = 4;"
+
+//        println("---> " + sql)
+
+        def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: new BaseColor(95, 113, 132)]
+        def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder4 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_CENTER,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder5 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        def sql2
+        def variable
+        def sumatoria = 0
+
+        res.each {p->
+
+//            Paragraph lineaTitulo = new Paragraph(titulo, fontTitulo )
+//            lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+//
+            Paragraph lineaEncuesta = new Paragraph("Encuesta N°: " + p?.encu__id, fontTitulo )
+            lineaEncuesta.setAlignment(com.lowagie.text.Element.ALIGN_RIGHT);
+//
+//            document.add(lineaTitulo)
+            document.add(lineaEncuesta)
+            document.add(lineaVacia)
+
+            sql2 = "select * from encuesta(${p?.encu__id}) ORDER BY vrbl__id;"
+//            println("sql2  " + sql2)
+            def res2 = cn2.rows(sql2.toString());
+
+            res2.each {q->
+
+                if(res2.first().nmro == q?.nmro){
+                    PdfPTable tablaD = new PdfPTable(1);
+                    tablaD.setWidthPercentage(100);
+                    tablaD.setWidths(arregloEnteros([100]))
+                    addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
+                    document.add(tablaD);
+                    PdfPTable tablaF = new PdfPTable(2);
+                    tablaF.setWidthPercentage(100);
+                    tablaF.setWidths(arregloEnteros([85, 15]))
+                    addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
+                    addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+                    document.add(tablaF);
+                    sumatoria += q?.vlor
+                }else{
+                    if((q?.vrbldscr != variable)){
+
+                        PdfPTable tablaT = new PdfPTable(2);
+                        tablaT.setWidthPercentage(100);
+                        tablaT.setWidths(arregloEnteros([85,15]))
+                        addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + variable, fontNormalBold2), prmsIzBorder3)
+                        addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
+                        document.add(tablaT);
+
+                        sumatoria = 0
+                    }
+
+                    PdfPTable tablaD = new PdfPTable(1);
+                    tablaD.setWidthPercentage(100);
+                    tablaD.setWidths(arregloEnteros([100]))
+                    addCellTabla(tablaD, new Paragraph("Pregunta: " + q.preg, fontNormalBold), prmsIzBorder3)
+                    document.add(tablaD);
+                    PdfPTable tablaF = new PdfPTable(2);
+                    tablaF.setWidthPercentage(100);
+                    tablaF.setWidths(arregloEnteros([85, 15]))
+                    addCellTabla(tablaF, new Paragraph("Respuesta: " + q.resp, fontThUsar), prmsIzBorder3)
+                    addCellTabla(tablaF, new Paragraph("Valor: " + q.vlor, fontThUsar), prmsCrBorder)
+                    document.add(tablaF);
+                    sumatoria += q.vlor
+
+                    if( res2.last().nmro == q.nmro){
+
+                        PdfPTable tablaT = new PdfPTable(2);
+                        tablaT.setWidthPercentage(100);
+                        tablaT.setWidths(arregloEnteros([85,15]))
+                        addCellTabla(tablaT, new Paragraph("TOTAL VARIABLE: " + q.vrbldscr, fontNormalBold2), prmsIzBorder3)
+                        addCellTabla(tablaT, new Paragraph(numero(sumatoria,2), fontNormalBold2), prmsIzBorder5)
+                        document.add(tablaT);
+                    }
+                }
+                variable = q?.vrbldscr
+            }
+        }
+
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaFactoresExito')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 

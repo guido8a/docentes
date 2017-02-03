@@ -229,6 +229,13 @@
                     </span>
                 </div>
             </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirFactores">
+                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Factores de éxito</strong>
+                    </span>
+                </div>
+            </a>
         </div>
     </div>
 </div>
@@ -533,6 +540,11 @@
         location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 3;
     });
 
+    $("#imprimirFactores").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes2', action: 'factores')}?periodo=" + prdo + "&facultad=" + facl;
+    });
 </script>
 
 </body>
