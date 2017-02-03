@@ -46,7 +46,7 @@
         font-weight: bold;
         background-color: #ffe869;
     }
-    .radio-toolbar .marca > input[type="radio"]:checked {
+    .marcado{
         font-weight: bold;
         background-color: #ffe869;
     }
@@ -88,17 +88,41 @@
                 </g:each>
             </div>
         </div>
+
     %{--${materias}--}%
-        <div class="ui-corner-all" id="materias" style="display: none;">
-            <g:each in="${materias}" var="m" status="i">
-                <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
-                    <label  id="div_${m.id}_${i}" class="marca"><input type="radio" name="respMat" id="${m.id}_${i}" class="radioMat"
-                           value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ' '}>${m.dscr}</label>
-                    %{--<input type="radio" name="respMat" id="${m.id}_${i}" class="radioMat"--}%
-                           %{--value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ' '}>--}%
-                    %{--<label for="${m.id}_${i}" id="div_${m.id}_${i}">${m.dscr}</label>--}%
+        <div id="materias" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Seleccione una materia</h4>
+                    </div>
+                    <!-- dialog body -->
+                    <div class="modal-body">
+                    <g:each in="${materias}" var="m" status="i">
+                        <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
+                            <label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">
+                                <input type="radio" name="respMat" id="${m.id}_${i}" class="radioMat"
+                                       value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ''}>${m.dscr}</label>
+                        </div>
+                    </g:each>
+
+                    <script>
+                        $(".marca").mousedown(function () {
+                            console.log($(this).val())
+                            $(".marca").removeClass("marcado");
+                            $(this).addClass("marcado")
+                        });
+                    </script>
+                    </div>
+                    <!-- dialog buttons -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="modalCancelar">Cancelar</button>
+                        <button type="button" class="btn btn-success" id="modalOk">Aceptar</button>
+                    </div>
                 </div>
-            </g:each>
+            </div>
         </div>
 
         <div class="panel panel-default fila" id="divAsignatura" style="display: none">
@@ -156,55 +180,24 @@
         });
 
 
-/*
-        $("#materias").dialog({
-            autoOpen: false,
-            resizable: true,
-            title: 'Seleccione una materia',
-            modal: true,
-            width: "620px",
-            height: "auto",
-            position: {my: "left top", at: "left top-40px", of: boton},
-            buttons: {
-                "Aceptar": function () {
-                    $("#matVal").val($("#div_" + $('.radioMat:checked').attr("id")).text())
-                    $("#materia").val($('.radioMat:checked').val())
-                    $(this).dialog("close");
-                },
-                "Cancelar": function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-*/
-
-        $("#materias").dialog({autoOpen: false});
-
         $("#buscar").click(function () {
-//            $(".radio:first").attr("checked", "checked");
-            var $msg = $("#materias").html()
-            bootbox.confirm({
-                title: "Seleccione una materia",
-                message: $msg,
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Cancelar'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Aceptar',
-                        className: 'btn-success'
-                    }
-                },
-                callback: function (result) {
-                    if(result) {
-                        console.log($("#div_" + $('.radioMat:checked').attr("id")).text(), $('.radioMat:checked').val());
-                        $("#matVal").val($("#div_" + $('.radioMat:checked').attr("id")).text())
-                        $("#materia").val($('.radioMat:checked').val())
-//                        $(this).dialog("close");
-                    }
-                }
-            });
+            $(".marca").removeClass("marcado");
+            $("#div_" + $('.radioMat:checked').attr("id")).addClass("marcado");
+            $("#materias").modal("show");
         });
+
+//      Aceptar del Modal --> modalOk
+        $("#modalOk").click(function () {
+//            console.log($("#div_" + $('.radioMat:checked').attr("id")).text().trim(), $('.radioMat:checked').val());
+            $("#matVal").val($("#div_" + $('.radioMat:checked').attr("id")).text().trim())
+            $("#materia").val($('.radioMat:checked').val())
+            $("#materias").modal("hide");
+        });
+
+        $("#modalCancelar").click(function () {
+            $("#materias").modal("hide");
+        });
+
 
         $("#anterior").click(function () {
             bootbox.confirm({
@@ -283,9 +276,6 @@
             ;
         });
 
-        $(".opcion").click(function () {
-            alert("ggg");
-        });
     });
 </script>
 </body>
