@@ -110,7 +110,6 @@
 
                     <script>
                         $(".marca").mousedown(function () {
-                            console.log($(this).val())
                             $(".marca").removeClass("marcado");
                             $(this).addClass("marcado")
                         });
@@ -130,22 +129,14 @@
                 <h3 class="panel-title">Asignatura</h3>
             </div>
 
-            <div class="panel-body" style="font-size: 1.2em">
+            <div class="panel-body col-md-12 col-xs-12" style="font-size: 1.2em">
                 <input type="text" readonly id="matVal" name="asignatura" style="color: #000; width: 75%"
-                       value="${materias.find { it.id == resp[1] }?.dscr}">
+                       value="${materias.find { it.id == resp[1] }?.dscr}" class="form-control col-md-8 col-xs-7">
                 %{--<input type="text" disabled id="matVal" style="color: #000; width: 400px;" value="">--}%
-                <input id="buscar" type="button" value="Buscar asignatura" class="tbbtn fg-button fondo ui-corner-all">
+                <input id="buscar" type="button" value="Buscar asignatura" class="btn btn-primary col-md-2 col-xs-3">
                 <input type="hidden" name="materia" id="materia" value="${resp[1]}">
             </div>
         </div>
-    %{--
-            <div class=" filaEntera ui-corner-all barra"  >
-                Asignatura :
-                <input type="text" disabled id="matVal" style="color: #000; width: 400px;" >
-                <input id="buscar" type="button" value="Buscar" class="tbbtn fg-button fondo ui-corner-all">
-                <input type="hidden" name="materia" id="materia" value="${resp[pregcdgo]?.get(1)}">
-            </div>
-    --}%
     </g:form>
 
 </div>
@@ -164,16 +155,8 @@
 </div>
 
 
-<div id="mensajeAbandonar" style="display: none; background-color: #ffeaea">
-    <div style="font-size: medium; color: #4b1918">
-        ¿Está seguro de abandonar la encuesta?<br>
-        Se borrarán todas las respuestas registradas.
-    </div>
-</div>
-
 <script type="text/javascript">
     $(function () {
-        var boton = $("#buscar");
         $(document).ready(function () {
             // Handler for .ready() called.
             $(".resp").change();

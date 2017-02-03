@@ -114,185 +114,91 @@
 
 </div>
 
-
-<div class="bs-component" style="margin-bottom: 15px;">
-    <div class="btn-group btn-group-justified">
-        <a class="btn btn-danger" href="#" id="abandonar"><i class="fa fa-trash-o"></i> Abandonar encuesta</a>
-        <g:if test="${(actual > 1)}">
-        <a class="btn btn-default" href="#" id="anterior"><i class="fa fa-arrow-left"></i> Anterior</a>
-        </g:if>
-        <g:if test="${actual == total}">
-            <a class="btn btn-info" href="#" id="siguiente"><strong>Finalizar Encuesta</strong> <i class="fa fa-check"></i></a>
-        </g:if>
-        <g:else>
-            <a class="btn btn-default" href="#" id="siguiente">Siguiente <i class="fa fa-arrow-right"></i></a>
-        </g:else>
-    </div>
+<div class="row col-md-12 col-xs-12">
+    <a class="btn btn-danger col-md-4 col-xs-4" href="#" id="abandonar"><i class="fa fa-trash-o"></i> Abandonar encuesta</a>
+    <a class="btn btn-default col-md-4 col-xs-4" href="#" id="anterior"><i class="fa fa-arrow-left"></i> Anterior</a>
+    <g:if test="${actual == total}">
+        <a class="btn btn-info  col-md-4 col-xs-4" href="#" id="siguiente"><strong>Finalizar Encuesta</strong> <i
+                class="fa fa-check"></i></a>
+    </g:if>
+    <g:else>
+        <a class="btn btn-default col-md-4 col-xs-4" href="#" id="siguiente">Siguiente <i class="fa fa-arrow-right"></i></a>
+    </g:else>
 </div>
-
-<div id="mensajeAbandonar" style="display: none; background-color: #ffeaea">
-    <div style="font-size: medium; color: #4b1918">
-        ¿Está seguro de abandonar la encuesta?<br>
-        Se borrarán todas las respuestas registradas.
-    </div>
-</div>
-
-<div id="mensajeAnterior" style="display: none;">
-    <div style="font-size: medium; color: #444">
-        ¿Ir a la respuesta anterior?<br>
-    </div>
-</div>
-
-<div id="sinRespuesta" style="display: none;">
-    <div style="font-size: medium; color: #844">
-        ¿No ha seleccionado una respuesta?<br>
-        Escoja una <strong>Causa</strong> y<br>
-        una opción de <strong>Seleccione una Respuesta</strong>.
-    </div>
-</div>
-
-
 
 
 <script type="text/javascript">
     $(function () {
-        var boton = $("#buscar");
+
         $(document).ready(function () {
             // Handler for .ready() called.
             $(".resp").change();
         });
 
-
-        $("#materias").dialog({
-            autoOpen: false,
-            resizable: true,
-            title: 'Seleccione una materia',
-            modal: true,
-            width: "auto",
-            height: "auto",
-            position: {my: "left top", at: "left top-40px", of: boton},  //izquierda arriba del boton-40px
-//            open: function(event, ui) {
-//                $(".ui-dialog-titlebar-close").hide();
-//            },
-            buttons: {
-                "Aceptar": function () {
-                    $("#matVal").val($("#div_" + $('.radioMat:checked').attr("id")).text())
-                    $("#materia").val($('.radioMat:checked').val())
-//                console.log(jQuery('.radioMat:checked').val(),$("#div_"+jQuery('.radioMat:checked').attr("id")))
-                    $(this).dialog("close");
+        $("#anterior").click(function () {
+            bootbox.confirm({
+                title: "¿Regresar a la pregunta anterior?",
+                message: "Confirme la orden o presione Cancelar",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Aceptar',
+                        className: 'btn-success'
+                    }
                 },
-                "Cancelar": function () {
-//                    $("#matVal").val("")
-//                    $("#materia").val("")
-                    $(this).dialog("close");
+                callback: function (result) {
+                    if(result) {
+                        location.href = "${createLink(action: 'anterior')}" + "?encu__id=${encu}&actual=${actual}"
+                    }
                 }
-            }
-        });
-
-        $("#mensajeAbandonar").dialog({
-            dialogClass: "alert",
-            autoOpen: false,
-            resizable: false,
-            height: "auto",
-            width: 400,
-            modal: true,
-            title: 'Confirme la orden',
-            buttons: {
-                "Aceptar": function () {
-                    $(this).dialog("close");
-                    location.href = "${createLink(action: 'previa')}";
-                },
-                Cancelar: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-        $("#mensajeAnterior").dialog({
-            dialogClass: "alert",
-            autoOpen: false,
-            resizable: false,
-            height: "auto",
-            width: 400,
-            modal: true,
-            title: 'Confirme la orden',
-            buttons: {
-                "Aceptar": function () {
-                    $(this).dialog("close");
-                    location.href = "${createLink(action: 'anterior')}" + "?encu__id=${encu}&actual=${actual}"
-                },
-                Cancelar: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-        $("#sinRespuesta").dialog({
-            dialogClass: "alert",
-            autoOpen: false,
-            resizable: false,
-            height: "auto",
-            width: 400,
-            modal: true,
-            title: 'No hay respuestas',
-            buttons: {
-                "Aceptar": function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
-        $("#buscar").click(function () {
-            $(".radio:first").attr("checked", "checked");
-            $("#materias").dialog("open");
+            });
         });
 
         $("#abandonar").click(function () {
-            $("#mensajeAbandonar").dialog("open");
-//            console.log('Abortar');
+            bootbox.confirm({
+                title: "¿Abandonar la encuesta?",
+                message: "Si abandona la encuesta podrá retomarla desde la última pregunta contestada.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Aceptar',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (result) {
+                    if(result) {
+                        location.href = "${createLink(action: 'previa')}"
+                    }
+                }
+            });
         });
-        $("#anterior").click(function () {
-            $("#mensajeAnterior").dialog("open");
-//            console.log('Anterior');
-        });
+
 
         $("#siguiente").click(function () {
             var respit = $('input[name=respuestas]:checked').length;
             var resprp = $('input[name=causas]:checked').length;
             if (respit == 0 || resprp == 0) {
-                $("#sinRespuesta").dialog("open");
+                bootbox.alert({
+                    title: "No ha seleccionado una respuesta",
+                    message: "Escoja una de las opciones de 'Seleccione una Respuesta', si ha seleccionado " +
+                    "ASIGNATURA, asegúrese de haber escogido una.",
+                    buttons: {
+                        ok: {
+                            label: '<i class="fa fa-check"></i> Aceptar',
+                            className: 'btn-success'
+                        }
+                    }
+                });
                 return false;
             } else {
                 $("#forma").submit();
-//                console.log('Siguiente');
                 return true;
             }
         });
-
-/*
-        $(".radio-toolbar").mousedown(function(e) { // allows radio button deselection
-            var $self = $(this);
-            alert("clic:" + $self.prop('checked'));
-            if ($self.is(':checked')) {
-                var uncheck = function() {
-                    setTimeout(function() {
-                        $self.removeAttr('checked');
-                    }, 0);
-                };
-                var unbind = function() {
-                    $self.unbind('mouseup', up);
-                };
-                var up = function() {
-                    uncheck();
-                    unbind();
-                };
-                $self.bind('mouseup', up);
-                $self.one('mouseout', unbind);
-            }
-        });
-*/
-
-
 
     });
 </script>
