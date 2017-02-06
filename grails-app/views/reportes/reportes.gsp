@@ -236,6 +236,12 @@
                     </span>
                 </div>
             </a>
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirEvaluacionesPro">
+                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Evaluaciones del profesor</strong>
+                    </span>
+                </div>
+            </a>
         </div>
     </div>
 </div>
@@ -545,6 +551,14 @@
         var facl = $("#facultad").val();
         location.href = "${createLink(controller: 'reportes2', action: 'factores')}?periodo=" + prdo + "&facultad=" + facl;
     });
+
+
+    $("#imprimirEvaluacionesPro").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facl;
+    });
+
 </script>
 
 </body>

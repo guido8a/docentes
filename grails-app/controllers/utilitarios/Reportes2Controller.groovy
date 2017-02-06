@@ -1057,4 +1057,113 @@ class Reportes2Controller {
     def botones_ajax () {
         return [boton: params.boton]
     }
+
+    def evaluacionesProfe () {
+
+        //        println "reporteClasificacion $params"
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad = Facultad.get(params.facultad)
+
+        def baos = new ByteArrayOutputStream()
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+
+        fontNormalBold.setColor(new BaseColor(70, 88, 107))
+        fontNormalBold3.setColor(BaseColor.WHITE)
+        fontNormalBold2.setColor(new BaseColor(30, 68, 177))
+        fontTitulo2.setColor(BaseColor.LIGHT_GRAY)
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte evaluaciones de profesores");
+        document.addSubject("Generado por el sistema");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.add(new Paragraph("Reporte", fontTitulo));
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoEva = new Paragraph("EVALUACIONES AL PROFESOR", fontTitulo)
+        parrafoEva.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph uso = new Paragraph("(SOLO PARA USO INTERNO)", fontTitulo2)
+        uso.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(parrafoEva)
+        document.add(uso)
+        document.add(lineaVacia)
+
+
+        def sql = "select * from evaluaciones(${facultad?.id},${periodo?.id});"
+
+//        println("---> " + sql)
+
+        def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: new BaseColor(95, 113, 132)]
+        def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder4 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_CENTER,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsIzBorder5 = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        def sql2
+        def variable
+        def sumatoria = 0
+
+        PdfPTable tablaD = new PdfPTable(6);
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([50,10,10,10,10,10]))
+
+        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Estu.", fontTitulo), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Auto.", fontTitulo), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Pares.", fontTitulo), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Dire.", fontTitulo), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Total", fontTitulo), prmsIzBorder4)
+
+        res.each {p->
+
+            addCellTabla(tablaD, new Paragraph(p?.prof, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(numero(p?.estd_ev,2), fontThUsar), prmsCrBorder)
+            addCellTabla(tablaD, new Paragraph(numero(p?.auto_ev,2), fontThUsar), prmsCrBorder)
+            addCellTabla(tablaD, new Paragraph(numero(p?.pars_ev,2), fontThUsar), prmsCrBorder)
+            addCellTabla(tablaD, new Paragraph(numero(p?.dire_ev,2), fontThUsar), prmsCrBorder)
+            addCellTabla(tablaD, new Paragraph(numero(p?.totl_ev,2), fontThUsar), prmsCrBorder)
+
+        }
+
+        document.add(tablaD)
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'evaluacionesPorProfesor')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
 }
