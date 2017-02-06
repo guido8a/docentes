@@ -1045,4 +1045,16 @@ class Reportes2Controller {
         response.getOutputStream().write(b)
 
     }
+
+    def cargarDatos (){
+
+    }
+
+    def formato_ajax () {
+        return [tipo: params.tipo]
+    }
+
+    def botones_ajax () {
+        return [boton: params.boton]
+    }
 }
