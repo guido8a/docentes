@@ -74,129 +74,410 @@
         color: #0070B0;
         margin-top: 20px;
     }
+
+
+
+
+
+
+
+
+
+
+    body{font-family: 'Raleway', sans-serif;}
+
+    .row.text-center p {
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.3px;
+        margin: 3px 0 30px;
+        text-transform: uppercase;
+    }
+
+    .h3, h3 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 24px;
+        text-transform: uppercase;
+        color: WHITE;
+    }
+    .btn-default {
+        background: transparent none repeat scroll 0 0;
+        border: 2px solid #fff;
+        border-radius: 50px;
+        text-shadow: 0 1px 0 #fff;
+        font-family: 'Raleway', sans-serif;
+    }
+    .glyphicon {
+        color: white;}
+    .caption-text p {
+        margin: 18px auto 13px;
+        text-align: center;
+        width: 91%;
+    }
+    .btn-default:focus, .btn-default:hover {
+        background-color: #3f8825;
+        background-position: 0 -15px;
+    }
+
+    .cuadro_intro_hover{
+        padding: 0px;
+        position: relative;
+        overflow: hidden;
+        height: 200px;
+    }
+    .cuadro_intro_hover:hover .caption{
+        opacity: 1;
+        transform: translateY(-150px);
+        -webkit-transform:translateY(-150px);
+        -moz-transform:translateY(-150px);
+        -ms-transform:translateY(-150px);
+        -o-transform:translateY(-150px);
+    }
+    .cuadro_intro_hover img{
+        z-index: 4;
+    }
+    .cuadro_intro_hover .caption{
+        position: absolute;
+        top:150px;
+        -webkit-transition:all 0.3s ease-in-out;
+        -moz-transition:all 0.3s ease-in-out;
+        -o-transition:all 0.3s ease-in-out;
+        -ms-transition:all 0.3s ease-in-out;
+        transition:all 0.3s ease-in-out;
+        width: 100%;
+    }
+    .cuadro_intro_hover .blur{
+        background-color: rgba(0,0,0,0.7);
+        height: 300px;
+        z-index: 5;
+        position: absolute;
+        width: 100%;
+    }
+    .cuadro_intro_hover .caption-text{
+        z-index: 10;
+        color: #fff;
+        position: absolute;
+        height: 300px;
+        text-align: center;
+        top:-20px;
+        width: 100%;
+    }
+
+
+
+    .card {
+        margin-top: 20px;
+        padding: 30px;
+        background-color: rgba(214, 224, 226, 0.2);
+        -webkit-border-top-left-radius:5px;
+        -moz-border-top-left-radius:5px;
+        border-top-left-radius:5px;
+        -webkit-border-top-right-radius:5px;
+        -moz-border-top-right-radius:5px;
+        border-top-right-radius:5px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .card.hovercard {
+        position: relative;
+        padding-top: 0;
+        overflow: hidden;
+        text-align: center;
+        background-color: #fff;
+        background-color: rgba(255, 255, 255, 1);
+    }
+    .card.hovercard .card-background {
+        height: 100px;
+    }
+    .card-background img {
+        -webkit-filter: blur(25px);
+        -moz-filter: blur(25px);
+        -o-filter: blur(25px);
+        -ms-filter: blur(25px);
+        filter: blur(25px);
+        margin-left: -100px;
+        margin-top: -200px;
+        min-width: 130%;
+    }
+    .card.hovercard .useravatar {
+        position: absolute;
+        top: 15px;
+        left: 0;
+        right: 0;
+    }
+    .card.hovercard .useravatar img {
+        width: 300px;
+        height: 120px;
+        max-width: 300px;
+        max-height: 120px;
+        /*-webkit-border-radius: 50%;*/
+        /*-moz-border-radius: 50%;*/
+        /*border-radius: 50%;*/
+        /*border: 5px solid rgba(255, 255, 255, 0.5);*/
+    }
+    .card.hovercard .card-info {
+        position: absolute;
+        bottom: 14px;
+        left: 0;
+        right: 0;
+    }
+    .card.hovercard .card-info .card-title {
+        padding:0 5px;
+        font-size: 20px;
+        line-height: 1;
+        color: #262626;
+        background-color: rgba(255, 255, 255, 0.1);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
+    .card.hovercard .card-info {
+        overflow: hidden;
+        font-size: 12px;
+        line-height: 20px;
+        color: #737373;
+        /*color: WHITE;*/
+        text-overflow: ellipsis;
+    }
+    .card.hovercard .bottom {
+        padding: 0 20px;
+        margin-bottom: 17px;
+    }
+    .btn-pref .btn {
+        -webkit-border-radius:0 !important;
+    }
+
+
+
     </style>
 </head>
 
 <body>
 <div class="dialog">
-    <g:set var="inst" value="${utilitarios.Parametros.get(1)}"></g:set>
+    <g:set var="inst" value="${utilitarios.Parametros.get(1)}"/>
 
-    <div style="text-align: center;"><h2 class="titl">
-            <p class="text-warning">${inst.institucion}</p>
-            <p class="text-warning">Quanto - Docentes</p>
-        </h2>
+    %{--<div style="text-align: center;"><h2 class="titl">--}%
+    %{--<p class="text-warning">${inst.institucion}</p>--}%
+    %{--<p class="text-warning">Quanto - Docentes</p>--}%
+    %{--</h2>--}%
+    %{--</div>--}%
+
+
+
+    <div class="card hovercard">
+        <div class="card-background">
+        </div>
+        <div class="useravatar">
+            <img alt="" src="${resource(dir: 'images', file: 'quanto.png')}">
+        </div>
     </div>
+
 
     <div class="body ui-corner-all" style="width: 1020px;position: relative;margin: auto;margin-top: 40px;height: 280px; ">
 
 
-        <a href= "${createLink(controller:'encuesta', action: 'inicio')}" style="text-decoration: none">
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'q_docente.png')}" width="100%" height="100%"/>
-                </div>
+        %{--<a href= "${createLink(controller:'encuesta', action: 'inicio')}" style="text-decoration: none">--}%
+        %{--<div class="ui-corner-all item fuera">--}%
+        %{--<div class="ui-corner-all item">--}%
+        %{--<div class="imagen">--}%
+        %{--<img src="${resource(dir: 'images', file: 'q_docente.png')}" width="100%" height="100%"/>--}%
+        %{--</div>--}%
 
-                <div class="texto">
-                    <span class="text-success"><strong>Evaluación al Docente</strong> por Pares, Directivos, Estudiantes y Autoevaluación</span></div>
+        %{--<div class="texto">--}%
+        %{--<span class="text-success"><strong>Evaluación al Docente</strong> por Pares, Directivos, Estudiantes y Autoevaluación</span></div>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</a>--}%
+
+
+
+        <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
+            <p style="text-align:center;" class="imagen">
+                <img src="${resource(dir: 'images', file: 'q_docente.png')}" width="100%" height="100%" class="img-responsive" alt=""/>
+            </p>
+            <div class="caption">
+                <div class="blur"></div>
+                <div class="caption-text">
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Evaluación</h3>
+                    <p><strong>Evaluación al Docente por Pares, Directivos, Estudiantes y Autoevaluación</strong></p>
+                    <a class=" btn btn-default" href="${createLink(controller:'encuesta', action: 'inicio')}" target="_blank"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                </div>
             </div>
         </div>
-        </a>
 
-        <a href= "${createLink(controller:'pregunta', action: 'list')}" style="text-decoration: none">
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'preguntas.png')}" width="100%" height="100%"/>
+
+
+        %{--<a href= "${createLink(controller:'pregunta', action: 'list')}" style="text-decoration: none">--}%
+        %{--<div class="ui-corner-all item fuera">--}%
+        %{--<div class="ui-corner-all item">--}%
+        %{--<div class="imagen">--}%
+        %{--<img src="${resource(dir: 'images', file: 'preguntas.png')}" width="100%" height="100%"/>--}%
+        %{--</div>--}%
+
+        %{--<div class="texto">--}%
+        %{--<span class="text-success"><strong>Encuestas</strong> preguntas y estructura de los distintos tipos de encuesta a aplicarse</span></div>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</a>--}%
+
+        <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
+            <p style="text-align:center;" class="imagen">
+                <img src="${resource(dir: 'images', file: 'preguntas.png')}" width="100%" height="100%" class="img-responsive" alt=""/>
+            </p>
+            <div class="caption">
+                <div class="blur"></div>
+                <div class="caption-text">
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Encuestas</h3>
+                    <p><strong>Preguntas y estructura de los distintos tipos de encuesta a aplicarse</strong></p>
+                    <a class=" btn btn-default" href="${createLink(controller:'pregunta', action: 'list')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
-
-                <div class="texto">
-                    <span class="text-success"><strong>Encuestas</strong> preguntas y estructura de los distintos tipos de encuesta a aplicarse</span></div>
             </div>
         </div>
-        </a>
 
-        <a href= "${createLink(controller:'profesor', action: 'list')}" style="text-decoration: none">
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'profesor.png')}" width="100%" height="100%"/>
+        %{--<a href= "${createLink(controller:'profesor', action: 'list')}" style="text-decoration: none">--}%
+        %{--<div class="ui-corner-all item fuera">--}%
+        %{--<div class="ui-corner-all item">--}%
+        %{--<div class="imagen">--}%
+        %{--<img src="${resource(dir: 'images', file: 'profesor.png')}" width="100%" height="100%"/>--}%
+        %{--</div>--}%
+
+        %{--<div class="texto">--}%
+        %{--<span class="text-success"><strong>Docentes</strong> registro de personal docente y materias que dicta</span></div>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</a>--}%
+
+
+        <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
+            <p style="text-align:center;" class="imagen">
+                <img src="${resource(dir: 'images', file: 'profesor.png')}" width="100%" height="100%" class="img-responsive" alt=""/>
+            </p>
+            <div class="caption">
+                <div class="blur"></div>
+                <div class="caption-text">
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Docente</h3>
+                    <p><strong>Registro de personal docente y materias que dicta</strong></p>
+                    <a class=" btn btn-default" href="${createLink(controller:'profesor', action: 'list')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
-
-                <div class="texto">
-                    <span class="text-success"><strong>Docentes</strong> registro de personal docente y materias que dicta</span></div>
             </div>
         </div>
-        </a>
 
-        <a href= "${createLink(controller:'estudiante', action: 'list')}" style="text-decoration: none">
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'estudiante.png')}" width="100%" height="100%"/>
+
+        %{--<a href= "${createLink(controller:'estudiante', action: 'list')}" style="text-decoration: none">--}%
+        %{--<div class="ui-corner-all item fuera">--}%
+        %{--<div class="ui-corner-all item">--}%
+        %{--<div class="imagen">--}%
+        %{--<img src="${resource(dir: 'images', file: 'estudiante.png')}" width="100%" height="100%"/>--}%
+        %{--</div>--}%
+
+        %{--<div class="texto">--}%
+        %{--<span class="text-success"><strong>Estudiantes</strong> registro de estudiantes y matrícula</span></div>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</a>--}%
+
+
+        <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
+            <p style="text-align:center;" class="imagen">
+                <img src="${resource(dir: 'images', file: 'estudiante.png')}" width="100%" height="100%" class="img-responsive" alt=""/>
+            </p>
+            <div class="caption">
+                <div class="blur"></div>
+                <div class="caption-text">
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Estudiante</h3>
+                    <p><strong>Registro de estudiantes y matrícula</strong></p>
+                    <a class=" btn btn-default" href="${createLink(controller:'estudiante', action: 'list')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
-
-                <div class="texto">
-                    <span class="text-success"><strong>Estudiantes</strong> registro de estudiantes y matrícula</span></div>
             </div>
         </div>
-        </a>
 
-        <a href= "${createLink(controller:'buscarActividad', action: 'busquedaActividad')}" style="text-decoration: none">
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'datos.png')}" width="100%" height="100%"/>
+        %{--<a href= "${createLink(controller:'buscarActividad', action: 'busquedaActividad')}" style="text-decoration: none">--}%
+        %{--<div class="ui-corner-all item fuera">--}%
+        %{--<div class="ui-corner-all item">--}%
+        %{--<div class="imagen">--}%
+        %{--<img src="${resource(dir: 'images', file: 'datos.png')}" width="100%" height="100%"/>--}%
+        %{--</div>--}%
+
+        %{--<div class="texto">--}%
+        %{--<span class="text-success"><strong>Cargar datos</strong> cargar datos desde archivos de hoja de cálculo</span></div>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</a>--}%
+
+        <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
+            <p style="text-align:center;" class="imagen">
+                <img src="${resource(dir: 'images', file: 'datos.png')}" width="100%" height="100%" class="img-responsive" alt=""/>
+            </p>
+            <div class="caption">
+                <div class="blur"></div>
+                <div class="caption-text">
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Cargar Datos</h3>
+                    <p><strong>Cargar datos desde archivos de hoja de cálculo</strong></p>
+                    <a class=" btn btn-default" href="${createLink(controller:'procesos', action: 'cargarDatos')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
-
-                <div class="texto">
-                    <span class="text-success"><strong>Cargar datos</strong> cargar datos desde archivos de hoja de cálculo</span></div>
             </div>
         </div>
-        </a>
 
-        <a href= "${createLink(controller:'reportes', action: 'reportes')}" style="text-decoration: none">
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'reportes.png')}" width="100%" height="100%"/>
+        %{--<a href= "${createLink(controller:'reportes', action: 'reportes')}" style="text-decoration: none">--}%
+        %{--<div class="ui-corner-all item fuera">--}%
+        %{--<div class="ui-corner-all item">--}%
+        %{--<div class="imagen">--}%
+        %{--<img src="${resource(dir: 'images', file: 'reportes.png')}" width="100%" height="100%"/>--}%
+        %{--</div>--}%
+
+        %{--<div class="texto">--}%
+        %{--<span class="text-success"><strong>Reportes</strong> reportes del desempeño académico</span></div>--}%
+        %{--</div>--}%
+        %{--</div>--}%
+        %{--</a>--}%
+
+        <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
+            <p style="text-align:center;" class="imagen" >
+                <img src="${resource(dir: 'images', file: 'reportes.png')}" width="100%" height="100%" class="img-responsive" alt=""/>
+            </p>
+            <div class="caption">
+                <div class="blur"></div>
+                <div class="caption-text">
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Reportes</h3>
+                    <p><strong>Reportes del desempeño académico</strong></p>
+                    <a class=" btn btn-default" href="${createLink(controller:'reportes', action: 'reportes')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
-
-                <div class="texto">
-                    <span class="text-success"><strong>Reportes</strong> reportes del desempeño académico</span></div>
             </div>
         </div>
-        </a>
+
+
+
 
     </div>
 
 
 </div>
-    <script type="text/javascript">
-        $(".fuera").hover(function () {
-            var d = $(this).find(".imagen,.imagen2")
-            d.width(d.width() + 10)
-            d.height(d.height() + 10)
+<script type="text/javascript">
+    $(".fuera").hover(function () {
+        var d = $(this).find(".imagen,.imagen2")
+        d.width(d.width() + 10)
+        d.height(d.height() + 10)
 
-        }, function () {
-            var d = $(this).find(".imagen, .imagen2")
-            d.width(d.width() - 10)
-            d.height(d.height() - 10)
-        })
+    }, function () {
+        var d = $(this).find(".imagen, .imagen2")
+        d.width(d.width() - 10)
+        d.height(d.height() - 10)
+    })
 
 
-        $(function () {
-            $(".openImagenDir").click(function () {
-                openLoader();
-            });
-
-            $(".openImagen").click(function () {
-                openLoader();
-            });
+    $(function () {
+        $(".openImagenDir").click(function () {
+            openLoader();
         });
 
+        $(".openImagen").click(function () {
+            openLoader();
+        });
+    });
 
 
-    </script>
+
+</script>
 </body>
 </html>
