@@ -163,8 +163,6 @@
         width: 100%;
     }
 
-
-
     .card {
         margin-top: 20px;
         padding: 30px;
@@ -211,10 +209,6 @@
         height: 120px;
         max-width: 300px;
         max-height: 120px;
-        /*-webkit-border-radius: 50%;*/
-        /*-moz-border-radius: 50%;*/
-        /*border-radius: 50%;*/
-        /*border: 5px solid rgba(255, 255, 255, 0.5);*/
     }
     .card.hovercard .card-info {
         position: absolute;
