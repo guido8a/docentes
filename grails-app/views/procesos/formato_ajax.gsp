@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 03/02/17
-  Time: 12:04
---%>
-
 <style type="text/css">
 
     .cabecera{
@@ -14,17 +7,13 @@
         color: WHITE;
     }
 
-    /*tbody tr td{*/
-        /*background-color: #5c6e80;*/
-        /*text-align: center;*/
-    /*}*/
-
 </style>
 
+<input type="text" hidden id="tabla" value="${tabla}">
 <table class="table table-condensed table-bordered table-striped ${tipo == '1' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Facultades.xls</th>
+        <th colspan="2">Nombre del archivo: facultades.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -42,7 +31,7 @@
 <table class="table table-condensed table-bordered table-striped ${tipo == '2' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Escuelas.xls</th>
+        <th colspan="3">Nombre del archivo: escuelas.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -62,7 +51,7 @@
 <table class="table table-condensed table-bordered table-striped ${tipo == '3' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Profesores.xls</th>
+        <th colspan="7">Nombre del archivo: profesores.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -87,10 +76,11 @@
     </tbody>
 </table>
 
+%{--
 <table class="table table-condensed table-bordered table-striped ${tipo == '4' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Cursos.xls</th>
+        <th colspan="2">Nombre del archivo: cursos.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -104,10 +94,11 @@
     </tr>
     </tbody>
 </table>
-<table class="table table-condensed table-bordered table-striped ${tipo == '5' ? '' : 'hidden'}">
+--}%
+<table class="table table-condensed table-bordered table-striped ${tipo == '4' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Estudiantes.xls</th>
+        <th colspan="3">Nombre del archivo: estudiantes.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -123,10 +114,10 @@
     </tr>
     </tbody>
 </table>
-<table class="table table-condensed table-bordered table-striped ${tipo == '6' ? '' : 'hidden'}">
+<table class="table table-condensed table-bordered table-striped ${tipo == '5' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Materias.xls</th>
+        <th colspan="4">Nombre del archivo: materias.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -144,10 +135,10 @@
     </tr>
     </tbody>
 </table>
-<table class="table table-condensed table-bordered table-striped ${tipo == '7' ? '' : 'hidden'}">
+<table class="table table-condensed table-bordered table-striped ${tipo == '6' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Dictan.xls</th>
+        <th colspan="4">Nombre del archivo: dictan.xls</th>
     </tr>
     </thead>
     <tbody>
@@ -165,10 +156,10 @@
     </tr>
     </tbody>
 </table>
-<table class="table table-condensed table-bordered table-striped ${tipo == '8' ? '' : 'hidden'}">
+<table class="table table-condensed table-bordered table-striped ${tipo == '7' ? '' : 'hidden'}">
     <thead>
     <tr>
-        <th>Matriculados.xls</th>
+        <th colspan="5">Nombre del archivo: matriculados.xls</th>
     </tr>
     </thead>
     <tbody>

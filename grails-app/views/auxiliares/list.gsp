@@ -149,7 +149,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Auxiliares",
+                            title   : title + " Auxiliares - Periodo: NN",
                             class   : 'long',
                             message : msg,
                             buttons : {

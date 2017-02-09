@@ -127,6 +127,7 @@
             });
         });
 
+
         $("#anterior").click(function () {
             bootbox.confirm({
                 title: "¿Regresar a la pregunta anterior?",

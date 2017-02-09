@@ -1050,13 +1050,7 @@ class Reportes2Controller {
 
     }
 
-    def formato_ajax () {
-        return [tipo: params.tipo]
-    }
 
-    def botones_ajax () {
-        return [boton: params.boton]
-    }
 
     def evaluacionesProfe () {
 

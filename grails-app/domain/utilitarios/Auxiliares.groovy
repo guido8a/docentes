@@ -21,7 +21,7 @@ class Auxiliares {
     String password
     Periodo periodo
     int cuelloBotella
-    int factorExterno
+    int factorExito
 
     static mapping = {
         table 'auxl'
@@ -48,7 +48,7 @@ class Auxiliares {
             password column: 'pass'
             periodo column: 'prdo__id'
             cuelloBotella column: 'pcntccbb'
-            factorExterno column: 'pcntfcex'
+            factorExito column: 'pcntfcex'
         }
     }
 

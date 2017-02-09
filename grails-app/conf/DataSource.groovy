@@ -18,7 +18,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.10:5432/quanto"
+            url = "jdbc:postgresql://10.0.0.10:5432/quanto2"
             username = "postgres"
             password = "postgres"
         }

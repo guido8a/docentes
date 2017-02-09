@@ -1,8 +1,8 @@
 package seguridad
 
 class InicioController extends seguridad.Shield {
-    def dbConnectionService
-    def diasLaborablesService
+//    def dbConnectionService
+//    def diasLaborablesService
 
     def index() {
 /*
