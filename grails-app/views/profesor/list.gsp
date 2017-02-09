@@ -46,7 +46,7 @@
                     
                     <g:sortableColumn property="evaluar" title="Evaluar" />
                     
-                    <g:sortableColumn property="fechaFin" title="Fecha Fin" />
+                    %{--<g:sortableColumn property="fechaFin" title="Fecha Fin" />--}%
                     
                 </tr>
             </thead>
@@ -64,7 +64,7 @@
                         
                         <td>${fieldValue(bean: profesorInstance, field: "evaluar")}</td>
                         
-                        <td><g:formatDate date="${profesorInstance.fechaFin}" format="dd-MM-yyyy" /></td>
+                        %{--<td><g:formatDate date="${profesorInstance.fechaFin}" format="dd-MM-yyyy" /></td>--}%
                         
                     </tr>
                 </g:each>

@@ -152,5 +152,8 @@ class AuxiliaresController extends Shield {
             return
         }
     } //delete para eliminar via ajax
-    
+
+    def auxiliares () {
+
+    }
 }

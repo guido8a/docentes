@@ -60,6 +60,9 @@
 	<script src="${resource(dir: 'js/plugins/jquery.qtip-2.2.0', file: 'jquery.qtip.min.js')}"></script>
 	<link href='${resource(dir: "js/plugins/jquery.qtip-2.2.0", file: "jquery.qtip.min.css")}' rel='stylesheet' type='text/css'>
 
+	<script src="${resource(dir: 'js/plugins/raphael', file: 'raphael.min.js')}"></script>
+	<script src="${resource(dir: 'js/plugins/gauges', file: 'kuma-gauge.jquery.js')}"></script>
+
 	<!-- Custom styles -->
 	<link href="${resource(dir: 'css', file: 'custom.css')}" rel="stylesheet">
 	<link href="${resource(dir: 'css', file: 'custom/loader.css')}" rel="stylesheet">
