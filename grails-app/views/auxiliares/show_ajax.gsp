@@ -71,14 +71,14 @@
         </div>
     </g:if>
     
-    <g:if test="${auxiliaresInstance?.factorExterno}">
+    <g:if test="${auxiliaresInstance?.factorExito}">
         <div class="row">
             <div class="col-md-2 text-info">
                 Factor Externo
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${auxiliaresInstance}" field="factorExterno"/>
+                <g:fieldValue bean="${auxiliaresInstance}" field="factorExito"/>
             </div>
             
         </div>

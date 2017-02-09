@@ -61,7 +61,7 @@
                         
                         <td>${fieldValue(bean: auxiliaresInstance, field: "dias")}</td>
                         
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "factorExterno")}</td>
+                        <td>${fieldValue(bean: auxiliaresInstance, field: "factorExito")}</td>
                         
                     </tr>
                 </g:each>

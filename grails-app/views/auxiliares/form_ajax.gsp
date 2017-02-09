@@ -84,7 +84,7 @@
                     </label>
                     <div class="col-md-3">
                         %{--<g:field name="factorExterno" type="number" value="${auxiliaresInstance.factorExterno}" class="digits form-control required" required=""/>--}%
-                        <g:textField name="factorExterno" class="form-control number required" value="${auxiliaresInstance?.factorExterno}"/>
+                        <g:textField name="factorExterno" class="form-control number required" value="${auxiliaresInstance?.factorExito}"/>
                     </div>
 
                 </span>
