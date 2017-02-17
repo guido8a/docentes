@@ -58,21 +58,30 @@
 </div>
 
 <div class="col-md-8">
+    <g:uploadForm action="validar" method="post" name="frmaArchivo">
     <div class="panel panel-primary">
         <div class="panel-heading">Seleccionar el archivo a cargar</div>
 
         <div class="panel-body">
-            <span class="btn btn-info fileinput-button" style="position: relative">
+            <span class="btn btn-info fileinput-button col-md-8" style="position: relative">
                 %{--<i class="glyphicon glyphicon-plus"></i>--}%
                 %{--<span>Seleccionar archivo</span>--}%
-                <input type="file" name="file" multiple="" id="archivo" class="archivo">
+                <input type="file" name="file" multiple="" id="archivo" class="archivo col-md-12">
+                <input type="hidden" name="tipoTabla" id="tipoTabla" value="">
             </span>
+            <div class="col-md-1"></div>
+            <div class="col-md-4" id="spinner">
+            </div>
         </div>
+
     </div>
+    </g:uploadForm>
 </div>
 
-
 <script type="text/javascript">
+
+    var url = "${resource(dir:'images', file:'spinner64.gif')}";
+    var spinner = $("<img style='margin-left:15px;' src='" + url + "' width='40px' height='40px'/><span> Cargando...</span>");
 
     cargarBotones(1);
     cargarFormato(1);
@@ -99,6 +108,8 @@
             },
             success: function (msg) {
                 $("#formato").html(msg)
+                $(".list-group-item").removeClass("list-group-item-danger")
+                $("#btn" + $("#tablaTipo").val()).addClass("list-group-item-danger")
             }
         })
     }
@@ -112,7 +123,7 @@
                     id      : "dlgRecomendacion",
                     title   : "¿Esta a punto de Borrar los datos del período?",
 //                    class   : "long",
-                    message : msg,
+                    message : "<h4>Borrar los datos de Materias dictadas y Estudiantes Matriculados</h4>" + msg,
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -124,7 +135,6 @@
                             label     : "Borrar",
                             className : "btn-warning",
                             callback  : function () {
-                                var recomendacion = $("#recomendacionId").val();
                                 $.ajax({
                                     type: 'POST',
                                     url: '${createLink(action: 'borrarDatos')}',
@@ -150,31 +160,40 @@
 
     });
 
-//    $(".openImagen").click(function () {
-//        openLoader();
-//    });
-
     $("#validarDatos").click(function () {
         var arch = $('#archivo').val();
         var boton = $("#tabla").val();
         console.log('archivo:', arch);
         if (arch) {
-            bootbox.confirm({
-                title: "¿Validar archivo de datos?",
-                message: "Se validará: <strong>" + arch + "</strong> como archivo de datos para <strong>" + boton + "</strong>",
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Cancelar'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Aceptar',
-                        className: 'btn-success'
-                    }
-                },
-                callback: function (result) {
-                    if(result) {
-                        location.href = "${createLink(action: 'previa')}"
-                    }
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(action: 'periodos_ajax')}",
+                success: function (msg){
+                    bootbox.dialog({
+                        title   : "¿Validar archivo para el período..?",
+//                    class   : "long",
+//                        message : "<h4>Archivo " + arch + </h4>" + msg,
+                        message : "Se validará: <strong>" + arch + "</strong> como archivo de datos para <strong>" +
+                           boton + "</strong>" + msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            aceptar : {
+                                label     : "Validar",
+                                className : "btn-warning",
+                                callback  : function () {
+                                    $("#tipoTabla").val($("#tabla").val());
+                                    $("#spinner").replaceWith(spinner);
+                                    $("#frmaArchivo").submit();
+                                }
+                            }
+
+                        } //buttons
+                    }); //dialog
                 }
             });
 
@@ -194,6 +213,14 @@
         }
     });
 
+    $("#cargarDatos").click(function () {
+        var foo = "bar1";
+        var foo1 = "bar2";
+        var ob  = {};
+        ob[foo] = "something";
+        ob[foo1] = "something dos";
+        alert("json:" + JSON.stringify(ob))
+    })
 
 </script>
 

@@ -10,6 +10,7 @@
 </style>
 
 <input type="text" hidden id="tabla" value="${tabla}">
+<input type="text" hidden id="tablaTipo" value="${tipo}">
 <table class="table table-condensed table-bordered table-striped ${tipo == '1' ? '' : 'hidden'}">
     <thead>
     <tr>

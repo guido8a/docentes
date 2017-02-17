@@ -208,7 +208,7 @@
         $myFuelGauge = $("div#fuel-gauge").dynameter({
             width: 200,
             label: 'Mínimo',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo ?: 50},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.minimo: 50},
             min: 0,
             max: 100,
 //            unit: 'gal',

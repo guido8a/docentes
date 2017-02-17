@@ -28,13 +28,14 @@ class ElementosTagLib {
      * crea el div para el flash message
      */
     def flashMessage = { attrs, body ->
+
         def contenido = body()
         if (!contenido) {
             if (attrs.contenido) {
                 contenido = attrs.contenido
             }
         }
-
+        println "attrs.contenido: ${attrs.contenido}, contenido: $contenido"
         if (contenido) {
             def finHtml = "</h5></div>"
 
