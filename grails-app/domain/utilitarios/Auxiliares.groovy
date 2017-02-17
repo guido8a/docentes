@@ -4,11 +4,11 @@ import docentes.Periodo
 
 class Auxiliares {
 
-    int numeroRondas
-    int maximoProfesores
-    int dias
+    int numeroRondas = 0
+    int maximoProfesores = 0
+    int dias = 0
     String curso
-    int paralelo
+    int paralelo = 0
     Double minimo
     Double optimo
     Date fechaCierre
@@ -54,7 +54,8 @@ class Auxiliares {
 
 
     static constraints = {
-
-
+        curso(nullable: true, blank: true)
+        password(nullable: true, blank: true)
+        fechaCierre(nullable: true)
     }
 }

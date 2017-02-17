@@ -60,8 +60,18 @@
 	<script src="${resource(dir: 'js/plugins/jquery.qtip-2.2.0', file: 'jquery.qtip.min.js')}"></script>
 	<link href='${resource(dir: "js/plugins/jquery.qtip-2.2.0", file: "jquery.qtip.min.css")}' rel='stylesheet' type='text/css'>
 
-	<script src="${resource(dir: 'js/plugins/raphael', file: 'raphael.min.js')}"></script>
-	<script src="${resource(dir: 'js/plugins/gauges', file: 'kuma-gauge.jquery.js')}"></script>
+
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+	<link rel="stylesheet" href="${resource(dir: 'js/plugins/dynamicGauge', file: 'css/jquery.dynameter.css')}">
+	<script src="${resource(dir: 'js/plugins/dynamicGauge', file: 'js/jquery.dynameter.js')}"></script>
+
+
+	<script src="${resource(dir:'js/plugins/radial',file: 'radial-progress-bar.js')}"></script>
+
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 	<!-- Custom styles -->
 	<link href="${resource(dir: 'css', file: 'custom.css')}" rel="stylesheet">

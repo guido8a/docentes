@@ -1,5 +1,6 @@
 package utilitarios
 
+import docentes.Periodo
 import org.springframework.dao.DataIntegrityViolationException
 import seguridad.Shield
 
@@ -154,6 +155,75 @@ class AuxiliaresController extends Shield {
     } //delete para eliminar via ajax
 
     def auxiliares () {
+        def auxiliar = Auxiliares.get(params.id)
+        return [auxiliar: auxiliar]
+    }
+
+    def grafico_ajax () {
+        println("params " + params)
+        return [valor: params.valor]
+    }
+
+    def guardarValores_ajax () {
+        println("parametros " + params)
+
+
+
+        def auxiliar
+        if(params.id){
+            auxiliar = Auxiliares.get(params.id)
+            auxiliar.factorExito = params.exito.toInteger()
+            auxiliar.ajusteExagerado = params.exagerado.toInteger()
+            auxiliar.ajusteModerado = params.moderado.toInteger()
+            auxiliar.cuelloBotella = params.botella.toInteger()
+            auxiliar.maximoAutoevaluacion = params.auto.toInteger()
+            auxiliar.maximoDirectivos = params.directivos.toInteger()
+            auxiliar.maximoEstudiantes = params.estudiantes.toInteger()
+            auxiliar.maximoPares = params.pares.toInteger()
+            auxiliar.optimo = params.optimo.toInteger()
+            auxiliar.minimo = params.minimo.toInteger()
+
+            if(auxiliar.save(flush: true)){
+                render "ok_Información actualizada correctamente_${auxiliar?.id}"
+            }else{
+                render "no_Error al actualizar la información"
+                println("error save auxiliar" + auxiliar.errors)
+            }
+
+
+        }else{
+
+            def per = Periodo.get(params.periodo)
+
+            if(per in Periodo.list()){
+
+                render "no_Ya existen parámetros auxiliares para este período!"
+
+            }else{
+                auxiliar = new Auxiliares()
+                auxiliar.factorExito = params.exito.toInteger()
+                auxiliar.ajusteExagerado = params.exagerado.toInteger()
+                auxiliar.ajusteModerado = params.moderado.toInteger()
+                auxiliar.cuelloBotella = params.botella.toInteger()
+                auxiliar.maximoAutoevaluacion = params.auto.toInteger()
+                auxiliar.maximoDirectivos = params.directivos.toInteger()
+                auxiliar.maximoEstudiantes = params.estudiantes.toInteger()
+                auxiliar.maximoPares = params.pares.toInteger()
+                auxiliar.optimo = params.optimo.toInteger()
+                auxiliar.minimo = params.minimo.toInteger()
+
+                auxiliar.periodo = per
+
+
+                if(auxiliar.save(flush: true)){
+                    render "ok_Parámetros auxiliares creados correctamente_${auxiliar?.id}"
+                }else{
+                    render "no_Error crear los parámetros auxiliares"
+                    println("error save auxiliar" + auxiliar.errors)
+                }
+            }
+        }
 
     }
+
 }

@@ -13,7 +13,7 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-info btnCrear">
+                <g:link action="auxiliares" class="btn btn-info btnCrear">
                     <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
@@ -32,37 +32,33 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
+
+                    <g:sortableColumn property="minimo" title="Índice de calidad Mínimo" />
                     
-                    <g:sortableColumn property="ajusteExagerado" title="Ajuste Exagerado" />
+                    <g:sortableColumn property="optimo" title="Índice de calidad Óptimo" />
                     
-                    <g:sortableColumn property="ajusteModerado" title="Ajuste Moderado" />
+                    <g:sortableColumn property="maximoDirectivos" title="Ponderación para evaluación de Directivos" />
                     
-                    <g:sortableColumn property="cuelloBotella" title="Cuello Botella" />
+                    <g:sortableColumn property="maximoPares" title="Ponderación para evaluación de Pares" />
                     
-                    <g:sortableColumn property="curso" title="Curso" />
+                    <g:sortableColumn property="maximoAutoevaluacion" title="Ponderación para Autoevaluaciones" />
                     
-                    <g:sortableColumn property="dias" title="Dias" />
-                    
-                    <g:sortableColumn property="factorExterno" title="Factor Externo" />
+                    <g:sortableColumn property="maximoEstudiantes" title="Ponderación para evaluación de Estudiantes" />
+
+                    <td>Período</td>
                     
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${auxiliaresInstanceList}" status="i" var="auxiliaresInstance">
                     <tr data-id="${auxiliaresInstance.id}">
-                        
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "ajusteExagerado")}</td>
-                        
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "ajusteModerado")}</td>
-                        
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "cuelloBotella")}</td>
-                        
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "curso")}</td>
-                        
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "dias")}</td>
-                        
-                        <td>${fieldValue(bean: auxiliaresInstance, field: "factorExito")}</td>
-                        
+                        <td>${auxiliaresInstance?.minimo?.toInteger()}</td>
+                        <td>${auxiliaresInstance?.optimo?.toInteger()}</td>
+                        <td>${auxiliaresInstance?.maximoDirectivos}</td>
+                        <td>${auxiliaresInstance?.maximoPares}</td>
+                        <td>${auxiliaresInstance?.maximoAutoevaluacion}</td>
+                        <td>${auxiliaresInstance?.maximoEstudiantes}</td>
+                        <td>${auxiliaresInstance?.periodo?.nombre}</td>
                     </tr>
                 </g:each>
             </tbody>
@@ -139,49 +135,48 @@
                     }
                 });
             }
-            function createEditRow(id) {
-                var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(action:'form_ajax')}",
-                    data    : data,
-                    success : function (msg) {
-                        var b = bootbox.dialog({
-                            id      : "dlgCreateEdit",
-                            title   : title + " Auxiliares - Periodo: NN",
-                            class   : 'long',
-                            message : msg,
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                guardar  : {
-                                    id        : "btnSave",
-                                    label     : "<i class='fa fa-save'></i> Guardar",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        return submitForm();
-                                    } //callback
-                                } //guardar
-                            } //buttons
-                        }); //dialog
-                        setTimeout(function () {
-                            b.find(".form-control").first().focus()
-                        }, 500);
-                    } //success
-                }); //ajax
-            } //createEdit
+            %{--function createEditRow(id) {--}%
+                %{--var title = id ? "Editar" : "Crear";--}%
+                %{--var data = id ? { id: id } : {};--}%
+                %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : "${createLink(action:'form_ajax')}",--}%
+                    %{--data    : data,--}%
+                    %{--success : function (msg) {--}%
+                        %{--var b = bootbox.dialog({--}%
+                            %{--id      : "dlgCreateEdit",--}%
+                            %{--title   : title + " Auxiliares - Periodo: NN",--}%
+                            %{--class   : 'long',--}%
+                            %{--message : msg,--}%
+                            %{--buttons : {--}%
+                                %{--cancelar : {--}%
+                                    %{--label     : "Cancelar",--}%
+                                    %{--className : "btn-primary",--}%
+                                    %{--callback  : function () {--}%
+                                    %{--}--}%
+                                %{--},--}%
+                                %{--guardar  : {--}%
+                                    %{--id        : "btnSave",--}%
+                                    %{--label     : "<i class='fa fa-save'></i> Guardar",--}%
+                                    %{--className : "btn-success",--}%
+                                    %{--callback  : function () {--}%
+                                        %{--return submitForm();--}%
+                                    %{--} //callback--}%
+                                %{--} //guardar--}%
+                            %{--} //buttons--}%
+                        %{--}); //dialog--}%
+                        %{--setTimeout(function () {--}%
+                            %{--b.find(".form-control").first().focus()--}%
+                        %{--}, 500);--}%
+                    %{--} //success--}%
+                %{--}); //ajax--}%
+            %{--} //createEdit--}%
 
             $(function () {
 
-                $(".btnCrear").click(function() {
-                    createEditRow();
-                    return false;
-                });
+                %{--$(".btnCrear").click(function() {--}%
+                    %{--location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}";--}%
+                %{--});--}%
 
                 $("tbody tr").contextMenu({
                     items  : {
@@ -222,7 +217,8 @@
                             icon   : "fa fa-pencil",
                             action : function ($element) {
                                 var id = $element.data("id");
-                                createEditRow(id);
+//                                createEditRow(id);
+                                location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id
                             }
                         },
                         eliminar : {
