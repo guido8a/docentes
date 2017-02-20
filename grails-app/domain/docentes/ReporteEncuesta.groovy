@@ -5,6 +5,7 @@ class ReporteEncuesta {
     Profesor profesor
     Periodo periodo
     TipoEncuesta tipoEncuesta
+    Dictan dictan
     Double ddsc
     Double ddac
     Double ddhd
@@ -31,6 +32,7 @@ class ReporteEncuesta {
             profesor column: 'prof__id'
             periodo column: 'prdo__id'
             tipoEncuesta column: 'tpen__id'
+            dictan column: 'dcta__id'
             ddsc column: 'ddsc'
             ddac column: 'ddac'
             ddhd column: 'ddhd'
@@ -49,5 +51,6 @@ class ReporteEncuesta {
     }
 
     static constraints = {
+        dictan(blank: true, nullable: true)
     }
 }
