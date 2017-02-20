@@ -254,26 +254,30 @@ class ProcesosController extends seguridad.Shield {
         println "$params"
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
-        def sql = "select facl.facl__id, facldscr, count(*) cnta from rpec, prof, escl, facl where prdo__id = 1 and " +
-                "rpec.prdo__id = 1 and prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from rpec, prof, escl, facl where prdo__id = ${params.periodo} and " +
+                "rpec.prdo__id = ${params.periodo} and prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id group by facl.facl__id, facldscr order by facldscr"
 
 //        println "sql: $sql"
+
+
         cn.eachRow(sql.toString()) { d ->
             println "facultad: ${d.facl__id}, ${d.facldscr}, ${d.cnta}"
-            cn1.execute("select * from desempeno(${d.facl__id}, 1)".toString())
+            cn1.execute("select * from desempeno(${d.facl__id}, ${params.periodo})".toString())
+            render (d.cnta + "_")
         }
 
-//        def timer = new Timer()
-//        def task = timer.runAfter(10000) {
-//            println "Actually executed at ${new Date()}."
-//            uno = 1
-//        }
+    }
 
+    def prueba () {
 
+        println("params " + params)
 
+        def num =  (params.parte.toDouble() + params.itera.toDouble())
+        println("num " + num)
 
-        render 1
+        render num
+
 
     }
 
