@@ -29,18 +29,22 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="btn-group col-md-4">
+        <div class="btn-group col-md-5">
             <g:link controller="auxiliares" action="list" class="btn btn-primary" title="Parámetros auxiliares">
                 <i class="fa fa-chevron-left"></i> Lista
             </g:link>
 
-            <a href="#" class="btn btn-success btnGuardar" >
-                <i class="fa fa-save"></i> Guardar
-            </a>
+            <g:if test="${ver != '1'}">
+                <a href="#" class="btn btn-success btnGuardar" >
+                    <i class="fa fa-save"></i> Guardar
+                </a>
 
-            <a href="#" class="btn btn-info btnDefecto" >
-                <i class="fa fa-dashboard"></i> Valores por defecto
-            </a>
+                <a href="#" class="btn btn-info btnDefecto" >
+                    <i class="fa fa-dashboard"></i> Valores por defecto
+                </a>
+            </g:if>
+
+
         </div>
         <g:if test="${!auxiliar}">
             <div class="col-md-3">
@@ -63,7 +67,9 @@
 
             <div id="fuel-gauge"></div>
 
-            <div class="col-md-7 estilo" id="fuel-gauge-control"></div>
+            <g:if test="${ver != '1'}">
+                <div class="col-md-7 estilo" id="fuel-gauge-control"></div>
+            </g:if>
 
         </div>
         <div class="col-md-4">
@@ -71,14 +77,18 @@
 
             <div  id="fuel-gauge2"></div>
 
-            <div class="col-md-7 estilo" id="fuel-gauge-control2"></div>
-
+            <g:if test="${ver != '1'}">
+                <div class="col-md-7 estilo" id="fuel-gauge-control2"></div>
+            </g:if>
         </div>
         <div class="col-md-4">
             <label class="bajo">Ajuste para potenciadores de nivel Moderado (0-100 val=75)</label>
             <div id="fuel-gauge3"></div>
 
-            <div class="col-md-7 estilo" id="fuel-gauge-control3"></div>
+            <g:if test="${ver != '1'}">
+                <div class="col-md-7 estilo" id="fuel-gauge-control3"></div>
+            </g:if>
+
 
         </div>
     </div>
@@ -90,21 +100,27 @@
             <label class="bajo">Ajuste para potenciadores de nivel Exagerado (0-75 val=50)</label>
             <div id="fuel-gauge4"></div>
 
-            <div class="col-md-7 estilo" id="fuel-gauge-control4"></div>
+            <g:if test="${ver != '1'}">
+                <div class="col-md-7 estilo" id="fuel-gauge-control4"></div>
+            </g:if>
 
         </div>
         <div class="col-md-4">
             <label class="bajo">% de opinión para Cuellos de Botella (10-50 val=10)</label>
             <div id="fuel-gauge5"></div>
 
-            <div class="col-md-7 estilo" id="fuel-gauge-control5"></div>
+            <g:if test="${ver != '1'}">
+                <div class="col-md-7 estilo" id="fuel-gauge-control5"></div>
+            </g:if>
         </div>
         <div class="col-md-4">
             <label class="bajo">% de opinión para Factor de éxito (10-50 val=10) </label>
 
             <div id="fuel-gauge6"></div>
 
-            <div class="col-md-7 estilo" id="fuel-gauge-control6"></div>
+            <g:if test="${ver != '1'}">
+                <div class="col-md-7 estilo" id="fuel-gauge-control6"></div>
+            </g:if>
 
         </div>
     </div>
@@ -122,47 +138,49 @@
             <div class="col-md-5">
                 <div id="chart_div"></div>
             </div>
-            <div class="col-md-3">
-                <table style="margin-top: 50px">
-                    <tr>
-                        <td><label style="color: #3366cc">Directivos</label></td>
-                        <td>
-                            <div class="input-group">
-                                <g:textField name="dire_name" id="idDire" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoDirectivos ?: 20}" class="form-control number" maxlength="2"/>
-                                <span class="input-group-addon" id="sizing-addon2">%</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label style="color: #dc3912">Pares</label></td>
-                        <td>
-                            <div class="input-group">
-                                <g:textField name="pares_name" id="idPares" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoPares ?: 20}" class="form-control number" maxlength="2"/>
-                                <span class="input-group-addon" id="sizing-addon2">%</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label style="color:#ff9900;">Autoevaluaciones</label></td>
-                        <td>
-                            <div class="input-group">
-                                <g:textField name="auto_name" id="idAuto" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoAutoevaluacion ?: 20}" class="form-control number" maxlength="2"/>
-                                <span class="input-group-addon" id="sizing-addon2">%</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label style="color: #109618">Estudiantes</label></td>
-                        <td>
-                            <div class="input-group">
-                                <g:textField name="estu_name" id="idEstu" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoEstudiantes ?: 40}" class="form-control number" maxlength="2"/>
-                                <span class="input-group-addon" id="sizing-addon2">%</span>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
 
+            <g:if test="${ver != '1'}">
+                <div class="col-md-3">
+                    <table style="margin-top: 50px">
+                        <tr>
+                            <td><label style="color: #3366cc">Directivos</label></td>
+                            <td>
+                                <div class="input-group">
+                                    <g:textField name="dire_name" id="idDire" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoDirectivos ?: 20}" class="form-control number" maxlength="2"/>
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label style="color: #dc3912">Pares</label></td>
+                            <td>
+                                <div class="input-group">
+                                    <g:textField name="pares_name" id="idPares" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoPares ?: 20}" class="form-control number" maxlength="2"/>
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label style="color:#ff9900;">Autoevaluaciones</label></td>
+                            <td>
+                                <div class="input-group">
+                                    <g:textField name="auto_name" id="idAuto" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoAutoevaluacion ?: 20}" class="form-control number" maxlength="2"/>
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label style="color: #109618">Estudiantes</label></td>
+                            <td>
+                                <div class="input-group">
+                                    <g:textField name="estu_name" id="idEstu" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoEstudiantes ?: 40}" class="form-control number" maxlength="2"/>
+                                    <span class="input-group-addon" id="sizing-addon2">%</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </g:if>
         </div>
     </div>
 </div>
@@ -205,19 +223,19 @@
     $( function () {
         var $myFuelGauge;
         var valorMinimo = ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo}
-        $myFuelGauge = $("div#fuel-gauge").dynameter({
-            width: 200,
-            label: 'Mínimo',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.minimo: 50},
-            min: 0,
-            max: 100,
+                $myFuelGauge = $("div#fuel-gauge").dynameter({
+                    width: 200,
+                    label: 'Mínimo',
+                    value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.minimo: 50},
+                    min: 0,
+                    max: 100,
 //            unit: 'gal',
-            regions: { // Value-keys and color-refs
-                0: 'error',
-                65: 'warn',
-                25: 'normal'
-            }
-        });
+                    regions: { // Value-keys and color-refs
+                        0: 'error',
+                        65: 'warn',
+                        25: 'normal'
+                    }
+                });
 
         // jQuery UI slider widget
         $('div#fuel-gauge-control').slider({
