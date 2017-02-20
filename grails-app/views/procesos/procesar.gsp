@@ -83,7 +83,7 @@
         $.ajax({
             type:'POST',
             async: false,
-            url: "${createLink(controller: 'reportes2', action: 'progreso')}",
+            url: "${createLink(controller: 'procesos', action: 'progreso')}",
             data:{
 
             },
@@ -96,7 +96,7 @@
                         $.ajax({
                             type: 'POST',
                             async: false,
-                            url:"${createLink(controller: 'reportes2', action: 'progreso')}",
+                            url:"${createLink(controller: 'procesos', action: 'progreso')}",
                             data:{},
                             success: function (msg) {
                                 if (msg == 1) {

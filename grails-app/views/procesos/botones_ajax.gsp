@@ -4,8 +4,9 @@
     <a href="#" class="list-group-item btnFormato" data-id="3" id="btn3">Profesor</a>
     <a href="#" class="list-group-item btnFormato" data-id="4" id="btn4">Estudiantes</a>
     <a href="#" class="list-group-item btnFormato" data-id="5" id="btn5">Materias</a>
-    <a href="#" class="list-group-item btnFormato" data-id="6" id="btn6">Dictan</a>
-    <a href="#" class="list-group-item btnFormato" data-id="7" id="btn7">Matriculados</a>
+    <a href="#" class="list-group-item btnFormato" data-id="6" id="btn6">Curso</a>
+    <a href="#" class="list-group-item btnFormato" data-id="7" id="btn7">Dictan</a>
+    <a href="#" class="list-group-item btnFormato" data-id="8" id="btn8">Matriculados</a>
 </div>
 
 <script type="text/javascript">

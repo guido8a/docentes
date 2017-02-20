@@ -33,9 +33,12 @@ class ProcesosController extends seguridad.Shield {
                 tabla = "Materias"
                 break
             case '6':
-                tabla = "Materias que se dictan"
+                tabla = "Cursos"
                 break
             case '7':
+                tabla = "Materias que se dictan"
+                break
+            case '8':
                 tabla = "Matriculados por materia"
                 break
         }
@@ -239,6 +242,39 @@ class ProcesosController extends seguridad.Shield {
             redirect(action: 'validar')
 //            println "NO FILE"
         }
+    }
+
+
+    def procesar () {
+
+    }
+
+    /** Ejecuta función: desempeño **/
+    def progreso () {
+        println "$params"
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from rpec, prof, escl, facl where prdo__id = 1 and " +
+                "rpec.prdo__id = 1 and prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id group by facl.facl__id, facldscr order by facldscr"
+
+//        println "sql: $sql"
+        cn.eachRow(sql.toString()) { d ->
+            println "facultad: ${d.facl__id}, ${d.facldscr}, ${d.cnta}"
+            cn1.execute("select * from desempeno(${d.facl__id}, 1)".toString())
+        }
+
+//        def timer = new Timer()
+//        def task = timer.runAfter(10000) {
+//            println "Actually executed at ${new Date()}."
+//            uno = 1
+//        }
+
+
+
+
+        render 1
+
     }
 
 }

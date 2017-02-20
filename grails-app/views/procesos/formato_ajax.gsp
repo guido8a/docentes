@@ -77,25 +77,6 @@
     </tbody>
 </table>
 
-%{--
-<table class="table table-condensed table-bordered table-striped ${tipo == '4' ? '' : 'hidden'}">
-    <thead>
-    <tr>
-        <th colspan="2">Nombre del archivo: cursos.xls</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td class="cabecera">Código</td>
-        <td class="cabecera">Nombre del Curso</td>
-    </tr>
-    <tr>
-        <td>Numérico</td>
-        <td>Texto: Nombre del curso</td>
-    </tr>
-    </tbody>
-</table>
---}%
 <table class="table table-condensed table-bordered table-striped ${tipo == '4' ? '' : 'hidden'}">
     <thead>
     <tr>
@@ -115,6 +96,7 @@
     </tr>
     </tbody>
 </table>
+
 <table class="table table-condensed table-bordered table-striped ${tipo == '5' ? '' : 'hidden'}">
     <thead>
     <tr>
@@ -136,7 +118,26 @@
     </tr>
     </tbody>
 </table>
+
 <table class="table table-condensed table-bordered table-striped ${tipo == '6' ? '' : 'hidden'}">
+    <thead>
+    <tr>
+        <th colspan="2">Nombre del archivo: cursos.xls</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="cabecera">Código</td>
+        <td class="cabecera">Nombre del Curso</td>
+    </tr>
+    <tr>
+        <td>Numérico</td>
+        <td>Texto: Nombre del curso</td>
+    </tr>
+    </tbody>
+</table>
+
+<table class="table table-condensed table-bordered table-striped ${tipo == '7' ? '' : 'hidden'}">
     <thead>
     <tr>
         <th colspan="4">Nombre del archivo: dictan.xls</th>
@@ -157,7 +158,7 @@
     </tr>
     </tbody>
 </table>
-<table class="table table-condensed table-bordered table-striped ${tipo == '7' ? '' : 'hidden'}">
+<table class="table table-condensed table-bordered table-striped ${tipo == '8' ? '' : 'hidden'}">
     <thead>
     <tr>
         <th colspan="5">Nombre del archivo: matriculados.xls</th>
