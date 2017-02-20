@@ -6,9 +6,11 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
-
 <html>
 <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
     <meta name="layout" content="main">
     <title>Variables Auxiliares</title>
 

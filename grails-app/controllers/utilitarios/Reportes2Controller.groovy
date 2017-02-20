@@ -1169,7 +1169,7 @@ class Reportes2Controller {
     def progreso () {
         def uno = 1
 
-//
+
 //        def timer = new Timer()
 //        def task = timer.runAfter(10000) {
 //            println "Actually executed at ${new Date()}."

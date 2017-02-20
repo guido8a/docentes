@@ -63,7 +63,7 @@
 
 	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 
-	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	%{--<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>--}%
 
 	<link rel="stylesheet" href="${resource(dir: 'js/plugins/dynamicGauge', file: 'css/jquery.dynameter.css')}">
 	<script src="${resource(dir: 'js/plugins/dynamicGauge', file: 'js/jquery.dynameter.js')}"></script>
@@ -71,7 +71,7 @@
 
 	<script src="${resource(dir:'js/plugins/radial',file: 'radial-progress-bar.js')}"></script>
 
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	%{--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>--}%
 
 	<!-- Custom styles -->
 	<link href="${resource(dir: 'css', file: 'custom.css')}" rel="stylesheet">
