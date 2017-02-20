@@ -111,21 +111,20 @@
                 var tamano = (parts.length -1);
                 var total = 0
                 for(j=0;j<tamano;j++){
-                    total = parts[j] + total
+                    var pt = Math.round(parts[j])
+                    total = pt + total
                 }
 
-                console.log("total " +total)
-
                 var tam = 100/(parts.length - 1)
-                var formateado = parseFloat(Math.round(tam * 100) / 100).toFixed(2);
+//                var formateado = parseFloat(Math.round(tam * 100) / 100).toFixed(2);
 
 
                 for(i = 0; i < (parts.length - 1); i++){
 //                    console.log("iiiii " + i + "_ " + formateado + i)
 
-                    var valor = (parts[i]*100)/tamano;
+                    var valor = (parts[i]*100)/total;
 
-//                    var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);
+                    var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);
                     console.log("valor " +  formateado)
                         cargarBarra(formateado,i);
 
@@ -183,6 +182,9 @@
         })
     });
 
+    var n = 0
+
+
     function cargarBarra (parte,itera) {
 //        console.log("entro "+ itera)
         $.ajax({
@@ -190,7 +192,8 @@
             url:"${createLink(controller: 'procesos', action: 'prueba')}",
             data:{
                 parte: parte,
-                itera: itera
+                itera: itera,
+                n: n
             },
             success: function (msg){
 
@@ -202,7 +205,9 @@
 //                        $('.progress-bar').add($('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").addClass('progress-bar-success'))
 //                    }
 
-                },itera*1000)
+                    n += parte
+
+                },parte*100)
 
 
             }
