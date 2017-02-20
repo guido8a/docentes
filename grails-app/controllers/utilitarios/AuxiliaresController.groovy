@@ -167,8 +167,6 @@ class AuxiliaresController extends Shield {
     def guardarValores_ajax () {
         println("parametros " + params)
 
-
-
         def auxiliar
         if(params.id){
             auxiliar = Auxiliares.get(params.id)
@@ -195,7 +193,9 @@ class AuxiliaresController extends Shield {
 
             def per = Periodo.get(params.periodo)
 
-            if(per in Periodo.list()){
+            def auxiliares = Auxiliares.list()
+
+            if(per in auxiliares.periodo){
 
                 render "no_Ya existen parámetros auxiliares para este período!"
 

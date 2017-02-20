@@ -114,18 +114,18 @@
     <div class="panel panel-info col-md-12" style="margin-top: 20px" >
         <div class="panel-heading">
             <h3 class="panel-title" style="height: 35px; text-align: center">
-                PONDERACIONES ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado}
+                PONDERACIONES
             </h3>
         </div>
         <div class="panel-body" style="text-align: center">
             <div class="col-md-2"></div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div id="chart_div"></div>
             </div>
             <div class="col-md-3">
                 <table style="margin-top: 50px">
                     <tr>
-                        <td><label>Directivos</label></td>
+                        <td><label style="color: #3366cc">Directivos</label></td>
                         <td>
                             <div class="input-group">
                                 <g:textField name="dire_name" id="idDire" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoDirectivos ?: 20}" class="form-control number" maxlength="2"/>
@@ -134,7 +134,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label>Pares</label></td>
+                        <td><label style="color: #dc3912">Pares</label></td>
                         <td>
                             <div class="input-group">
                                 <g:textField name="pares_name" id="idPares" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoPares ?: 20}" class="form-control number" maxlength="2"/>
@@ -143,7 +143,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label>Autoevaluaciones</label></td>
+                        <td><label style="color:#ff9900;">Autoevaluaciones</label></td>
                         <td>
                             <div class="input-group">
                                 <g:textField name="auto_name" id="idAuto" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoAutoevaluacion ?: 20}" class="form-control number" maxlength="2"/>
@@ -152,7 +152,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><label>Estudiantes</label></td>
+                        <td><label style="color: #109618">Estudiantes</label></td>
                         <td>
                             <div class="input-group">
                                 <g:textField name="estu_name" id="idEstu" value="${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoEstudiantes ?: 40}" class="form-control number" maxlength="2"/>
@@ -204,7 +204,7 @@
 
     $( function () {
         var $myFuelGauge;
-
+        var valorMinimo = ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo}
         $myFuelGauge = $("div#fuel-gauge").dynameter({
             width: 200,
             label: 'Mínimo',
@@ -223,7 +223,7 @@
         $('div#fuel-gauge-control').slider({
             min: 0,
             max: 100,
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo ?: 50},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.minimo != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.minimo: 50},
             step: 1,
             slide: function (evt, ui) {
                 $myFuelGauge.changeValue((ui.value).toFixed(1));
@@ -242,7 +242,7 @@
         $myFuelGauge2 = $("div#fuel-gauge2").dynameter({
             width: 200,
             label: 'Óptimo',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.optimo ?: 50},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.optimo != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.optimo: 50},
             min: 0,
             max: 100,
 //            unit: 'gal',
@@ -257,7 +257,7 @@
         $('div#fuel-gauge-control2').slider({
             min: 0,
             max: 100,
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.optimo ?: 50},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.optimo != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.optimo: 50},
             step: 1,
             slide: function (evt, ui) {
                 $myFuelGauge2.changeValue((ui.value).toFixed(1));
@@ -275,7 +275,7 @@
         $myFuelGauge3 = $("div#fuel-gauge3").dynameter({
             width: 200,
             label: 'Moderado',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado ?: 75},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado : 75},
             min: 0,
             max: 100,
 //            unit: 'gal',
@@ -290,7 +290,7 @@
         $('div#fuel-gauge-control3').slider({
             min: 0,
             max: 100,
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado ?: 75},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteModerado : 75},
             step: 1,
             slide: function (evt, ui) {
                 $myFuelGauge3.changeValue((ui.value).toFixed(1));
@@ -308,7 +308,7 @@
         $myFuelGauge4 = $("div#fuel-gauge4").dynameter({
             width: 200,
             label: 'Exagerado',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteExagerado ?: 50},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteExagerado != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteExagerado: 50},
             min: 0,
             max: 75,
 //            unit: 'gal',
@@ -323,7 +323,7 @@
         $('div#fuel-gauge-control4').slider({
             min: 0,
             max: 75,
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteExagerado ?: 50},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteExagerado != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.ajusteExagerado: 50},
             step: 1,
             slide: function (evt, ui) {
                 $myFuelGauge4.changeValue((ui.value).toFixed(1));
@@ -341,7 +341,7 @@
         $myFuelGauge5 = $("div#fuel-gauge5").dynameter({
             width: 200,
             label: 'C. Botella',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.cuelloBotella ?: 10},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.cuelloBotella != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.cuelloBotella: 10},
             min: 10,
             max: 75,
 //            unit: 'gal',
@@ -356,7 +356,7 @@
         $('div#fuel-gauge-control5').slider({
             min: 10,
             max: 75,
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.cuelloBotella ?: 10},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.cuelloBotella != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.cuelloBotella: 10},
             step: 1,
             slide: function (evt, ui) {
                 $myFuelGauge5.changeValue((ui.value).toFixed(1));
@@ -374,7 +374,7 @@
         $myFuelGauge6 = $("div#fuel-gauge6").dynameter({
             width: 200,
             label: 'F. Éxito',
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.factorExito ?: 10},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.factorExito != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.factorExito : 10},
             min: 10,
             max: 50,
 //            unit: 'gal',
@@ -389,7 +389,7 @@
         $('div#fuel-gauge-control6').slider({
             min: 10,
             max: 50,
-            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.factorExito ?: 10},
+            value: ${utilitarios.Auxiliares.get(auxiliar?.id)?.factorExito != null ? utilitarios.Auxiliares.get(auxiliar?.id)?.factorExito : 10},
             step: 1,
             slide: function (evt, ui) {
                 $myFuelGauge6.changeValue((ui.value).toFixed(1));
@@ -469,6 +469,39 @@
         });
     });
 
+
+    $(".btnDefecto").click(function () {
+        var per = $("#periodoId").val();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'auxiliares', action: 'guardarValores_ajax')}',
+            data:{
+                id: '${auxiliar?.id}',
+                minimo: 75,
+                optimo: 90,
+                moderado: 75,
+                exagerado: 50,
+                botella: 10,
+                exito: 10,
+                directivos: 20,
+                estudiantes: 40,
+                pares: 20,
+                auto: 20,
+                periodo: per
+            },
+            success: function (msg){
+                var parts = msg.split("_");
+                if(parts[0] == 'ok'){
+                    log(parts[1],"success");
+                    setTimeout(function () {
+                        location.href='${createLink(controller: 'auxiliares', action: 'auxiliares')}/' + parts[2]
+                    }, 500);
+                }else{
+                    log(parts[1],"error");
+                }
+            }
+        });
+    });
 
 
     //    $(".form-control").keydown(function (ev) {

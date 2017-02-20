@@ -45,8 +45,8 @@
                     
                     <g:sortableColumn property="maximoEstudiantes" title="Ponderación para evaluación de Estudiantes" />
 
-                    <td>Período</td>
-                    
+                    <g:sortableColumn property="periodo" title="Período" />
+
                 </tr>
             </thead>
             <tbody>
