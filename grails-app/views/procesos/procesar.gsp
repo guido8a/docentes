@@ -118,6 +118,9 @@
                 var tam = 100/(parts.length - 1)
 //                var formateado = parseFloat(Math.round(tam * 100) / 100).toFixed(2);
 
+                var sumado = 0
+
+
 
                 for(i = 0; i < (parts.length - 1); i++){
 //                    console.log("iiiii " + i + "_ " + formateado + i)
@@ -125,8 +128,12 @@
                     var valor = (parts[i]*100)/total;
 
                     var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);
+
                     console.log("valor " +  formateado)
-                        cargarBarra(formateado,i);
+
+                    sumado += parseFloat(formateado);
+
+                        cargarBarra(formateado,sumado,i);
 
 
                     %{--$.ajax({--}%
@@ -182,10 +189,10 @@
         })
     });
 
-    var n = 0
 
 
-    function cargarBarra (parte,itera) {
+
+    function cargarBarra (parte,sumado,itera) {
 //        console.log("entro "+ itera)
         $.ajax({
             type: 'POST',
@@ -193,23 +200,14 @@
             data:{
                 parte: parte,
                 itera: itera,
-                n: n
+                sumado: sumado
             },
             success: function (msg){
 
                 setTimeout(function () {
-
-//                    if(itera == 0){
                         $('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").addClass('progress-bar-warning')
-//                    }else{
-//                        $('.progress-bar').add($('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").addClass('progress-bar-success'))
-//                    }
-
-                    n += parte
 
                 },parte*100)
-
-
             }
         });
     }

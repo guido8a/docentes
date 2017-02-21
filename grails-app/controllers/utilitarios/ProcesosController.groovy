@@ -269,15 +269,8 @@ class ProcesosController extends seguridad.Shield {
     }
 
     def prueba () {
-
         println("params " + params)
-
-        def num =  (params.parte.toDouble() + params.itera.toDouble())
-        println("num " + num)
-
-        render num
-
-
+        render params.sumado
     }
 
 }
