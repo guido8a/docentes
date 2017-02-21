@@ -251,7 +251,7 @@ class ProcesosController extends seguridad.Shield {
 
     /** Ejecuta función: desempeño **/
     def progreso () {
-        println "$params"
+//        println "$params"
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def retorna = ""
@@ -262,8 +262,6 @@ class ProcesosController extends seguridad.Shield {
 //        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
-//            println "facultad: ${d.facl__id}, ${d.facldscr}, ${d.cnta}"
-//            cn1.execute("select * from desempeno(${d.facl__id}, ${params.periodo})".toString())
             render (d.facl__id + "_" + d.cnta + "*")
         }
 
@@ -271,16 +269,16 @@ class ProcesosController extends seguridad.Shield {
     }
 
     def procesaFacl () {
-        println "$params"
+//        println "$params"
 
         def partes = params.arreglo.split("_")
         def total = params.total.toInteger()
 //        def regla = (partes[1].toInteger()*100/total)
         def regla = (params.parcial.toInteger()*100/total)
 
-        println("regla " + regla)
+//        println("regla " + regla)
 
-        sleep(5000)
+        sleep(3000)
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
