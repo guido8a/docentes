@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+
     <meta name="layout" content="main">
     <title></title>
     <style type="text/css">
@@ -55,31 +56,25 @@
 
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" style="text-align: center">
 
-        <div class="progress progress-striped active">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span class="fill" data-percentage="50"></span></div>
 
-            %{--<div class="progress">--}%
-                %{--<div class="progress-bar progress-bar-success" style="width: 35%">--}%
-                    %{--<span class="sr-only">35% Complete (success)</span>--}%
-                %{--</div>--}%
-                %{--<div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 20%">--}%
-                    %{--<span class="sr-only">20% Complete (warning)</span>--}%
-                %{--</div>--}%
-                %{--<div class="progress-bar progress-bar-danger" style="width: 10%">--}%
-                    %{--<span class="sr-only">10% Complete (danger)</span>--}%
-                %{--</div>--}%
-            %{--</div>--}%
+        <div class="row">
+            <svg id="containerN"></svg>
         </div>
 
-        <div class="container">
+
+        %{--<div class="progress progress-striped active">--}%
+            %{--<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span class="fill" data-percentage="50"></span></div>--}%
+        %{--</div>--}%
+
+        %{--<div class="container">--}%
             <div class="row">
 
                 <button type="button" class="btn btn-success btnCargar2"><i class="fa fa-check"></i> Iniciar el Proceso</button>
 
             </div>
-        </div>
+        %{--</div>--}%
 
 
     </div>
@@ -88,43 +83,73 @@
 
 
 
+
 <script type="text/javascript">
 
+    var progress = $("#containerN").Progress({
+        percent: 0, // 20%
 
-    $(".btnCargar_old").click(function () {
+        // width & height of the progress bar
+        width: 690,
+        height: 50,
 
-        var periodo = $("#periodoId").val()
+        // background color of the progress bar
+        backgroundColor: '#555',
 
-        $.ajax({
-            type:'POST',
-            async: false,
-            url: "${createLink(controller: 'procesos', action: 'progreso')}",
-            data:{
-                periodo: periodo
-            },
-            success: function (msg){
-                console.log("msg " + msg.split("_"))
-                var parts = msg.split("_");
+        // fill color of the progress bar
+        barColor: '#d9534f',
 
-                var tamano = (parts.length -1);
-                var total = 0
-                for(j=0;j<tamano;j++){
-                    var pt = Math.round(parts[j])
-                    total = pt + total
-                }
+        // text color
+        fontColor: '#fff',
 
-                var tam = 100/(parts.length - 1)
-                var sumado = 0
-                for(i = 0; i < (parts.length - 1); i++){
-                    var valor = (parts[i]*100)/total;
-                    var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);
-                    console.log("valor " +  formateado)
-                    sumado += parseFloat(formateado);
-                        cargarBarra(formateado,sumado,i);
-                }
-            }
-        })
+        // border radius
+        radius: 6,
+
+        // font size
+        fontSize: 14,
+
+        // animation options
+//        increaseTime: 1000.00/60.00,
+//        increaseSpeed: 1,
+//        animate: true
     });
+
+
+
+    %{--$(".btnCargar_old").click(function () {--}%
+
+        %{--var periodo = $("#periodoId").val()--}%
+
+        %{--$.ajax({--}%
+            %{--type:'POST',--}%
+            %{--async: false,--}%
+            %{--url: "${createLink(controller: 'procesos', action: 'progreso')}",--}%
+            %{--data:{--}%
+                %{--periodo: periodo--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+                %{--console.log("msg " + msg.split("_"))--}%
+                %{--var parts = msg.split("_");--}%
+
+                %{--var tamano = (parts.length -1);--}%
+                %{--var total = 0--}%
+                %{--for(j=0;j<tamano;j++){--}%
+                    %{--var pt = Math.round(parts[j])--}%
+                    %{--total = pt + total--}%
+                %{--}--}%
+
+                %{--var tam = 100/(parts.length - 1)--}%
+                %{--var sumado = 0--}%
+                %{--for(i = 0; i < (parts.length - 1); i++){--}%
+                    %{--var valor = (parts[i]*100)/total;--}%
+                    %{--var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);--}%
+                    %{--console.log("valor " +  formateado)--}%
+                    %{--sumado += parseFloat(formateado);--}%
+                        %{--cargarBarra(formateado,sumado,i);--}%
+                %{--}--}%
+            %{--}--}%
+        %{--})--}%
+    %{--});--}%
 
     $(".btnCargar2").click(function () {
 
@@ -138,8 +163,22 @@
                 periodo: periodo
             },
             success: function (msg){
-                console.log("msg " + msg)
-                var facl = msg
+//                console.log("msg " + msg)
+                var parts = msg.split("*")
+                var tamano = (parts.length -1);
+                var total = 0
+                var parcial = 0
+                for(j=0;j<tamano;j++){
+                    var pt = Math.round(parts[j].split("_")[1]);
+                    total = pt + total
+                }
+
+                for(i = 0; i < tamano; i++){
+                    parcial += Math.round(parts[i].split("_")[1])
+                    cargarBarra(parts[i],total,parcial);
+                }
+
+
 /*
                 var parts = msg.split("_");
 
@@ -167,25 +206,45 @@
 
 
 
-    function cargarBarra (parte,sumado,itera) {
-//        console.log("entro "+ itera)
+    %{--function cargarBarra (parte,sumado,itera) {--}%
+%{--//        console.log("entro "+ itera)--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url:"${createLink(controller: 'procesos', action: 'prueba')}",--}%
+            %{--data:{--}%
+                %{--parte: parte,--}%
+                %{--itera: itera,--}%
+                %{--sumado: sumado--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+
+                %{--setTimeout(function () {--}%
+                        %{--$('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").addClass('progress-bar-warning')--}%
+
+                %{--},parte*100)--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
+
+    function cargarBarra (arreglo,total,parcial) {
+        console.log("entro cargar barra")
+        var periodo = $("#periodoId").val()
         $.ajax({
             type: 'POST',
-            url:"${createLink(controller: 'procesos', action: 'prueba')}",
+            url:"${createLink(controller: 'procesos', action: 'procesaFacl')}",
             data:{
-                parte: parte,
-                itera: itera,
-                sumado: sumado
+                arreglo:  arreglo,
+                periodo: periodo,
+                total: total,
+                parcial: parcial
             },
             success: function (msg){
-
-                setTimeout(function () {
-                        $('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").addClass('progress-bar-warning')
-
-                },parte*100)
+                var v = parseFloat(Math.round(msg * 100) / 100).toFixed(2);
+                progress.percent(v);
             }
         });
     }
+
 
 
 

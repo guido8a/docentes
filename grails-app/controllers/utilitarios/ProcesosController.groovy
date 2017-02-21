@@ -259,31 +259,39 @@ class ProcesosController extends seguridad.Shield {
                 "prof.prof__id = encu.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id group by facl.facl__id, facldscr order by facldscr"
 
-        println "sql: $sql"
+//        println "sql: $sql"
 
-        def facl = cn.rows(sql.toString())
+        cn.eachRow(sql.toString()) { d ->
+//            println "facultad: ${d.facl__id}, ${d.facldscr}, ${d.cnta}"
+//            cn1.execute("select * from desempeno(${d.facl__id}, ${params.periodo})".toString())
+            render (d.facl__id + "_" + d.cnta + "*")
+        }
 
-        render facl
+
     }
 
     def procesaFacl () {
         println "$params"
+
+        def partes = params.arreglo.split("_")
+        def total = params.total.toInteger()
+//        def regla = (partes[1].toInteger()*100/total)
+        def regla = (params.parcial.toInteger()*100/total)
+
+        println("regla " + regla)
+
         def cn = dbConnectionService.getConnection()
-        def sql = "select * from desempeno(${params.id}, ${params.periodo})"
-        println "sql: $sql"
+        def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
+//        println "sql: $sql"
 
         try {
             cn.execute(sql.toString())
-            render "ok"
+            render regla
         } catch (e) {
-            printn "error $e"
+            println "error $e"
             render "error"
         }
     }
 
-    def prueba () {
-        println("params " + params)
-        render params.sumado
-    }
 
 }
