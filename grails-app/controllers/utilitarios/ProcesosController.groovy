@@ -280,6 +280,8 @@ class ProcesosController extends seguridad.Shield {
 
         println("regla " + regla)
 
+        sleep(5000)
+
         def cn = dbConnectionService.getConnection()
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
 //        println "sql: $sql"

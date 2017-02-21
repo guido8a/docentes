@@ -59,14 +59,14 @@
     <div class="panel-body" style="text-align: center">
 
 
-        <div class="row">
-            <svg id="containerN"></svg>
-        </div>
-
-
-        %{--<div class="progress progress-striped active">--}%
-            %{--<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span class="fill" data-percentage="50"></span></div>--}%
+        %{--<div class="row">--}%
+            %{--<svg id="containerN"></svg>--}%
         %{--</div>--}%
+
+
+        <div class="progress progress-striped active">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span class="fill" data-percentage="50"></span></div>
+        </div>
 
         %{--<div class="container">--}%
             <div class="row">
@@ -89,7 +89,6 @@
     var progress = $("#containerN").Progress({
         percent: 0, // 20%
 
-        // width & height of the progress bar
         width: 690,
         height: 50,
 
@@ -107,11 +106,6 @@
 
         // font size
         fontSize: 14,
-
-        // animation options
-//        increaseTime: 1000.00/60.00,
-//        increaseSpeed: 1,
-//        animate: true
     });
 
 
@@ -164,6 +158,7 @@
             },
             success: function (msg){
 //                console.log("msg " + msg)
+//                progress.percent(10);
                 var parts = msg.split("*")
                 var tamano = (parts.length -1);
                 var total = 0
@@ -177,7 +172,6 @@
                     parcial += Math.round(parts[i].split("_")[1])
                     cargarBarra(parts[i],total,parcial);
                 }
-
 
 /*
                 var parts = msg.split("_");
@@ -231,6 +225,7 @@
         var periodo = $("#periodoId").val()
         $.ajax({
             type: 'POST',
+            async: false,
             url:"${createLink(controller: 'procesos', action: 'procesaFacl')}",
             data:{
                 arreglo:  arreglo,
@@ -240,7 +235,9 @@
             },
             success: function (msg){
                 var v = parseFloat(Math.round(msg * 100) / 100).toFixed(2);
-                progress.percent(v);
+                console.log("retorna", msg);
+//                progress.percent(v);
+                $('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").addClass('progress-bar-warning')
             }
         });
     }
