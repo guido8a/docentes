@@ -91,7 +91,7 @@
 <script type="text/javascript">
 
 
-    $(".btnCargar2").click(function () {
+    $(".btnCargar_old").click(function () {
 
         var periodo = $("#periodoId").val()
 
@@ -106,7 +106,42 @@
                 console.log("msg " + msg.split("_"))
                 var parts = msg.split("_");
 
+                var tamano = (parts.length -1);
+                var total = 0
+                for(j=0;j<tamano;j++){
+                    var pt = Math.round(parts[j])
+                    total = pt + total
+                }
 
+                var tam = 100/(parts.length - 1)
+                var sumado = 0
+                for(i = 0; i < (parts.length - 1); i++){
+                    var valor = (parts[i]*100)/total;
+                    var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);
+                    console.log("valor " +  formateado)
+                    sumado += parseFloat(formateado);
+                        cargarBarra(formateado,sumado,i);
+                }
+            }
+        })
+    });
+
+    $(".btnCargar2").click(function () {
+
+        var periodo = $("#periodoId").val()
+
+        $.ajax({
+            type:'POST',
+            async: false,
+            url: "${createLink(controller: 'procesos', action: 'progreso')}",
+            data:{
+                periodo: periodo
+            },
+            success: function (msg){
+                console.log("msg " + msg)
+                var facl = msg
+/*
+                var parts = msg.split("_");
 
                 var tamano = (parts.length -1);
                 var total = 0
@@ -116,75 +151,15 @@
                 }
 
                 var tam = 100/(parts.length - 1)
-//                var formateado = parseFloat(Math.round(tam * 100) / 100).toFixed(2);
-
                 var sumado = 0
-
-
-
                 for(i = 0; i < (parts.length - 1); i++){
-//                    console.log("iiiii " + i + "_ " + formateado + i)
-
                     var valor = (parts[i]*100)/total;
-
                     var formateado = parseFloat(Math.round(valor * 100) / 100).toFixed(2);
-
                     console.log("valor " +  formateado)
-
                     sumado += parseFloat(formateado);
-
                         cargarBarra(formateado,sumado,i);
-
-
-                    %{--$.ajax({--}%
-                        %{--type: 'POST',--}%
-                        %{--url:"${createLink(controller: 'procesos', action: 'prueba')}",--}%
-                        %{--data:{--}%
-
-                        %{--},--}%
-                        %{--success: function (msg){--}%
-                        %{--$('.progress-bar').css('width', msg+'%').attr('aria-valuenow', msg ).text(msg + " %").removeClass('progress-bar-warning').removeClass('progress-bar-success');--}%
-                        %{--return true--}%
-                        %{--}--}%
-                    %{--});--}%
-
                 }
-
-                %{--if(msg == 1){--}%
-                    %{--$('.progress-bar').css('width', 10+'%').attr('aria-valuenow', 10).text(10 + " %").removeClass('progress-bar-warning').removeClass('progress-bar-success');--}%
-                    %{--setTimeout(function () {--}%
-
-                        %{--$.ajax({--}%
-                            %{--type: 'POST',--}%
-                            %{--async: false,--}%
-                            %{--url:"${createLink(controller: 'procesos', action: 'progreso')}",--}%
-                            %{--data:{},--}%
-                            %{--success: function (msg) {--}%
-                                %{--if (msg == 1) {--}%
-                                    %{--$('.progress-bar').css('width', 40 + '%').attr('aria-valuenow', 40).addClass('progress-bar-warning').text(40 + " %");--}%
-                                    %{--setTimeout(function () {--}%
-                                        %{--$.ajax({--}%
-                                            %{--type: 'POST',--}%
-                                            %{--url:"${createLink(controller: 'reportes2', action: 'progreso')}",--}%
-                                            %{--data:{},--}%
-                                            %{--success: function (msg){--}%
-                                                %{--if(msg == 1){--}%
-                                                    %{--$('.progress-bar').css('width', 100+'%').attr('aria-valuenow', 100).removeClass('progress-bar-warning').addClass('progress-bar-success').text(100 + " %");--}%
-                                                %{--}--}%
-                                            %{--}--}%
-
-                                        %{--});--}%
-
-
-                                    %{--},3000)--}%
-                                %{--}--}%
-                            %{--}--}%
-                        %{--});--}%
-
-                    %{--},5000)--}%
-
-                %{--}--}%
-
+*/
             }
         })
     });

@@ -254,18 +254,31 @@ class ProcesosController extends seguridad.Shield {
         println "$params"
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
+        def retorna = ""
         def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, prof, escl, facl where encu.prdo__id = ${params.periodo} and " +
                 "prof.prof__id = encu.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id group by facl.facl__id, facldscr order by facldscr"
 
         println "sql: $sql"
 
-        cn.eachRow(sql.toString()) { d ->
-            println "facultad: ${d.facl__id}, ${d.facldscr}, ${d.cnta}"
-            cn1.execute("select * from desempeno(${d.facl__id}, ${params.periodo})".toString())
-            render (d.cnta + "_")
-        }
+        def facl = cn.rows(sql.toString())
 
+        render facl
+    }
+
+    def procesaFacl () {
+        println "$params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from desempeno(${params.id}, ${params.periodo})"
+        println "sql: $sql"
+
+        try {
+            cn.execute(sql.toString())
+            render "ok"
+        } catch (e) {
+            printn "error $e"
+            render "error"
+        }
     }
 
     def prueba () {
