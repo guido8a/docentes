@@ -45,10 +45,15 @@
         Cancelar</a>
 
     <g:if test="${auto}">
-    <g:link action="encuestaAD" class="btn btn-primary"><i class="fa fa-pencil"></i> Autoevaluación</g:link>
+        <a href="${g.createLink(action: 'previaAd', params: [tipo: 'AD'])}" class="btn btn-primary"
+           title="Autoevaluación de docentes">
+            <i class="fa fa-pencil"></i>
+            Autoevaluación</a>
+    %{--<g:link action="encuestaAD" class="btn btn-primary"><i class="fa fa-pencil"></i> Autoevaluación</g:link>--}%
     </g:if>
     <g:if test="${pares}">
-        <a href="${g.createLink(action: 'docentes', params: [tipo: 'PR'])}" class="btn btn-primary" title="Evaluación de los Pares a los Profesores">
+        <a href="${g.createLink(action: 'docentes', params: [tipo: 'PR'])}" class="btn btn-primary"
+           title="Evaluación de los Pares a los Profesores">
             <i class="fa fa-pencil"></i>
             Evaluación de los Pares a los Profesores</a>
     </g:if>

@@ -51,14 +51,14 @@
 
 
 </div>
-<div style="text-align: center; width: 98%; margin-left: auto; margin-right: auto"">
+<div style="text-align: center; width: 98%; margin-left: auto; margin-right: auto">
 
     <g:if test="${matr}">
-        <h3>Evaluación al Docente</h3> Elija al docente que desea evaluar y haga clic en el botón Evaluar correspondiente.
+        <h3>Autoevaluación del Docente</h3> Elija la asignatura en la cual se desea evaluar y haga clic en el botón Evaluar correspondiente.
         <table class="table table-condensed table-bordered table-striped">
             <thead>
             <tr>
-                <th>Profesor</th>
+                %{--<th>Profesor</th>--}%
                 <th>Materia</th>
                 <th>Curso</th>
                 <th>Paralelo</th>
@@ -68,14 +68,15 @@
             <tbody>
             <g:each in="${matr}" status="i" var="materia">
                 <tr>
-                    <td style="font-weight: bold">${materia.profesor}-${materia.prof__id}</td>
-                    <td>${materia.matedscr}</td>
+                    %{--<td style="font-weight: bold">${materia.profesor}-${materia.prof__id}</td>--}%
+                    <td>${materia.matedscr} - prof__id:${materia.prof__id}</td>
 
                     <td>${materia.crsodscr}</td>
                     <td style="text-align: center">${materia.dctaprll}-${materia.dcta__id}</td>
                     <td style="text-align: center">
                         <a href="#" class="btn btn-info btn-sm btnEncuesta" title="Evaluar" data-id="${materia?.dcta__id}"
-                            data-profesor="${materia?.profesor}" data-prof="${materia?.prof__id}">
+                            data-asignatura="${materia?.matedscr}<br><br>Curso: ${materia.crsodscr}<br>Paralelo: ${materia.dctaprll}"
+                            data-prof="${materia?.prof__id}">
                         <i class="fa fa-pencil"></i> Evaluar</a>
                     </td>
                 </tr>
@@ -98,9 +99,9 @@
 <script type="text/javascript">
     $(".btnEncuesta").click(function () {
         var id = $(this).data('id');
-        var profesor = $(this).data('profesor');
+        var profesor = $(this).data('asignatura');
         var prof = $(this).data('prof');
-        var titulo = "Evaluar al profesor"
+        var titulo = "Autoevaluar su desempeño en la asignatura:"
         var texto  = "<h4>" + profesor + "</h4>"
         bootbox.confirm({
             title: titulo,
@@ -116,7 +117,7 @@
             },
             callback: function (result) {
                if (result) {
-                    location.href = "${createLink(action: 'encuestaDC')}" + "?prof__id=" + prof + "&dcta__id=" + id
+                    location.href = "${createLink(action: 'encuestaAD')}" + "?prof__id=" + prof + "&dcta__id=" + id
                 }
             }
         });

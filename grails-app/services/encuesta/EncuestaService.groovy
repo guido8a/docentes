@@ -80,7 +80,7 @@ class EncuestaService {
                 break
             case 1: //AD
                 tx = "select encu__id from encu, teti where prdo__id = ${prdo} and " +
-                        "encu.prof__id = ${informante} and " +
+                        "encu.prof__id = ${informante} and dcta__Id = $dcta and " +
                         "teti.teti__id = encu.teti__id and teti.tpen__id = $tpen and tpif__id = $tpif"
                 break
             case 5: //PAR
@@ -164,15 +164,25 @@ class EncuestaService {
         cn.execute(tx.toString())
     }
 
+    /**
+     * debe hacer una autoevaluación por cada materia que dicta y posee matriculados
+     */
     def autoevaluacion(prof, prdo) {
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def tx = "select count(*) cnta from encu, teti, tpen where prdo__id = ${prdo} and " +
-                "prof__id = ${prof} and " +
-                "teti.teti__id = encu.teti__id and tpen.tpen__id = teti.tpen__id and tpencdgo = 'AD' and " +
-                "encuetdo = 'C'"
+        def auto = 0
+        def tx = "select count(distinct dcta.dcta__id) cnta from dcta, matr where prdo__id = ${prdo} and " +
+                "prof__id = ${prof} and matr.dcta__id = dcta.dcta__id"
+
+        def dcta = cn.rows(tx.toString())[0].cnta
+        println "dicta $dcta materias"
+
+        tx = "select count(distinct dcta__id) cnta from encu, teti, tpen where prdo__id = ${prdo} and " +
+             "prof__id = ${prof} and dcta__id is not null and " +
+             "teti.teti__id = encu.teti__id and tpen.tpen__id = teti.tpen__id and tpencdgo = 'AD' and " +
+             "encuetdo = 'C'"
         try {
-            rt = (cn.rows(tx.toString())[0].cnta > 0)
+            rt = (cn.rows(tx.toString())[0].cnta <  dcta)
         }
         catch (e) {
             println e.getMessage()

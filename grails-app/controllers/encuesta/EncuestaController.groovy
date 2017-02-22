@@ -66,7 +66,7 @@ class EncuestaController {
     }
 
     /**
-     * Si es estudiante muestra Iniciar Evasluación (ponePregunta FE) o tabla de materias para evaluar
+     * Si es estudiante muestra Iniciar Evaluación (ponePregunta FE) o tabla de materias para evaluar
      */
     def previa() {
         if(session?.tipoEncuesta?.codigo in ['PR', 'DI', 'AD']){
@@ -95,6 +95,28 @@ class EncuestaController {
     }
 
     /**
+     * Pantalla para autoevaluación de profesores
+     */
+    def previaAd() {
+        def cn = dbConnectionService.getConnection()
+        def tx = ""
+        session.encuesta = 0
+
+        def matr
+        tx = "select dcta.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
+                    "from dcta, crso, mate, prof " +
+                    "where prdo__id = ${session.periodo.id} and " +
+                    "crso.crso__id = dcta.crso__id and " +
+                    "mate.mate__id = dcta.mate__id and prof.prof__id = dcta.prof__id and " +
+                    "dcta.prof__id = ${session.informanteId} and dcta.dcta__id not in " +
+                    "(select dcta__id from encu where prof__id = ${session.informanteId} and dcta__id is not null and " +
+                    "encuetdo = 'C' and prdo__id = ${session.periodo.id} and teti__id = 1) order by profnmbr"
+            println "previa: $tx"
+            matr = cn.rows(tx.toString())
+            [matr: matr]
+    }
+
+    /**
      * Muestra todas las opciones: Autoevaluación y Evaluación por Pares si es par o no lo ha hecho, o lista de profesores para evaluar Pares o Directivos
      */
     def previaDc() {
@@ -102,8 +124,8 @@ class EncuestaController {
         def tx = ""
         session.encuesta = 0
         def auto = encuestaService.autoevaluacion(session.informanteId, session.periodo.id)
-//        println "ponePregunta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, auto: $auto, pares: ${session.par}, drtv: ${session.directivo}"
-        [auto: !auto, pares: session.par, drtv: session.directivo]
+        println "auto: $auto"
+        [auto: auto, pares: session.par, drtv: session.directivo]
 
     }
 
@@ -121,8 +143,8 @@ class EncuestaController {
 
     def encuestaAD() {
 //        println "encuestaAD $params, tipo: ${session.tipoPersona}, prof: ${session.informanteId}"
-        //encuesta(tpen__id, tpif__id, prof__id, dcta__id)
-        encuesta(1, 2, 0, 0, 0)  //1: estudiante, 2: profesor
+        //encuesta(tpen__id, tpif__id, prof__id, dcta__id, profeval)
+        encuesta(1, 2, params.prof__id, params.dcta__id, 0)  //1: estudiante, 2: profesor
     }
 
     def encuestaPR() {
@@ -139,23 +161,22 @@ class EncuestaController {
 
 
     def encuesta(tpen__id, tpif__id, prof__id, dcta__id, profeval) {
-//        println "encuesta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.periodo.id}"
+        println "encuesta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.periodo.id}"
         def creado = false
         def tpen = TipoEncuesta.get(tpen__id)
         def total = encuestaService.totalPreguntas(tpen__id)  //total preguntas de la ponePregunta id
         def encu
 
         def actual = 0
-        if(tpen__id == 5) {
-                                   //autoevaluacion(informante, tpif, tpen, estd=0, dcta=0, par=0, drtv=0)
+        if(tpen__id == 5) {  //PARES (informante, tpif, tpen, estd=0, dcta=0, par, drtv=0, prdo)
             encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, profeval, 0, session.periodo.id)
-        } else if(tpen__id == 3) {
-                                   //encuestaEnCurso(informante, tpif, tpen, estd=0, dcta=0, par=0, drtv=0)
+
+        } else if(tpen__id == 3) { //directivos (informante, tpif, tpen, estd=0, dcta=0, par=0, drtv, prdo)
             encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, 0, profeval, session.periodo.id)
-        } else if(tpen__id == 4) {
-                                   //encuestaEnCurso(informante, tpif, tpen, estd=0, dcta=0, par=0, drtv=0)
+
+        } else if(tpen__id == 4) { // factores de éxito (informante, tpif, tpen, estd=0, dcta=0, par=0, drtv=0, prdo)
             encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, 0, 0, session.periodo.id)
-        } else {
+        } else { // Evaluación al docente y autoevaluacion: (informante, tpif, tpen, estd, dcta, par=0, drtv=0, prdo)
             encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, session.informanteId, dcta__id, 0,0, session.periodo.id)
         }
 
@@ -185,6 +206,7 @@ class EncuestaController {
                     encu.fecha = new Date()
                     encu.estado = 'N'
                     encu.profesor = Profesor.get(session.informanteId)
+                    encu.materiaDictada =  Dictan.get(dcta__id)
                     encu.periodo = session.periodo
                     break
                 case 5: //PR
@@ -550,9 +572,12 @@ class EncuestaController {
         } else if(session.tipoPersona == 'E' && (session.tipoEncuesta.codigo == 'DC')) {
             //continuar con evaluacion a profesores
             redirect action: 'previa'
-        } else if(session.tipoPersona == 'P' && (session.tipoEncuesta.codigo in ['AD', 'PR', 'DI'])) {
+        } else if(session.tipoPersona == 'P' && (session.tipoEncuesta.codigo in ['PR', 'DI'])) {
             //continuar con evaluacion a profesores
             redirect action: 'previaDc'
+        } else if(session.tipoPersona == 'P' && (session.tipoEncuesta.codigo in ['AD'])) {
+            //continuar con evaluacion a profesores
+            redirect action: 'previaAd'
         }
     }
 
