@@ -59,51 +59,23 @@
     <div class="panel-body" style="text-align: center">
 
 
-        %{--<div class="row">--}%
-            %{--<svg id="containerN"></svg>--}%
-        %{--</div>--}%
-
-
-        <div class="progress progress-striped active">
+        <div class="progress progress-striped active row">
             <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span class="fill" data-percentage="50"></span></div>
         </div>
 
-            <div class="row">
-                <button type="button" class="btn btn-success btnCargar2"><i class="fa fa-check"></i> Iniciar el Proceso</button>
-            </div>
+        <div class="row">
+            <button type="button" class="btn btn-success btnCargar2"><i class="fa fa-check"></i> Iniciar el Proceso</button>
+        </div>
     </div>
 </div>
 
 
-
+<div class="row divFacultad" style="text-align: center">
+    <div class="alert alert-warning" role="alert" style="height: 265px"></div>
+</div>
 
 
 <script type="text/javascript">
-
-
-//    var progress = $("#containerN").Progress({
-//        percent: 0, // 20%
-//
-//        width: 690,
-//        height: 50,
-//
-//        // background color of the progress bar
-//        backgroundColor: '#555',
-//
-//        // fill color of the progress bar
-//        barColor: '#d9534f',
-//
-//        // text color
-//        fontColor: '#fff',
-//
-//        // border radius
-//        radius: 6,
-//
-//        // font size
-//        fontSize: 14,
-//    });
-//
-
 
 
     $(".btnCargar2").click(function () {
@@ -119,7 +91,6 @@
             },
             success: function (msg){
 //                console.log("msg " + msg)
-//                progress.percent(10);
                 var parts = msg.split("*")
                 var tamano = (parts.length -1);
                 var total = 0
@@ -132,6 +103,7 @@
                 for(i = 0; i < tamano; i++){
                     parcial += Math.round(parts[i].split("_")[1])
                     cargarBarra(parts[i],total,parcial);
+                    cargarDescripcion(parts[i])
                 }
             }
         })
@@ -171,9 +143,22 @@
                                 }
                             }
                         });
-                    }, 1500)
+                    }, 2000)
                 }
 
+            }
+        });
+    }
+
+    function cargarDescripcion (parte) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'procesos', action: 'descripcion_ajax')}',
+            data:{
+                parte: parte
+            },
+            success: function (msg){
+                $(".divfacultad").html(msg)
             }
         });
     }

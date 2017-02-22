@@ -262,7 +262,7 @@ class ProcesosController extends seguridad.Shield {
 //        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
-            render (d.facl__id + "_" + d.cnta + "*")
+            render (d.facl__id + "_" + d.cnta + "_" + d.facldscr + "*")
         }
 
 
@@ -291,6 +291,12 @@ class ProcesosController extends seguridad.Shield {
             println "error $e"
             render "error"
         }
+    }
+
+    def descripcion_ajax () {
+        def partes = params.parte.split("_")
+        def facultad = partes[2]
+        return [facultad: facultad]
     }
 
 

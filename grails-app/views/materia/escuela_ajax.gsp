@@ -15,7 +15,7 @@
         cargarTablaMaterias($("#escuelaId").val());
 
         function cargarTablaMaterias (escuela) {
-            console.log("carga tabla de materias...")
+//            console.log("carga tabla de materias...")
             $.ajax({
                 type: 'POST',
                 url:'${createLink(controller: 'materia', action: 'tablaMaterias_ajax')}',

@@ -753,11 +753,11 @@ class ReportesController {
     }
 
     def tablaProfesores_ajax () {
-        println("---> " + params)
+//        println("---> " + params)
         def res
 
-        params.nombres = params.nombres + '%'
-        params.apellidos = params.apellidos + '%'
+        params.nombres = "%" + params.nombres + '%'
+        params.apellidos = "%" + params.apellidos + '%'
         params.cedula = params.cedula + '%'
 
 
