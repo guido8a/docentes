@@ -746,13 +746,16 @@ class Reportes2Controller {
         parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         def titulo = ''
+        def ban = 0
 
         switch(params.tipo){
             case '1':
                 titulo="Autoevaluación Docentes"
+                ban = 1
                 break;
             case '2':
                 titulo="Evaluación de Desempeño Docente"
+                ban = 1
                 break;
             case '3':
                 titulo="Evaluación Directivo a Docente"
@@ -773,7 +776,13 @@ class Reportes2Controller {
         document.add(parrafoProfesor)
         document.add(uso)
 
-        def sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
+        def sql
+
+        if(ban == 1){
+            sql =  "select encu__id, profapll||' '||profnmbr prof, matedscr, crsodscr, dctaprll from encu, prof, dcta, mate, crso where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo} and dcta.dcta__id = encu.dcta__id and  mate.mate__id = dcta.mate__id and crso.crso__id = dcta.crso__id;"
+        }else{
+            sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
+        }
 
 //        println("---> " + sql)
 
@@ -793,6 +802,9 @@ class Reportes2Controller {
         def sql2
         def variable
         def sumatoria = 0
+        def mate = ''
+        def crso = ''
+        def para = ''
         res.each {p->
 
             Paragraph lineaTitulo = new Paragraph(titulo, fontTitulo )
@@ -801,8 +813,20 @@ class Reportes2Controller {
             Paragraph lineaEncuesta = new Paragraph("Encuesta N°: " + p?.encu__id, fontTitulo )
             lineaEncuesta.setAlignment(com.lowagie.text.Element.ALIGN_RIGHT);
 
+            if(ban == 1){
+                mate = p?.matedscr
+                crso = p?.crsodscr
+                para = p?.dctaprll
+            }
+
+            Paragraph lineaMateria = new Paragraph(mate + ": " + crso + " - " + para, fontTitulo )
+            lineaMateria.setAlignment(com.lowagie.text.Element.ALIGN_RIGHT);
+
             document.add(lineaTitulo)
             document.add(lineaEncuesta)
+            if(ban == 1){
+                document.add(lineaMateria)
+            }
             document.add(lineaVacia)
 
             sql2 = "select * from encuesta(${p?.encu__id}) ORDER BY vrbl__id;"
