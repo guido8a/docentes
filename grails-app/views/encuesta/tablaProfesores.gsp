@@ -14,7 +14,8 @@ th, td {
 
 <g:set var="clase" value="${'principal'}"/>
 
-    <div style="overflow-y: auto; height:${msg == '' ? 300 : 275}px; margin-top: -20px">
+%{--<div style="overflow-y: auto; height:${msg == '' ? 300 : 275}px; margin-top: -20px">--}%
+<div style="overflow-y: auto; height:${msg == '' ? 300 : 275}px; margin-top: -20px">
     <table class="table-bordered table-condensed table-hover" width="1060px">
         <g:each in="${bases}" var="dato" status="z">
 

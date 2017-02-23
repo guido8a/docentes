@@ -18,7 +18,7 @@ class EncuestaController {
     private auth() {
         if (!session.informanteId) {
 //            println"............------------"
-            flash.message = 'Usted ha permanecido demasiado tiempo inactivo por lo que debe volver a ejecutar la ponePregunta'
+            flash.message = 'Usted ha permanecido demasiado tiempo inactivo por lo que debe volver a ejecutar la Encuesta'
             redirect(action: 'inicio')
             return false
         }
@@ -213,16 +213,16 @@ class EncuestaController {
                     encu.teti = Teti.findByTipoEncuestaAndTipoInformante(tpen, TipoInformante.findByCodigo(session.tipoPersona))
                     encu.fecha = new Date()
                     encu.estado = 'N'
-                    encu.profesor = Profesor.get(session.informanteId)
-                    encu.par = Profesor.get(profeval)
+                    encu.par = Profesor.get(session.informanteId)
+                    encu.profesor = Profesor.get(profeval)
                     encu.periodo = session.periodo
                     break
                 case 3: //DR
                     encu.teti = Teti.findByTipoEncuestaAndTipoInformante(tpen, TipoInformante.findByCodigo(session.tipoPersona))
                     encu.fecha = new Date()
                     encu.estado = 'N'
-                    encu.profesor = Profesor.get(session.informanteId)
-                    encu.directivo = Profesor.get(profeval)
+                    encu.directivo = Profesor.get(session.informanteId)
+                    encu.profesor = Profesor.get(profeval)
                     encu.periodo = session.periodo
                     break
             }
@@ -597,26 +597,30 @@ class EncuestaController {
     }
 
     def tablaProfesores() {
-//        println "buscar .. $params"
+        println "buscar .. $params, sesión: ${session.par}"
         def cn = dbConnectionService.getConnection()
         def sql = " "
         def resultado = []
         def msg = ""
 
-        if(session.par) {
+        if(session.par) { // si puede evaluar PARES
             sql = "select dcta.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
                     "from dcta, mate, prof, crso " +
                     "where prdo__id = ${session.periodo.id} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
                     "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                     "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
-                    "select prof_par from encu where prof_par is not null and prdo__id = ${session.periodo.id} and encuetdo = 'C')"
-        } else {
+                    "select prof_par from encu where prof_par is not null and prdo__id = ${session.periodo.id} and " +
+//                    "dcta__id <> dcta.dcta__id and encuetdo = 'C' ) and " +
+                    "encuetdo = 'C' ) and " +
+                    "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
+        } else { // puede evaluar como DIRECTIVO
             sql = "select dcta.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
                     "from dcta, mate, prof, crso " +
                     "where prdo__id = ${session.periodo.id} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
                     "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                     "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
-                    "select profdrtv from encu where profdrtv is not null and prdo__id = ${session.periodo.id} and encuetdo = 'C')"
+                    "select profdrtv from encu where profdrtv is not null and prdo__id = ${session.periodo.id} and encuetdo = 'C') and " +
+                    "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
         }
 
 //        println "...sql: $sql"

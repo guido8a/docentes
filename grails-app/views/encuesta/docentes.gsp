@@ -80,17 +80,18 @@
 
                 <div class="btn-group">
                     <input id="buscar" type="search" class="form-control"
-                           placeholder="digite parte del nombre o del apellido del docente">
+                           placeholder="Escriba parte del nombre o del apellido del docente">
                     <span id="limpiaBuscar" class="glyphicon glyphicon-remove-circle"
                           title="Limpiar texto de búsqueda"></span>
                 </div>
-                <a href="#" name="busqueda" class="btn btn-info btnBusqueda btn-ajax"><i
+                <a href="#" name="busqueda" class="btn btn-info btn-ajax" id="btnBusqueda"><i
                         class="fa fa-check-square-o"></i> Buscar</a>
             </div>
         </div>
     </div>
 
-    <div style="margin-top: 30px; min-height: 350px" class="vertical-container">
+    <div style="margin-top: 30px; min-height: 350px; overflow-y: auto; width: 1120px" class="vertical-container">
+    %{--<div style="margin-top: 30px; min-height: 350px; overflow-y: auto" class="vertical-container">--}%
         <p class="css-vertical-text">Profesores
 
         <div class="linea"></div>
@@ -139,7 +140,7 @@
 
 <script type="text/javascript" src="${resource(dir:'js/jquery/js',file:'jquery-1.4.2.min.js')}"></script>
 <script type="text/javascript">
-    $(".btnBusqueda").click(function () {
+    $("#btnBusqueda").click(function () {
         $("#bandeja").html("").append($("<div style='width:100%; text-align: center;'/>").append(spinnerSquare64));
         var buscar = $("#buscar").val();
 
@@ -161,11 +162,13 @@
 
     $("input").keyup(function (ev) {
         if (ev.keyCode == 13) {
-            $(".btnBusqueda").click();
+            $("#btnBusqueda").click();
         }
     });
 
-
+    $("#limpiaBuscar").click(function(){
+        $("#buscar").val('');
+    })
 
 
 </script>

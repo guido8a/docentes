@@ -458,9 +458,12 @@ class ReportesController {
 
         switch(tipo?.codigo){
             case 'CNI':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni, matedscr, crsodscr, dctaprll " +
+                        "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                        "order by profapll, profnmbr"
                 val = 'dcni'
 
                 break;
@@ -473,7 +476,7 @@ class ReportesController {
             case 'DCI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
