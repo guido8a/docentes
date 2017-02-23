@@ -517,7 +517,7 @@ class ReportesController {
                 break;
         }
 
-        println("---> " + sql)
+//        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -528,9 +528,11 @@ class ReportesController {
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
         /* ************************************************************* HEADER PLANILLA ***************************************************************************/
-        PdfPTable tablaD = new PdfPTable(7);
+//        PdfPTable tablaD = new PdfPTable(7);
+        PdfPTable tablaD = new PdfPTable(6);
         tablaD.setWidthPercentage(100);
-        tablaD.setWidths(arregloEnteros([25, 15, 15, 15, 10, 15, 5]))
+//        tablaD.setWidths(arregloEnteros([22, 15, 20, 15, 8, 15, 5]))
+        tablaD.setWidths(arregloEnteros([25, 15, 25, 15, 15, 5]))
 
 //        def baos1 = new ByteArrayOutputStream()
 //        def pdfw1 = PdfWriter.getInstance(document, baos1);
@@ -541,8 +543,8 @@ class ReportesController {
         addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Materia", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Curso", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Paralelo", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Curso - Paralelo", fontTitulo), prmsCrBorder)
+//        addCellTabla(tablaD, new Paragraph("Paralelo", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
 
@@ -570,8 +572,8 @@ class ReportesController {
             addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(p.matedscr, fontThUsar), prmsTdNoBorder)
-            addCellTabla(tablaD, new Paragraph(p.crsodscr, fontThUsar), prmsTdNoBorder)
-            addCellTabla(tablaD, new Paragraph(p.dctaprll + "", fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(p.crsodscr + " - " + p.dctaprll, fontThUsar), prmsTdNoBorder)
+//            addCellTabla(tablaD, new Paragraph(p.dctaprll + "", fontThUsar), prmsTdNoBorder)
 
 //            def valor = ((p.ddsc).toDouble()*100).toInteger()
             def valor
