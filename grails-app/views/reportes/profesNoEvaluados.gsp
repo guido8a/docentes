@@ -87,6 +87,10 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${titulo}"/></strong>
 </p>
 
+<p class="alineado">
+    <strong style="font-size: 14pt"><util:renderHTML html="${facultad?.nombre}"/></strong>
+</p>
+
 
 <g:each in="${escuelas}" var="e" status="j">
 

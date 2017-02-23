@@ -109,7 +109,7 @@ class ReportesController {
     }
 
     def profesNoEvaluados () {
-        println "profesNoEvaluados $params"
+//        println "profesNoEvaluados $params"
 
         def periodo
         def cn = dbConnectionService.getConnection()
@@ -184,15 +184,16 @@ class ReportesController {
                 break;
         }
 
-        println "sql: $sql"
+//        println "sql: $sql"
 
         def res = cn.rows(sql.toString());
         def escuelas = res.escldscr.unique()
+        def facultad = Facultad.get(params.facl)
 
 //        println("escuelas " + escuelas)
 //        println("sql " + sql)
 
-        return [res: res, escuelas: escuelas, titulo: titulo]
+        return [res: res, escuelas: escuelas, titulo: titulo, facultad: facultad]
     }
 
     def reportes () {
