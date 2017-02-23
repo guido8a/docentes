@@ -90,6 +90,7 @@
                 periodo: periodo
             },
             success: function (msg){
+                $(".btnCargar2").replaceWith(spinner);
 //                console.log("msg " + msg)
                 var parts = msg.split("*")
                 var tamano = (parts.length -1);
