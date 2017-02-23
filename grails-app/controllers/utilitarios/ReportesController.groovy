@@ -140,12 +140,13 @@ class ReportesController {
                 break;
             case '3':
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, prof, crso, escl " +
-                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                        "mate.mate__id = dcta.mate__id and prof.prof__id in ( " +
-                        "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}' and teti__id = 1) and " +
-                        "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
-                        "order by escldscr, profapll, profnmbr"
+                      "from dcta, mate, prof, crso, escl " +
+                      "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
+                      "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and " +
+                      "prof.prof__id not in ( select distinct prof__id from encu where prof__id is not null and " +
+                      "prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null) and " +
+                      "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
+                      "order by escldscr, profapll, profnmbr"
                 titulo = "Profesores que NO han realizado su autoevaluación"
                 break;
             case '4':

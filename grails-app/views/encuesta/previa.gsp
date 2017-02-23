@@ -51,7 +51,7 @@
 
 
 </div>
-<div style="text-align: center; width: 98%; margin-left: auto; margin-right: auto"">
+<div style="width: 98%; margin-left: auto; margin-right: auto"">
 
     <g:if test="${matr}">
         <h3>Evaluación al Docente</h3> Elija al docente que desea evaluar y haga clic en el botón Evaluar correspondiente.

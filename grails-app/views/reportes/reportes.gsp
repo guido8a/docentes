@@ -95,7 +95,7 @@
 
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirEvaluados">
-                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que no tienen al menos una evaluaciones
+                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que tienen al menos una evaluación
                         </span>
                     </div>
                 </a>
