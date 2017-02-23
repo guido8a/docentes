@@ -421,7 +421,7 @@ class ReportesController {
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
         Document document
-        document = new Document(PageSize.A4);
+        document = new Document(PageSize.A4.rotate());
         def pdfw = PdfWriter.getInstance(document, baos);
 
         document.open();
@@ -468,45 +468,56 @@ class ReportesController {
 
                 break;
             case 'DAC':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac, matedscr, crsodscr, dctaprll " +
+                        "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                        "order by profapll, profnmbr"
                 val = 'ddac'
                 break;
             case 'DCI':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci, matedscr, crsodscr, dctaprll " +
+                        "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
-                val = 'ddsc'
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                        "order by profapll, profnmbr"
+                val = 'ddci'
 
                 break;
             case 'DHD':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd, matedscr, crsodscr, dctaprll " +
+                        "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                        "order by profapll, profnmbr"
                 val = 'ddhd'
 
                 break;
             case 'DSC':
-
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc, matedscr, crsodscr, dctaprll " +
+                        "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                        "order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
             case 'EA':
-
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea, matedscr, crsodscr, dctaprll " +
+                        "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
-                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by profapll, profnmbr"
+                        "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                        "order by profapll, profnmbr"
                 val = 'd_ea'
                 break;
         }
 
-
         println("---> " + sql)
-
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -517,9 +528,9 @@ class ReportesController {
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
         /* ************************************************************* HEADER PLANILLA ***************************************************************************/
-        PdfPTable tablaD = new PdfPTable(4);
+        PdfPTable tablaD = new PdfPTable(7);
         tablaD.setWidthPercentage(100);
-        tablaD.setWidths(arregloEnteros([37, 35, 20, 6]))
+        tablaD.setWidths(arregloEnteros([25, 15, 15, 15, 10, 15, 5]))
 
 //        def baos1 = new ByteArrayOutputStream()
 //        def pdfw1 = PdfWriter.getInstance(document, baos1);
@@ -529,6 +540,9 @@ class ReportesController {
 
         addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Materia", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Curso", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Paralelo", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
 
@@ -555,6 +569,9 @@ class ReportesController {
 
             addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(p.matedscr, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(p.crsodscr, fontThUsar), prmsTdNoBorder)
+            addCellTabla(tablaD, new Paragraph(p.dctaprll + "", fontThUsar), prmsTdNoBorder)
 
 //            def valor = ((p.ddsc).toDouble()*100).toInteger()
             def valor
