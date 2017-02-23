@@ -37,10 +37,10 @@
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
 <div class="col-md-12 btn-block" style="text-align: center; height: 50px">
-    <a href="#" class="btn col-md-3 btn-danger" id="borrarDatos">Borrar datos</a>
-    <a href="#" class="btn col-md-3 btn-primary" id="validarDatos">Validar archivo</a>
-    <a href="#" class="btn col-md-3 btn-info" id="cargarDatos">Cargar datos</a>
-    <a href="#" class="btn col-md-3 btn-success" id="masDatos">Añadir datos</a>
+    <a href="#" class="btn col-md-3 btn-danger" id="borrarDatos"><i class="fa fa-trash"></i> Borrar datos</a>
+    <a href="#" class="btn col-md-3 btn-primary" id="validarDatos"><i class="fa fa-filter"></i> Validar archivo</a>
+    <a href="#" class="btn col-md-3 btn-info" id="cargarDatos"><i class="fa fa-file-excel-o"></i> Cargar datos</a>
+    <a href="#" class="btn col-md-3 btn-success" id="masDatos"><i class="fa fa-plus"></i> Añadir datos</a>
 </div>
 
 <div class="col-md-3" id="botones">

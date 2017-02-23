@@ -20,7 +20,7 @@
     <tbody>
     <tr>
         <td class="cabecera">Código</td>
-        <td class="cabecera">Facultad</td>
+        <td class="cabecera"><i class="fa fa-institution"></i> Facultad</td>
     </tr>
     <tr>
         <td>Numérico</td>
