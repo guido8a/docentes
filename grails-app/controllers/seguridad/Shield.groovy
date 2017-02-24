@@ -24,7 +24,8 @@ class Shield {
 
         } else {
             if (!session.usuario || !session.perfil) {
-                    redirect(controller: 'login', action: 'login')
+                render "<script type='text/javascript'> window.location.href = '${createLink(controller:'login', action:'login')}' </script>"
+//                    redirect(controller: 'login', action: 'login')
                     session.finalize()
                     return false
             } else {

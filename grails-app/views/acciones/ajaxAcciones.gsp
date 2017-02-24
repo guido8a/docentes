@@ -49,7 +49,7 @@ th, td {
         <input id="mueveAJX" type="button" class="btn btn-info grabaPrms" value="Agregar al Módulo">
     </g:if>
     <g:else>
-        <input id="aceptaAJX" type="button" class="btn btn-danger grabaPrms" value="Eliminar todas las acciones del Módulo">
+        <input id="aceptaAJX" type="button" class="btn btn-danger grabaPrms" value="Eliminar las acciones del Módulo">
     </g:else>
     <input id="cambia" type="button" class="btn btn-info grabaPrms" value="Cambiar Menú <- -> Proceso">
 %{--<input id="borraAccn" type="button" class="grabaPrms" value="Eliminar la Acci&oacute;n">--}%

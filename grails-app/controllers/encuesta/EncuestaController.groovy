@@ -19,7 +19,8 @@ class EncuestaController {
         if (!session.informanteId) {
 //            println"............------------"
             flash.message = 'Usted ha permanecido demasiado tiempo inactivo por lo que debe volver a ejecutar la Encuesta'
-            redirect(action: 'inicio')
+            render "<script type='text/javascript'> window.location.href = '${createLink(action:'inicio')}' </script>"
+//            redirect(action: 'inicio')
             return false
         }
     }

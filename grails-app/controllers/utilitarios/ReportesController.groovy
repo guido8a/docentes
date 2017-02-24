@@ -74,7 +74,8 @@ import java.text.ParsePosition;
 
 
 
-class ReportesController {
+class ReportesController extends seguridad.Shield {
+//class ReportesController {
 
     def dbConnectionService
 
