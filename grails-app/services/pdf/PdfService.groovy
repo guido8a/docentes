@@ -81,7 +81,7 @@ class PdfService {
 */
 
 
-        println "123123123 " + url
+
         try {
 
             renderer.setDocument(url)

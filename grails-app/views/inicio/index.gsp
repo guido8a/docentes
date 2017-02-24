@@ -11,6 +11,14 @@
         margin: 0.25in;
     }
 
+    body{
+        background-image:url('${resource(dir: "images", file: "cb8.jpg")}') !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+    }
+
     .item {
         width: 320px;
         height: 230px;
@@ -74,12 +82,6 @@
         color: #0070B0;
         margin-top: 20px;
     }
-
-
-
-
-
-
 
 
 
@@ -251,21 +253,13 @@
 <div class="dialog">
     <g:set var="inst" value="${utilitarios.Parametros.get(1)}"/>
 
-    %{--<div style="text-align: center;"><h2 class="titl">--}%
-    %{--<p class="text-warning">${inst.institucion}</p>--}%
-    %{--<p class="text-warning">Quanto - Docentes</p>--}%
-    %{--</h2>--}%
+    %{--<div class="card hovercard" style="z-index: 1000">--}%
+    %{--<div class="card-background">--}%
     %{--</div>--}%
-
-
-
-    <div class="card hovercard">
-        <div class="card-background">
-        </div>
-        <div class="useravatar">
-            <img alt="" src="${resource(dir: 'images', file: 'quanto.png')}">
-        </div>
+    <div class="useravatar" style="text-align: center;">
+        <img alt="" src="${resource(dir: 'images', file: 'quanto.png')}">
     </div>
+    %{--</div>--}%
 
 
     <div class="body ui-corner-all" style="width: 1020px;position: relative;margin: auto;margin-top: 40px;height: 280px; ">
@@ -439,14 +433,9 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
-
-
 </div>
+
 <script type="text/javascript">
     $(".fuera").hover(function () {
         var d = $(this).find(".imagen,.imagen2")
