@@ -264,21 +264,17 @@ class ProcesosController extends seguridad.Shield {
         cn.eachRow(sql.toString()) { d ->
             render (d.facl__id + "_" + d.cnta + "_" + d.facldscr + "*")
         }
-
-
     }
 
     def procesaFacl () {
 //        println "$params"
-
         def partes = params.arreglo.split("_")
         def total = params.total.toInteger()
 //        def regla = (partes[1].toInteger()*100/total)
         def regla = (params.parcial.toInteger()*100/total)
-
 //        println("regla " + regla)
 
-        sleep(3000)
+        sleep(1000)
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
@@ -297,6 +293,27 @@ class ProcesosController extends seguridad.Shield {
         def partes = params.parte.split("_")
         def facultad = partes[2]
         return [facultad: facultad]
+    }
+
+    def totales () {
+        println "totales: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from ajustar(${params.id})"
+        try {
+            cn.execute(sql.toString())
+        } catch (e) {
+            println "error $e"
+        }
+
+        sql = "select * from totales(${params.id})"
+        println "sql totales: $sql"
+        try {
+            cn.execute(sql.toString())
+            redirect controller: 'inicio', action: 'index'
+        } catch (e) {
+            println "error $e"
+            render "error"
+        }
     }
 
 

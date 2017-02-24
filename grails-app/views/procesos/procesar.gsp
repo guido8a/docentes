@@ -77,6 +77,8 @@
 
 <script type="text/javascript">
 
+    var url = "${resource(dir:'images', file:'spinner64.gif')}";
+    var spinner = $("<img style='margin-left:15px;' src='" + url + "' width='40px' height='40px'/><span> Procesando...</span>");
 
     $(".btnCargar2").click(function () {
 
@@ -103,6 +105,7 @@
 
                 for(i = 0; i < tamano; i++){
                     parcial += Math.round(parts[i].split("_")[1])
+                    $(".divfacultad").html("<h4>Inciando proceso de datos...</h4>")
                     cargarBarra(parts[i],total,parcial);
                     cargarDescripcion(parts[i])
                 }
@@ -128,7 +131,6 @@
                 var v = parseFloat(Math.round(msg * 100) / 100).toFixed(1);
 //                progress.percent(v);
                 $('.progress-bar').css('width', v + '%').attr('aria-valuenow', v).text(v + " %").addClass('progress-bar-success');
-
                 if(msg == 100){
                     setTimeout(function () {
                         bootbox.dialog({
@@ -139,12 +141,13 @@
                                     label     : "<i class='fa fa-close'></i> Aceptar",
                                     className : "btn-success",
                                     callback  : function () {
-                                        location.href=${createLink(controller:'inicio', action: 'index')}
+                                        %{--location.href=${createLink(controller:'inicio', action: 'index')}--}%
+                                        location.href="${createLink(controller:'procesos', action: 'totales')}/" + periodo
                                     }
                                 }
                             }
                         });
-                    }, 2000)
+                    }, 1000)
                 }
 
             }
