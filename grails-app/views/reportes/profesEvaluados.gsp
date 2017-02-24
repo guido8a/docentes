@@ -85,6 +85,10 @@
         page-break-after: always;
     }
 
+    .centrado{
+        text-align: center;
+    }
+
 
     </style>
 
@@ -134,16 +138,16 @@
 
     </g:if>
 
-        <tbody style="width: 100%">
+        <tbody>
 
-        <tr >
-            <td style="width: 25%">${e?.prof}</td>
-            <td style="width: 29%">${e?.mate}</td>
-            <td style="width: 15%">${e?.crso} - ${e?.prll}</td>
-            <td style="width: 7%">${e?.almn}</td>
-            <td style="width: 7%">${e?.semi}</td>
-            <td style="width: 7%">${e?.eval}</td>
-            <td style="width: 10%">${e?.pcnt} %</td>
+        <tr>
+            <td style="width: 277px" >${e?.prof}</td>
+            <td style="width: 271px">${e?.mate}</td>
+            <td style="width: 137px">${e?.crso} - ${e?.prll}</td>
+            <td style="width: 80px" class="centrado">${e?.almn}</td>
+            <td style="width: 60px" class="centrado">${e?.semi}</td>
+            <td style="width: 55px" class="centrado">${e?.eval}</td>
+            <td style="width: 65px" class="centrado">${e?.pcnt} %</td>
         </tr>
         </tbody>
 
