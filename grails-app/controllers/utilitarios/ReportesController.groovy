@@ -206,6 +206,23 @@ class ReportesController {
         return [res: res, escuelas: escuelas, titulo: titulo, facultad: facultad]
     }
 
+    def profesEvaluados () {
+
+        println "profesEvaluados $params"
+
+        def periodo
+        def cn = dbConnectionService.getConnection()
+
+        def titulo = "Profesores que han sido evaluados por los alumnos"
+        def sql = "select * from evaluados(${params.facl}, ${params.periodo}) where semi > 0 or pcnt > 0"
+
+        def res = cn.rows(sql.toString());
+        def facultad = Facultad.get(params.facl)
+
+        return [res: res, titulo: titulo, facultad: facultad]
+
+    }
+
     def reportes () {
 
     }

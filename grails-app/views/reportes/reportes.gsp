@@ -287,7 +287,8 @@
     $("#imprimirEvaluados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 2;
+        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 2;--}%
+        var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
     });
 
