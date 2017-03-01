@@ -18,12 +18,21 @@ class Shield {
 
         /** **************************************************************************/
 
+
+        if(actionName == 'profesNoEvaluados'){
+//            println("------------>")
+            return true
+        }
+
+
         if(session.an == 'saveTramite' && session.cn == 'tramite'){
             println("entro")
             return true
 
         } else {
+//            if ((!session.usuario || !session.perfil) && actionName == 'reportes') {
             if (!session.usuario || !session.perfil) {
+                println("entro login salida")
                 render "<script type='text/javascript'> window.location.href = '${createLink(controller:'login', action:'login')}' </script>"
 //                    redirect(controller: 'login', action: 'login')
                     session.finalize()
