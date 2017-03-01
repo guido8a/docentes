@@ -313,11 +313,13 @@ class ReportesController extends seguridad.Shield {
 //        spiderwebplot.setSeriesPaint(0, new Color(61, 72, 84));
         spiderwebplot.setSeriesPaint(0, new Color(13, 123, 220));
         spiderwebplot.setSeriesOutlinePaint(Color.RED)
-        spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(1.1f))
-        spiderwebplot.setLabelPaint(new Color(13, 123, 220))
+        spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(1.8f))
+//        spiderwebplot.setLabelPaint(new Color(13, 123, 220))  //color del texto del eje
+        spiderwebplot.setLabelPaint(new Color(0, 63, 140))  //color del texto del eje
 //        spiderwebplot.setBackgroundPaint(Color.LIGHT_GRAY)
-        spiderwebplot.setOutlinePaint(new Color(13, 123, 220))
+        spiderwebplot.setOutlinePaint(new Color(13, 123, 220))  //linea del gráfico
 //        spiderwebplot.setAxisLinePaint(Color.RED)
+        spiderwebplot.setAxisLinePaint(new Color(64,64,64))  //línea del eje
 
         JFreeChart jfreechart = new JFreeChart(titulo, TextTitle.DEFAULT_FONT, spiderwebplot, false);
 //        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
