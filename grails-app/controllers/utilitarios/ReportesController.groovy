@@ -315,7 +315,7 @@ class ReportesController extends seguridad.Shield {
         spiderwebplot.setSeriesOutlinePaint(Color.RED)
         spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(1.8f))
 //        spiderwebplot.setLabelPaint(new Color(13, 123, 220))  //color del texto del eje
-        spiderwebplot.setLabelPaint(new Color(0, 63, 140))  //color del texto del eje
+        spiderwebplot.setLabelPaint(new Color(0, 43, 120))  //color del texto del eje
 //        spiderwebplot.setBackgroundPaint(Color.LIGHT_GRAY)
         spiderwebplot.setOutlinePaint(new Color(13, 123, 220))  //linea del gráfico
 //        spiderwebplot.setAxisLinePaint(Color.RED)
