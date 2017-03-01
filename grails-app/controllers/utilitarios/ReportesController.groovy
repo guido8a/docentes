@@ -19,6 +19,7 @@ import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.title.Title
 import org.jfree.data.category.DefaultCategoryDataset
 
+import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Image
@@ -311,6 +312,13 @@ class ReportesController extends seguridad.Shield {
 //        spiderwebplot.setSeriesPaint(0, Color.GREEN);
 //        spiderwebplot.setSeriesPaint(0, new Color(61, 72, 84));
         spiderwebplot.setSeriesPaint(0, new Color(13, 123, 220));
+        spiderwebplot.setSeriesOutlinePaint(Color.RED)
+        spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(1.1f))
+        spiderwebplot.setLabelPaint(new Color(13, 123, 220))
+//        spiderwebplot.setBackgroundPaint(Color.LIGHT_GRAY)
+        spiderwebplot.setOutlinePaint(new Color(13, 123, 220))
+//        spiderwebplot.setAxisLinePaint(Color.RED)
+
         JFreeChart jfreechart = new JFreeChart(titulo, TextTitle.DEFAULT_FONT, spiderwebplot, false);
 //        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
 //        legendtitle.setPosition(RectangleEdge.BOTTOM);
