@@ -308,6 +308,7 @@ class ReportesController extends seguridad.Shield {
     private static JFreeChart createChart(CategoryDataset categorydataset,titulo)
     {
         SpiderWebPlot spiderwebplot = new SpiderWebPlot(categorydataset);
+        spiderwebplot.setSeriesPaint(0, Color.GREEN);
         JFreeChart jfreechart = new JFreeChart(titulo, TextTitle.DEFAULT_FONT, spiderwebplot, false);
 //        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
 //        legendtitle.setPosition(RectangleEdge.BOTTOM);
