@@ -128,6 +128,9 @@
 
 
 <script type="text/javascript">
+    var url = "${resource(dir:'images', file:'spinner32.gif')}";
+    var spinner = $("<div class='btn col-md-4 col-xs-4' style='height: auto; border-color: #495a6b'><img  src='" + url + "'/><span> Cargando...</span></div>");
+
     $(function () {
 
         $(document).ready(function () {
@@ -150,6 +153,7 @@
                 },
                 callback: function (result) {
                     if(result) {
+                        $("#anterior").replaceWith(spinner);
                         location.href = "${createLink(action: 'anterior')}" + "?encu__id=${encu}&actual=${actual}"
                     }
                 }
@@ -171,6 +175,7 @@
                 },
                 callback: function (result) {
                     if(result) {
+                        $("#abandonar").replaceWith(spinner);
                         location.href = "${createLink(action: 'previa')}"
                     }
                 }
@@ -195,6 +200,7 @@
                 });
                 return false;
             } else {
+                $("#siguiente").replaceWith(spinner);
                 $("#forma").submit();
                 return true;
             }

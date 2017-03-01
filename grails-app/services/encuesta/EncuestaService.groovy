@@ -63,7 +63,7 @@ class EncuestaService {
     }
 
     def encuestaEnCurso(informante, tpif, tpen, estd=0, dcta=0, par=0, drtv=0, prdo){
-//        println "encuestaEnCurso: $informante, $tpif, $tpen, $estd, $dcta, par: $par"
+        println "encuestaEnCurso: $informante, $tpif, $tpen, $estd, $dcta, par: $par"
         def cn = dbConnectionService.getConnection()
         def tx = ""
         switch (tpen) {
@@ -98,7 +98,7 @@ class EncuestaService {
             default:
                 tx = "select 0"
         }
-//        println "encuestaEnCurso sql: $tx"
+        println "encuestaEnCurso sql: $tx"
         def encu__id = cn.rows(tx.toString())[0]?.encu__id
         cn.close()
         if(encu__id) {

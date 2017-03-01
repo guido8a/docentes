@@ -16,26 +16,28 @@ th, td {
 
 %{--<div style="overflow-y: auto; height:${msg == '' ? 300 : 275}px; margin-top: -20px">--}%
 <div style="overflow-y: auto; height:${msg == '' ? 300 : 275}px; margin-top: -20px">
-    <table class="table-bordered table-condensed table-hover" width="1060px">
-        <g:each in="${bases}" var="dato" status="z">
+    %{--<table class="table-bordered table-condensed table-hover" width="1050px">--}%
+    <table class="table-bordered table-condensed table-hover" width="100%">
+
+    <g:each in="${bases}" var="dato" status="z">
 
             <tr id="${dato.id}" data-id="${dato.id}" class="${clase}">
-                <td width="340px">
+                <td width="30%"> %{--360--}%
                     ${dato?.profesor}
                 </td>
 
-                <td width="400px" style="color:#186063">
+                <td width="38%" style="color:#186063">  %{--400--}%
                     ${dato?.matedscr}
                 </td>
 
-                <td width="160px">
+                <td width="16%"> %{--160--}%
                     ${dato.crsodscr}
                 </td>
 
-                <td width="60px" class="text-info">
+                <td width="7%" class="text-info"> %{--60--}%
                     ${dato.dctaprll}
                 </td>
-                <td width="60px" class="text-info" style="text-align: center">
+                <td width="5%" class="text-info" style="text-align: center">  %{--60--}%
                     <a href="#" class="btn btn-info btn-xs btnEncuesta" title="Evaluar" data-id="${dato.id}"
                         data-profesor="${dato?.profesor}<br><ul><li>Materia: ${dato.matedscr} </li><li>Curso: ${dato.crsodscr}</li><li>Paralelo: ${dato.dctaprll}</li></ul>">
                         <i class="fa fa-pencil"></i></a>

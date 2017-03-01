@@ -90,19 +90,20 @@
         </div>
     </div>
 
-    <div style="margin-top: 30px; min-height: 350px; overflow-y: auto; width: 1120px" class="vertical-container">
+    <div style="margin-top: 30px; min-height: 350px; overflow-y: auto; width: auto" class="vertical-container">
     %{--<div style="margin-top: 30px; min-height: 350px; overflow-y: auto" class="vertical-container">--}%
         <p class="css-vertical-text">Profesores
 
         <div class="linea"></div>
-        <table class="table table-bordered table-hover table-condensed" style="width: 1070px">
+        %{--<table class="table table-bordered table-hover table-condensed" style="width: 1070px">--}%
+        <table class="table table-bordered table-hover table-condensed" style="width: 100%">
             <thead>
             <tr>
-                <th class="alinear" style="width: 360px">Profesor</th>
-                <th class="alinear" style="width: 400px">Materia</th>
-                <th class="alinear" style="width: 160px">Curso</th>
-                <th class="alinear" style="width: 70px">Paralelo</th>
-                <th class="alinear" style="width: 70px">Evaluar</th>
+                <th class="alinear" style="width: 30%">Profesor</th>  %{--360--}%
+                <th class="alinear" style="width: 40%">Materia</th>   %{--400--}%
+                <th class="alinear" style="width: 16%">Curso</th>     %{--160--}%
+                <th class="alinear" style="width: 7%">Paralelo</th>   %{--70--}%
+                <th class="alinear" style="width: 7%">Evaluar</th>    %{--70--}%
             </tr>
             </thead>
         </table>

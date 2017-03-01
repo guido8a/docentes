@@ -181,7 +181,7 @@ class EncuestaController {
             encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, session.informanteId, dcta__id, 0,0, session.periodo.id)
         }
 
-//        println "encuesta ${encu?.id}"
+        println "encuesta en curso: ${encu?.id}"
         if(encu == null) {  // se debe crear la ponePregunta
             actual = 1
             encu = new Encuesta()
