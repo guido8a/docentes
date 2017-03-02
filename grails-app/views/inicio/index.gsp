@@ -250,6 +250,9 @@
 </head>
 
 <body>
+
+
+
 <div class="dialog">
     <g:set var="inst" value="${utilitarios.Parametros.get(1)}"/>
 
@@ -437,6 +440,8 @@
 </div>
 
 <script type="text/javascript">
+
+
     $(".fuera").hover(function () {
         var d = $(this).find(".imagen,.imagen2")
         d.width(d.width() + 10)

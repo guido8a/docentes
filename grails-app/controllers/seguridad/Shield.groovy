@@ -19,10 +19,12 @@ class Shield {
         /** **************************************************************************/
 
 
-        if(actionName == 'profesNoEvaluados'){
+        if(actionName == 'profesNoEvaluados' || actionName == 'profesEvaluados' || actionName=='asignaturas'){
 //            println("------------>")
             return true
         }
+
+
 
 
         if(session.an == 'saveTramite' && session.cn == 'tramite'){
