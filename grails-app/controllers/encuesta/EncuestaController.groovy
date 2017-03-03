@@ -578,7 +578,13 @@ class EncuestaController {
             redirect action: 'previaDc'
         } else if(session.tipoPersona == 'P' && (session.tipoEncuesta.codigo in ['AD'])) {
             //continuar con evaluacion a profesores
-            redirect action: 'previaAd'
+            def auto = encuestaService.autoevaluacion(session.informanteId, session.periodo.id)
+            println "auto: $auto"
+            if(auto) {
+                redirect action: 'previaAd'
+            } else {
+                redirect action: 'previaDc'
+            }
         }
     }
 
