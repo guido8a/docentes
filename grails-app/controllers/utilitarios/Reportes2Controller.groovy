@@ -1,6 +1,6 @@
 package utilitarios
 
-
+import com.lowagie.text.html.WebColors
 import docentes.Escuela
 import docentes.Facultad
 import docentes.Periodo
@@ -19,8 +19,12 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter
+import javafx.scene.layout.Background
+import javafx.scene.layout.BackgroundFill
 import org.fusesource.jansi.Ansi
-import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders;
+import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders
+
+import java.awt.Color;
 
 
 class Reportes2Controller {
@@ -40,6 +44,7 @@ class Reportes2Controller {
 
     private static void addCellTabla(PdfPTable table, paragraph, params) {
         PdfPCell cell = new PdfPCell(paragraph);
+
         if (params.height) {
             cell.setFixedHeight(params.height.toFloat());
         }
@@ -105,7 +110,9 @@ class Reportes2Controller {
         if (params.pb) {
             cell.setPaddingBottom(params.pb.toFloat());
         }
-
+        if(params.color){
+            cell.setBackgroundColor(params.color);
+        }
         table.addCell(cell);
     }
 
@@ -145,6 +152,8 @@ class Reportes2Controller {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        fontTitulo2.setColor(255,255,255)
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
         Document document
@@ -189,25 +198,25 @@ class Reportes2Controller {
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 
+        BaseColor colorAzul = new BaseColor(50, 96, 144)
+
         def prmsTdNoBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsTdBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorderAzul = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, color: colorAzul]
 
         /* ************************************************************* HEADER PLANILLA ***************************************************************************/
         PdfPTable tablaD = new PdfPTable(2);
         tablaD.setWidthPercentage(100);
         tablaD.setWidths(arregloEnteros([90, 10]))
 
-        addCellTabla(tablaD, new Paragraph("Descripción", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Grado", fontTitulo), prmsCrBorder)
-
+        addCellTabla(tablaD, new Paragraph("Descripción", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaD, new Paragraph("Grado", fontTitulo2), prmsCrBorderAzul)
 
         res.eachWithIndex { p , j ->
-
             addCellTabla(tablaD, new Paragraph(p.rcmndscr, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsCrBorder)
-
         }
 
         document.add(tablaD);

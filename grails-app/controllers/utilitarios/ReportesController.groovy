@@ -409,6 +409,9 @@ class ReportesController extends seguridad.Shield {
         if (params.pb) {
             cell.setPaddingBottom(params.pb.toFloat());
         }
+        if(params.color){
+            cell.setBackgroundColor(params.color)
+        }
 
         table.addCell(cell);
     }
@@ -1053,6 +1056,8 @@ class ReportesController extends seguridad.Shield {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        fontTitulo2.setColor(255,255,255)
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
         Document document
@@ -1140,21 +1145,23 @@ class ReportesController extends seguridad.Shield {
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
+        BaseColor colorAzul = new BaseColor(50, 96, 144)
 
         def prmsTdNoBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsTdBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorderAzul = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, color: colorAzul]
 
         /* ************************************************************* HEADER PLANILLA ***************************************************************************/
         PdfPTable tablaD = new PdfPTable(4);
         tablaD.setWidthPercentage(100);
         tablaD.setWidths(arregloEnteros([37, 35, 20, 6]))
 
-        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo2), prmsCrBorderAzul)
+        addCellTabla(tablaD, new Paragraph("%", fontTitulo2), prmsCrBorderAzul)
 
         PdfPTable table = new PdfPTable(1);
         table.setTotalWidth(450);

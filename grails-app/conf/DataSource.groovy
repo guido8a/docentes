@@ -18,7 +18,7 @@ environments {
     development {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.10:5432/quanto"
+            url = "jdbc:postgresql://10.0.0.9:5432/quanto"
 //            url = "jdbc:postgresql://10.0.0.10:5432/quanto2"
             username = "postgres"
             password = "postgres"
@@ -27,7 +27,7 @@ environments {
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.10:5432/quanto"
+            url = "jdbc:postgresql://10.0.0.9:5432/quanto"
             username = "postgres"
             password = "postgres"
         }
@@ -35,7 +35,7 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:postgresql://10.0.0.10:5432/quanto"
+            url = "jdbc:postgresql://10.0.0.9:5432/quanto"
             username = "postgres"
             password = "postgres"
             properties {

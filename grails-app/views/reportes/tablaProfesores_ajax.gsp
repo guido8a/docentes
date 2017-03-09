@@ -18,37 +18,37 @@
                         <td style="width: 5%">${profesor?.titulo}</td>
                         <td style="width: 20%; text-align: center">
                             <g:if test="${pantalla == '1'}">
-                                <a href="#" class="btn btn-info btnAlumnos"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,alumnos,periodo)?.promedio > 0 ? '' : 'disabled='}
+                                <button class="btn btn-info btnAlumnos" type="button"
+                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,alumnos,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="1" title="Evaluación Alumnos">
                                     <i class="fa fa-dashboard"></i>
-                                </a>
-                                <a href="#" class="btn btn-info btnAlumnos"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,auto,periodo)?.promedio > 0 ? '' : 'disabled='}
+                                </button>
+                                <button class="btn btn-info btnAlumnos" type="button"
+                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,auto,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="2"  title="Auto Evaluación">
                                     <i class="fa fa-car"></i>
-                                </a>
-                                <a href="#" class="btn btn-info btnAlumnos"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,directivos,periodo)?.promedio > 0 ? '' : 'disabled='}
+                                </button>
+                                <button class="btn btn-info btnAlumnos" type="button"
+                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,directivos,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="3" title="Evaluación Directivos">
                                     <i class="fa fa-star"></i>
-                                </a>
-                                <a href="#" class="btn btn-info btnAlumnos"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)?.promedio > 0 ? '' : 'disabled='}
+                                </button>
+                                <button class="btn btn-info btnAlumnos" type="button"
+                                    ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="4" title="Evaluación Pares">
                                     <i class="fa fa-cubes"></i>
-                                </a>
-                                <a href="#" class="btn btn-info btnAlumnos"
+                                </button>
+                                <button class="btn btn-info btnAlumnos" type="button"
                                    data-id="${profesor.id}" data-tipo="5"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled='}  title="Promedio General">
+                                    ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled'}  title="Promedio General">
                                     <i class="fa fa-pie-chart"></i>
-                                </a>
+                                </button>
                             </g:if>
                             <g:elseif test="${pantalla == '2'}">
-                                <a href="#" class="btn btn-warning btnRecomendaciones"
-                                   data-id="${profesor.id}" ${existe[j] == '1' ? '' : 'disabled='}  title="Recomendaciones">
-                                    <i class="fa fa-star"></i>
-                                </a>
+                                <button class="btn btn-warning btnRecomendaciones" data-id="${profesor.id}"
+                                        type="button" ${existe[j] == '1' ? '' : 'disabled'}>
+                                    <i class="fa fa-star" title="Recomendaciones"></i></button>
+
                             </g:elseif>
                             <g:else>
                                 <a href="#" class="btn btn-success btnEncuestaDC"
@@ -58,8 +58,8 @@
                                 <a href="#" class="btn btn-success btnEncuestaDI"
                                    data-id="${profesor.id}" title="Evaluación Directivo a Docente">
                                     <i class="fa fa-bus"></i>
-                                </a>
-                                <a href="#" class="btn btn-success btnEncuestaPR"
+                               </a>
+                         |        <a href="#" class="btn btn-success btnEncuestaPR"
                                    data-id="${profesor.id}" title="Evaluación de Pares">
                                     <i class="fa fa-bicycle"></i>
                                 </a>
