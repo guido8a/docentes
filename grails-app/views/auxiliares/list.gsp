@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Auxiliares</title>
+        <title>Parámetros del Sistema</title>
     </head>
     <body>
 
@@ -32,6 +32,7 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
+                    <g:sortableColumn property="periodo" title="Período Académico" />
 
                     <g:sortableColumn property="minimo" title="Índice de calidad Mínimo" />
                     
@@ -45,20 +46,18 @@
                     
                     <g:sortableColumn property="maximoEstudiantes" title="Ponderación para evaluación de Estudiantes" />
 
-                    <g:sortableColumn property="periodo" title="Período" />
-
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${auxiliaresInstanceList}" status="i" var="auxiliaresInstance">
                     <tr data-id="${auxiliaresInstance.id}">
+                        <td>${auxiliaresInstance?.periodo?.nombre}</td>
                         <td>${auxiliaresInstance?.minimo?.toInteger()}</td>
                         <td>${auxiliaresInstance?.optimo?.toInteger()}</td>
                         <td>${auxiliaresInstance?.maximoDirectivos}</td>
                         <td>${auxiliaresInstance?.maximoPares}</td>
                         <td>${auxiliaresInstance?.maximoAutoevaluacion}</td>
                         <td>${auxiliaresInstance?.maximoEstudiantes}</td>
-                        <td>${auxiliaresInstance?.periodo?.nombre}</td>
                     </tr>
                 </g:each>
             </tbody>

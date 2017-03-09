@@ -245,7 +245,7 @@ class Reportes2Controller {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Reporte cuello de botella");
+        document.addTitle("Reporte de Cuellos de Botella");
         document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, docentes, profesores");
         document.addAuthor("Docentes");
@@ -263,7 +263,7 @@ class Reportes2Controller {
 //        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
 //        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Cuellos de botella", fontTitulo )
+        Paragraph lineaTitulo = new Paragraph("Cuellos de Botella", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
@@ -376,7 +376,7 @@ class Reportes2Controller {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Reporte Factores de potenciación");
+        document.addTitle("Reporte de Factores de Potenciación");
         document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, docentes, profesores");
         document.addAuthor("Docentes");
@@ -391,7 +391,7 @@ class Reportes2Controller {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Factores de potenciación", fontTitulo )
+        Paragraph lineaTitulo = new Paragraph("Factores de Potenciación", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
@@ -504,7 +504,7 @@ class Reportes2Controller {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Reporte Factores de éxito");
+        document.addTitle("Reporte de Factores de Éxito");
         document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, docentes, profesores");
         document.addAuthor("Docentes");
@@ -519,7 +519,7 @@ class Reportes2Controller {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Factores de éxito", fontTitulo )
+        Paragraph lineaTitulo = new Paragraph("Factores de Éxito", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)

@@ -169,19 +169,19 @@
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirBotella">
-                    <span class="text-success"><i class="fa fa-flask"></i><strong> Cuellos de botella</strong></span>
+                    <span class="text-success"><i class="fa fa-flask"></i><strong> Cuellos de Botella</strong></span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirPotencia">
-                    <span class="text-success"><i class="fa fa-flash"></i><strong>  Factores de potenciación</strong></span>
+                    <span class="text-success"><i class="fa fa-flash"></i><strong>  Factores de Potenciación</strong></span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirExito">
-                    <span class="text-success"><i class="fa fa-sun-o"></i><strong> Factores de éxito</strong></span>
+                    <span class="text-success"><i class="fa fa-sun-o"></i><strong> Factores de Éxito</strong></span>
                 </div>
             </a>
 

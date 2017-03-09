@@ -29,11 +29,12 @@
 
 <body>
 
+<div class="col-md-12" style="text-align: center"><h3>Parámetros del Sistema - Período: ${utilitarios.Auxiliares.get(auxiliar?.id)?.periodo.nombre}</h3></div>
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group col-md-5">
             <g:link controller="auxiliares" action="list" class="btn btn-primary" title="Parámetros auxiliares">
-                <i class="fa fa-chevron-left"></i> Lista
+                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;Parámetros por Período Académico
             </g:link>
 
             <g:if test="${ver != '1'}">
@@ -65,7 +66,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-4">
-            <label class="bajo">Índice de calidad Mínimo (evaluación docentes)</label>
+            <label class="bajo col-md-10">Índice de calidad Mínimo (evaluación docentes)</label>
 
             <div id="fuel-gauge"></div>
 
@@ -75,7 +76,7 @@
 
         </div>
         <div class="col-md-4">
-            <label class="bajo">Índice de calidad Óptimo (evaluación docentes)</label>
+            <label class="bajo col-md-10">Índice de calidad Óptimo (evaluación docentes)</label>
 
             <div  id="fuel-gauge2"></div>
 
@@ -84,7 +85,7 @@
             </g:if>
         </div>
         <div class="col-md-4">
-            <label class="bajo">Ajuste para potenciadores de nivel Moderado (0-100 val=75)</label>
+            <label class="bajo  col-md-10">Ajuste para potenciadores de nivel Moderado (Rango de 0 a 100, valor recomendado: 75)</label>
             <div id="fuel-gauge3"></div>
 
             <g:if test="${ver != '1'}">
@@ -99,7 +100,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-4">
-            <label class="bajo">Ajuste para potenciadores de nivel Exagerado (0-75 val=50)</label>
+            <label class="bajo col-md-10">Ajuste para potenciadores de nivel Exagerado (Rango de 0 a 75, valor recomendado: 50)</label>
             <div id="fuel-gauge4"></div>
 
             <g:if test="${ver != '1'}">
@@ -108,7 +109,7 @@
 
         </div>
         <div class="col-md-4">
-            <label class="bajo">% de opinión para Cuellos de Botella (10-50 val=10)</label>
+            <label class="bajo col-md-10">% de opinión para Cuellos de Botella (Rango de 10 a 50, valor recomendado: 15)</label>
             <div id="fuel-gauge5"></div>
 
             <g:if test="${ver != '1'}">
@@ -116,7 +117,7 @@
             </g:if>
         </div>
         <div class="col-md-4">
-            <label class="bajo">% de opinión para Factor de éxito (10-50 val=10) </label>
+            <label class="bajo col-md-10">% de opinión para Factor de éxito (Rango de 10 a 50, valor recomendado: 15) </label>
 
             <div id="fuel-gauge6"></div>
 
@@ -132,12 +133,12 @@
     <div class="panel panel-info col-md-12" style="margin-top: 20px" >
         <div class="panel-heading">
             <h3 class="panel-title" style="height: 35px; text-align: center">
-                PONDERACIONES
+                Ponderaciones de las Evaluaciones
             </h3>
         </div>
         <div class="panel-body" style="text-align: center">
-            <div class="col-md-2"></div>
-            <div class="col-md-5">
+            <div class="col-md-1"></div>
+            <div class="col-md-6">
                 <div id="chart_div"></div>
             </div>
 
@@ -204,15 +205,15 @@
         data.addColumn('string', 'Topping');
         data.addColumn('number', 'Slices');
         data.addRows([
-            ['Ponderación para evaluación de Directivos', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoDirectivos ?: 20}],
-            ['Ponderación para evaluación de Pares ', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoPares ?: 20}],
-            ['Ponderación para Autoevaluaciones ', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoAutoevaluacion ?: 20}],
-            ['Ponderación para evaluación de Estudiantes', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoEstudiantes ?: 40}]
+            ['Directivos', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoDirectivos ?: 20}],
+            ['Pares ', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoPares ?: 20}],
+            ['Autoevaluación', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoAutoevaluacion ?: 20}],
+            ['Estudiantes', ${utilitarios.Auxiliares.get(auxiliar?.id)?.maximoEstudiantes ?: 40}]
         ]);
 
         // Set chart options
         var options = {'title':'Valores de Ponderaciones',
-            'width':500,
+            'width':600,
             'is3D':true,
             'height':300};
 
