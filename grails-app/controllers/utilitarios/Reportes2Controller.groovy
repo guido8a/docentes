@@ -19,8 +19,8 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter
-import javafx.scene.layout.Background
-import javafx.scene.layout.BackgroundFill
+//import javafx.scene.layout.Background
+//import javafx.scene.layout.BackgroundFill
 import org.fusesource.jansi.Ansi
 import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders
 
