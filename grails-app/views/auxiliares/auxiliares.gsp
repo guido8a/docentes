@@ -10,6 +10,8 @@
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+
 
     <meta name="layout" content="main">
     <title>Variables Auxiliares</title>
@@ -32,7 +34,7 @@
 <div class="col-md-12" style="text-align: center"><h3>Parámetros del Sistema - Período: ${utilitarios.Auxiliares.get(auxiliar?.id)?.periodo.nombre}</h3></div>
 <div class="row">
     <div class="col-md-12">
-        <div class="btn-group col-md-5">
+        <div class="btn-group col-md-12">
             <g:link controller="auxiliares" action="list" class="btn btn-primary" title="Parámetros auxiliares">
                 <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;Parámetros por Período Académico
             </g:link>
