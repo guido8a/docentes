@@ -34,14 +34,16 @@ class Shield {
         } else {
 //            if ((!session.usuario || !session.perfil) && actionName == 'reportes') {
             if (!session.usuario || !session.perfil) {
-                println("entro login salida")
+                if(controllerName != "inicio" && actionName != "index") {
+                    flash.message = "Usted ha superado el tiempo de inactividad máximo de la sesión"
+                }
                 render "<script type='text/javascript'> window.location.href = '${createLink(controller:'login', action:'login')}' </script>"
 //                    redirect(controller: 'login', action: 'login')
                     session.finalize()
                     return false
             } else {
                 def now = new Date()
-                def band = true
+                def band = true  
 //            use(groovy.time.TimeCategory) {
 //                def duration = now - session.time
 //                if(duration.minutes>4){
