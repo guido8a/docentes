@@ -31,7 +31,7 @@
 
 <body>
 
-<div class="col-md-12" style="text-align: center"><h3>Parámetros del Sistema - Período: ${utilitarios.Auxiliares.get(auxiliar?.id)?.periodo.nombre}</h3></div>
+<div class="col-md-12" style="text-align: center"><h3>Parámetros del Sistema - Período: ${utilitarios.Auxiliares.get(auxiliar?.id)?.periodo?.nombre}</h3></div>
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group col-md-12">
