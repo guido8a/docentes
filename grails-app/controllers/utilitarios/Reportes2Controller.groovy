@@ -687,18 +687,19 @@ class Reportes2Controller {
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-        PdfPTable tablaD = new PdfPTable(3);
+        PdfPTable tablaD = new PdfPTable(4);
         tablaD.setWidthPercentage(100);
-        tablaD.setWidths(arregloEnteros([50,40,10]))
+        tablaD.setWidths(arregloEnteros([40,40,10,10]))
 
-        addCellTabla(tablaD, new Paragraph("Asignatura", fontNormalBold), prmsIzBorder4)
         addCellTabla(tablaD, new Paragraph("Profesor", fontNormalBold), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Asignatura", fontNormalBold), prmsIzBorder4)
+        addCellTabla(tablaD, new Paragraph("Paralelo", fontNormalBold), prmsIzBorder4)
         addCellTabla(tablaD, new Paragraph("Clase", fontNormalBold), prmsIzBorder4)
 
-
         res.eachWithIndex { p , j ->
-            addCellTabla(tablaD, new Paragraph(p?.facldscr, fontThUsar), prmsIzBorder3)
             addCellTabla(tablaD, new Paragraph(p?.prof, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.matedscr, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.dctaprll?.toString(), fontThUsar), prmsCrBorder)
             addCellTabla(tablaD, new Paragraph(p?.clase, fontThUsar), prmsCrBorder)
 
         }
