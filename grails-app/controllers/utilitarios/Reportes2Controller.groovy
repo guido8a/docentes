@@ -617,7 +617,7 @@ class Reportes2Controller {
 
     def clasificacion () {
 
-        //        println "reporteClasificacion $params"
+        println "reporteClasificacion $params"
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
@@ -666,7 +666,12 @@ class Reportes2Controller {
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
-        def sql = "select facldscr, profapll||' '||profnmbr prof, clase from rpec, prof, escl, facl where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl.facl__id = escl.facl__id and clase is not null order by facldscr, profapll;"
+        def sql = "select facldscr, profapll||' '||profnmbr prof, clase, matedscr " +
+                "from rpec, prof, escl, facl, dcta, mate " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id and facl.facl__id = ${params.facultad} and " +
+                "clase is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
+                "order by facldscr, profapll;"
 
 //        println("---> " + sql)
 
