@@ -130,6 +130,7 @@ class ReportesController extends seguridad.Shield {
                         "prof.prof__id not in ( " +
                         "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
                         "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
+                        "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
                         "order by escldscr, profapll, profnmbr"
                 break;
             case '2':
@@ -157,6 +158,7 @@ class ReportesController extends seguridad.Shield {
                       "dcta.dcta__id not in (select distinct dcta__id from encu " +
                       "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
                       "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
+                      "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
                       "order by escldscr, profapll, profnmbr"
                 break;
             case '4':  // profesores que YA han realizado su autoevaluación

@@ -88,7 +88,8 @@
                 </div>
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirNoEvaluados">
-                        <span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong> profesores que no cuentan con evaluaciones
+                        <span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong>
+                            profesores que no cuentan con evaluaciones
                         </span>
                     </div>
                 </a>
