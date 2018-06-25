@@ -108,7 +108,14 @@ class DepartamentoController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
+//        println("params " + params)
         def DepartamentoInstance = new Departamento()
+        def activo = params.activo
+        if(activo == 'SI'){
+            params.activo = 1
+        }else{
+            params.activo = 0
+        }
         if (params.id) {
             DepartamentoInstance = Departamento.get(params.id)
             if (!DepartamentoInstance) {
@@ -118,10 +125,10 @@ class DepartamentoController extends Shield {
         }
         DepartamentoInstance.properties = params
         if (!DepartamentoInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Departamento: " + renderErrors(bean: DepartamentoInstance)
+            render "ERROR*Ha ocurrido un error al guardar el Departamento: " + renderErrors(bean: DepartamentoInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Departamento exitosa."
+        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} del Departamento exitosa."
         return
     } //save para grabar desde ajax
 

@@ -22,7 +22,7 @@
     <g:if test="${departamentoInstance?.codigo}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Codigo
+                Código
             </div>
             
             <div class="col-md-3">
@@ -48,7 +48,7 @@
     <g:if test="${departamentoInstance?.telefono}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Telefono
+                Teléfono
             </div>
             
             <div class="col-md-3">
@@ -61,7 +61,7 @@
     <g:if test="${departamentoInstance?.extension}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Extension
+                Extensión
             </div>
             
             <div class="col-md-3">
@@ -70,32 +70,32 @@
             
         </div>
     </g:if>
+    %{----}%
+    %{--<g:if test="${departamentoInstance?.direccion}">--}%
+        %{--<div class="row">--}%
+            %{--<div class="col-md-2 text-info">--}%
+                %{--Direccion--}%
+            %{--</div>--}%
+            %{----}%
+            %{--<div class="col-md-3">--}%
+                %{--<g:fieldValue bean="${departamentoInstance}" field="direccion"/>--}%
+            %{--</div>--}%
+            %{----}%
+        %{--</div>--}%
+    %{--</g:if>--}%
     
-    <g:if test="${departamentoInstance?.direccion}">
-        <div class="row">
-            <div class="col-md-2 text-info">
-                Direccion
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${departamentoInstance}" field="direccion"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${departamentoInstance?.estado}">
-        <div class="row">
-            <div class="col-md-2 text-info">
-                Estado
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${departamentoInstance}" field="estado"/>
-            </div>
-            
-        </div>
-    </g:if>
+    %{--<g:if test="${departamentoInstance?.estado}">--}%
+        %{--<div class="row">--}%
+            %{--<div class="col-md-2 text-info">--}%
+                %{--Estado--}%
+            %{--</div>--}%
+            %{----}%
+            %{--<div class="col-md-3">--}%
+                %{--<g:fieldValue bean="${departamentoInstance}" field="estado"/>--}%
+            %{--</div>--}%
+            %{----}%
+        %{--</div>--}%
+    %{--</g:if>--}%
     
     <g:if test="${departamentoInstance?.activo}">
         <div class="row">
@@ -104,7 +104,8 @@
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${departamentoInstance}" field="activo"/>
+                %{--<g:fieldValue bean="${departamentoInstance}" field="activo"/>--}%
+                ${departamentoInstance?.activo == 1 ? 'ACTIVO' : 'INACTIVO'}
             </div>
             
         </div>

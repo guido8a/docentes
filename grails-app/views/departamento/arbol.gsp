@@ -559,14 +559,14 @@
 //                    items.agregarEntidad = agregarEntidad;
         } else if (esPrincipal) {
             items.agregarEntidad = agregarEntidad;
-            items.documentos = docsEntidad;
+//            items.documentos = docsEntidad;
             items.agregarUsuario = agregarUsu;
             items.ver = verEntidad;
             items.editar = editarEntidad;
-            items.reporte = reporteUsuarios;
+//            items.reporte = reporteUsuarios;
         } else if (esUnidad) {
             items.agregarEntidad = agregarEntidad;
-            items.documentos = docsEntidad;
+//            items.documentos = docsEntidad;
             items.agregarUsuario = agregarUsu;
             items.ver = verEntidad;
             items.editar = editarEntidad;
@@ -574,9 +574,9 @@
             items.ver = verUsuario;
             items.editar = editarUsuario;
             items.editarPass = editarPass;
-            if (nodeId == "${session.usuario.id}") {
-                items.editarAuth = editarAuth;
-            }
+            %{--if (nodeId == "${session.usuario.id}") {--}%
+                %{--items.editarAuth = editarAuth;--}%
+            %{--}--}%
         }
         return items;
     }

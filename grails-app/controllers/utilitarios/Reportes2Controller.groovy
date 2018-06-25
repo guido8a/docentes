@@ -656,7 +656,7 @@ class Reportes2Controller {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Factores de éxito", fontTitulo )
+        Paragraph lineaTitulo = new Paragraph("Clasificación del desempeño académico", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
@@ -668,7 +668,7 @@ class Reportes2Controller {
 
         def sql = "select facldscr, profapll||' '||profnmbr prof, clase from rpec, prof, escl, facl where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl.facl__id = escl.facl__id and clase is not null order by facldscr, profapll;"
 
-        println("---> " + sql)
+//        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());

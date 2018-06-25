@@ -5,7 +5,7 @@
     <elm:notFound elem="Departamento" genero="o" />
 </g:if>
 <g:else>
-    <g:form class="form-horizontal" name="frmDepartamento" role="form" action="save" method="POST">
+    <g:form class="form-horizontal" name="frmDepartamento" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${departamentoInstance?.id}" />
         
         <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'padre', 'error')} ">
@@ -23,7 +23,7 @@
         <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'codigo', 'error')} ">
             <span class="grupo">
                 <label for="codigo" class="col-md-2 control-label text-info">
-                    Codigo
+                    Código
                 </label>
                 <div class="col-md-6">
                     <g:textField name="codigo" maxlength="15" required="" class="allCaps form-control required" value="${departamentoInstance?.codigo}"/>
@@ -38,7 +38,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nombre" maxlength="127" required="" class="allCaps form-control required" value="${departamentoInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="127" required="" class="form-control required" value="${departamentoInstance?.nombre}"/>
                 </div>
                 
             </span>
@@ -47,10 +47,10 @@
         <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'telefono', 'error')} ">
             <span class="grupo">
                 <label for="telefono" class="col-md-2 control-label text-info">
-                    Telefono
+                    Teléfono
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="telefono" maxlength="62" class="allCaps form-control" value="${departamentoInstance?.telefono}"/>
+                    <g:textField name="telefono" maxlength="62" class="allCaps number form-control" value="${departamentoInstance?.telefono}"/>
                 </div>
                 
             </span>
@@ -59,46 +59,47 @@
         <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'extension', 'error')} ">
             <span class="grupo">
                 <label for="extension" class="col-md-2 control-label text-info">
-                    Extension
+                    Extensión
                 </label>
-                <div class="col-md-6">
-                    <g:textField name="extension" maxlength="7" class="allCaps form-control" value="${departamentoInstance?.extension}"/>
+                <div class="col-md-3">
+                    <g:textField name="extension" maxlength="7" class="allCaps number form-control" value="${departamentoInstance?.extension}"/>
                 </div>
                 
             </span>
         </div>
-        
-        <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'direccion', 'error')} ">
-            <span class="grupo">
-                <label for="direccion" class="col-md-2 control-label text-info">
-                    Direccion
-                </label>
-                <div class="col-md-6">
-                    <g:textArea name="direccion" cols="40" rows="5" maxlength="255" class="allCaps form-control" value="${departamentoInstance?.direccion}"/>
-                </div>
-                
-            </span>
-        </div>
-        
-        <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'estado', 'error')} ">
-            <span class="grupo">
-                <label for="estado" class="col-md-2 control-label text-info">
-                    Estado
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="estado" maxlength="1" class="allCaps form-control" value="${departamentoInstance?.estado}"/>
-                </div>
-                
-            </span>
-        </div>
+        %{----}%
+        %{--<div class="form-group ${hasErrors(bean: departamentoInstance, field: 'direccion', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="direccion" class="col-md-2 control-label text-info">--}%
+                    %{--Direccion--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textArea name="direccion" cols="40" rows="5" maxlength="255" class="allCaps form-control" value="${departamentoInstance?.direccion}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
+        %{----}%
+        %{--<div class="form-group ${hasErrors(bean: departamentoInstance, field: 'estado', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="estado" class="col-md-2 control-label text-info">--}%
+                    %{--Estado--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textField name="estado" maxlength="1" class="allCaps form-control" value="${departamentoInstance?.estado}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
         
         <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'activo', 'error')} ">
             <span class="grupo">
                 <label for="activo" class="col-md-2 control-label text-info">
                     Activo
                 </label>
-                <div class="col-md-6">
-                    <g:field name="activo" type="number" value="${departamentoInstance.activo}" class="digits form-control required" required=""/>
+                <div class="col-md-2">
+                    %{--<g:field name="activo" type="number" value="${departamentoInstance.activo}" class="digits form-control required" required="" />--}%
+                    <g:select name="activo" from="${['SI','NO']}" class="form-control required" value="${departamentoInstance?.activo == 1 ? 'SI' : 'NO'}"/>
                 </div>
                 
             </span>
@@ -109,8 +110,9 @@
                 <label for="orden" class="col-md-2 control-label text-info">
                     Orden
                 </label>
-                <div class="col-md-6">
-                    <g:field name="orden" type="number" value="${departamentoInstance.orden}" class="digits form-control required" required=""/>
+                <div class="col-md-2">
+                    %{--<g:field name="orden" type="number" value="${departamentoInstance.orden}" class="digits form-control required" required=""/>--}%
+                    <g:textField name="orden" value="${departamentoInstance?.orden}" class="number form-control required" maxlength="2"/>
                 </div>
                 
             </span>
