@@ -666,12 +666,12 @@ class Reportes2Controller {
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
-        def sql = "select facldscr, profapll||' '||profnmbr prof, clase, matedscr " +
+        def sql = "select facldscr, profapll||' '||profnmbr prof, clase, matedscr, dctaprll " +
                 "from rpec, prof, escl, facl, dcta, mate " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id and facl.facl__id = ${params.facultad} and " +
-                "clase is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
-                "order by facldscr, profapll;"
+                "clase is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id and " +
+                "tpen__id = 2 order by facldscr, profapll"
 
 //        println("---> " + sql)
 
