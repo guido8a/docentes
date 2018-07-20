@@ -270,6 +270,14 @@ class EncuestaController {
      * seleccina pregunta que toca e invoca la acción correspondiente al tipo
      */
     def ponePregunta(actual, total, encu, tpen) {
+
+
+        println("actual " + actual)
+        println("total " + total)
+        println("encu " + encu)
+        println("tpen " + tpen)
+
+
         def pruebasInicio = new Date()
         def pruebasFin
 
@@ -644,6 +652,10 @@ class EncuestaController {
 
         return [bases: resultado, msg: msg]
 
+    }
+
+    def prueba () {
+        ponePregunta(2,7, Encuesta.get(130364), TipoEncuesta.get(4))
     }
 
 }
