@@ -105,7 +105,7 @@
                                             }, 800);
                                         }else
                                         {
-                                            log("Error al borrar la recomendació","error")
+                                            log("Error al borrar la recomendación","error")
                                         }
                                     }
                                 });

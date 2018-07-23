@@ -9,7 +9,7 @@
     <g:if test="${recomendacionInstance?.descripcion}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Descripcion
+                Descripción
             </div>
             
             <div class="col-md-3">
