@@ -104,21 +104,33 @@ class VariablesController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        def variablesInstance = new Variables()
-        if(params.id) {
-            variablesInstance = Variables.get(params.id)
-            if(!variablesInstance) {
-                render "ERROR*No se encontró Variables."
-                return
-            }
+
+        def variables
+        def errores = ''
+        def texto = ''
+
+        if(params.id){
+            variables = Variables.get(params.id)
+            texto = "Variable actualizada correctamente"
+        }else{
+            variables = new Variables()
+            texto =  "Variable creada correctamente"
         }
-        variablesInstance.properties = params
-        if(!variablesInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Variables: " + renderErrors(bean: variablesInstance)
-            return
+
+        variables.codigo = params.codigo.toUpperCase()
+        variables.descripcion = params.descripcion.toUpperCase()
+
+        try{
+            variables.save(flush:true)
+        }catch (e){
+           errores += e
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Variables exitosa."
-        return
+
+        if(errores == ''){
+            render "OK_" + texto
+        }else{
+            render "NO"
+        }
     } //save para grabar desde ajax
 
     /**
@@ -126,24 +138,16 @@ class VariablesController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        if(params.id) {
+
             def variablesInstance = Variables.get(params.id)
-            if (!variablesInstance) {
-                render "ERROR*No se encontró Variables."
-                return
-            }
+
             try {
                 variablesInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Variables exitosa."
-                return
+                render "OK"
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Variables"
-                return
+                render "NO"
             }
-        } else {
-            render "ERROR*No se encontró Variables."
-            return
-        }
+
     } //delete para eliminar via ajax
     
     /**

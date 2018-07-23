@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>Lista de Recomendacion</title>
+        <title>Lista de Recomendación</title>
     </head>
     <body>
 
@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                <g:link action="form" class="btn btn-info btnCrear">
+                    <i class="fa fa-file-o"></i> Nueva
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -32,9 +32,7 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
-                    
+                    <g:sortableColumn property="descripcion" title="Descripción" />
                 </tr>
             </thead>
             <tbody>
@@ -63,12 +61,14 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log(parts[1],"success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
+
                         } else {
-                            spinner.replaceWith($btn);
-                            return false;
+                            log("Error al guardar la recomendación","error")
                         }
                     }
                 });
@@ -79,7 +79,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Recomendacion seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Recomendación seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -98,10 +98,14 @@
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if(msg == 'OK'){
+                                            log("Recomendación borrada correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else
+                                        {
+                                            log("Error al borrar la recomendació","error")
                                         }
                                     }
                                 });
@@ -120,7 +124,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Recomendacion",
+                            title   : title + " Recomendación",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -153,67 +157,65 @@
                     return false;
                 });
 
-                context.settings({
-                    onShow : function (e) {
-                        $("tr.success").removeClass("success");
-                        var $tr = $(e.target).parent();
-                        $tr.addClass("success");
-                        id = $tr.data("id");
-                    }
-                });
-                context.attach('tbody>tr', [
-                    {
-                        header : 'Acciones'
-                    },
-                    {
-                        text   : 'Ver',
-                        icon   : "<i class='fa fa-search'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'show_ajax')}",
-                                data    : {
-                                    id : id
-                                },
-                                success : function (msg) {
-                                    bootbox.dialog({
-                                        title   : "Ver Recomendacion",
-                                        message : msg,
-                                        buttons : {
-                                            ok : {
-                                                label     : "Aceptar",
-                                                className : "btn-primary",
-                                                callback  : function () {
+                $("tbody tr").contextMenu({
+                    items  : {
+                        header   : {
+                            label  : "Acciones",
+                            header : true
+                        },
+                        ver      : {
+                            label  : "Ver",
+                            icon   : "fa fa-search",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'show_ajax')}",
+                                    data    : {
+                                        id : id
+                                    },
+                                    success : function (msg) {
+                                        bootbox.dialog({
+                                            title   : "Ver Recomendación",
+                                            message : msg,
+                                            buttons : {
+                                                ok : {
+                                                    label     : "Aceptar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
-                                }
-                            });
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        editar   : {
+                            label  : "Editar",
+                            icon   : "fa fa-pencil",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                createEditRow(id);
+                            }
+                        },
+                        eliminar : {
+                            label            : "Eliminar",
+                            icon             : "fa fa-trash-o",
+                            separator_before : true,
+                            action           : function ($element) {
+                                var id = $element.data("id");
+                                deleteRow(id);
+                            }
                         }
                     },
-                    {
-                        text   : 'Editar',
-                        icon   : "<i class='fa fa-pencil'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            createEditRow(id);
-                        }
+                    onShow : function ($element) {
+                        $element.addClass("trHighlight");
                     },
-                    {divider : true},
-                    {
-                        text   : 'Eliminar',
-                        icon   : "<i class='fa fa-trash-o'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            deleteRow(id);
-                        }
+                    onHide : function ($element) {
+                        $(".trHighlight").removeClass("trHighlight");
                     }
-                ]);
+                });
             });
         </script>
 

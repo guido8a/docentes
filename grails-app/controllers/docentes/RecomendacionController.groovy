@@ -103,21 +103,34 @@ class RecomendacionController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo grabar correctamente, SUCCESS*[mensaje] cuando se grabó correctamente
      */
     def save_ajax() {
-        def recomendacionInstance = new Recomendacion()
-        if(params.id) {
-            recomendacionInstance = Recomendacion.get(params.id)
-            if(!recomendacionInstance) {
-                render "ERROR*No se encontró Recomendacion."
-                return
-            }
+
+        def recomendacion
+        def errores = ''
+        def texto = ''
+
+        if(params.id){
+            recomendacion = Recomendacion.get(params.id)
+            texto = 'Recomendación actualizada correctamente'
+        }else{
+            recomendacion = new Recomendacion()
+            texto = "Recomedación creada correctamente"
         }
-        recomendacionInstance.properties = params
-        if(!recomendacionInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Recomendacion: " + renderErrors(bean: recomendacionInstance)
-            return
+
+        recomendacion.descripcion = params.descripcion.toUpperCase();
+
+        try{
+            recomendacion.save(flush: true)
+        }catch (e){
+            errores += e
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Recomendacion exitosa."
-        return
+
+
+        if(errores == ''){
+            render "OK_" + texto
+        }else{
+            render "NO"
+        }
+
     } //save para grabar desde ajax
 
     /**
@@ -125,24 +138,17 @@ class RecomendacionController extends Shield {
      * @render ERROR*[mensaje] cuando no se pudo eliminar correctamente, SUCCESS*[mensaje] cuando se eliminó correctamente
      */
     def delete_ajax() {
-        if(params.id) {
-            def recomendacionInstance = Recomendacion.get(params.id)
-            if (!recomendacionInstance) {
-                render "ERROR*No se encontró Recomendacion."
-                return
-            }
-            try {
-                recomendacionInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Recomendacion exitosa."
-                return
-            } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Recomendacion"
-                return
-            }
-        } else {
-            render "ERROR*No se encontró Recomendacion."
-            return
+
+        def recomendacionInstance = Recomendacion.get(params.id)
+
+        try {
+            recomendacionInstance.delete(flush: true)
+            render "OK"
+        } catch (DataIntegrityViolationException e) {
+            render "NO"
         }
+
+
     } //delete para eliminar via ajax
 
     def recomendacion_ajax () {

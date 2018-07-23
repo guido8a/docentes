@@ -11,10 +11,10 @@
         <div class="form-group ${hasErrors(bean: recomendacionInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label text-info">
-                    Descripcion
+                    Descripción
                 </label>
-                <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" class="allCaps form-control required" value="${recomendacionInstance?.descripcion}"/>
+                <div class="col-md-8">
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" style="resize: none" class="allCaps form-control required" value="${recomendacionInstance?.descripcion}"/>
                 </div>
                 
             </span>
