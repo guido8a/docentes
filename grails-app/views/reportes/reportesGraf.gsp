@@ -11,7 +11,7 @@
 
     .item {
         width: 940px;
-        height: 280px;
+        height: 340px;
         float: left;
         margin: 4px;
         font-family: 'open sans condensed';
@@ -22,8 +22,8 @@
     }
 
     .imagen {
-        width: 200px;
-        height: 130px;
+        width: 300px;
+        height: 250px;
         float: left;
         padding: 20px;
     }
@@ -54,8 +54,9 @@
 
 <body>
 <div class="dialog">
-    <div style="text-align: center;" class="row"><h2 class="titl">
-        <p class="text-warning">Reportes Generales</p> </h2>
+    <div style="text-align: center;"><h2 class="titl">
+        <p class="text-warning">Reportes Gráficos - Tendencias</p>
+    </h2>
     </div>
 
     <div class="row text-info" style="font-size: 11pt">
@@ -71,213 +72,135 @@
 
         <div class="col-md-4">
             <g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"
-                      optionKey="id" name="facultad_name" id="facultad" class="form-control"/>
+                      optionKey="id" name="facultad_name" id="facultad" class="form-control"
+                      noSelection="${[0:'Todas ...']}"/>
         </div>
         <div class="col-md-2">
-            <g:link action="reportesGraf" class="btn btn-warning">
-                <i class="fa fa-line-chart"></i> Tendencias
+            <g:link action="reportes" class="btn btn-info">
+                <i class="fa fa-bar-chart"></i> Reportes
             </g:link>
         </div>
 
     </div>
 
+
     <div class="body ui-corner-all"
-         style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 280px; ">
+         style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 360px; ">
 
         <div class="ui-corner-all item fuera">
             <div class="ui-corner-all item">
-                <div class="imagen" style="height: 100%; width: 200px;">
-                    <img src="${resource(dir: 'images', file: 'evaluar.png')}" width="150px" height="auto"
-                         style=" margin-top:0px"/>
+                <div class="imagen" style="height: 100%; width: 300px;">
+                    <img src="${resource(dir: 'images', file: 'grafico.png')}" width="250px" height="auto"
+                         style=" margin-top:50px"/>
                 </div>
+
                 <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirNoEvaluados">
-                        <span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong>
-                            profesores que no cuentan con evaluaciones
+                    <div class="texto" id="imprimirClases">
+                        <span class="text-success"><strong>Profesores según grado de evaluación</strong><br/>
+                            Clasificación de profesores en "A", "B" y "C" conforme el ídice de calidad fijado para mínimo y óptimo
                         </span>
                     </div>
                 </a>
 
                 <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirEvaluados">
-                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que tienen al menos una evaluación
+                    <div class="texto" id="imprimirFactores">
+                        <span class="text-success"><strong>Profesores alineados con los factores de éxito</strong><br/>
+                            Gráfico porcentual de los profesores evaluados que se alinean con las estrategias de la Uiversidad
                         </span>
                     </div>
                 </a>
 
                 <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirNoAutoeva">
-                        <span class="text-success"><strong>Profesores que NO han realizado su autoevaluación</strong>
+                    <div class="texto" id="imprimirPotenciadores">
+                        <span class="text-success"><strong>Potenciadores de nivel y Cuellos de botella</strong><br/>
+                            Gráfico comparativo de potenciadores de nivel, cuelllos de botella y otros docentes.
                         </span>
                     </div>
                 </a>
 
                 <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirAutoeva">
-                        <span class="text-success"><strong>Profesores que YA han realizado su autoevaluación</strong>
+                    <div class="texto" id="imprimirCopartivo">
+                        <span class="text-success"><strong>Comparativo de desempeño general</strong><br/>
+                            Gráfico comparativo del promedio del desempeño docente entre las facultades de la universidad
                         </span>
                     </div>
                 </a>
 
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirEstudiante">
-                        <span class="text-success"><strong>Estudiantes que han realizado la evaluación</strong></span>
-                    </div>
-                </a>
-
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirNoEstudiante">
-                        <span class="text-success"><strong>Estudiantes que NO han realizado la evaluación</strong>
-                        </span>
-                    </div>
-                </a>
-
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="asignaturas">
-                        <span class="text-success"><strong>Asignaturas que faltan por evaluar</strong>
-                        </span>
-                    </div>
-                </a>
             </div>
         </div>
     </div>
 </div>
 
 <div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 300px; ">
+     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 360px; ">
 
-    <div class="ui-corner-all item fuera" style="height: 290px">
-        <div class="ui-corner-all item" style="height: 290px">
-            <div class="imagen" style="height: 100%; width: 200px;">
-                <img src="${resource(dir: 'images', file: 'evaluar-3.png')}" width="150px" height="auto"
-                     style=" margin-top:20px"/>
-            </div>
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirPorAvariables">
-                    <span class="text-success"><i class="fa fa-graduation-cap"></i><strong> Desempeño académico</strong> de los profesores por variables
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirDesempeno">
-                    <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Informe del desempeño académico</strong> de los profesores
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirReco">
-                    <span class="text-success"><i class="fa fa-star"></i><strong> Recomendaciones</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirBotella">
-                    <span class="text-success"><i class="fa fa-flask"></i><strong> Cuellos de Botella</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirPotencia">
-                    <span class="text-success"><i class="fa fa-flash"></i><strong>  Factores de Potenciación</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirExito">
-                    <span class="text-success"><i class="fa fa-sun-o"></i><strong> Factores de Éxito</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirTotales">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Totales del desempeño académico</strong> de los profesores por variables
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirClasificacion">
-                    <span class="text-success"><i class="fa fa-signal"></i><strong> Clasificación del desempeño académico</strong> de los profesores
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirCatego">
-                    <span class="text-success"><i class="fa fa-bars"></i><strong> Ordenamiento por variables </strong> de profesores
-                    </span>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-<div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 150px; ">
-
-    <div class="ui-corner-all item fuera" style="height: 150px">
-        <div class="ui-corner-all item" style="height: 150px">
-            <div class="imagen" style="height: 100%; width: 200px;">
-                <img src="${resource(dir: 'images', file: 'survey.png')}" width="100px" height="auto"
-                     style=" margin-top:0px; margin-left: 30px"/>
+    <div class="ui-corner-all item fuera">
+        <div class="ui-corner-all item" style="height: 340px">
+            <div class="imagen" style="height: 100%; width: 300px;">
+                <img src="${resource(dir: 'images', file: 'tendencia.png')}" width="250px" height="auto"
+                     style=" margin-top:50px"/>
             </div>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirEncuesta">
-                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Encuestas </strong> de profesores
+                <div class="texto" id="imprimirRecomendados">
+                    <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Docentes con recomendaciones: </strong>
+                        Gráfico comparativo de docentes que han resulñtado con recomendaciones
                     </span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirFactores">
-                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Factores de éxito</strong>
+                <div class="texto" id="imprimirRecomendados">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
+                        Gráfico comparativo general de los resultados por tipo de evaluación
                     </span>
                 </div>
             </a>
+
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirEvaluacionesPro">
-                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Evaluaciones del profesor</strong>
+                <div class="texto" id="imprimirRecomendados">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
+                        Gráfico comparativo de docentes que han resulñtado con recomendaciones
                     </span>
                 </div>
             </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirRecomendados">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Factores de éxito por facultades: </strong>
+                        Gráfico comparativo de docentes alineados con la estragia institucional por facultades.
+                    </span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirRecomendados">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Potenciadores de nivel por facultades: </strong>
+                        Gráfico comparativo de docentes "Potenciadores de Nivel" por facultades.
+                    </span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirRecomendados">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Cuellos de botella por facultades: </strong>
+                        Gráfico comparativo de "Cuellos de Botella" por facultades.
+                    </span>
+                </div>
+            </a>
+
         </div>
     </div>
 </div>
-
-
-
-
-
-
-</div>
-
-
-%{--<a href="${createLink(controller: 'reportes', action: 'reportedePrueba')}" class="btn btn-info" title="">--}%
-%{--<i class="fa fa-graduation-cap"></i> Profesor--}%
-%{--</a>--}%
-
-%{--<a href="${createLink(controller: 'reportes', action: 'grafica')}" class="btn btn-warning" title="">--}%
-%{--<i class="fa fa-map-marker"></i> Doble gráfica--}%
-%{--</a>--}%
-
-</div>
-
-
 
 
 <script type="text/javascript">
 
-    $("#imprimirDesempeno").click(function () {
+    $("#imprimirClases").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 1;
+        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo +
+                "&facultad=" + facl + "&tipo=" + 1;
     });
 
 

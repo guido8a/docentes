@@ -40,7 +40,8 @@
                                 </button>
                                 <button class="btn btn-info btnAlumnos" type="button"
                                    data-id="${profesor.id}" data-tipo="5"
-                                    ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled'}  title="Promedio General">
+                                    ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled'}
+                                        title="Promedio General">
                                     <i class="fa fa-pie-chart"></i>
                                 </button>
                             </g:if>

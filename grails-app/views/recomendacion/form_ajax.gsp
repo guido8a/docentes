@@ -13,7 +13,7 @@
                 <label for="descripcion" class="col-md-2 control-label text-info">
                     Descripción
                 </label>
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" style="resize: none" class="allCaps form-control required" value="${recomendacionInstance?.descripcion}"/>
                 </div>
                 

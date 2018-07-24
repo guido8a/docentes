@@ -233,6 +233,10 @@ class ReportesController extends seguridad.Shield {
 
     }
 
+    def reportesGraf () {
+
+    }
+
     def periodo_ajax () {
 
     }
@@ -330,6 +334,23 @@ class ReportesController extends seguridad.Shield {
 //        legendtitle.setPosition(RectangleEdge.BOTTOM);
 //        jfreechart.addSubtitle(legendtitle);
         return jfreechart;
+    }
+
+    private static JFreeChart creaPastel(titulo, data) {
+
+        DefaultPieDataset datos = new DefaultPieDataset();
+        data.each(){
+            datos.setValue(it.key, it.value)
+        }
+
+//        JFreeChart jfreechart = ChartFactory.createPieChart3D(
+        JFreeChart chart = ChartFactory.createPieChart(
+                titulo,      // title
+                datos,       // data
+                false,       // incluye legenda bajo el gráfico
+                false,
+                false);
+        return chart;
     }
 
 
@@ -906,7 +927,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def desempenoAlumnos () {
-//        println("params alum " + params)
+        println("params alum " + params)
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
@@ -1412,5 +1433,129 @@ class ReportesController extends seguridad.Shield {
         def periodo = Periodo.get(params.periodo)
         return [facultad: facultad, periodo: periodo]
     }
+
+
+    def profesoresClases() {
+        println "profesoresClases $params"
+        def cn = dbConnectionService.getConnection()
+
+        Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font font12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
+        Font fontTtlo = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad
+        def facultadId
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
+
+        def sql
+        def data = [:]
+
+        def baos = new ByteArrayOutputStream()
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        def tipo = params.tipo
+        def subtitulo = ''
+        def pattern1 = "###.##%"
+
+
+
+        switch(tipo){
+            case '1':
+                sql = "select count(*) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                        "group by clase order by clase"
+                println "sql: $sql"
+                data = [:]
+                cn.eachRow(sql.toString()) { d ->
+                    data["Profeso-res ${d.clase}: ${d.cnta}"] = d.cnta
+                }
+                println "data: $data"
+                subtitulo = "PROFESORES SEGÚN EL GRADO DE EVALUACIÓN"
+                break;
+        }
+
+        document.open();
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph linea = new Paragraph(" ", fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+
+        Paragraph titulo = new Paragraph(subtitulo, fontTtlo)
+        titulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(linea)
+        document.add(linea)
+        document.add(titulo)
+        document.add(linea)
+
+        def chart = creaPastel("", data);
+        def ancho =  440  //540
+        def alto =  440   //540
+        document.add(linea)
+
+        try {
+
+            PdfContentByte contentByte = pdfw.getDirectContent()
+
+            Paragraph parrafo1 = new Paragraph()
+            PdfTemplate template = contentByte.createTemplate(ancho, alto)
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper())
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto)
+
+            chart.draw(graphics2d, rectangle2d)
+
+            graphics2d.dispose()
+            Image chartImage = Image.getInstance(template)
+            chartImage.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)        // centrado
+            parrafo1.add(chartImage)
+
+            document.add(parrafo1)
+
+
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+
+        //pie
+        def prmt = Auxiliares.findByPeriodo(periodo)
+
+        document.add(linea)
+        Paragraph refe = new Paragraph("Referencia:", fontTitulo)
+        Paragraph claseA = new Paragraph("La clase 'A' corresponde a un desempeño académico igual " +
+                "o superior a ${prmt.optimo}", font12)
+        Paragraph claseB = new Paragraph("La clase 'B' corresponde a un desempeño académico menor " +
+                "a ${prmt.optimo} y mayor o igual a ${prmt.minimo}", font12)
+        Paragraph claseC = new Paragraph("La clase 'C' corresponde a un desempeño académico menor " +
+                "a ${prmt.minimo}", font12)
+
+        document.add(refe)
+        document.add(claseA)
+        document.add(claseB)
+        document.add(claseC)
+
+        document.close()
+        pdfw.close()
+        byte[] b = baos.toByteArray()
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
 
 }
