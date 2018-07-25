@@ -15,6 +15,7 @@ import docentes.Profesor
 import docentes.ReporteEncuesta
 import docentes.TipoEncuesta
 import docentes.Variables
+import org.jfree.chart.plot.PiePlot
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.title.Title
 import org.jfree.data.category.DefaultCategoryDataset
@@ -23,14 +24,17 @@ import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Image
+import java.awt.Paint
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO
 
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.chart.ChartFactory
+import org.jfree.chart.JFreeChart
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator
+import org.jfree.chart.plot.PiePlot
+import org.jfree.data.general.DefaultPieDataset
 
 import org.codehaus.groovy.grails.commons.*
 import com.itextpdf.text.Image;
@@ -1517,11 +1521,14 @@ class ReportesController extends seguridad.Shield {
             Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper())
             Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto)
 
-            chart.draw(graphics2d, rectangle2d)
+            PiePlot ColorConfigurator = (PiePlot) chart.getPlot()
+            ColorConfigurator.setBackgroundAlpha(0f)
 
+            chart.draw(graphics2d, rectangle2d)
             graphics2d.dispose()
             Image chartImage = Image.getInstance(template)
             chartImage.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)        // centrado
+
             parrafo1.add(chartImage)
 
             document.add(parrafo1)
