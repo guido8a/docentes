@@ -96,8 +96,8 @@
 
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirClases">
-                        <span class="text-success"><strong>Profesores según grado de evaluación</strong><br/>
-                            Clasificación de profesores en "A", "B" y "C" conforme el ídice de calidad fijado para mínimo y óptimo
+                        <span class="text-success"><strong>Profesores por desempeño</strong><br/>
+                            Clasificación de profesores en "A", "B" y "C" conforme el índice de calidad fijado para mínimo y óptimo
                         </span>
                     </div>
                 </a>
@@ -152,7 +152,7 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
-                        Gráfico comparativo general de los resultados por tipo de evaluación
+                        Gráfico comparativo general del promedio obtenido por tipo de evaluación
                     </span>
                 </div>
             </a>
@@ -160,7 +160,7 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
-                        Gráfico comparativo de docentes que han resulñtado con recomendaciones
+                        Gráfico comparativo de los prmedios alcanzados en las distintas variables
                     </span>
                 </div>
             </a>

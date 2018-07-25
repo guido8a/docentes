@@ -68,7 +68,7 @@
 	<script src="${resource(dir: 'js/plugins/dynamicGauge', file: 'js/jquery.dynameter.js')}"></script>
 
 
-	<script src="${resource(dir:'js/plugins/radial',file: 'radial-progress-bar.js')}"></script>
+	%{--<script src="${resource(dir:'js/plugins/radial',file: 'radial-progress-bar.js')}"></script>--}%
 
 	%{--<script src="${resource(dir:'js/plugins/progressBar', file: 'jquery.progress.js')}"></script>--}%
 

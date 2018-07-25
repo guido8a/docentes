@@ -1484,7 +1484,7 @@ class ReportesController extends seguridad.Shield {
                     data["Profeso-res ${d.clase}: ${d.cnta}"] = d.cnta
                 }
                 println "data: $data"
-                subtitulo = "PROFESORES SEGÚN EL GRADO DE EVALUACIÓN"
+                subtitulo = "PROFESORES POR DESEMPEÑO"
                 break;
         }
 
