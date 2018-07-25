@@ -913,7 +913,7 @@ class ReportesController extends seguridad.Shield {
         def existe = []
         res.profesor.unique().each {p->
         def sql = "select * from informe(${p?.id},${periodo?.id})"
-//            println("sql " + sql)
+            println("sql " + sql)
         def q = cn.rows(sql.toString());
 //            println("qqq " + q)
             if(q){

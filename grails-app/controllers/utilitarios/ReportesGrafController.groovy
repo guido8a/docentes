@@ -37,8 +37,16 @@ class ReportesGrafController {
         cn.eachRow(sql.toString()) { d ->
             data[d.clase] = d.cnta
         }
+
+        sql = "select count(*) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "group by clase order by clase"
+        println "sql: $sql"
+        cn.eachRow(sql.toString()) { d ->
+            data[d.clase] = d.cnta
+        }
         println "data: $data"
         subtitulo = "PROFESORES POR DESEMPEÑO"
-        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}"
+        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${data.C?:0}_${data.A?:0}_RECOMENDACIONES"
     }
 }

@@ -10,10 +10,12 @@
         border-style: solid;
         border-color: #606060;
         border-width: 1px;
-        width: 49%;
+        width: 48%;
         float: left;
         text-align: center;
         height: 440px;
+        border-radius: 8px;
+        margin: 10px;
     }
     .bajo {
         margin-bottom: 20px;
@@ -47,9 +49,25 @@
 
 </div>
 
-<div class="chart-container grafico">
+<div class="chart-container grafico" id="chart-area" hidden>
     <h3 id="titulo"></h3>
-    <canvas id="clases" style="margin-top: 30px"></canvas>
+    <div id="graf">
+        <canvas id="clases" style="margin-top: 30px"></canvas>
+    </div>
+
+    <div style="margin-top: 20px">
+        <g:link action="reportesGraf" class="btn btn-info">
+            <i class="fa fa-line-chart"></i> Imprimir
+        </g:link>
+    </div>
+</div>
+
+<div class="chart-container grafico" id="chart-area2" hidden>
+    <h3 id="titulo2"></h3>
+    <div id="graf2">
+        <canvas id="clases2" style="margin-top: 30px"></canvas>
+    </div>
+
     <div style="margin-top: 20px">
         <g:link action="reportesGraf" class="btn btn-info">
             <i class="fa fa-line-chart"></i> Imprimir
@@ -59,7 +77,7 @@
 
 <script type="text/javascript">
 
-    var canvas = document.getElementById('clases');
+    var canvas = $("#clases");
     var myChart;
 
     $("#graficar").click(function () {
@@ -74,16 +92,35 @@
             success: function (msg) {
                 var valores = msg.split("_")
                 $("#titulo").html(valores[3])
+                $("#titulo2").html(valores[6])
+                $("#clases").remove();
+                $("#clases2").remove();
+                $("#chart-area").removeAttr('hidden')
+                $("#chart-area2").removeAttr('hidden')
+
+                /* se crea dinámicamente el canvas y la función "click" */
+                $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
+                $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
+                $("#clases").off();
+                $('#clases').on('click', function(evt) {
+                    var activePoint = myChart.getElementAtEvent(evt)[0];
+                    var data = activePoint._chart.data;
+                    var datasetIndex = activePoint._datasetIndex;
+                    var label = data.datasets[datasetIndex].label[activePoint._index];
+                    var value = data.datasets[datasetIndex].data[activePoint._index];
+                    console.log("indice:", datasetIndex, "etiqueta:",label, "valor:", value);
+                });
+
+                canvas = $("#clases")
                 console.log("ok", valores[0])
                 var chartData = {
                     type: 'pie',
                     data: {
-                        labels: ['Clase A:' + valores[0], 'Clase B:' + valores[1], 'Clase C:' + valores[2]],
+                        labels: ['Clase A', 'Clase B', 'Clase C'],
                         datasets: [
                             {
-                                label: ["P1", "psss", "ooo"],
+                                label: ["A", "B", "C"],
                                 backgroundColor: ['#009608', '#ffa900', '#cc2902'],
-//                    borderColor: ['#006600', '#cf7900', '#8c0000'],
                                 borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                 borderWidth: [3,3,3],
                                 data: [valores[0], valores[1], valores[2]]
@@ -92,24 +129,32 @@
                     },
                     options: {
                         legend: { display: true }
-
                     }
                 }
-                myChart = new Chart(canvas, chartData);
+                var chartDataRc = {
+                    type: 'pie',
+                    data: {
+                        labels: ['Con recomendaciones', 'Sin recomendaciones'],
+                        datasets: [
+                            {
+                                label: ["R", "N"],
+                                backgroundColor: ['#009608', '#cc2902'],
+                                borderColor: ['#40d648', '#fc6942'],
+                                borderWidth: [3,3],
+                                data: [valores[4], valores[5]]
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: { display: true }
+                    }
+                }
+                myChart = new Chart(canvas, chartData, 1);
+                myChart2 = new Chart($("#clases2"), chartDataRc, 1);
+
             }
         });
     });
-
-
-
-    canvas.onclick = function(evt) {
-        var activePoint = myChart.getElementAtEvent(evt)[0];
-        var data = activePoint._chart.data;
-        var datasetIndex = activePoint._datasetIndex;
-        var label = data.datasets[datasetIndex].label;
-        var value = data.datasets[datasetIndex].data[activePoint._index];
-        console.log("indice", datasetIndex, "etiqueta",label, value);
-    };
 
 </script>
 
