@@ -20,7 +20,6 @@
     .bajo {
         margin-bottom: 20px;
     }
-
         .centrado{
             text-align: center;
         }
@@ -59,7 +58,7 @@
         <canvas id="clases" style="margin-top: 30px"></canvas>
     </div>
 
-    <div id="tabla" style="margin-left: 20%; margin-top: 10px; width: 60%; height: 120px; border-style: solid; border-width: 1px; border-color: #888">
+    <div id="tabla" style="margin-left: 20%; margin-top: 10px; width: 60%; height: 124px; border-style: solid; border-width: 1px; border-color: #888">
         <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
             <thead>
             <tr>
@@ -69,14 +68,11 @@
             </thead>
 
             <tbody id="divDatos">
-
-            %{--<div id="divDatos"></div>--}%
-
             </tbody>
         </table>
     </div>
 
-    <div style="margin-top: 20px">
+    <div style="margin-top: 10px">
         <g:link action="reportesGraf" class="btn btn-info">
             <i class="fa fa-line-chart"></i> Imprimir
         </g:link>
@@ -87,6 +83,19 @@
     <h3 id="titulo2"></h3>
     <div id="graf2">
         <canvas id="clases2" style="margin-top: 30px"></canvas>
+    </div>
+
+    <div id="tbRc" style="margin-left: 25%; margin-top: 30px; width: 50%; height: 82px; border-style: solid; border-width: 1px; border-color: #888">
+        <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+            <thead>
+            <tr>
+                <th class="centrado" rowspan="2">Con Recomendaciones</th>
+                <th class="centrado" rowspan="2">Sin Recomendaciones</th>
+            </tr>
+            </thead>
+            <tbody id="datosRc">
+            </tbody>
+        </table>
     </div>
 
     <div style="margin-top: 20px">
@@ -117,12 +126,18 @@
                 $("#titulo2").html(valores[6])
                 $("#clases").remove();
                 $("#clases2").remove();
+                $("#r1").remove();
+                $("#r2").remove();
                 $("#chart-area").removeAttr('hidden')
                 $("#chart-area2").removeAttr('hidden')
 
                 /* se crea dinámicamente el canvas y la función "click" */
                 $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
                 $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
+
+                $('#datosRc').append('<tr><td class= "centrado" id="r1">' + valores[4] +
+                        '</td><td class= "centrado" id="r2">' + valores[5]+ '</td></tr>');
+
                 $("#clases").off();
                 $('#clases').on('click', function(evt) {
                     var activePoint = myChart.getElementAtEvent(evt)[0];
@@ -160,8 +175,8 @@
                         datasets: [
                             {
                                 label: ["R", "N"],
-                                backgroundColor: ['#009608', '#cc2902'],
-                                borderColor: ['#40d648', '#fc6942'],
+                                backgroundColor: ['#d6a81d', '#4678aa'],
+                                borderColor: ['#f6d83d', '#7697da'],
                                 borderWidth: [3,3],
                                 data: [valores[4], valores[5]]
                             }
