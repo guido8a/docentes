@@ -21,6 +21,10 @@
         margin-bottom: 20px;
     }
 
+        .centrado{
+            text-align: center;
+        }
+
     </style>
 </head>
 
@@ -55,7 +59,21 @@
         <canvas id="clases" style="margin-top: 30px"></canvas>
     </div>
 
-    <div id="tabla" style="margin-left: 1%; width: 98%; height: 120px; border-style: solid; border-width: 1px; border-color: #888">
+    <div id="tabla" style="margin-left: 20%; margin-top: 10px; width: 60%; height: 120px; border-style: solid; border-width: 1px; border-color: #888">
+        <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+            <thead>
+            <tr>
+                <th class="centrado" rowspan="2" style="width: 40%">Clase</th>
+                <th class="centrado" rowspan="2" style="width: 40%">Valor</th>
+            </tr>
+            </thead>
+
+            <tbody id="divDatos">
+
+            %{--<div id="divDatos"></div>--}%
+
+            </tbody>
+        </table>
     </div>
 
     <div style="margin-top: 20px">
@@ -86,7 +104,8 @@
     $("#graficar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        console.log("carrga gráfico")
+        cargarTabla(prdo,facl);
+        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
             type: 'POST',
@@ -158,6 +177,21 @@
             }
         });
     });
+
+
+    function cargarTabla (prdo, facl) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportesGraf', action: 'tabla_ajax')}',
+            data:{
+                prdo: prdo,
+                facl: facl
+            },
+            success:function (msg){
+                $("#divDatos").html(msg)
+            }
+        });
+    }
 
 </script>
 

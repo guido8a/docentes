@@ -951,7 +951,7 @@ class Reportes2Controller {
         Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad?.nombre ?: '', fontTitulo)
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad?.nombre  ?: '', fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
 
