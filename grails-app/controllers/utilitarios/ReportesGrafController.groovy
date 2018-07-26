@@ -50,24 +50,4 @@ class ReportesGrafController {
         render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
     }
 
-    def tabla_ajax () {
-        def cn = dbConnectionService.getConnection()
-        def sql
-        def data = [:]
-        def facultadId
-        if(params.facl.toInteger()) {
-            facultadId = "${params.facl}"
-        } else {
-            facultadId = "%"
-        }
-        sql = "select count(distinct rpec.prof__id) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
-                "group by clase order by clase"
-        cn.eachRow(sql.toString()) { d ->
-            data[d.clase] = d.cnta
-        }
-
-        return[data: data]
-    }
-
 }

@@ -113,8 +113,7 @@
     $("#graficar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        cargarTabla(prdo,facl);
-        console.log("carrga gráfico");
+//        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
             type: 'POST',
@@ -128,6 +127,9 @@
                 $("#clases2").remove();
                 $("#r1").remove();
                 $("#r2").remove();
+                $("#c1").remove(); $("#dc1").remove();
+                $("#c2").remove(); $("#dc2").remove();
+                $("#c3").remove(); $("#dc3").remove();
                 $("#chart-area").removeAttr('hidden')
                 $("#chart-area2").removeAttr('hidden')
 
@@ -137,6 +139,11 @@
 
                 $('#datosRc').append('<tr><td class= "centrado" id="r1">' + valores[4] +
                         '</td><td class= "centrado" id="r2">' + valores[5]+ '</td></tr>');
+
+                $('#divDatos').append('<tr><td class= "centrado" id="c1">A</td><td class= "centrado" id="dc1">' +
+                        valores[0] + '</td></tr><tr><td class= "centrado" id="c2">B</td><td class= "centrado" id="dc2">' +
+                        valores[1]+ '</td></tr><tr><td class= "centrado" id="c3">C</td><td class= "centrado" id="dc3">' +
+                        valores[2]+ '</td></tr>');
 
                 $("#clases").off();
                 $('#clases').on('click', function(evt) {
@@ -175,8 +182,8 @@
                         datasets: [
                             {
                                 label: ["R", "N"],
-                                backgroundColor: ['#d6a81d', '#4678aa'],
-                                borderColor: ['#f6d83d', '#7697da'],
+                                backgroundColor: ['#ff8f43', '#4678aa'],
+                                borderColor: ['#ffaf63', '#7697da'],
                                 borderWidth: [3,3],
                                 data: [valores[4], valores[5]]
                             }
@@ -193,20 +200,6 @@
         });
     });
 
-
-    function cargarTabla (prdo, facl) {
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'tabla_ajax')}',
-            data:{
-                prdo: prdo,
-                facl: facl
-            },
-            success:function (msg){
-                $("#divDatos").html(msg)
-            }
-        });
-    }
 
 </script>
 
