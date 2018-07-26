@@ -19,6 +19,7 @@ class ReporteEncuesta {
     String materiaCuello
     String causaCuello
     Double valorAjustado
+    int recomendacion
 
 
     static mapping = {
@@ -46,7 +47,7 @@ class ReporteEncuesta {
             materiaCuello column: 'cb_matr'
             causaCuello column: 'cb_causa'
             valorAjustado column: 'ajst'
-
+            recomendacion column: 'con_rcmn'
         }
     }
 

@@ -850,7 +850,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def tablaProfesores_ajax () {
-//        println("---> " + params)
+        println "tablaProfesores_ajax ---> $params"
         def res
 
         params.nombres = "%" + params.nombres + '%'
@@ -908,26 +908,10 @@ class ReportesController extends seguridad.Shield {
         def promedio = TipoEncuesta.findByCodigo("FE")
         def total = TipoEncuesta.findByCodigo("TT")
 
-
-        def cn = dbConnectionService.getConnection()
-        def existe = []
-        res.profesor.unique().each {p->
-        def sql = "select * from informe(${p?.id},${periodo?.id})"
-            println("sql " + sql)
-        def q = cn.rows(sql.toString());
-//            println("qqq " + q)
-            if(q){
-                existe += '1'
-            }else{
-                existe += '2'
-            }
-        }
-
-//        println("existe " + existe)
-
         def pantalla = params.pantalla
 
-        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares, promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, existe: existe, facultad: facultad]
+        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares,
+                promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, facultad: facultad]
     }
 
     def desempenoAlumnos () {

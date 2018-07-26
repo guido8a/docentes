@@ -47,7 +47,8 @@
                             </g:if>
                             <g:elseif test="${pantalla == '2'}">
                                 <button class="btn btn-warning btnRecomendaciones" data-id="${profesor.id}"
-                                        type="button" ${existe[j] == '1' ? '' : 'disabled'}>
+                                        type="button"
+                                    ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndRecomendacionGreaterThan(profesor,periodo,0)? '' : 'disabled'}>
                                     <i class="fa fa-star" title="Recomendaciones"></i></button>
 
                             </g:elseif>

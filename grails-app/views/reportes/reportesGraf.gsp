@@ -70,16 +70,18 @@
 
         <div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
             <g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"
                       optionKey="id" name="facultad_name" id="facultad" class="form-control"
                       noSelection="${[0:'Todas ...']}"/>
         </div>
+%{--
         <div class="col-md-2">
             <g:link action="reportes" class="btn btn-info">
                 <i class="fa fa-bar-chart"></i> Reportes
             </g:link>
         </div>
+--}%
 
     </div>
 

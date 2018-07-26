@@ -64,7 +64,7 @@
         </div>
 
         <div class="row">
-            <button type="button" class="btn btn-success btnCargar2"><i class="fa fa-check"></i> Iniciar el Proceso</button>
+            <button type="button" class="btn btn-success btnProcesar"><i class="fa fa-check"></i> Iniciar el Proceso</button>
         </div>
     </div>
 </div>
@@ -80,7 +80,7 @@
     var url = "${resource(dir:'images', file:'spinner64.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' width='40px' height='40px'/><span> Procesando...</span>");
 
-    $(".btnCargar2").click(function () {
+    $(".btnProcesar").click(function () {
 
         var periodo = $("#periodoId").val()
 
@@ -92,7 +92,7 @@
                 periodo: periodo
             },
             success: function (msg){
-                $(".btnCargar2").replaceWith(spinner);
+                $(".btnProcesar").replaceWith(spinner);
 //                console.log("msg " + msg)
                 var parts = msg.split("*")
                 var tamano = (parts.length -1);

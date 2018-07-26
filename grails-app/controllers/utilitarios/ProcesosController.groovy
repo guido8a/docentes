@@ -255,7 +255,8 @@ class ProcesosController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def retorna = ""
-        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, prof, escl, facl where encu.prdo__id = ${params.periodo} and " +
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, prof, escl, facl " +
+                "where encu.prdo__id = ${params.periodo} and " +
                 "prof.prof__id = encu.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id group by facl.facl__id, facldscr order by facldscr"
 
@@ -278,10 +279,12 @@ class ProcesosController extends seguridad.Shield {
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
+        def sql1 = "select * from tiene_rcmn(${partes[0]}, ${params.periodo})"
 //        println "sql: $sql"
 
         try {
             cn.execute(sql.toString())
+            cn.execute(sql1.toString())
             render regla
         } catch (e) {
             println "error $e"
