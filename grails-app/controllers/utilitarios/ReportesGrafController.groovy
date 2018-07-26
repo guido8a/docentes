@@ -26,6 +26,7 @@ class ReportesGrafController {
 
         def sql
         def data = [:]
+        def rcmn = 0
 
         def subtitulo = ''
         def pattern1 = "###.##%"
@@ -38,16 +39,13 @@ class ReportesGrafController {
             data[d.clase] = d.cnta
         }
 
-        sql = "select count(*) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
-                "group by clase order by clase"
+        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 "
         println "sql: $sql"
-        cn.eachRow(sql.toString()) { d ->
-            data[d.clase] = d.cnta
-        }
-        println "data: $data"
+        rcmn = cn.rows(sql.toString())[0].cnta
+        println "data: $data, rc: $rcmn"
         subtitulo = "PROFESORES POR DESEMPEÑO"
-        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${data.C?:0}_${data.A?:0}_RECOMENDACIONES"
+        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${data.A?:0 + data.B?:0 + data.C?:0}_RECOMENDACIONES"
     }
 
     def tabla_ajax () {
