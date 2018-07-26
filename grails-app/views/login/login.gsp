@@ -36,7 +36,7 @@
 
         <div class="archivo">
             Para mayor información puede consultar el
-            <a href="${createLink(uri: '/descriptivo.pdf')}"><img
+            <a href="${createLink(uri: '/quanto.pdf')}"><img
                     src="${resource(dir: 'images', file: 'pdf_pq.png')}"/>descriptivo del sistema</a>
         </div>
 

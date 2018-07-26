@@ -13,7 +13,7 @@
         width: 48%;
         float: left;
         text-align: center;
-        height: 440px;
+        height: 540px;
         border-radius: 8px;
         margin: 10px;
     }
@@ -53,6 +53,9 @@
     <h3 id="titulo"></h3>
     <div id="graf">
         <canvas id="clases" style="margin-top: 30px"></canvas>
+    </div>
+
+    <div id="tabla" style="margin-left: 1%; width: 98%; height: 120px; border-style: solid; border-width: 1px; border-color: #888">
     </div>
 
     <div style="margin-top: 20px">
