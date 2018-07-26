@@ -1,6 +1,7 @@
 package utilitarios
 
 import com.lowagie.text.html.WebColors
+import docentes.Dictan
 import docentes.Escuela
 import docentes.Facultad
 import docentes.Periodo
@@ -156,6 +157,14 @@ class Reportes2Controller {
         fontTitulo2.setColor(255,255,255)
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
+        BaseColor colorAzul = new BaseColor(50, 96, 144)
+
+        def prmsTdNoBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsTdBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorderAzul = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, color: colorAzul]
+
         Document document
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
@@ -171,56 +180,117 @@ class Reportes2Controller {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
+
+        def sql =  "select * from informe(${profesor?.id},${periodo?.id}) order by dcta__id"
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def dictas = res.dcta__id.unique()
+
         Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facultad).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
-        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        def primeraVez = 0
+        def anterior
 
-        Paragraph lineaTitulo = new Paragraph("Recomendaciones", fontTitulo )
-        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        dictas.each{ d->
 
-        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+            res.each{ e->
 
-        document.add(parrafoUniversidad)
-        document.add(parrafoFacultad)
-        document.add(parrafoProfesor)
-        document.add(lineaTitulo)
-        document.add(lineaVacia)
+                if(primeraVez == 0){
+                    Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
+                    parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        def sql =  "select * from informe(${profesor?.id},${periodo?.id})"
+                    Paragraph materia = new Paragraph("MATERIA: " + Dictan.get(d)?.materia?.nombre + " - PARALELO: " + Dictan.get(d)?.paralelo, fontTitulo )
+                    materia.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-//        println("---> " + sql)
+                    Paragraph lineaTitulo = new Paragraph("Recomendaciones", fontTitulo )
+                    lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        def cn = dbConnectionService.getConnection()
-        def res = cn.rows(sql.toString());
+                    Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
 
-        BaseColor colorAzul = new BaseColor(50, 96, 144)
+                    document.add(parrafoUniversidad)
+                    document.add(parrafoFacultad)
+                    document.add(parrafoProfesor)
+                    document.add(materia)
+                    document.add(lineaTitulo)
+                    document.add(lineaVacia)
 
-        def prmsTdNoBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsTdBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
-        def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def prmsCrBorderAzul = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, color: colorAzul]
 
-        /* ************************************************************* HEADER PLANILLA ***************************************************************************/
-        PdfPTable tablaD = new PdfPTable(2);
-        tablaD.setWidthPercentage(100);
-        tablaD.setWidths(arregloEnteros([90, 10]))
+                    PdfPTable tablaD = new PdfPTable(2);
+                    tablaD.setWidthPercentage(100);
+                    tablaD.setWidths(arregloEnteros([90, 10]))
 
-        addCellTabla(tablaD, new Paragraph("Descripción", fontTitulo2), prmsCrBorderAzul)
-        addCellTabla(tablaD, new Paragraph("Grado", fontTitulo2), prmsCrBorderAzul)
+                    addCellTabla(tablaD, new Paragraph("Descripción", fontTitulo2), prmsCrBorderAzul)
+                    addCellTabla(tablaD, new Paragraph("Grado", fontTitulo2), prmsCrBorderAzul)
 
-        res.eachWithIndex { p , j ->
-            addCellTabla(tablaD, new Paragraph(p.rcmndscr, fontThUsar), prmsTdNoBorder)
-            addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsCrBorder)
+                    res.eachWithIndex { p , j ->
+                        addCellTabla(tablaD, new Paragraph(p.rcmndscr, fontThUsar), prmsTdNoBorder)
+                        addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsCrBorder)
+                    }
+
+                    document.add(tablaD);
+                    document.close();
+
+                    anterior = e.dcta__id
+
+                }else{
+
+                    if(anterior != e.dcta__id){
+                        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido + " MATERIA: ", fontTitulo)
+                        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+                        Paragraph materia = new Paragraph("MATERIA: " + Dictan.get(d)?.materia?.nombre + " - PARALELO: " + Dictan.get(d)?.paralelo, fontTitulo )
+                        materia.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+                        Paragraph lineaTitulo = new Paragraph("Recomendaciones", fontTitulo )
+                        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+                        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+                        document.add(parrafoUniversidad)
+                        document.add(parrafoFacultad)
+                        document.add(parrafoProfesor)
+                        document.add(materia)
+                        document.add(lineaTitulo)
+                        document.add(lineaVacia)
+
+
+                        PdfPTable tablaD = new PdfPTable(2);
+                        tablaD.setWidthPercentage(100);
+                        tablaD.setWidths(arregloEnteros([90, 10]))
+
+                        addCellTabla(tablaD, new Paragraph("Descripción", fontTitulo2), prmsCrBorderAzul)
+                        addCellTabla(tablaD, new Paragraph("Grado", fontTitulo2), prmsCrBorderAzul)
+
+                        res.eachWithIndex { p , j ->
+                            addCellTabla(tablaD, new Paragraph(p.rcmndscr, fontThUsar), prmsTdNoBorder)
+                            addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsCrBorder)
+                        }
+
+                        document.add(tablaD);
+                        document.close();
+
+                        anterior = e.dcta__id
+                    }
+                }
+
+                primeraVez ++
+            }
+
+
         }
 
-        document.add(tablaD);
-        document.close();
+//        println("---> " + sql)
+//        println("---> " + res.dcta__id.unique())
+
+
+        /* ************************************************************* HEADER PLANILLA ***************************************************************************/
+
+
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
