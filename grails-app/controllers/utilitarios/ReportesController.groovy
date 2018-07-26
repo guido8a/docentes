@@ -850,7 +850,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def tablaProfesores_ajax () {
-        println "tablaProfesores_ajax ---> $params"
+//        println "tablaProfesores_ajax ---> $params"
         def res
 
         params.nombres = "%" + params.nombres + '%'
@@ -861,14 +861,14 @@ class ReportesController extends seguridad.Shield {
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
 
-        if(params.cedula){
+        if(params.cedula != '%'){
+//            println "cedula: ${params.cedula}"
 
             res = ReporteEncuesta.withCriteria {
 
-                eq("periodo",periodo)
+                eq("periodo", periodo)
 
                 profesor{
-
                     escuela {
                         eq("facultad",facultad)
                     }
@@ -887,7 +887,6 @@ class ReportesController extends seguridad.Shield {
                 eq("periodo",periodo)
 
                 profesor{
-
                     escuela {
                         eq("facultad",facultad)
                     }
@@ -910,7 +909,7 @@ class ReportesController extends seguridad.Shield {
 
         def pantalla = params.pantalla
 
-        return [profesores: res.profesor.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares,
+        return [profesores: res?.profesor?.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares,
                 promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, facultad: facultad]
     }
 
