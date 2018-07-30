@@ -14,8 +14,8 @@ class ReporteEncuesta {
     Double d_ea
     Double promedio
     String clase
-    String materia
-    String factor
+//    String materia
+//    String factor
     String materiaCuello
     String causaCuello
     Double valorAjustado
@@ -42,8 +42,8 @@ class ReporteEncuesta {
             d_ea column: 'd_ea'
             promedio column: 'promedio'
             clase column: 'clase'
-            materia column: 'extomatr'
-            factor column: 'f_exito'
+//            materia column: 'extomatr'
+//            factor column: 'f_exito'
             materiaCuello column: 'cb_matr'
             causaCuello column: 'cb_causa'
             valorAjustado column: 'ajst'

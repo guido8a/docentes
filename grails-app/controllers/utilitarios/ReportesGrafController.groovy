@@ -58,7 +58,8 @@ class ReportesGrafController {
         println("entro " + params)
 
         def periodo = Periodo.get(params.periodo)
-        def facultad = Facultad.get(params.facultad)
+        def facultad
+        def facultadId
         def escuelas = Escuela.findAllByFacultad(facultad)
         def profesores = Profesor.findAllByEscuelaInList(escuelas)
         def reporteEncuesta = ReporteEncuesta.findAllByPeriodoAndClaseAndProfesorInList(periodo, params.etiqueta,profesores)
@@ -66,24 +67,33 @@ class ReportesGrafController {
         def cn = dbConnectionService.getConnection()
         def res
 
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facl).nombre
+            facultadId = "${params.facl}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
 
-        def sql1 = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase\n" +
-                "from rpec, prof, escl, dcta, mate\n" +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and \n" +
-                "      facl__id = ${facultad.id} and dcta.dcta__id = rpec.dcta__id and\n" +
-                "      mate.mate__id = dcta.mate__id and clase = '${params.etiqueta}' and rpec.prdo__id = ${periodo.id}\n" +
-                "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase \n" +
+        def sql1 = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase " +
+                "from rpec, prof, escl, dcta, mate " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl__id::varchar ilike '${facultadId}' and dcta.dcta__id = rpec.dcta__id and " +
+                "mate.mate__id = dcta.mate__id and clase = '${params.etiqueta}' and rpec.prdo__id = ${periodo.id} and " +
+                "tpen__id = 2 " +
+                "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase " +
                 "order by clase"
 
         def sql2 = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase\n" +
                 "from rpec, prof, escl, dcta, mate\n" +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and \n" +
-                "      facl__id::char ilike '%' and dcta.dcta__id = rpec.dcta__id and\n" +
-                "      mate.mate__id = dcta.mate__id and con_rcmn > 0 and rpec.prdo__id = ${periodo.id}\n" +
+                "      facl__id::char ilike '${facultadId}' and dcta.dcta__id = rpec.dcta__id and\n" +
+                "      mate.mate__id = dcta.mate__id and con_rcmn > 0 and rpec.prdo__id = ${periodo.id}\n and " +
+                "tpen__id = 2 " +
                 "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase \n" +
                 "order by clase"
 
-        println("sql " + sql1)
+        println "sql1: $sql1, \n sql2: $sql2"
 
         res = cn.rows(sql1.toString())
 

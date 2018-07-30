@@ -107,7 +107,8 @@
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirFactores">
                         <span class="text-success"><strong>Profesores alineados con los factores de éxito</strong><br/>
-                            Gráfico porcentual de los profesores evaluados que se alinean con las estrategias de la Uiversidad
+                            Gráfico porcentual de los profesores del as distintas facultades que se alinean con
+                            las estrategias de la Universidad
                         </span>
                     </div>
                 </a>
@@ -146,7 +147,7 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
                     <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Docentes con recomendaciones: </strong>
-                        Gráfico comparativo de docentes que han resulñtado con recomendaciones
+                        Gráfico comparativo de docentes que han resultado con recomendaciones
                     </span>
                 </div>
             </a>
@@ -169,24 +170,18 @@
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Factores de éxito por facultades: </strong>
-                        Gráfico comparativo de docentes alineados con la estragia institucional por facultades.
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Cuellos de botella por docente: </strong>
+                        Listado de docentes con su principal cuello de botella o característica negativa percibida por los alumnos
+                        %{--tipos "A" en prittipo columna cb_tipo --}%
                     </span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Potenciadores de nivel por facultades: </strong>
-                        Gráfico comparativo de docentes "Potenciadores de Nivel" por facultades.
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Cuellos de botella por facultades: </strong>
-                        Gráfico comparativo de "Cuellos de Botella" por facultades.
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Potenciadores de nivel por docente: </strong>
+                        Listado de docentes con su principal factor potenciador de nivel o característica positiva percibida por los alumnos
+                        %{--tipos "B" en prittipo columna cb_tipo --}%
                     </span>
                 </div>
             </a>

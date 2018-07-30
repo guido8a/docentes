@@ -258,9 +258,29 @@ class ProcesosController extends seguridad.Shield {
         def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, prof, escl, facl " +
                 "where encu.prdo__id = ${params.periodo} and " +
                 "prof.prof__id = encu.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id group by facl.facl__id, facldscr order by facldscr"
+                "facl.facl__id = escl.facl__id and encu.teti__id = 2 group by facl.facl__id, facldscr order by facldscr"
 
-//        println "sql: $sql"
+        println "sql: $sql"
+
+        cn.eachRow(sql.toString()) { d ->
+            render (d.facl__id + "_" + d.cnta + "_" + d.facldscr + "*")
+        }
+    }
+
+    /** Ejecuta función: tendencias **/
+    def tendencia () {
+//        println "$params"
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def retorna = ""
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, estd, matr, dcta, prof, escl, facl " +
+                "where encu.prdo__id = ${params.periodo} and estd.estd__id = encu.estd__id and " +
+                "matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id and encu.teti__id = 4 and " +
+                "encuetdo = 'C' and prof.prof__id = dcta.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id " +
+                "group by facl.facl__id, facldscr order by facldscr"
+
+        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
             render (d.facl__id + "_" + d.cnta + "_" + d.facldscr + "*")
@@ -268,7 +288,7 @@ class ProcesosController extends seguridad.Shield {
     }
 
     def procesaFacl () {
-//        println "$params"
+        println "$params"
         def partes = params.arreglo.split("_")
         def total = params.total.toInteger()
 //        def regla = (partes[1].toInteger()*100/total)
@@ -285,6 +305,28 @@ class ProcesosController extends seguridad.Shield {
         try {
             cn.execute(sql.toString())
             cn.execute(sql1.toString())
+            render regla
+        } catch (e) {
+            println "error $e"
+            render "error"
+        }
+    }
+
+    def procesaTndn () {
+        println "procesaTndn: $params"
+        def partes = params.arreglo.split("_")
+        def total = params.total.toInteger()
+        def regla = (params.parcial.toInteger()*100/total)
+
+        sleep(1000)
+
+        /* procesa tendencias */
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from tendencias(${partes[0]}, ${params.periodo})"
+//        println "sql: $sql"
+
+        try {
+            cn.execute(sql.toString())
             render regla
         } catch (e) {
             println "error $e"
@@ -312,7 +354,8 @@ class ProcesosController extends seguridad.Shield {
         println "sql totales: $sql"
         try {
             cn.execute(sql.toString())
-            redirect controller: 'inicio', action: 'index'
+//            redirect controller: 'inicio', action: 'index'
+            redirect action: 'procesar'
         } catch (e) {
             println "error $e"
             render "error"
