@@ -86,7 +86,7 @@ class ReportesGrafController {
             sql = "select rpec.prof__id, dctaprll, matedscr, escldscr, " +
                     "prof.prof__id, profnmbr, profapll from rpec, " +
                     "prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-                    "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '%' " +
+                    "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
                     "and con_rcmn > 0 and tpen__id = 2 and dcta.dcta__id = rpec.dcta__id " +
                     "and mate.mate__id = dcta.mate__id group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, escldscr;"
         }
