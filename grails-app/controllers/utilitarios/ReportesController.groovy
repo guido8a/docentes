@@ -1458,15 +1458,17 @@ class ReportesController extends seguridad.Shield {
 
         switch(tipo){
             case '1':
-                sql = "select count(*) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                        "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
                         "group by clase order by clase"
-                println "sql: $sql"
+
+
+//                println "sql: $sql"
                 data = [:]
                 cn.eachRow(sql.toString()) { d ->
                     data["Profeso-res ${d.clase}: ${d.cnta}"] = d.cnta
                 }
-                println "data: $data"
+//                println "data: $data"
                 subtitulo = "PROFESORES POR DESEMPEÑO"
                 break;
         }
