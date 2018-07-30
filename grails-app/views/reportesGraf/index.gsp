@@ -152,6 +152,35 @@
                     var datasetIndex = activePoint._datasetIndex;
                     var label = data.datasets[datasetIndex].label[activePoint._index];
                     var value = data.datasets[datasetIndex].data[activePoint._index];
+
+                    $.ajax({
+                       type: 'POST',
+                        url:'${createLink(controller: 'reportesGraf', action: 'dialogo_ajax')}',
+                        data:{
+                            indice: datasetIndex,
+                            etiqueta: label,
+                            valor: value,
+                            periodo: prdo,
+                            facultad:facl
+                        },
+                        success: function (msg){
+                            var b = bootbox.dialog({
+                                id: "dlgRecomendaciones",
+                                title: "Clase: " + label,
+                                class: "long",
+                                message: msg,
+                                buttons: {
+                                    cancelar: {
+                                        label: "<i class='fa fa-times'></i> Cancelar",
+                                        className: "btn-primary",
+                                        callback: function () {
+                                        }
+                                    }
+                                } //buttons
+                            }); //dialog
+                        }
+                    });
+
                     console.log("indice:", datasetIndex, "etiqueta:",label, "valor:", value);
                 });
 
