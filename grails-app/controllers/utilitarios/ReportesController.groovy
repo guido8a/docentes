@@ -79,7 +79,7 @@ import java.text.ParsePosition;
 
 
 
-class ReportesController extends seguridad.Shield {
+class ReportesController{
 //class ReportesController {
 
     def dbConnectionService
@@ -1547,6 +1547,64 @@ class ReportesController extends seguridad.Shield {
         response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+    }
+
+    def cuellosBotella () {
+
+        def cn = dbConnectionService.getConnection()
+        def facultad
+        def facultadId
+
+
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
+
+        def sql = "select rpec.prof__id, dctaprll, matedscr, prof.prof__id, profnmbr, profapll " +
+                "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
+                "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
+                "and cb_tipo = 'A' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr";
+
+        def res = cn.rows(sql.toString())
+
+//        println("Res " + res)
+
+        return[facultad: facultad, res: res]
+    }
+
+    def potenciadores () {
+
+        def cn = dbConnectionService.getConnection()
+        def facultad
+        def facultadId
+
+
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
+
+        def sql = "select rpec.prof__id, dctaprll, matedscr, prof.prof__id, profnmbr, profapll " +
+                "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
+                "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
+                "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr";
+
+        def res = cn.rows(sql.toString())
+
+        println("Res " + res)
+
+        return[facultad: facultad, res: res]
+
+
     }
 
 

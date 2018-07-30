@@ -169,7 +169,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados">
+                <div class="texto" id="imprimirCuellosBotella">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Cuellos de botella por docente: </strong>
                         Listado de docentes con su principal cuello de botella o característica negativa percibida por los alumnos
                         %{--tipos "A" en prittipo columna cb_tipo --}%
@@ -178,7 +178,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados">
+                <div class="texto" id="imprimirPotenciador">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Potenciadores de nivel por docente: </strong>
                         Listado de docentes con su principal factor potenciador de nivel o característica positiva percibida por los alumnos
                         %{--tipos "B" en prittipo columna cb_tipo --}%
@@ -192,6 +192,22 @@
 
 
 <script type="text/javascript">
+
+
+    $("#imprimirCuellosBotella").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'cuellosBotella')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=cuellosBotella.pdf";
+    });
+
+
+    $("#imprimirPotenciador").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'potenciadores')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=potenciadores.pdf";
+    });
 
     $("#imprimirClases").click(function () {
         var prdo = $("#periodoId").val();

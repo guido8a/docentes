@@ -143,7 +143,11 @@ class Shield {
                 "alertas"         : ["list", "revisar"],
                 "persona"         : ["show_ajax"],
                 "departamento"    : ["show_ajax"],
-                "tramiteExport"   : ["crearPdf"]
+                "tramiteExport"   : ["crearPdf"],
+                "pdf"   : ["pdfLink"],
+                "reportes"   : ["cuellosBotella"],
+
+
         ]
 
         try {
