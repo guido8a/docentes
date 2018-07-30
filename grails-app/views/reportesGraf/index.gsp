@@ -161,7 +161,8 @@
                             etiqueta: label,
                             valor: value,
                             periodo: prdo,
-                            facultad:facl
+                            facultad:facl,
+                            tipo: 1
                         },
                         success: function (msg){
                             var b = bootbox.dialog({
@@ -186,6 +187,55 @@
 
                 canvas = $("#clases")
                 console.log("ok", valores[0])
+
+
+
+                $("#clases2").off();
+                $('#clases2').on('click', function(evt) {
+                    var activePoint = myChart.getElementAtEvent(evt)[0];
+                    var data = activePoint._chart.data;
+                    var datasetIndex = activePoint._datasetIndex;
+                    var label = data.datasets[datasetIndex].label[activePoint._index];
+                    var value = data.datasets[datasetIndex].data[activePoint._index];
+
+
+                    if(label == 'A'){
+                        $.ajax({
+                            type: 'POST',
+                            url:'${createLink(controller: 'reportesGraf', action: 'dialogo_ajax')}',
+                            data:{
+                                indice: datasetIndex,
+                                etiqueta: label,
+                                valor: value,
+                                periodo: prdo,
+                                facultad:facl,
+                                tipo: 2
+                            },
+                            success: function (msg){
+                                var b = bootbox.dialog({
+                                    id: "dlgRecomendaciones",
+                                    title: "Clase: " + label,
+                                    class: "long",
+                                    message: msg,
+                                    buttons: {
+                                        cancelar: {
+                                            label: "<i class='fa fa-times'></i> Cancelar",
+                                            className: "btn-primary",
+                                            callback: function () {
+                                            }
+                                        }
+                                    } //buttons
+                                }); //dialog
+                            }
+                        });
+                    }
+
+
+//                    console.log("indice:", datasetIndex, "etiqueta:",label, "valor:", value);
+                });
+
+
+
                 var chartData = {
                     type: 'pie',
                     data: {
@@ -203,7 +253,8 @@
                     options: {
                         legend: { display: true }
                     }
-                }
+                };
+
                 var chartDataRc = {
                     type: 'pie',
                     data: {
