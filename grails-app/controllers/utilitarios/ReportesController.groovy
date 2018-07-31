@@ -1564,11 +1564,11 @@ class ReportesController{
             facultadId = "%"
         }
 
-        def sql = "select rpec.prof__id, dctaprll, matedscr, prof.prof__id, profnmbr, profapll " +
+        def sql = "select rpec.prof__id, dctaprll, cb_causa, matedscr, prof.prof__id, profnmbr, profapll " +
                 "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
                 "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
                 "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
-                "and cb_tipo = 'A' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr";
+                "and cb_tipo = 'A' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
 
         def res = cn.rows(sql.toString())
 
@@ -1592,15 +1592,15 @@ class ReportesController{
             facultadId = "%"
         }
 
-        def sql = "select rpec.prof__id, dctaprll, matedscr, prof.prof__id, profnmbr, profapll " +
+        def sql = "select rpec.prof__id, dctaprll, matedscr, cb_causa, prof.prof__id, profnmbr, profapll " +
                 "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
                 "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
                 "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
-                "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr";
+                "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
 
         def res = cn.rows(sql.toString())
 
-        println("Res " + res)
+//        println("Res " + res)
 
         return[facultad: facultad, res: res]
 

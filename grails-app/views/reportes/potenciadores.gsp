@@ -113,9 +113,10 @@
     <thead>
 
     <tr>
-        <th class="back" rowspan="2" style="width: 33%">Nombres y Apellidos</th>
-        <th class="back" rowspan="2" style="width: 36%">Materia</th>
-        <th class="back" rowspan="2" style="width: 4%">Paralelo</th>
+        <th class="back" rowspan="2" style="width: 30%">Docente</th>
+        <th class="back" rowspan="2" style="width: 30%">Materia</th>
+        <th class="back" rowspan="2" style="width: 10%">Paralelo</th>
+        <th class="back" rowspan="2" style="width: 30%">Causa</th>
     </tr>
 
     </thead>
@@ -123,8 +124,9 @@
     <g:each in="${res}" var="e" status="j">
         <tr>
             <td style="width: 30%">${e.profnmbr + " " + e.profapll}</td>
-            <td style="width: 50%">${e.matedscr}</td>
-            <td style="width: 20%" class="alineado">${e.dctaprll}</td>
+            <td style="width: 30%">${e.matedscr}</td>
+            <td style="width: 10%" class="alineado">${e.dctaprll}</td>
+            <td style="width: 30%" >${e.cb_causa}</td>
         </tr>
     </g:each>
     </tbody>
