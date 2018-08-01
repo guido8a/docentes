@@ -1639,4 +1639,134 @@ class ReportesController{
     }
 
 
+    def recomendacionesGrafico() {
+//        println "profesoresClases $params"
+        def cn = dbConnectionService.getConnection()
+
+        Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font font12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
+        Font fontTtlo = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad
+        def facultadId
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
+
+        def sql
+        def data = [:]
+        def data2 = [:]
+
+        def baos = new ByteArrayOutputStream()
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        def tipo = params.tipo
+        def subtitulo = ''
+        def pattern1 = "###.##%"
+
+        def totl = 0
+        def cuenta = 0
+        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+                "group by clase order by clase"
+
+        cn.eachRow(sql2.toString()) { d ->
+            data2[d.clase] = d.cnta
+            totl += d.cnta
+        }
+
+//        println("total " + totl)
+
+        switch(tipo){
+            case '1':
+                sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2"
+
+
+                println "sql: $sql"
+
+                data = [:]
+                cn.eachRow(sql.toString()) { d ->
+                    data["Recomendados: ${d.cnta}"] = d.cnta
+                    cuenta = d.cnta
+                }
+
+                data["No Recomendados: ${totl - cuenta}"] = (totl - cuenta)
+                subtitulo = "Recomendaciones"
+                break;
+        }
+
+        document.open();
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph linea = new Paragraph(" ", fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+
+        Paragraph titulo = new Paragraph(subtitulo, fontTtlo)
+        titulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(linea)
+        document.add(linea)
+        document.add(titulo)
+        document.add(linea)
+
+        def chart = creaPastel("", data);
+        def ancho =  440  //540
+        def alto =  440   //540
+        document.add(linea)
+
+        try {
+
+            PdfContentByte contentByte = pdfw.getDirectContent()
+
+            Paragraph parrafo1 = new Paragraph()
+            PdfTemplate template = contentByte.createTemplate(ancho, alto)
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper())
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto)
+
+            PiePlot ColorConfigurator = (PiePlot) chart.getPlot()
+            ColorConfigurator.setBackgroundAlpha(0f)
+
+            chart.draw(graphics2d, rectangle2d)
+            graphics2d.dispose()
+            Image chartImage = Image.getInstance(template)
+            chartImage.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)        // centrado
+
+            parrafo1.add(chartImage)
+
+            document.add(parrafo1)
+
+
+        } catch (Exception e) {
+            e.printStackTrace()
+        }
+
+        //pie
+        def prmt = Auxiliares.findByPeriodo(periodo)
+
+        document.add(linea)
+
+        document.close()
+        pdfw.close()
+        byte[] b = baos.toByteArray()
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'recomendaciones')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+
 }

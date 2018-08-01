@@ -283,8 +283,8 @@
     $("#imprimirRecomendados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'recomendaciones')}?periodo=" + prdo + "Wfacultad=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
+        location.href = "${createLink(controller: 'reportes', action: 'recomendacionesGrafico')}?periodo=" + prdo +
+            "&facultad=" + facl + "&tipo=" + 1;
     });
 
     $("#imprimirClases").click(function () {
