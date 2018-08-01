@@ -249,7 +249,7 @@ class AccionesController extends seguridad.Shield {
                 def t = []
                 ct.getURIs().each {
                     def s = it.split("/")
-                    println "* cargarAcciones   " + s
+//                    println "* cargarAcciones   " + s
                     if (s.size() > 2)
                         if (!t.contains(s[2]))
                             if (!ignore.contains(s[2]))

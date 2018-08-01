@@ -10,7 +10,7 @@
         border-style: solid;
         border-color: #606060;
         border-width: 1px;
-        width: 48%;
+        width: 47%;
         float: left;
         text-align: center;
         height: 540px;

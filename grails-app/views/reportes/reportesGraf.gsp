@@ -107,7 +107,7 @@
                 <a href="#" style="text-decoration: none">
                     <div class="texto" id="imprimirFactores">
                         <span class="text-success"><strong>Profesores alineados con los factores de éxito</strong><br/>
-                            Gráfico porcentual de los profesores del as distintas facultades que se alinean con
+                            Gráfico porcentual de los profesores de las distintas facultades que se alinean con
                             las estrategias de la Universidad
                         </span>
                     </div>

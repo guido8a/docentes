@@ -5,6 +5,7 @@ import docentes.Facultad
 import docentes.Periodo
 import docentes.Profesor
 import docentes.ReporteEncuesta
+import grails.converters.JSON
 
 class ReportesGrafController {
     def dbConnectionService
@@ -96,5 +97,129 @@ class ReportesGrafController {
         return [indice: params.indice, etiqueta: params.etiqueta, valor: params.valor, profesores: res, tipo: params.tipo]
 
     }
+
+
+    def estrategias() {
+
+    }
+
+    def estrategiaData() {
+        println "estrategiaData $params"
+        def cn = dbConnectionService.getConnection()
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad
+        def facultadId
+        if(params.facl.toInteger()) {
+            facultad = Facultad.get(params.facl).nombre
+            facultadId = "${params.facl}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
+
+        def sql
+        def data = [:]
+        data.facultad = facultad
+
+        sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
+                "tpen__id = 2 and prdo__id = ${params.prdo}"
+        println "sql: $sql"
+        data.promedio = cn.rows(sql.toString())[0].prom * 100
+
+        sql = "select count(prof.prof__id) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
+                "prdo__id = ${params.prdo} and tpen__id = 2 "
+        println "sql prof: $sql"
+        data.prof = cn.rows(sql.toString())[0].cnta
+
+        sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
+                "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
+                "tpen__id = 2"
+        println "sql ptnv: $sql"
+        data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
+
+        sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
+                "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
+                "tpen__id = 2"
+        println "sql ccbb: $sql"
+        data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
+
+        sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
+                "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
+                "tpen__id = 2"
+        println "sql fcex: $sql"
+        data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
+
+        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
+                "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
+        println "sql rcmn: $sql"
+        data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
+
+        println "data: $data"
+
+        def datos = data
+
+        /* se envía el mapa como objeto JSON */
+        render datos as JSON
+    }
+
+    def resultados() {
+
+    }
+
+    def resultadosData() {
+        println "estrategiaData $params"
+        def cn = dbConnectionService.getConnection()
+
+        def periodo = Periodo.get(params.periodo)
+
+        def sql
+        def data = [:]
+        def facultades = []
+//        def matriz = []
+        def fila = []
+
+        sql = "select avg(promedio)::numeric(5,2) prom, tpen__id, facl.facl__id, facldscr from rpec, prof, escl, facl " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id and tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} " +
+                "group by tpen__id, facldscr, facl.facl__id order by facl.facl__id, facldscr, tpen__id"
+        println "sql: $sql"
+        def datos = cn.rows(sql.toString())
+        println datos
+        def txto = ""
+        def tx = ""
+        def fc = ""
+        def facl = datos.facl__id.unique()
+        def tpen = datos.tpen__id.unique()
+        for(i in facl) {
+            for(j in tpen) {
+                fc = "${datos.find{it.facl__id == i}.facldscr}"
+                tx = "${datos.find{it.facl__id == i && it.tpen__id == j}?.prom?:0}"
+                txto += txto? "_$tx" : tx
+            }
+            facultades.add(fc)
+            fila.add(txto)
+//            data[i] = [fc, txto]
+//            matriz.add([i, fc, txto])
+            txto = ""
+        }
+
+//        println "matriz: ${matriz.join('_')}"
+
+        data.cnta = facultades.size()
+        data.facl = facultades.join("_")
+        data.vlor = fila.join("_")
+
+        println "data: $data"
+
+        /* se envía el mapa como objeto JSON */
+        render data as JSON
+//        render matriz.join("_")
+    }
+
+
 
 }
