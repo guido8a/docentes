@@ -153,7 +153,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados">
+                <div class="texto" id="imprimirRecomendados1">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
                         Gráfico comparativo general del promedio obtenido por tipo de evaluación
                     </span>
@@ -161,7 +161,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados">
+                <div class="texto" id="imprimirRecomendados2">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
                         Gráfico comparativo de los prmedios alcanzados en las distintas variables
                     </span>
@@ -216,52 +216,61 @@
                 "&facultad=" + facl + "&tipo=" + 1;
     });
 
-
-    $("#imprimirNoEvaluados").click(function () {
+    $("#imprimirRecomendados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
+        var url = "${createLink(controller: 'reportes', action: 'recomendaciones')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
     });
 
 
-    $("#imprimirEvaluados").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
+
+
+    %{--$("#imprimirNoEvaluados").click(function () {--}%
+        %{--var prdo = $("#periodoId").val();--}%
+        %{--var facl = $("#facultad").val();--}%
+        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;--}%
+        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";--}%
+    %{--});--}%
+
+
+    %{--$("#imprimirEvaluados").click(function () {--}%
+        %{--var prdo = $("#periodoId").val();--}%
+        %{--var facl = $("#facultad").val();--}%
         %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 2;--}%
-        var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
-    });
+        %{--var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;--}%
+        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";--}%
+    %{--});--}%
 
 
-    $("#imprimirNoAutoeva").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";
-    });
+    %{--$("#imprimirNoAutoeva").click(function () {--}%
+        %{--var prdo = $("#periodoId").val();--}%
+        %{--var facl = $("#facultad").val();--}%
+        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;--}%
+        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";--}%
+    %{--});--}%
 
 
-    $("#imprimirAutoeva").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";
-    });
+    %{--$("#imprimirAutoeva").click(function () {--}%
+        %{--var prdo = $("#periodoId").val();--}%
+        %{--var facl = $("#facultad").val();--}%
+        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;--}%
+        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";--}%
+    %{--});--}%
 
-    $("#imprimirEstudiante").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
-    });
+    %{--$("#imprimirEstudiante").click(function () {--}%
+        %{--var prdo = $("#periodoId").val();--}%
+        %{--var facl = $("#facultad").val();--}%
+        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;--}%
+        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";--}%
+    %{--});--}%
 
-    $("#btonVariables").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl;
-        location.href = url;
-    });
+    %{--$("#btonVariables").click(function () {--}%
+        %{--var prdo = $("#periodoId").val();--}%
+        %{--var facl = $("#facultad").val();--}%
+        %{--var url = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl;--}%
+        %{--location.href = url;--}%
+    %{--});--}%
 
     $("#imprimirNoEstudiante").click(function () {
         var prdo = $("#periodoId").val();

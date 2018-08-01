@@ -1560,11 +1560,11 @@ class ReportesController{
             facultad = Facultad.get(params.facultad).nombre
             facultadId = "${params.facultad}"
         } else {
-            facultad = "Todas las Facultades"
+            facultad = ""
             facultadId = "%"
         }
 
-        def sql = "select rpec.prof__id, dctaprll, cb_causa, matedscr, prof.prof__id, profnmbr, profapll " +
+        def sql = "select rpec.prof__id, dctaprll, cb_causa, matedscr, prof.prof__id, profnmbr, profapll  " +
                 "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
                 "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
                 "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
@@ -1588,7 +1588,7 @@ class ReportesController{
             facultad = Facultad.get(params.facultad).nombre
             facultadId = "${params.facultad}"
         } else {
-            facultad = "Todas las Facultades"
+            facultad = ""
             facultadId = "%"
         }
 
@@ -1597,6 +1597,37 @@ class ReportesController{
                 "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
                 "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
                 "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
+
+        def res = cn.rows(sql.toString())
+
+//        println("Res " + res)
+
+        return[facultad: facultad, res: res]
+
+
+    }
+
+    def recomendaciones () {
+
+        def cn = dbConnectionService.getConnection()
+        def facultad
+        def facultadId
+
+
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = ""
+            facultadId = "%"
+        }
+
+        def sql = "select rpec.prof__id, dctaprll, matedscr, escldscr, " +
+                "prof.prof__id, profnmbr, profapll from rpec, " +
+                "prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
+                "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "and con_rcmn > 0 and tpen__id = 2 and dcta.dcta__id = rpec.dcta__id " +
+                "and mate.mate__id = dcta.mate__id group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, escldscr;"
 
         def res = cn.rows(sql.toString())
 

@@ -1,6 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: gato
+  Date: 01/08/18
+  Time: 11:49
+--%>
+
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 30/07/18
+  Time: 12:19
+--%>
+
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
   Date: 30/07/18
   Time: 11:51
 --%>
@@ -12,18 +26,17 @@
   Time: 12:02
 --%>
 
-<%@ page import="docentes.Profesor" contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Cuellos de Botella</title>
+    <title>Recomendaciones</title>
 
     <g:if test="${facultad != ''}" >
-        <rep:estilos orientacion="p" pagTitle="REPORTE DE CUELLOS DE BOTELLA"/>
+        <rep:estilos orientacion="p" pagTitle="REPORTE DE RECOMENDACIONES"/>
     </g:if>
     <g:else>
-        <rep:estilos orientacion="h" pagTitle="REPORTE DE CUELLOS DE BOTELLA"/>
+        <rep:estilos orientacion="h" pagTitle="REPORTE DE RECOMENDACIONES"/>
     </g:else>
-
 
 
     <style type="text/css">
@@ -99,7 +112,7 @@
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${"Cuellos de Botella"}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"Recomendaciones"}"/></strong>
 </p>
 
 <p class="alineado">
@@ -107,19 +120,14 @@
 </p>
 
 
-
-
 <g:if test="${facultad != ''}">
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
-
         <tr>
             <th class="back" rowspan="2" style="width: 30%">Docente</th>
             <th class="back" rowspan="2" style="width: 30%">Materia</th>
             <th class="back" rowspan="2" style="width: 10%">Paralelo</th>
-            <th class="back" rowspan="2" style="width: 30%">Causa</th>
         </tr>
-
         </thead>
         <tbody>
         <g:each in="${res}" var="e" status="j">
@@ -127,7 +135,6 @@
                 <td style="width: 30%">${e.profnmbr + " " + e.profapll}</td>
                 <td style="width: 30%">${e.matedscr}</td>
                 <td style="width: 10%" class="alineado">${e.dctaprll}</td>
-                <td style="width: 30%" >${e.cb_causa}</td>
             </tr>
         </g:each>
         </tbody>
@@ -136,15 +143,12 @@
 <g:else>
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
-
         <tr>
             <th class="back" rowspan="2" style="width: 25%">Facultad</th>
             <th class="back" rowspan="2" style="width: 25%">Docente</th>
             <th class="back" rowspan="2" style="width: 23%">Materia</th>
             <th class="back" rowspan="2" style="width: 7%">Paralelo</th>
-            <th class="back" rowspan="2" style="width: 20%">Causa</th>
         </tr>
-
         </thead>
         <tbody>
         <g:each in="${res}" var="e" status="j">
@@ -153,14 +157,11 @@
                 <td style="width: 25%">${e.profnmbr + " " + e.profapll}</td>
                 <td style="width: 23%">${e.matedscr}</td>
                 <td style="width: 7%" class="alineado">${e.dctaprll}</td>
-                <td style="width: 20%" >${e.cb_causa}</td>
             </tr>
         </g:each>
         </tbody>
     </table>
 </g:else>
-
-
 
 
 </body>
