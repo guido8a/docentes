@@ -20,9 +20,9 @@
     .bajo {
         margin-bottom: 20px;
     }
-        .centrado{
-            text-align: center;
-        }
+    .centrado{
+        text-align: center;
+    }
 
     </style>
 </head>
@@ -73,9 +73,9 @@
     </div>
 
     <div style="margin-top: 10px">
-        <g:link action="reportesGraf" class="btn btn-info">
+        <a href="#" class="btn btn-info" id="imprimirClases">
             <i class="fa fa-line-chart"></i> Imprimir
-        </g:link>
+        </a>
     </div>
 </div>
 
@@ -99,9 +99,9 @@
     </div>
 
     <div style="margin-top: 20px">
-        <g:link action="reportesGraf" class="btn btn-info">
+        <a href="#" class="btn btn-info" id="imprimirRecomendados">
             <i class="fa fa-line-chart"></i> Imprimir
-        </g:link>
+        </a>
     </div>
 </div>
 
@@ -138,12 +138,12 @@
                 $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
 
                 $('#datosRc').append('<tr><td class= "centrado" id="r1">' + valores[4] +
-                        '</td><td class= "centrado" id="r2">' + valores[5]+ '</td></tr>');
+                    '</td><td class= "centrado" id="r2">' + valores[5]+ '</td></tr>');
 
                 $('#divDatos').append('<tr><td class= "centrado" id="c1">A</td><td class= "centrado" id="dc1">' +
-                        valores[0] + '</td></tr><tr><td class= "centrado" id="c2">B</td><td class= "centrado" id="dc2">' +
-                        valores[1]+ '</td></tr><tr><td class= "centrado" id="c3">C</td><td class= "centrado" id="dc3">' +
-                        valores[2]+ '</td></tr>');
+                    valores[0] + '</td></tr><tr><td class= "centrado" id="c2">B</td><td class= "centrado" id="dc2">' +
+                    valores[1]+ '</td></tr><tr><td class= "centrado" id="c3">C</td><td class= "centrado" id="dc3">' +
+                    valores[2]+ '</td></tr>');
 
                 $("#clases").off();
                 $('#clases').on('click', function(evt) {
@@ -154,7 +154,7 @@
                     var value = data.datasets[datasetIndex].data[activePoint._index];
 
                     $.ajax({
-                       type: 'POST',
+                        type: 'POST',
                         url:'${createLink(controller: 'reportesGraf', action: 'dialogo_ajax')}',
                         data:{
                             indice: datasetIndex,
@@ -278,6 +278,20 @@
 
             }
         });
+    });
+
+    $("#imprimirRecomendados").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'recomendaciones')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
+    });
+
+    $("#imprimirClases").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo +
+            "&facultad=" + facl + "&tipo=" + 1;
     });
 
 
