@@ -15,7 +15,7 @@ class ReportesGrafController {
     }
 
     def clasificar() {
-        println "clasificar $params"
+//        println "clasificar $params"
         def cn = dbConnectionService.getConnection()
 
         def periodo = Periodo.get(params.periodo)
@@ -40,7 +40,7 @@ class ReportesGrafController {
         sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
                 "group by clase order by clase"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { d ->
             data[d.clase] = d.cnta
             totl += d.cnta
@@ -48,9 +48,9 @@ class ReportesGrafController {
 
         sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2"
-        println "sql: $sql"
+//        println "sql: $sql"
         rcmn = cn.rows(sql.toString())[0].cnta
-        println "data: $data, rc: $rcmn, totl: $totl"
+//        println "data: $data, rc: $rcmn, totl: $totl"
         subtitulo = "PROFESORES POR DESEMPEÑO"
         render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
     }
@@ -105,7 +105,7 @@ class ReportesGrafController {
     }
 
     def estrategiaData() {
-        println "estrategiaData $params"
+//        println "estrategiaData $params"
         def cn = dbConnectionService.getConnection()
 
         def periodo = Periodo.get(params.periodo)
@@ -126,41 +126,41 @@ class ReportesGrafController {
         sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
-        println "sql: $sql"
+//        println "sql: $sql"
         data.promedio = cn.rows(sql.toString())[0].prom * 100
 
         sql = "select count(prof.prof__id) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
-        println "sql prof: $sql"
+//        println "sql prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
                 "tpen__id = 2"
-        println "sql ptnv: $sql"
+//        println "sql ptnv: $sql"
         data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
                 "tpen__id = 2"
-        println "sql ccbb: $sql"
+//        println "sql ccbb: $sql"
         data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
                 "tpen__id = 2"
-        println "sql fcex: $sql"
+//        println "sql fcex: $sql"
         data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
 
         sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
-        println "sql rcmn: $sql"
+//        println "sql rcmn: $sql"
         data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
 
-        println "data: $data"
-        println "data: ${data as JSON}"
+//        println "data: $data"
+//        println "data: ${data as JSON}"
 
         render data as JSON
     }
@@ -170,7 +170,7 @@ class ReportesGrafController {
     }
 
     def tipoEncuestaData() {
-        println "tipoEncuestaData $params"
+//        println "tipoEncuestaData $params"
         def cn = dbConnectionService.getConnection()
         def sql
         def data = [:]
@@ -181,9 +181,9 @@ class ReportesGrafController {
                 "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         def datos = cn.rows(sql.toString())
-        println datos
+//        println datos
         def txto = ""
         def tx = ""
         def te = ""
@@ -198,7 +198,7 @@ class ReportesGrafController {
                 tx = "${datos.find{it.facl__id == j && it.tpen__id == i}?.prom?:0}"
                 txto += txto? "_$tx" : tx
             }
-            data[i] = [tpen: te, valor: txto, facultades: facultades.join('_')]
+            data[i] = [tpen: te, valor: txto]
             txto = ""
         }
 
@@ -206,11 +206,74 @@ class ReportesGrafController {
 
         /* se envía el mapa como objeto JSON */
         def respuesta = "${facultades.join('_')}||${data as JSON}"
-        println respuesta
+//        println respuesta
 //        render data as JSON
         render respuesta
     }
 
+    def variables() {
+
+    }
+
+    def variablesData() {
+//        println "variablesData $params"
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def data = [:]
+//                        ddsc | ddac | ddhd | ddci | dcni | d_ea
+
+        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
+                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
+                "facl.facl__id, facldscr " +
+                "from rpec, prof, escl, facl " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.prdo} " +
+                "group by facldscr, facl.facl__id order by facl.facl__id"
+//        println "sql: $sql"
+        def datos = cn.rows(sql.toString())
+//        println datos
+        def txto = ""
+        def tx_ddsc, tx_ddac, tx_ddhd, tx_ddci, tx_dcni, tx_d_ea
+        def tx_1, tx_2, tx_3, tx_4, tx_5, tx_6
+        tx_1 = ""; tx_2 = ""; tx_3 = ""; tx_4 = ""; tx_5 = ""; tx_6 = "";
+        def facl = datos.facl__id.unique()
+        def facultades = datos.facldscr.unique()
+
+        sql = "select vrblcdgo||': '||vrbldscr from vrbl order by vrblordn "
+        def variables = cn.rows(sql.toString())
+
+//        println "facl: $facl"
+//        println "tpen: $tpen"
+
+        for(j in facl) {
+            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
+            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
+            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
+            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
+            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
+            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
+            tx_1 += tx_1? "_$tx_ddsc" : tx_ddsc
+            tx_2 += tx_2? "_$tx_ddac" : tx_ddac
+            tx_3 += tx_3? "_$tx_ddhd" : tx_ddhd
+            tx_4 += tx_4? "_$tx_ddci" : tx_ddci
+            tx_5 += tx_5? "_$tx_dcni" : tx_dcni
+            tx_6 += tx_6? "_$tx_d_ea" : tx_d_ea
+        }
+
+        data[1] = [vrbl: 'DSC', valor: tx_1]
+        data[2] = [vrbl: 'DAC', valor: tx_2]
+        data[3] = [vrbl: 'DHD', valor: tx_3]
+        data[4] = [vrbl: 'DCI', valor: tx_4]
+        data[5] = [vrbl: 'CNI', valor: tx_5]
+        data[6] = [vrbl: 'EA', valor: tx_6]
+
+//        println "datos: ${data as JSON}"
+
+        /* se envía el mapa como objeto JSON */
+        def respuesta = "${facultades.join('_')}||${data as JSON}"
+//        println respuesta
+        render respuesta
+    }
 
 
 }
