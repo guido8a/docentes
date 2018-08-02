@@ -1768,5 +1768,39 @@ class ReportesController{
         response.getOutputStream().write(b)
     }
 
+    def reporteDesempeno () {
+
+//        println("params --- " + params)
+
+        def cn = dbConnectionService.getConnection()
+        def facultad
+        def facultadId
+        def periodo = Periodo.get(params.periodo)
+
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = ""
+            facultadId = "%"
+        }
+
+        def sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
+                "from rpec, prof, escl, dcta, mate " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl__id::varchar ilike '${facultadId}' and dcta.dcta__id = rpec.dcta__id and " +
+                "mate.mate__id = dcta.mate__id and clase is not null and rpec.prdo__id = ${periodo.id} and " +
+                "tpen__id = 2 " +
+                "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
+                "order by clase"
+
+
+        def res = cn.rows(sql.toString())
+
+//        println("Res " + res)
+
+        return[facultad: facultad, res: res]
+    }
+
 
 }

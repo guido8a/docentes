@@ -75,63 +75,55 @@
                       optionKey="id" name="facultad_name" id="facultad" class="form-control"
                       noSelection="${[0:'Todas ...']}"/>
         </div>
-%{--
-        <div class="col-md-2">
-            <g:link action="reportes" class="btn btn-info">
-                <i class="fa fa-bar-chart"></i> Reportes
-            </g:link>
-        </div>
---}%
-
     </div>
 
 
-    <div class="body ui-corner-all"
-         style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 360px; ">
+    %{--<div class="body ui-corner-all"--}%
+         %{--style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 360px; ">--}%
 
-        <div class="ui-corner-all item fuera">
-            <div class="ui-corner-all item">
-                <div class="imagen" style="height: 100%; width: 300px;">
-                    <img src="${resource(dir: 'images', file: 'grafico.png')}" width="250px" height="auto"
-                         style=" margin-top:50px"/>
-                </div>
+        %{--<div class="ui-corner-all item fuera">--}%
+            %{--<div class="ui-corner-all item">--}%
+                %{--<div class="imagen" style="height: 100%; width: 300px;">--}%
+                    %{--<img src="${resource(dir: 'images', file: 'grafico.png')}" width="250px" height="auto"--}%
+                         %{--style=" margin-top:50px"/>--}%
+                %{--</div>--}%
 
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirClases">
-                        <span class="text-success"><strong>Profesores por desempeño</strong><br/>
-                            Clasificación de profesores en "A", "B" y "C" conforme el índice de calidad fijado para mínimo y óptimo
-                        </span>
-                    </div>
-                </a>
+                %{--<a href="#" style="text-decoration: none">--}%
+                    %{--<div class="texto" id="imprimirClases">--}%
+                        %{--<span class="text-success"><strong>Profesores por desempeño</strong><br/>--}%
+                            %{--Clasificación de profesores en "A", "B" y "C" conforme el índice de calidad fijado para mínimo y óptimo--}%
+                        %{--</span>--}%
+                    %{--</div>--}%
+                %{--</a>--}%
 
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirFactores">
-                        <span class="text-success"><strong>Profesores alineados con los factores de éxito</strong><br/>
-                            Gráfico porcentual de los profesores de las distintas facultades que se alinean con
-                            las estrategias de la Universidad
-                        </span>
-                    </div>
-                </a>
+                %{--<a href="#" style="text-decoration: none">--}%
+                    %{--<div class="texto" id="imprimirFactores">--}%
+                        %{--<span class="text-success"><strong>Profesores alineados con los factores de éxito</strong><br/>--}%
+                            %{--Gráfico porcentual de los profesores de las distintas facultades que se alinean con--}%
+                            %{--las estrategias de la Universidad--}%
+                        %{--</span>--}%
+                    %{--</div>--}%
+                %{--</a>--}%
 
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirPotenciadores">
-                        <span class="text-success"><strong>Potenciadores de nivel y Cuellos de botella</strong><br/>
-                            Gráfico comparativo de potenciadores de nivel, cuelllos de botella y otros docentes.
-                        </span>
-                    </div>
-                </a>
+                %{--<a href="#" style="text-decoration: none">--}%
+                    %{--<div class="texto" id="imprimirPotenciadores">--}%
+                        %{--<span class="text-success"><strong>Potenciadores de nivel y Cuellos de botella</strong><br/>--}%
+                            %{--Gráfico comparativo de potenciadores de nivel, cuelllos de botella y otros docentes.--}%
+                        %{--</span>--}%
+                    %{--</div>--}%
+                %{--</a>--}%
 
-                <a href="#" style="text-decoration: none">
-                    <div class="texto" id="imprimirCopartivo">
-                        <span class="text-success"><strong>Comparativo de desempeño general</strong><br/>
-                            Gráfico comparativo del promedio del desempeño docente entre las facultades de la universidad
-                        </span>
-                    </div>
-                </a>
+                %{--<a href="#" style="text-decoration: none">--}%
+                    %{--<div class="texto" id="imprimirCopartivo">--}%
+                        %{--<span class="text-success"><strong>Comparativo de desempeño general</strong><br/>--}%
+                            %{--Gráfico comparativo del promedio del desempeño docente entre las facultades de la universidad--}%
+                        %{--</span>--}%
+                    %{--</div>--}%
+                %{--</a>--}%
 
-            </div>
-        </div>
-    </div>
+            %{--</div>--}%
+        %{--</div>--}%
+    %{--</div>--}%
 </div>
 
 <div class="body ui-corner-all"
@@ -143,6 +135,15 @@
                 <img src="${resource(dir: 'images', file: 'tendencia.png')}" width="250px" height="auto"
                      style=" margin-top:50px"/>
             </div>
+
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirClases">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Profesores por desempeño</strong>
+                        Clasificación de profesores en "A", "B" y "C" conforme el índice de calidad fijado para mínimo y óptimo
+                    </span>
+                </div>
+            </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
@@ -212,8 +213,8 @@
     $("#imprimirClases").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo +
-                "&facultad=" + facl + "&tipo=" + 1;
+        var url = "${createLink(controller: 'reportes', action: 'reporteDesempeno')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=desempeno.pdf";
     });
 
     $("#imprimirRecomendados").click(function () {
@@ -223,54 +224,6 @@
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
     });
 
-
-
-
-    %{--$("#imprimirNoEvaluados").click(function () {--}%
-        %{--var prdo = $("#periodoId").val();--}%
-        %{--var facl = $("#facultad").val();--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";--}%
-    %{--});--}%
-
-
-    %{--$("#imprimirEvaluados").click(function () {--}%
-        %{--var prdo = $("#periodoId").val();--}%
-        %{--var facl = $("#facultad").val();--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 2;--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";--}%
-    %{--});--}%
-
-
-    %{--$("#imprimirNoAutoeva").click(function () {--}%
-        %{--var prdo = $("#periodoId").val();--}%
-        %{--var facl = $("#facultad").val();--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";--}%
-    %{--});--}%
-
-
-    %{--$("#imprimirAutoeva").click(function () {--}%
-        %{--var prdo = $("#periodoId").val();--}%
-        %{--var facl = $("#facultad").val();--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";--}%
-    %{--});--}%
-
-    %{--$("#imprimirEstudiante").click(function () {--}%
-        %{--var prdo = $("#periodoId").val();--}%
-        %{--var facl = $("#facultad").val();--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;--}%
-        %{--location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";--}%
-    %{--});--}%
-
-    %{--$("#btonVariables").click(function () {--}%
-        %{--var prdo = $("#periodoId").val();--}%
-        %{--var facl = $("#facultad").val();--}%
-        %{--var url = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl;--}%
-        %{--location.href = url;--}%
-    %{--});--}%
 
     $("#imprimirNoEstudiante").click(function () {
         var prdo = $("#periodoId").val();

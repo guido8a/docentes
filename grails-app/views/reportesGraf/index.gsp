@@ -120,8 +120,6 @@
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
 
-
-
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'clasificar')}',
             data: {facl: facl, prdo: prdo},
