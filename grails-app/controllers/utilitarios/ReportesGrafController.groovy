@@ -8,7 +8,7 @@ import docentes.ReporteEncuesta
 import grails.converters.JSON
 import groovy.json.JsonBuilder
 
-class ReportesGrafController {
+class ReportesGrafController extends seguridad.Shield  {
     def dbConnectionService
 
     def index() {
@@ -220,7 +220,6 @@ class ReportesGrafController {
         def cn = dbConnectionService.getConnection()
         def sql
         def data = [:]
-//                        ddsc | ddac | ddhd | ddci | dcni | d_ea
 
         sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
                 "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
@@ -239,8 +238,8 @@ class ReportesGrafController {
         def facl = datos.facl__id.unique()
         def facultades = datos.facldscr.unique()
 
-        sql = "select vrblcdgo||': '||vrbldscr from vrbl order by vrblordn "
-        def variables = cn.rows(sql.toString())
+//        sql = "select vrblcdgo||': '||vrbldscr from vrbl order by vrblordn "
+//        def variables = cn.rows(sql.toString())
 
 //        println "facl: $facl"
 //        println "tpen: $tpen"

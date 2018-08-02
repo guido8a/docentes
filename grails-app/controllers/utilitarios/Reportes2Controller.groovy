@@ -28,7 +28,7 @@ import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders
 import java.awt.Color;
 
 
-class Reportes2Controller {
+class Reportes2Controller extends seguridad.Shield {
 
     def dbConnectionService
 

@@ -14,15 +14,10 @@ class Shield {
         session.cn = controllerName
         session.pr = params
 
-//        return true  /* comentar para asegurarse de que haya usuario */
-
-        /** **************************************************************************/
-
-
-        if(actionName == 'profesNoEvaluados' || actionName == 'profesEvaluados' || actionName=='asignaturas'){
-//            println("------------>")
+        if(controllerName in ['reportes', 'reportesGraf', 'reportes2'] ){
             return true
         }
+
 
 
 
