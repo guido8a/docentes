@@ -111,15 +111,24 @@
     var myChart;
 
     $("#graficar").click(function () {
+
+        openLoader("Graficando...");
+
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
 //        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
+
+
+
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'clasificar')}',
             data: {facl: facl, prdo: prdo},
             success: function (msg) {
+
+                closeLoader();
+
                 var valores = msg.split("_")
                 $("#titulo").html(valores[3])
                 $("#titulo2").html(valores[6])
@@ -231,6 +240,8 @@
                     }
 
 
+
+
 //                    console.log("indice:", datasetIndex, "etiqueta:",label, "valor:", value);
                 });
 
@@ -277,6 +288,8 @@
                 myChart2 = new Chart($("#clases2"), chartDataRc, 1);
 
             }
+
+
         });
     });
 
