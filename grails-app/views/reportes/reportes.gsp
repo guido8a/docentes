@@ -146,7 +146,7 @@
 </div>
 
 <div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 300px; ">
+     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 280px; ">
 
     <div class="ui-corner-all item fuera" style="height: 290px">
         <div class="ui-corner-all item" style="height: 290px">
@@ -199,12 +199,12 @@
                 </div>
             </a>
 
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirClasificacion">
-                    <span class="text-success"><i class="fa fa-signal"></i><strong> Clasificación del desempeño académico</strong> de los profesores
-                    </span>
-                </div>
-            </a>
+            %{--<a href="#" style="text-decoration: none">--}%
+                %{--<div class="texto" id="imprimirClasificacion">--}%
+                    %{--<span class="text-success"><i class="fa fa-signal"></i><strong> Clasificación del desempeño académico</strong> de los profesores--}%
+                    %{--</span>--}%
+                %{--</div>--}%
+            %{--</a>--}%
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirCatego">

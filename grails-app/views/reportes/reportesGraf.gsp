@@ -136,7 +136,6 @@
                      style=" margin-top:50px"/>
             </div>
 
-
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirClases">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Profesores por desempeño</strong>
@@ -148,23 +147,7 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
                     <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Docentes con recomendaciones: </strong>
-                        Gráfico comparativo de docentes que han resultado con recomendaciones
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados1">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
-                        Gráfico comparativo general del promedio obtenido por tipo de evaluación
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados2">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
-                        Gráfico comparativo de los prmedios alcanzados en las distintas variables
+                        Listado de docentes que han resultado con recomendaciones
                     </span>
                 </div>
             </a>
@@ -183,6 +166,22 @@
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Potenciadores de nivel por docente: </strong>
                         Listado de docentes con su principal factor potenciador de nivel o característica positiva percibida por los alumnos
                         %{--tipos "B" en prittipo columna cb_tipo --}%
+                    </span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirRecomendados1">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
+                        Gráfico comparativo general del promedio obtenido por tipo de evaluación
+                    </span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirRecomendados2">
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
+                        Gráfico comparativo de los prmedios alcanzados en las distintas variables
                     </span>
                 </div>
             </a>
