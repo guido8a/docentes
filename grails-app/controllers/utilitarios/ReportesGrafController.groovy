@@ -6,6 +6,7 @@ import docentes.Periodo
 import docentes.Profesor
 import docentes.ReporteEncuesta
 import grails.converters.JSON
+import groovy.json.JsonBuilder
 
 class ReportesGrafController {
     def dbConnectionService
@@ -159,65 +160,55 @@ class ReportesGrafController {
         data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
 
         println "data: $data"
+        println "data: ${data as JSON}"
 
-        def datos = data
-
-        /* se envía el mapa como objeto JSON */
-        render datos as JSON
+        render data as JSON
     }
 
-    def resultados() {
+    def tipoEncuesta() {
 
     }
 
-    def resultadosData() {
-        println "estrategiaData $params"
+    def tipoEncuestaData() {
+        println "tipoEncuestaData $params"
         def cn = dbConnectionService.getConnection()
-
-        def periodo = Periodo.get(params.periodo)
-
         def sql
         def data = [:]
-        def facultades = []
-//        def matriz = []
-        def fila = []
 
-        sql = "select avg(promedio)::numeric(5,2) prom, tpen__id, facl.facl__id, facldscr from rpec, prof, escl, facl " +
+        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr " +
+                "from rpec, prof, escl, facl, tpen " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id and tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} " +
-                "group by tpen__id, facldscr, facl.facl__id order by facl.facl__id, facldscr, tpen__id"
+                "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and " +
+                "tpen.tpen__id = rpec.tpen__id " +
+                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
         println "sql: $sql"
         def datos = cn.rows(sql.toString())
         println datos
         def txto = ""
         def tx = ""
-        def fc = ""
+        def te = ""
         def facl = datos.facl__id.unique()
+        def facultades = datos.facldscr.unique()
         def tpen = datos.tpen__id.unique()
-        for(i in facl) {
-            for(j in tpen) {
-                fc = "${datos.find{it.facl__id == i}.facldscr}"
-                tx = "${datos.find{it.facl__id == i && it.tpen__id == j}?.prom?:0}"
+//        println "facl: $facl"
+//        println "tpen: $tpen"
+        for(i in tpen) {
+            for(j in facl) {
+                te = "${datos.find{it.tpen__id == i}.tpendscr}"
+                tx = "${datos.find{it.facl__id == j && it.tpen__id == i}?.prom?:0}"
                 txto += txto? "_$tx" : tx
             }
-            facultades.add(fc)
-            fila.add(txto)
-//            data[i] = [fc, txto]
-//            matriz.add([i, fc, txto])
+            data[i] = [tpen: te, valor: txto, facultades: facultades.join('_')]
             txto = ""
         }
 
-//        println "matriz: ${matriz.join('_')}"
-
-        data.cnta = facultades.size()
-        data.facl = facultades.join("_")
-        data.vlor = fila.join("_")
-
-        println "data: $data"
+//        println "datos: ${data as JSON}"
 
         /* se envía el mapa como objeto JSON */
-        render data as JSON
-//        render matriz.join("_")
+        def respuesta = "${facultades.join('_')}||${data as JSON}"
+        println respuesta
+//        render data as JSON
+        render respuesta
     }
 
 

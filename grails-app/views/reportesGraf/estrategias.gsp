@@ -13,7 +13,7 @@
         width: 100%;
         float: left;
         text-align: center;
-        height: 720px;
+        height: auto;
         border-radius: 8px;
         margin: 10px;
     }
@@ -28,6 +28,9 @@
 </head>
 
 <body>
+<div align="center">
+    <h1>Desempeño según la Estrategia Institucional</h1>
+</div>
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
     %{--<div class="col-md-1"></div>--}%
     <div class="col-md-2">Seleccione el periodo de evaluaciones:</div>
@@ -57,7 +60,6 @@
 </div>
 
 <div class="chart-container grafico" id="chart-area" hidden>
-    <h1>Desempeño General</h1>
     <h3 id="titulo"></h3>
     <div id="graf">
         <canvas id="clases" style="margin-top: 30px"></canvas>
