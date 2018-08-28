@@ -114,14 +114,24 @@
                         labels: ['Evaluación Total', 'Potenciadores', 'Factores de Éxito', 'Cuellos de Botella', 'Recomendaciones'],
                         datasets: [
                             {   label: ["Porcentajes"],
-                                backgroundColor: "rgba(255,150,0,0.3)",
+                                backgroundColor: "rgba(255,255,255,0.05)",
                                 borderWidth: 1,
                                 data: [100,100,100,100,100] },
                             {   label: ["Desempeño porcentual"],
-                                backgroundColor: "rgba(0,255,0,0.2)",
-                                borderColor: "rgba(0,160,80, 0.3)",
+                                backgroundColor: "rgba(240,240,120,0.4)",
+                                borderColor: "rgba(120,120,80, 0.5)",
                                 borderWidth: 4,
-                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] }
+                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
+                            {   label: ["Mínimo"],
+                                backgroundColor: "rgba(255,240,240,0.2)",
+                                borderColor: "rgba(200,40,40, 0.3)",
+                                borderWidth: 2,
+                                data: [40,40,40,40,40]},
+                            {   label: ["Óptimo"],
+                                backgroundColor: "rgba(240,240,255,0.2)",
+                                borderColor: "rgba(0,0,200, 0.2)",
+                                borderWidth: 2,
+                                data: [80,80,80,80,80]}
                         ]
 
                     },
@@ -161,17 +171,18 @@
                     data: {
                         labels: ['Evaluación Total', 'Potenciadores', 'Factores de Éxito', 'Cuellos de Botella', 'Recomendaciones'],
                         datasets: [
-/*
-                            {   label: ["Porcentajes"],
-                                backgroundColor: "rgba(255,150,0,0.3)",
-                                borderWidth: 1,
-                                data: [100,100,100,100,100] },
-*/
                             {   label: ["Desempeño porcentual"],
                                 backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-//                                borderColor: "rgba(0,160,80, 0.3)",
-//                                borderWidth: 4,
-                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] }
+                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
+                            {   label: ["Mínimo"],
+                                backgroundColor: "rgba(255,160,160,0.1)",
+//                                borderColor: "rgba(255,255,255,0.8)",
+//                                borderWidth: 1,
+                                data: [40,40,40,40,40] },
+                            {   label: ["Óptimo"],
+                                backgroundColor: "rgba(160,160,240,0.05)",
+                                borderWidth: 1,
+                                data: [80,80,80,80,80] }
                         ]
 
                     },
