@@ -244,6 +244,137 @@ class ProcesosController extends seguridad.Shield {
         }
     }
 
+    /**
+     * Carga datos del archivo único
+     */
+    def cargarUnico() {
+        println "cargaArchivo.. $params"
+        def contador = 0
+        def tipo = params.tipoTabla
+        def cn = dbConnectionService.getConnection()
+        def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
+        new File(path).mkdirs()
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xls") {
+                fileName = params.tipoTabla
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo nombre
+
+                //********* procesar excel ***********
+                def htmlInfo = "", errores = "", doneHtml = ""
+                def file = new File(pathFile)
+                def cntanmro = 0
+                def cntadscr = 0
+                WorkbookSettings ws = new WorkbookSettings();
+                ws.setEncoding("Cp1252");
+                Workbook workbook = Workbook.getWorkbook(file, ws)
+
+                // ------------------- carga registros -----------------
+                def sheet = 0
+                Sheet s = workbook.getSheet(sheet)  // procesa solo la primera página
+                if (!s.getSettings().isHidden()) {
+                    println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+                    htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+                    Cell[] row = null
+
+                    s.getRows().times { j ->
+                        row = s.getRow(j)
+                        println row*.getContents()
+                        println row.length
+
+                        switch (tipo) {
+                            case 'Facultades':
+                                if (row.length >= 2) {
+                                    def faclnmro = row[0].getContents()
+                                    def facldscr = row[1].getContents()
+                                    if (faclnmro != "CODIGO") {  // no es el título
+                                        if (cn.rows("select count(*) cnta from facl where faclcdgo = '${faclnmro}'".toString())[0].cnta > 0) {
+                                            cntanmro++
+                                        }
+                                        if (cn.rows("select count(*) cnta from facl where facldscr = '${facldscr}'".toString())[0].cnta > 0) {
+                                            cntadscr++
+                                        }
+                                        contador++
+                                    }
+                                } //row ! empty
+                                break
+                            case 'Escuelas':
+                                if (row.length >= 3) {
+                                    def esclnmro = row[0].getContents()
+                                    def escldscr = row[1].getContents()
+                                    def faclnmro = row[2].getContents()
+                                    if (faclnmro != "CODIGO") {  // no es el título
+                                        if (cn.rows("select count(*) cnta from escl where esclcdgo = '${esclnmro}' and " +
+                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
+                                            cntanmro++
+                                        }
+                                        if (cn.rows("select count(*) cnta from escl where escldscr = '${escldscr}' and " +
+                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
+                                            cntadscr++
+                                        }
+                                        contador++
+                                    }
+                                } //row ! empty
+                                break
+                        }
+                    } //rows.each
+                } //sheet ! hidden
+                htmlInfo += "<p>Se han procesado $contador registros</p>"
+
+
+
+                if (contador > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se ha verificado correctamente $contador registros</div>"
+                    doneHtml += "<p>Existen $cntanmro registros con código repetido y, </p>"
+                    doneHtml += "<p>existen $cntadscr registros con nombre repetido</p>"
+                }
+
+                def str = htmlInfo
+                str += doneHtml
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+
+                redirect(action: 'mensajeUpload', params: [html: str])
+
+            } else {
+                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
+                redirect(action: 'validar')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(action: 'validar')
+//            println "NO FILE"
+        }
+    }
+
 
     def procesar () {
 
