@@ -41,13 +41,16 @@ class ProcesosController extends seguridad.Shield {
             case '8':
                 tabla = "Matriculados por materia"
                 break
+            case '9':
+                tabla = "Todos los datos"
+                break
         }
         println "tabla: $tabla"
         return [tipo: params.tipo, tabla: tabla]
     }
 
     def botones_ajax() {
-        println "params: $params"
+//        println "params: $params"
         return [boton: params.boton]
     }
 

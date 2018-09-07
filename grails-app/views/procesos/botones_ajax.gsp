@@ -7,6 +7,7 @@
     <a href="#" class="list-group-item btnFormato" data-id="6" id="btn6">Curso</a>
     <a href="#" class="list-group-item btnFormato" data-id="7" id="btn7">Dictan</a>
     <a href="#" class="list-group-item btnFormato" data-id="8" id="btn8">Matriculados</a>
+    <a href="#" class="list-group-item btnFormato" data-id="9" id="btn9">Archivo Completo</a>
 </div>
 
 <script type="text/javascript">

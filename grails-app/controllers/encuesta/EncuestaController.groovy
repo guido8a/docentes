@@ -63,7 +63,6 @@ class EncuestaController {
             }
 
         }
-
     }
 
     /**
@@ -132,6 +131,7 @@ class EncuestaController {
 
 
     def encuestaFE() {
+        println("entro encuesta FE" + params)
         //encuesta(tpen__id, tpif__id, prof__id, dcta__id)
         encuesta(4, 1, 0, 0, 0)
     }

@@ -181,3 +181,50 @@
     </tr>
     </tbody>
 </table>
+<table class="table table-condensed table-bordered table-striped ${tipo == '9' ? '' : 'hidden'}">
+    <thead>
+    <tr>
+        <th colspan="5">Nombre del archivo: todo.xls</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="cabecera">Código Estudiante</td>
+        <td class="cabecera">Apellidos</td>
+        <td class="cabecera">Nombres</td>
+        <td class="cabecera">Facultad</td>
+        <td class="cabecera">Carrera</td>
+    </tr>
+    <tr>
+        <td>Numérico: código</td>
+        <td>Texto</td>
+        <td>Texto</td>
+        <td>Texto</td>
+        <td>Texto</td>
+    </tr>
+    <tr>
+        <td class="cabecera">Materia</td>
+        <td class="cabecera">Código Materia</td>
+        <td class="cabecera">Curso</td>
+        <td class="cabecera">Paralelo</td>
+        <td class="cabecera">Nombre Profesor</td>
+    </tr>
+    <tr>
+        <td>Texto</td>
+        <td>Texto: código</td>
+        <td>Texto</td>
+        <td>Numérico</td>
+        <td>Texto</td>
+    </tr>
+    <tr>
+        <td class="cabecera">Apellido Profesor</td>
+        <td class="cabecera">Sexo Profesor</td>
+        <td class="cabecera">Título Profesor</td>
+    </tr>
+    <tr>
+        <td>Texto</td>
+        <td>Texto: char(1)</td>
+        <td>Texto</td>
+    </tr>
+    </tbody>
+</table>

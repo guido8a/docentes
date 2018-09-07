@@ -64,8 +64,6 @@
 
         <div class="panel-body">
             <span class="btn btn-info fileinput-button col-md-8" style="position: relative">
-                %{--<i class="glyphicon glyphicon-plus"></i>--}%
-                %{--<span>Seleccionar archivo</span>--}%
                 <input type="file" name="file" multiple="" id="archivo" class="archivo col-md-12">
                 <input type="hidden" name="tipoTabla" id="tipoTabla" value="">
             </span>
@@ -107,8 +105,8 @@
                 tipo: tipo
             },
             success: function (msg) {
-                $("#formato").html(msg)
-                $(".list-group-item").removeClass("list-group-item-danger")
+                $("#formato").html(msg);
+                $(".list-group-item").removeClass("list-group-item-danger");
                 $("#btn" + $("#tablaTipo").val()).addClass("list-group-item-danger")
             }
         })
