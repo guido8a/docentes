@@ -197,11 +197,12 @@
     </tr>
     <tr>
         <td>Numérico: código</td>
-        <td>Texto</td>
-        <td>Texto</td>
+        <td>Texto: char(31)</td>
+        <td>Texto: char(31)</td>
         <td>Texto</td>
         <td>Texto</td>
     </tr>
+    <tr style="height: 10px"></tr>
     <tr>
         <td class="cabecera">Materia</td>
         <td class="cabecera">Código Materia</td>
@@ -214,15 +215,16 @@
         <td>Texto: código</td>
         <td>Texto</td>
         <td>Numérico</td>
-        <td>Texto</td>
+        <td>Texto: char(31)</td>
     </tr>
+    <tr style="height: 10px"></tr>
     <tr>
         <td class="cabecera">Apellido Profesor</td>
         <td class="cabecera">Sexo Profesor</td>
         <td class="cabecera">Título Profesor</td>
     </tr>
     <tr>
-        <td>Texto</td>
+        <td>Texto: char(31)</td>
         <td>Texto: char(1)</td>
         <td>Texto</td>
     </tr>

@@ -42,7 +42,7 @@ class ProcesosController extends seguridad.Shield {
                 tabla = "Matriculados por materia"
                 break
             case '9':
-                tabla = "Todos los datos"
+                tabla = "Todo"
                 break
         }
         println "tabla: $tabla"
@@ -133,6 +133,7 @@ class ProcesosController extends seguridad.Shield {
             def ext
 
             def parts = fileName.split("\\.")
+            println("parts " + parts)
             fileName = ""
             parts.eachWithIndex { obj, i ->
                 if (i < parts.size() - 1) {

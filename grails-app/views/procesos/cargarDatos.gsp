@@ -169,8 +169,6 @@
                 success: function (msg){
                     bootbox.dialog({
                         title   : "¿Validar archivo para el período..?",
-//                    class   : "long",
-//                        message : "<h4>Archivo " + arch + </h4>" + msg,
                         message : "Se validará: <strong>" + arch + "</strong> como archivo de datos para <strong>" +
                            boton + "</strong>" + msg,
                         buttons : {
@@ -211,14 +209,26 @@
         }
     });
 
-    $("#cargarDatos").click(function () {
-        var foo = "bar1";
-        var foo1 = "bar2";
-        var ob  = {};
-        ob[foo] = "something";
-        ob[foo1] = "something dos";
-        alert("json:" + JSON.stringify(ob))
-    })
+//    $("#cargarDatos").click(function () {
+//        var foo = "bar1";
+//        var foo1 = "bar2";
+//        var ob  = {};
+//        ob[foo] = "something";
+//        ob[foo1] = "something dos";
+//        alert("json:" + JSON.stringify(ob))
+//    })
+
+
+    $(function () {
+        $("#cargarDatos").click(function () {
+            if($("#archivo").val()!=""){
+                $("#tipoTabla").val($("#tabla").val());
+                $("#frmaArchivo").submit();
+            }else{
+                bootbox.alert("No ha ingresado ningún archivo para ser cargado")
+            }
+        });
+    });
 
 </script>
 
