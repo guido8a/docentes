@@ -252,13 +252,14 @@ class ProcesosController extends seguridad.Shield {
      * Carga datos del archivo único
      */
     def cargarUnico() {
-        println "cargaArchivo.. $params"
+        println "cargarUnico.. $params"
         def contador = 0
         def tipo = params.tipoTabla
         def cn = dbConnectionService.getConnection()
         def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
         new File(path).mkdirs()
 
+/*
         def f = request.getFile('file')  //archivo = name del input type file
         if (f && !f.empty) {
             def fileName = f.getOriginalFilename() //nombre original del archivo
@@ -280,8 +281,8 @@ class ProcesosController extends seguridad.Shield {
                 fileName = fileName + "." + ext
 
                 def pathFile = path + fileName
-                def src = new File(pathFile)
 
+//                def src = new File(pathFile)
                 def i = 1
                 while (src.exists()) {
                     pathFile = path + fn + "_" + i + "." + ext
@@ -290,7 +291,14 @@ class ProcesosController extends seguridad.Shield {
                 }
 
                 f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo nombre
+*/
 
+
+                /** ************************** mock inicio ************************* **/
+                def pathFile = path + 'espol.xls'
+                /** fin del mock inicio **/
+
+                println "inicio del proceso de cargar datos.."
                 //********* procesar excel ***********
                 def htmlInfo = "", errores = "", doneHtml = ""
                 def file = new File(pathFile)
@@ -303,6 +311,7 @@ class ProcesosController extends seguridad.Shield {
                 // ------------------- carga registros -----------------
                 def sheet = 0
                 Sheet s = workbook.getSheet(sheet)  // procesa solo la primera página
+                println "procesa pág. 1"
                 if (!s.getSettings().isHidden()) {
                     println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
                     htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
@@ -310,44 +319,60 @@ class ProcesosController extends seguridad.Shield {
 
                     s.getRows().times { j ->
                         row = s.getRow(j)
-                        println row*.getContents()
-                        println row.length
+//                        println row*.getContents()
+//                        println "longitud de datos: ${row.length}"
 
-                        switch (tipo) {
-                            case 'Facultades':
-                                if (row.length >= 2) {
-                                    def faclnmro = row[0].getContents()
-                                    def facldscr = row[1].getContents()
-                                    if (faclnmro != "CODIGO") {  // no es el título
-                                        if (cn.rows("select count(*) cnta from facl where faclcdgo = '${faclnmro}'".toString())[0].cnta > 0) {
-                                            cntanmro++
-                                        }
-                                        if (cn.rows("select count(*) cnta from facl where facldscr = '${facldscr}'".toString())[0].cnta > 0) {
-                                            cntadscr++
-                                        }
-                                        contador++
-                                    }
-                                } //row ! empty
-                                break
-                            case 'Escuelas':
-                                if (row.length >= 3) {
-                                    def esclnmro = row[0].getContents()
-                                    def escldscr = row[1].getContents()
-                                    def faclnmro = row[2].getContents()
-                                    if (faclnmro != "CODIGO") {  // no es el título
-                                        if (cn.rows("select count(*) cnta from escl where esclcdgo = '${esclnmro}' and " +
-                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
-                                            cntanmro++
-                                        }
-                                        if (cn.rows("select count(*) cnta from escl where escldscr = '${escldscr}' and " +
-                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
-                                            cntadscr++
-                                        }
-                                        contador++
-                                    }
-                                } //row ! empty
-                                break
-                        }
+                        def sql = ""
+                        def cdgo = ""
+                        def dscr = ""
+                        def actual_id = 0
+                        if ((row.length > 12) && row[7].getContents()) {
+//                            println "procesa datos.. Estudiante: ${row[0].getContents()}"
+                            def estdcdgo = row[0].getContents()
+                            def estdapll = row[1].getContents()
+                            def estdnmbr = row[2].getContents()
+                            def facl     = row[3].getContents()
+                            def escl     = row[4].getContents()
+                            def mate     = row[5].getContents()
+                            def matecdgo = row[6].getContents()
+                            def crso     = row[7].getContents()
+                            def prll     = row[8].getContents()
+                            def profnmbr = row[9].getContents()
+                            def profapll = row[10].getContents()
+                            def profsexo = row[11].getContents().toUpperCase().trim()
+                            def proftitl = row[12].getContents()
+//                            println "sexo: ${profsexo}"
+                            if ((mate != "MATERIA") && (profsexo in ['M', 'F'])) {      // no es el título
+//                                println "procesa ${estdcdgo}"
+                                if(facl?.size() < 9) {
+                                    sql = "select facl__id from facl where faclcdgo = '${facl}'" //todo: + universidad...
+                                    cdgo = facl
+                                    dscr = facl
+                                } else {
+                                    sql = "select count(*) cnta from facl where facldscr = '${facl}'"
+                                    cdgo = facl[0..7].trim()
+                                    dscr = facl
+
+                                }
+                                actual_id = cn.rows(sql.toString())[0]?.facl__id
+                                if(!actual_id) {
+                                    println "---> inserta facultad: ${cdgo}"
+                                    sql = "insert into facl(facl__id, falcdgo, facldscr) values (default, '${cdgo}', '${dscr}')"
+
+                                } else {
+                                    sql = "update facl set falcdgo = '${cdgo}', facldscr = '${dscr}' where facl__id = ${actual_id}"
+                                }
+                                contador++
+                            } else if(row[7].getContents() && (row[5].getContents() != "MATERIA")) {
+                                errores += "<li>datos: ${row.length}:  ${row*.getContents()}</li>"
+                                println "datos: ${row.length}:  ${row*.getContents()}"
+                            }
+
+                        } else if(row[7].getContents() && (row[5].getContents() != "MATERIA")){
+                            errores += "<li>Datos: ${row.length}:  ${row*.getContents()}</li>"
+                            println "xxxxx long: ${row.length}:  ${row*.getContents()}"
+                        } //row ! empty
+
                     } //rows.each
                 } //sheet ! hidden
                 htmlInfo += "<p>Se han procesado $contador registros</p>"
@@ -362,21 +387,27 @@ class ProcesosController extends seguridad.Shield {
 
                 def str = htmlInfo
                 str += doneHtml
-                if (errores != "") {
+                if (errores) {
+                    str += "<h3>Errores al cargar el archivo de datos</h3>"
                     str += "<ol>" + errores + "</ol>"
                 }
 
+//                println ".... $errores"
                 redirect(action: 'mensajeUpload', params: [html: str])
 
-            } else {
+/*
+            } // fin de ext == "xls"
+            else {
                 flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
                 redirect(action: 'validar')
             }
-        } else {
+        }  // finde de f && !f.empty
+        else {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'validar')
-//            println "NO FILE"
+            println "NO FILE"
         }
+*/
     }
 
 
