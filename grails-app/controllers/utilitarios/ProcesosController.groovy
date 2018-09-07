@@ -357,10 +357,11 @@ class ProcesosController extends seguridad.Shield {
                                 actual_id = cn.rows(sql.toString())[0]?.facl__id
                                 if(!actual_id) {
                                     println "---> inserta facultad: ${cdgo}"
-                                    sql = "insert into facl(facl__id, falcdgo, facldscr) values (default, '${cdgo}', '${dscr}')"
-
+                                    sql = "insert into facl(facl__id, faclcdgo, facldscr) values (default, '${cdgo}', '${dscr}')"
+                                    cn.execute(sql.toString())
                                 } else {
-                                    sql = "update facl set falcdgo = '${cdgo}', facldscr = '${dscr}' where facl__id = ${actual_id}"
+                                    sql = "update facl set faclcdgo = '${cdgo}', facldscr = '${dscr}' where facl__id = ${actual_id}"
+                                    cn.execute(sql.toString())
                                 }
                                 contador++
                             } else if(row[7].getContents() && (row[5].getContents() != "MATERIA")) {
