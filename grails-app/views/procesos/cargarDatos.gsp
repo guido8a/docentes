@@ -43,7 +43,7 @@
     %{--<a href="#" class="btn col-md-3 btn-success" id="masDatos"><i class="fa fa-plus"></i> Añadir datos</a>--}%
 </div>
 
-<div class="col-md-3" id="botones">
+<div class="col-md-3" id="botones" style="height: 500px">
 
 </div>
 
@@ -53,6 +53,16 @@
 
         <div class="panel-body" id="formato">
 
+        </div>
+    </div>
+</div>
+
+<div class="col-md-8">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Seleccionar la Universidad</div>
+
+        <div class="panel-body">
+            <g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" class="form-control" optionValue="nombre" optionKey="id"/>
         </div>
     </div>
 </div>
