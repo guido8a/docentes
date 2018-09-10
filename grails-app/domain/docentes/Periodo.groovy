@@ -5,6 +5,7 @@ class Periodo {
     String nombre
     Date fechaInicio
     Date fechaFin
+    Universidad universidad
 
     static mapping = {
         table 'prdo'
@@ -17,10 +18,12 @@ class Periodo {
             nombre column: 'prdonmbr'
             fechaInicio column: 'prdofcin'
             fechaFin column: 'prdofcfn'
+            universidad column: 'univ__id'
         }
     }
 
 
     static constraints = {
+        universidad(blank: true, nullable: true)
     }
 }

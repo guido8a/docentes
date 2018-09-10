@@ -21,6 +21,8 @@ class ReporteEncuesta {
     Double valorAjustado
     int recomendacion
 
+    Universidad universidad
+
 
     static mapping = {
         table 'rpec'
@@ -48,10 +50,12 @@ class ReporteEncuesta {
             causaCuello column: 'cb_causa'
             valorAjustado column: 'ajst'
             recomendacion column: 'con_rcmn'
+            universidad column: 'univ__id'
         }
     }
 
     static constraints = {
         dictan(blank: true, nullable: true)
+        universidad(blank: true, nullable: true)
     }
 }

@@ -39,6 +39,8 @@
                     <g:sortableColumn property="codigo" title="Codigo" />
                     
                     <g:sortableColumn property="nombre" title="Nombre" />
+
+                    <th>Universidad</th>
                     
                 </tr>
             </thead>
@@ -49,7 +51,8 @@
                         <td>${fieldValue(bean: facultadInstance, field: "codigo")}</td>
                         
                         <td>${fieldValue(bean: facultadInstance, field: "nombre")}</td>
-                        
+
+                        <td>${facultadInstance?.universidad?.nombre}</td>
                     </tr>
                 </g:each>
             </tbody>

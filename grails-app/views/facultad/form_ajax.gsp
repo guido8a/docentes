@@ -31,6 +31,18 @@
                 
             </span>
         </div>
+
+        <div class="form-group ${hasErrors(bean: facultadInstance, field: 'universidad', 'error')} ">
+            <span class="grupo">
+                <label for="universidad" class="col-md-2 control-label text-info">
+                    Universidad
+                </label>
+                <div class="col-md-10">
+                    <g:select name="universidad" from="${docentes.Universidad.list().sort{it.nombre}}" optionKey="id" optionValue="nombre" value="${facultadInstance?.universidad?.id}" class="form-control required"/>
+                </div>
+
+            </span>
+        </div>
         
     </g:form>
 

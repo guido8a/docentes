@@ -9,7 +9,7 @@
     <g:if test="${facultadInstance?.codigo}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Codigo
+                Código
             </div>
             
             <div class="col-md-3">
@@ -29,6 +29,19 @@
                 <g:fieldValue bean="${facultadInstance}" field="nombre"/>
             </div>
             
+        </div>
+    </g:if>
+
+    <g:if test="${facultadInstance?.universidad}">
+        <div class="row">
+            <div class="col-md-2 text-info">
+                Universidad
+            </div>
+
+            <div class="col-md-3">
+               ${facultadInstance?.universidad?.nombre}
+            </div>
+
         </div>
     </g:if>
     
