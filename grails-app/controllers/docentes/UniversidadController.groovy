@@ -133,20 +133,17 @@ class UniversidadController extends Shield {
         if(params.id) {
             def universidadInstance = Universidad.get(params.id)
             if (!universidadInstance) {
-                render "ERROR*No se encontró Universidad."
+                render "no"
                 return
             }
             try {
                 universidadInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Universidad exitosa."
-                return
+                render "ok"
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Universidad"
-                return
+                render "no"
             }
         } else {
-            render "ERROR*No se encontró Universidad."
-            return
+            render "no"
         }
     } //delete para eliminar via ajax
     
