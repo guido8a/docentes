@@ -390,13 +390,14 @@ class ProcesosController extends seguridad.Shield {
         def reg
         def actual_id = 0
 
-        sql = "select prof__id, matecdgo, matedscr from mate " +
-                "where matecdgo = '${cdgo}' and escl__id = ${escl}" //todo: + universidad...
+        sql = "select prof__id, profnmbr, profapll, proftitl from prof " +
+                "where profnmbr = '${nmbr}' and profapll = ${apll}" //todo: + universidad...
         reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.mate__id
+        actual_id = reg?.prof__id
         if (!actual_id) {
-            println "---> inserta materia: ${cdgo}"
-            sql = "insert into mate(mate__id, escl__id, matecdgo, matedscr) " +
+            println "---> inserta profesor: ${cdgo}"
+            sql = "insert into prof(prof__id, escl__id, profcdla, profnmbr, profapll, " +
+                    "profsexo, proftitl, profetdo, profeval) " +
                     "values (default, ${escl}, '${cdgo}', '${dscr}')"
             actual_id = cn.executeInsert(sql.toString())[0][0]
         } else if (reg.matedscr != dscr) {
