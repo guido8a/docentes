@@ -57,22 +57,26 @@
     </div>
 </div>
 
-<div class="col-md-8">
-    <div class="panel panel-primary">
-        <div class="panel-heading">Seleccionar la Universidad</div>
-
-        <div class="panel-body">
-            <g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" class="form-control" optionValue="nombre" optionKey="id"/>
-        </div>
-    </div>
-</div>
 
 <div class="col-md-8">
     <g:uploadForm action="validar" method="post" name="frmaArchivo">
     <div class="panel panel-primary">
         <div class="panel-heading">Seleccionar el archivo a cargar</div>
 
+        <div class="panel-body col-md-2">
+            <label>Universidad</label>
+        </div>
+
+        <div class="panel-body col-md-8">
+          <g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" class="form-control" optionValue="nombre" optionKey="id"/>
+        </div>
+
         <div class="panel-body">
+
+            <div class="panel-body col-md-2">
+                <label>Archivo</label>
+            </div>
+
             <span class="btn btn-info fileinput-button col-md-8" style="position: relative">
                 <input type="file" name="file" multiple="" id="archivo" class="archivo col-md-12">
                 <input type="hidden" name="tipoTabla" id="tipoTabla" value="">
