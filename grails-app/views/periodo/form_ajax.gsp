@@ -8,6 +8,16 @@
     <g:form class="form-horizontal" name="frmPeriodo" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="${periodoInstance?.id}" />
 
+        <div class="form-group ${hasErrors(bean: periodoInstance, field: 'universidad', 'error')} ">
+            <span class="grupo">
+                <label for="universidad" class="col-md-2 control-label text-info">
+                    Universidad
+                </label>
+                <div class="col-md-6">
+                    <g:select name="universidad" from="${docentes.Universidad.list().sort{it.nombre}}" optionKey="id" optionValue="nombre" class="form-control"/>
+                </div>
+            </span>
+        </div>
 
         <div class="form-group ${hasErrors(bean: periodoInstance, field: 'nombre', 'error')} ">
             <span class="grupo">
@@ -15,12 +25,11 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nombre" class="allCaps form-control" value="${periodoInstance?.nombre}"/>
+                    <g:textField name="nombre" class="form-control" value="${periodoInstance?.nombre}"/>
                 </div>
 
             </span>
         </div>
-
 
         <div class="form-group ${hasErrors(bean: periodoInstance, field: 'fechaInicio', 'error')} ">
             <span class="grupo">

@@ -107,16 +107,16 @@ class PeriodoController extends Shield {
         if(params.id) {
             periodoInstance = Periodo.get(params.id)
             if(!periodoInstance) {
-                render "ERROR*No se encontró Periodo."
+                render "no"
                 return
             }
         }
         periodoInstance.properties = params
         if(!periodoInstance.save(flush: true)) {
-            render "ERROR*Ha ocurrido un error al guardar Periodo: " + renderErrors(bean: periodoInstance)
+            render "no" + renderErrors(bean: periodoInstance)
             return
         }
-        render "SUCCESS*${params.id ? 'Actualización' : 'Creación'} de Periodo exitosa."
+        render "ok"
         return
     } //save para grabar desde ajax
 
@@ -133,14 +133,14 @@ class PeriodoController extends Shield {
             }
             try {
                 periodoInstance.delete(flush: true)
-                render "SUCCESS*Eliminación de Periodo exitosa."
+                render "ok"
                 return
             } catch (DataIntegrityViolationException e) {
-                render "ERROR*Ha ocurrido un error al eliminar Periodo"
+                render "no"
                 return
             }
         } else {
-            render "ERROR*No se encontró Periodo."
+            render "no"
             return
         }
     } //delete para eliminar via ajax

@@ -13,8 +13,8 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                <g:link action="form" class="btn btn-primary btnCrear">
+                    <i class="fa fa-file-o"></i> Nuevo Período
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -29,32 +29,23 @@
             </div>
         </div>
 
-
-
-
-
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>Universidad</th>
                     <g:sortableColumn property="nombre" title="Nombre" />
-
                     <th>Fecha Inicio</th>
                     <th>Fecha Fin</th>
 
-                    %{--<g:sortableColumn property="fechaFin" title="Fecha Fin" />--}%
-                    %{----}%
-                    %{--<g:sortableColumn property="fechaInicio" title="Fecha Inicio" />--}%
-
-                    
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${periodoInstanceList}" status="i" var="periodoInstance">
+                <g:each in="${periodoInstanceList.sort{it?.universidad?.nombre}}" status="i" var="periodoInstance">
                     <tr data-id="${periodoInstance.id}">
+                        <td>${periodoInstance?.universidad?.nombre}</td>
                         <td>${fieldValue(bean: periodoInstance, field: "nombre")}</td>
                         <td><g:formatDate date="${periodoInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
                         <td><g:formatDate date="${periodoInstance.fechaFin}" format="dd-MM-yyyy" /></td>
-
                     </tr>
                 </g:each>
             </tbody>
@@ -68,18 +59,18 @@
                 var $form = $("#frmPeriodo");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
-                $btn.replaceWith(spinner);
                     $.ajax({
                         type    : "POST",
                         url     : '${createLink(action:'save_ajax')}',
                         data    : $form.serialize(),
                             success : function (msg) {
-                        var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] == "OK") {
-                            location.reload(true);
+                        if (msg == "ok") {
+                            log("Período guardado correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
                         } else {
-                            spinner.replaceWith($btn);
+                            log("Error al guardar el período","error");
                             return false;
                         }
                     }
@@ -91,7 +82,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Periodo seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Período seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -110,10 +101,13 @@
                                         id : itemId
                                     },
                                     success : function (msg) {
-                                        var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                                        if (parts[0] == "OK") {
-                                            location.reload(true);
+                                        if (msg == "ok") {
+                                            log("Período eliminado correctamente", "success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 800);
+                                        }else{
+                                            log("Error al eliminar el período","error")
                                         }
                                     }
                                 });
