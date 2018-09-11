@@ -1,11 +1,17 @@
 package utilitarios
 
 import docentes.Periodo
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.dao.DataIntegrityViolationException
 import jxl.Cell
 import jxl.Sheet
 import jxl.Workbook
 import jxl.WorkbookSettings
+
+
 
 class ProcesosController extends seguridad.Shield {
     def dbConnectionService
@@ -250,7 +256,6 @@ class ProcesosController extends seguridad.Shield {
         } else {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'validar')
-//            println "NO FILE"
         }
     }
 
@@ -523,6 +528,50 @@ class ProcesosController extends seguridad.Shield {
             println "error $e"
             render "error"
         }
+    }
+
+
+
+//    public static void readXLSXFile() throws IOException
+    def readXLSXFile()
+    {
+
+        def path = servletContext.getRealPath("/")
+        InputStream ExcelFileToRead = new FileInputStream(path + "xlsData/espol.xlsx");
+        XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
+
+        XSSFWorkbook test = new XSSFWorkbook();
+
+        XSSFSheet sheet = wb.getSheetAt(0);
+        XSSFRow row;
+        XSSFCell cell;
+
+        Iterator rows = sheet.rowIterator();
+
+        while (rows.hasNext())
+        {
+            row=(XSSFRow) rows.next();
+            Iterator cells = row.cellIterator();
+            while (cells.hasNext())
+            {
+                cell=(XSSFCell) cells.next();
+
+                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+                {
+                    System.out.print(cell.getStringCellValue()+" ");
+                }
+                else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+                {
+                    System.out.print(cell.getNumericCellValue()+" ");
+                }
+                else
+                {
+                    //U Can Handel Boolean, Formula, Errors
+                }
+            }
+            System.out.println();
+        }
+
     }
 
 
