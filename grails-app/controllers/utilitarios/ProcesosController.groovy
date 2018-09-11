@@ -129,6 +129,7 @@ class ProcesosController extends seguridad.Shield {
         println "cargaArchivo.. $params"
         def contador = 0
         def tipo = params.tipoTabla
+        def univ = params.universidad
         def cn = dbConnectionService.getConnection()
         def path = servletContext.getRealPath("/") + "xlsData/"   //web-app/archivos
         new File(path).mkdirs()
@@ -223,7 +224,7 @@ class ProcesosController extends seguridad.Shield {
                                 } //row ! empty
                                 break
                             case 'Todo':
-                                def rslt = cargaDatos(row)
+                                def rslt = cargaDatos(univ, row)
                                 errores += rslt.errores
                                 contador += rslt.cnta
                                 break
@@ -262,7 +263,7 @@ class ProcesosController extends seguridad.Shield {
     /**
      * Carga datos del archivo único
      */
-    def cargaDatos(row) {
+    def cargaDatos(univ, row) {
         def sql = ""
         def cdgo = ""
         def dscr = ""
@@ -288,10 +289,13 @@ class ProcesosController extends seguridad.Shield {
             def proftitl = row[12].getContents()
 //                            println "sexo: ${profsexo}"
             if ((mate != "MATERIA") && (profsexo in ['M', 'F'])) {      // no es el título
-//              println "procesa facultades"
-                def facl__id = datosFacl(facl.toUpperCase())             // crea facultad
+              println "procesa facultades"
+                def facl__id = datosFacl(univ, facl.toUpperCase())             // crea facultad
+                println "procesa escuelas"
                 def escl__id = datosEscl(escl.toUpperCase(), facl__id)   // crea escuela
+                println "procesa materias"
                 def mate__id = datosMate(matecdgo, mate, escl__id)   // crea escuela
+                println "procesa profesores"
                 def prof__id = datosProf(profnmbr, profapll, profsexo, proftitl, escl__id)   // crea escuela
                 println "---> ids: ${facl__id}, ${escl__id}, ${mate__id}"
                 cnta++
@@ -307,10 +311,11 @@ class ProcesosController extends seguridad.Shield {
         return [errores: errores, cnta: cnta]
     }
 
-    def datosFacl(dscr) {
+    def datosFacl(univ, dscr) {
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def cdgo = ""
+        def sqlWh = " and univ__id = ${univ}"
         def actual_id = 0
 
         if (dscr?.size() < 9) {
@@ -322,6 +327,7 @@ class ProcesosController extends seguridad.Shield {
             cdgo = dscr[0..7].trim()
             dscr = dscr
         }
+        sql += sqlWh
         actual_id = cn.rows(sql.toString())[0]?.facl__id
         def facldscr = cn.rows(sql.toString())[0]?.facldscr
         def faclcdgo = cn.rows(sql.toString())[0]?.faclcdgo
@@ -393,14 +399,19 @@ class ProcesosController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def reg
+        def cnta = 0
         def actual_id = 0
 
         sql = "select prof__id, profnmbr, profapll, proftitl from prof " +
-                "where profnmbr = '${nmbr}' and profapll = ${apll}" //todo: + universidad...
+                "where profnmbr = '${nmbr}' and profapll = '${apll}' and escl__id = ${escl}" //todo: + universidad...
+        println "sql: $sql"
         reg = cn.rows(sql.toString())[0]
         actual_id = reg?.prof__id
+        sql = "select count(*) cnta from prof, escl, facl where escl.escl__id = prof.escl__id and" +
+                "facl.facl__id = escl.facl__id and univ__id = 1"
+        println "cnta: $sql"
         if (!actual_id) {
-            println "---> inserta profesor: ${cdgo}"
+            println "---> inserta profesor: ${nmbr}"
             sql = "insert into prof(prof__id, escl__id, profcdla, profnmbr, profapll, " +
                     "profsexo, proftitl, profetdo, profeval) " +
                     "values (default, ${escl}, '${cdgo}', '${dscr}')"
