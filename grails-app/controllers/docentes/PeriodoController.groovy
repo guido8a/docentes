@@ -145,4 +145,12 @@ class PeriodoController extends Shield {
         }
     } //delete para eliminar via ajax
     
+    def periodoUniversidad_ajax () {
+
+        def universidad = Universidad.get(params.uni)
+        def periodo = Periodo.findAllByUniversidad(universidad)
+
+        return [periodos: periodo]
+    }
+    
 }

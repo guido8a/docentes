@@ -64,12 +64,14 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Seleccionar el archivo a cargar</div>
 
-        <div class="panel-body col-md-2">
+        <div class="panel-body col-md-7">
             <label>Universidad</label>
+            <g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" id="universidadId" class="form-control" optionValue="nombre" optionKey="id"/>
         </div>
 
-        <div class="panel-body col-md-8">
-          <g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" class="form-control" optionValue="nombre" optionKey="id"/>
+        <div class="panel-body col-md-5" id="divPeriodo">
+            %{--<label>Período</label>--}%
+            %{--<g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" class="form-control" optionValue="nombre" optionKey="id"/>--}%
         </div>
 
         <div class="panel-body">
@@ -86,12 +88,33 @@
             <div class="col-md-4" id="spinner">
             </div>
         </div>
-
     </div>
     </g:uploadForm>
 </div>
 
 <script type="text/javascript">
+
+
+   $("#universidadId").change(function () {
+       var id = $("#universidadId option:selected").val();
+       cargarPeriodo(id)
+   });
+
+    cargarPeriodo($("#universidadId").val());
+
+    function cargarPeriodo(uni) {
+        $.ajax({
+           type: 'POST',
+            url: '${createLink(controller: 'periodo', action: 'periodoUniversidad_ajax')}',
+            data:{
+                uni: uni
+            },
+            success: function (msg){
+                $("#divPeriodo").html(msg)
+            }
+        });
+    }
+
 
     var url = "${resource(dir:'images', file:'spinner64.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' width='40px' height='40px'/><span> Cargando...</span>");
@@ -245,10 +268,6 @@
         });
     });
 
-
-    %{--$("#cargarPrueba").click(function () {--}%
-       %{--location.href='${createLink(controller: 'procesos', action: 'readXLSXFile')}'--}%
-    %{--});--}%
 
 </script>
 
