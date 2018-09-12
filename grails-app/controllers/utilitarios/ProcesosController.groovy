@@ -1,5 +1,6 @@
 package utilitarios
 
+import com.google.common.collect.Iterables
 import docentes.Periodo
 import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFRow
@@ -330,10 +331,20 @@ class ProcesosController extends seguridad.Shield {
 
 
 
-                println("ssss "  + cells.size())
+//                println("ssss "  + Iterables.size(cells))
+
+                def cont = 0
+
+                while(cells.hasNext()){
+                    cells.next()
+                    cont++
+                }
 
 
-                if(cells.size().toString() == '13'){
+                println("cont " + cont)
+
+//                if(cells.size().toString() == '13'){
+                if(cont == 13){
 
 //                    cell=(XSSFCell) cells.next();
 
