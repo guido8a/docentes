@@ -330,7 +330,7 @@ class ProcesosController extends seguridad.Shield {
 
 
 
-//                println("ssss "  + cells.size())
+                println("ssss "  + cells.size())
 
 
                 if(cells.size().toString() == '13'){
