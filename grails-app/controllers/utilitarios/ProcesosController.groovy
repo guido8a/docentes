@@ -150,7 +150,10 @@ class ProcesosController extends seguridad.Shield {
                 }
             }
 
-            fileName = params.tipoTabla
+            //codigo antiguo
+
+            if (ext == "xls") {
+                fileName = params.tipoTabla
                 def fn = fileName
                 fileName = fileName + "." + ext
 
@@ -164,52 +167,31 @@ class ProcesosController extends seguridad.Shield {
                     i++
                 }
 
-                f.transferTo(new File(pathFile))
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo nombre
 
-            //nueva parte XLSX
+                //********* procesar excel ***********
+                def htmlInfo = "", errores = "", doneHtml = ""
+                def file = new File(pathFile)
+                def cntanmro = 0
+                def cntadscr = 0
+                WorkbookSettings ws = new WorkbookSettings();
+                ws.setEncoding("Cp1252");
+                Workbook workbook = Workbook.getWorkbook(file, ws)
 
+                // ------------------- carga registros -----------------
+                def sheet = 0
+                Sheet s = workbook.getSheet(sheet)  // procesa solo la primera página
+                if (!s.getSettings().isHidden()) {
+                    println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+                    htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+                    Cell[] row = null
 
-//            def path = servletContext.getRealPath("/")
-            InputStream ExcelFileToRead = new FileInputStream(pathFile);
-            XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
+                    s.getRows().times { j ->
+                        row = s.getRow(j)
+//                        println row*.getContents()
+//                        println row.length
 
-            XSSFWorkbook test = new XSSFWorkbook();
-
-            XSSFSheet sheet = wb.getSheetAt(0);
-            XSSFRow row;
-            XSSFCell cell;
-
-            Iterator rows = sheet.rowIterator();
-
-            Cell[] row1 = null
-            def cnta = 0
-            println "......1"
-            while (rows.hasNext())
-            {
-                row = (XSSFRow) rows.next();
-                Iterator cells = row.cellIterator();
-                println "row: $row"
-                while (cells.hasNext())
-                {
-                    row1[cnta++] = (XSSFCell) cells.next();
-
-/*
-                    if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
-                    {
-                        System.out.print(cell.getStringCellValue()+" ");
-                    }
-                    else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
-                    {
-                        System.out.print(cell.getNumericCellValue()+" ");
-                    }
-*/
-                }
-            }
-            println "row: $row1"
-
-/*
-
-                                    switch (tipo) {
+                        switch (tipo) {
                             case 'Facultades':
                                 if (row.length >= 2) {
                                     def faclnmro = row[0].getContents()
@@ -244,7 +226,7 @@ class ProcesosController extends seguridad.Shield {
                                 } //row ! empty
                                 break
                             case 'Todo':
-                                def rslt = cargaDatos(univ, row)
+                                def rslt = cargaDatos(row)
                                 errores += rslt.errores
                                 contador += rslt.cnta
                                 break
@@ -252,113 +234,148 @@ class ProcesosController extends seguridad.Shield {
                     } //rows.each
                 } //sheet ! hidden
                 htmlInfo += "<p>Se han procesado $contador registros</p>"
-*/
+
+                if (contador > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se ha verificado correctamente $contador registros</div>"
+                    doneHtml += "<p>Existen $cntanmro registros con código repetido y, </p>"
+                    doneHtml += "<p>existen $cntadscr registros con nombre repetido</p>"
+                }
+
+                def str = htmlInfo
+                str += doneHtml
+                if (errores != "") {
+                    str += "<h3>Errores al cargar el archivo de datos</h3>"
+                    str += "<ol>" + errores + "</ol>"
+                }
+
+                redirect(action: 'mensajeUpload', params: [html: str])
+
+            } else {
+                if(ext == 'xlsx'){
+
+                fileName = params.tipoTabla
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def ij = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + ij + "." + ext
+                    src = new File(pathFile)
+                    ij++
+                }
+
+                f.transferTo(new File(pathFile))
+
+//                    switch (tipo) {
+//                        case 'Facultades':
+//                            if (row.length >= 2) {
+//                                def faclnmro = row[0].getContents()
+//                                def facldscr = row[1].getContents()
+//                                if (faclnmro != "CODIGO") {  // no es el título
+//                                    if (cn.rows("select count(*) cnta from facl where faclcdgo = '${faclnmro}'".toString())[0].cnta > 0) {
+//                                        cntanmro++
+//                                    }
+//                                    if (cn.rows("select count(*) cnta from facl where facldscr = '${facldscr}'".toString())[0].cnta > 0) {
+//                                        cntadscr++
+//                                    }
+//                                    contador++
+//                                }
+//                            } //row ! empty
+//                            break
+//                        case 'Escuelas':
+//                            if (row.length >= 3) {
+//                                def esclnmro = row[0].getContents()
+//                                def escldscr = row[1].getContents()
+//                                def faclnmro = row[2].getContents()
+//                                if (faclnmro != "CODIGO") {  // no es el título
+//                                    if (cn.rows("select count(*) cnta from escl where esclcdgo = '${esclnmro}' and " +
+//                                            "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
+//                                        cntanmro++
+//                                    }
+//                                    if (cn.rows("select count(*) cnta from escl where escldscr = '${escldscr}' and " +
+//                                            "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
+//                                        cntadscr++
+//                                    }
+//                                    contador++
+//                                }
+//                            } //row ! empty
+//                            break
+//                        case 'Todo':
+//                            def rslt = cargaDatos(row)
+//                            errores += rslt.errores
+//                            contador += rslt.cnta
+//                            break
+//                    }
 
 
-//            if (ext == "xls") {
-//                fileName = params.tipoTabla
-//                def fn = fileName
-//                fileName = fileName + "." + ext
+
+            InputStream ExcelFileToRead = new FileInputStream(pathFile);
+            XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
+
+            XSSFWorkbook test = new XSSFWorkbook();
+
+            XSSFSheet sheet = wb.getSheetAt(0);
+            XSSFRow row;
+            XSSFCell cell;
+
+            Iterator rows = sheet.rowIterator();
+
+            while (rows.hasNext())
+            {
+                row=(XSSFRow) rows.next();
+                Iterator cells = row.cellIterator();
+
+
+
+//                println("ssss "  + cells.size())
+
+
+                if(cells.size().toString() == '13'){
+
+//                    cell=(XSSFCell) cells.next();
+
+                    println("cell " + row.getCell(1)+ ""  )
+
+
+//                    if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+//                    {
+//                        System.out.print(cell.getStringCellValue()+" ");
+//                    }
+//                    else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+//                    {
+//                        System.out.print(cell.getNumericCellValue()+" ");
+//                    }
+                }
 //
-//                def pathFile = path + fileName
-//                def src = new File(pathFile)
-//
-//                def i = 1
-//                while (src.exists()) {
-//                    pathFile = path + fn + "_" + i + "." + ext
-//                    src = new File(pathFile)
-//                    i++
+//                while (cells.hasNext())
+//                {
+//                    cell=(XSSFCell) cells.next();
+
+
+
+//                    if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+//                    {
+//                        System.out.print(cell.getStringCellValue()+" ");
+//                    }
+//                    else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+//                    {
+//                        System.out.print(cell.getNumericCellValue()+" ");
+//                    }
+//                    else
+//                    {
+//                    }
 //                }
-//
-//                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo nombre
-//
-//                //********* procesar excel ***********
-//                def htmlInfo = "", errores = "", doneHtml = ""
-//                def file = new File(pathFile)
-//                def cntanmro = 0
-//                def cntadscr = 0
-//                WorkbookSettings ws = new WorkbookSettings();
-//                ws.setEncoding("Cp1252");
-//                Workbook workbook = Workbook.getWorkbook(file, ws)
-//
-//                // ------------------- carga registros -----------------
-//                def sheet = 0
-//                Sheet s = workbook.getSheet(sheet)  // procesa solo la primera página
-//                if (!s.getSettings().isHidden()) {
-//                    println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
-//                    htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
-//                    Cell[] row = null
-//
-//                    s.getRows().times { j ->
-//                        row = s.getRow(j)
-////                        println row*.getContents()
-////                        println row.length
-//
-//                        switch (tipo) {
-//                            case 'Facultades':
-//                                if (row.length >= 2) {
-//                                    def faclnmro = row[0].getContents()
-//                                    def facldscr = row[1].getContents()
-//                                    if (faclnmro != "CODIGO") {  // no es el título
-//                                        if (cn.rows("select count(*) cnta from facl where faclcdgo = '${faclnmro}'".toString())[0].cnta > 0) {
-//                                            cntanmro++
-//                                        }
-//                                        if (cn.rows("select count(*) cnta from facl where facldscr = '${facldscr}'".toString())[0].cnta > 0) {
-//                                            cntadscr++
-//                                        }
-//                                        contador++
-//                                    }
-//                                } //row ! empty
-//                                break
-//                            case 'Escuelas':
-//                                if (row.length >= 3) {
-//                                    def esclnmro = row[0].getContents()
-//                                    def escldscr = row[1].getContents()
-//                                    def faclnmro = row[2].getContents()
-//                                    if (faclnmro != "CODIGO") {  // no es el título
-//                                        if (cn.rows("select count(*) cnta from escl where esclcdgo = '${esclnmro}' and " +
-//                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
-//                                            cntanmro++
-//                                        }
-//                                        if (cn.rows("select count(*) cnta from escl where escldscr = '${escldscr}' and " +
-//                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
-//                                            cntadscr++
-//                                        }
-//                                        contador++
-//                                    }
-//                                } //row ! empty
-//                                break
-//                            case 'Todo':
-//                                def rslt = cargaDatos(row)
-//                                errores += rslt.errores
-//                                contador += rslt.cnta
-//                                break
-//                        }
-//                    } //rows.each
-//                } //sheet ! hidden
-//                htmlInfo += "<p>Se han procesado $contador registros</p>"
-//
-//
-//
-//                if (contador > 0) {
-//                    doneHtml = "<div class='alert alert-success'>Se ha verificado correctamente $contador registros</div>"
-//                    doneHtml += "<p>Existen $cntanmro registros con código repetido y, </p>"
-//                    doneHtml += "<p>existen $cntadscr registros con nombre repetido</p>"
-//                }
-//
-//                def str = htmlInfo
-//                str += doneHtml
-//                if (errores != "") {
-//                    str += "<h3>Errores al cargar el archivo de datos</h3>"
-//                    str += "<ol>" + errores + "</ol>"
-//                }
-//
-//                redirect(action: 'mensajeUpload', params: [html: str])
-//
-//            } else {
-//                flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
-//                redirect(action: 'validar')
-//            }
+//                System.out.println();
+            }
+
+                }else{
+                    flash.message = "Seleccione un archivo Excel con extensión xls o xlsx para ser procesado"
+                    redirect(action: 'validar')
+                }
+            }
         } else {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'validar')
@@ -377,38 +394,31 @@ class ProcesosController extends seguridad.Shield {
         def cnta = 0
         def cn = dbConnectionService.getConnection()
 
-        println "cargar datos...."
-        if ((row.length > 13) && row[7].getContents()) {
+        if ((row.length > 12) && row[7].getContents()) {
 //                            println "procesa datos.. Estudiante: ${row[0].getContents()}"
-            def estdcdgo = row[0].getContents().trim()
-            def estdapll = row[1].getContents().trim()
-            def estdnmbr = row[2].getContents().trim()
-            def facl = row[3].getContents().trim()
-            def escl = row[4].getContents().trim()
-            def mate = row[5].getContents().trim()
-            def matecdgo = row[6].getContents().trim()
-            def crso = row[7].getContents().trim()
-            def prll = row[8].getContents().trim()
-            def profcdla = row[9].getContents().trim()
-            def profnmbr = row[10].getContents().trim()
-            def profapll = row[11].getContents().trim()
-            def profsexo = row[12].getContents().toUpperCase().trim()
-            def proftitl = row[13].getContents().trim()
-            println "sexo: ${profsexo}"
+            def estdcdgo = row[0].getContents()
+            def estdapll = row[1].getContents()
+            def estdnmbr = row[2].getContents()
+            def facl = row[3].getContents()
+            def escl = row[4].getContents()
+            def mate = row[5].getContents()
+            def matecdgo = row[6].getContents()
+            def crso = row[7].getContents()
+            def prll = row[8].getContents()
+            def profnmbr = row[9].getContents()
+            def profapll = row[10].getContents()
+            def profsexo = row[11].getContents().toUpperCase().trim()
+            def proftitl = row[12].getContents()
+//                            println "sexo: ${profsexo}"
             if ((mate != "MATERIA") && (profsexo in ['M', 'F'])) {      // no es el título
-//                println "procesa facultades"
+              println "procesa facultades"
                 def facl__id = datosFacl(univ, facl.toUpperCase())             // crea facultad
-//                println "procesa escuelas"
+                println "procesa escuelas"
                 def escl__id = datosEscl(escl.toUpperCase(), facl__id)   // crea escuela
-//                println "procesa materias"
+                println "procesa materias"
                 def mate__id = datosMate(matecdgo, mate, escl__id)   // crea escuela
-//                println "procesa profesores"
-                def prof__id = datosProf(profcdla, profnmbr, profapll, profsexo, proftitl, escl__id)   // crea porf
-                def estd__id = datosEstd(estdcdgo, estdnmbr, estdapll)   // crea estd
-                def crso__id = datosCrso(crso)   // crea estd
-//                def dcta__id = datosDcta(prof__id, mate__id, crso__id, prdo__id, prll)   // todo: params.prdo
-                def dcta__id = datosDcta(prof__id, mate__id, crso__id, 4, prll)   // todo: params.prdo
-                def matr__id = datosMatr(estd__id, dcta__id)
+                println "procesa profesores"
+                def prof__id = datosProf(profnmbr, profapll, profsexo, proftitl, escl__id)   // crea escuela
                 println "---> ids: ${facl__id}, ${escl__id}, ${mate__id}"
                 cnta++
             } else if (row[7].getContents() && (row[5].getContents() != "MATERIA")) {
@@ -431,7 +441,7 @@ class ProcesosController extends seguridad.Shield {
         def actual_id = 0
 
         if (dscr?.size() < 9) {
-            sql = "select facl__id, faclcdgo, facldscr from facl where faclcdgo = '${dscr}'"
+            sql = "select facl__id, faclcdgo, facldscr from facl where faclcdgo = '${dscr}'" //todo: + universidad...
             cdgo = dscr
             dscr = dscr
         } else {
@@ -445,8 +455,7 @@ class ProcesosController extends seguridad.Shield {
         def faclcdgo = cn.rows(sql.toString())[0]?.faclcdgo
         if (!actual_id) {
             println "---> inserta facultad: ${cdgo}"
-            sql = "insert into facl(facl__id, faclcdgo, facldscr, univ__id) " +
-                    "values (default, '${cdgo}', '${dscr}', ${univ})"
+            sql = "insert into facl(facl__id, faclcdgo, facldscr) values (default, '${cdgo}', '${dscr}')"
             actual_id = cn.executeInsert(sql.toString())[0][0]
         } else if (faclcdgo != cdgo && facldscr != dscr){
             sql = "update facl set faclcdgo = '${cdgo}', facldscr = '${dscr}' where facl__id = ${actual_id}"
@@ -464,7 +473,7 @@ class ProcesosController extends seguridad.Shield {
 
         if (dscr?.size() < 9) {
             sql = "select escl__id, esclcdgo, escldscr from escl " +
-                    "where esclcdgo = '${dscr}' and facl__id = ${facl}"
+                    "where esclcdgo = '${dscr}' and facl__id = ${facl}" //todo: + universidad...
             cdgo = dscr
             dscr = dscr
         } else {
@@ -493,7 +502,7 @@ class ProcesosController extends seguridad.Shield {
         def actual_id = 0
 
         sql = "select mate__id, matecdgo, matedscr from mate " +
-                "where matecdgo = '${cdgo}' and escl__id = ${escl}"
+                "where matecdgo = '${cdgo}' and escl__id = ${escl}" //todo: + universidad...
         reg = cn.rows(sql.toString())[0]
         actual_id = reg?.mate__id
         if (!actual_id) {
@@ -508,7 +517,7 @@ class ProcesosController extends seguridad.Shield {
         return actual_id
     }
 
-    def datosProf(cdla, nmbr, apll, sexo, titl, escl) {
+    def datosProf(nmbr, apll, sexo, titl, escl) {
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def reg
@@ -516,115 +525,26 @@ class ProcesosController extends seguridad.Shield {
         def actual_id = 0
 
         sql = "select prof__id, profnmbr, profapll, proftitl from prof " +
-                "where profcdla = '${cdla}'"
+                "where profnmbr = '${nmbr}' and profapll = '${apll}' and escl__id = ${escl}" //todo: + universidad...
         println "sql: $sql"
         reg = cn.rows(sql.toString())[0]
         actual_id = reg?.prof__id
+        sql = "select count(*) cnta from prof, escl, facl where escl.escl__id = prof.escl__id and" +
+                "facl.facl__id = escl.facl__id and univ__id = 1"
+        println "cnta: $sql"
         if (!actual_id) {
             println "---> inserta profesor: ${nmbr}"
             sql = "insert into prof(prof__id, escl__id, profcdla, profnmbr, profapll, " +
                     "profsexo, proftitl, profetdo, profeval) " +
-                    "values (default, ${escl}, '${cdla}', '${nmbr}', '${apll}', " +
-                    "'${sexo}', '${titl?:''}', 'N', 'N')"
+                    "values (default, ${escl}, '${cdgo}', '${dscr}')"
             actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (reg.profnmbr != nmbr || reg.profapll != apll)  {
-            sql = "update prof set profnmbr = '${nmbr}', profapll = '${apll}' where prof__id = ${actual_id}"
+        } else if (reg.matedscr != dscr) {
+            sql = "update mate set matedscr = '${dscr}' where mate__id = ${actual_id}"
             cn.execute(sql.toString())
-            println "corrige: ${cdla} de ${reg.profnmbr} ${reg.profapll} a ${nmbr} ${apll}"
         }
         return actual_id
     }
 
-    def datosEstd(cdgo, nmbr, apll) {
-        def cn = dbConnectionService.getConnection()
-        def sql = ""
-        def reg
-        def cnta = 0
-        def actual_id = 0
-
-        sql = "select estd__id, estdnmbr, estdapll from estd " +
-                "where estdcdla = '${cdgo}'"
-        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.estd__id
-        if (!actual_id) {
-            println "---> inserta estd: ${nmbr}"
-            sql = "insert into estd(estd__id, estdcdla, estdnmbr, estdapll) " +
-                    "values (default, '${cdgo}', '${nmbr}', '${apll}')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (reg.estdnmbr != nmbr || reg.estdapll != apll)  {
-            sql = "update estd set estdnmbr = '${nmbr}', estdapll = '${apll}' where estd__id = ${actual_id}"
-            cn.execute(sql.toString())
-            println "corrige estd: ${cdgo} de ${reg.estdnmbr} ${reg.estdapll} a ${nmbr} ${apll}"
-        }
-        return actual_id
-    }
-
-    def datosCrso(crso) {
-        def cn = dbConnectionService.getConnection()
-        def sql = ""
-        def reg
-        def cnta = 0
-        def actual_id = 0
-
-        sql = "select crso__id, crsodscr from crso where crsodscr = '${crso}'"
-        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.crso__id
-        if (!actual_id) {
-            println "---> inserta crso: ${crso}"
-            sql = "insert into crso(crso__id, crsodscr) values (default, '${crso}')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        }
-        return actual_id
-    }
-
-    def datosDcta(prof, mate, crso, prdo, prll) {
-        def cn = dbConnectionService.getConnection()
-        def sql = ""
-        def reg
-        def cnta = 0
-        def actual_id = 0
-
-        sql = "select dcta__id, dctaprll from dcta where prof__id = ${prof} and mate__id = ${mate} and " +
-                "crso__id = ${crso} and prdo__id = ${prdo} and dctaprll = ${prll}"
-        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.dcta__id
-        if (!actual_id) {
-            println "---> inserta dcta: ${prll}"
-            sql = "insert into dcta(dcta__id, prof__id, mate__id, crso__id, prdo__id, dctaprll) " +
-                    "values (default, ${prof}, ${mate}, ${crso}, ${prdo}, ${prll} )"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        }
-        return actual_id
-    }
-
-        def datosMatr(estd, dcta) {
-        def cn = dbConnectionService.getConnection()
-        def sql = ""
-        def reg
-        def cnta = 0
-        def actual_id = 0
-
-        sql = "select matr__id from matr where estd__id = ${estd} and dcta__id = ${dcta}"
-        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.matr__id
-        if (!actual_id) {
-            println "---> inserta matr: ${dcta}"
-            sql = "insert into matr(matr__id, estd__id, dcta__id) " +
-                    "values (default, ${estd}, ${dcta})"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        }
-        return actual_id
-    }
-
-
-    @Override
-    boolean isAllowed() {
-        return super.isAllowed()
-    }
 
     def procesar() {
 
