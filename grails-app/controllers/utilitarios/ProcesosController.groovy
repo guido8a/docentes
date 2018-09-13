@@ -309,8 +309,14 @@ class ProcesosController extends seguridad.Shield {
 
                     switch (tipo) {
                         case 'Facultades':
+                            def rslt = cargarDatosFacultades(univ, rgst)
+                            errores += rslt.errores
+                            contador += rslt.cnta
                             break
                         case 'Escuelas':
+                            def rslt = cargarDatosEscuelas(rgst)
+                            errores += rslt.errores
+                            contador += rslt.cnta
                             break
                         case 'Todo':
                             def rslt = cargaDatos(univ, rgst, prdo)
@@ -382,9 +388,9 @@ class ProcesosController extends seguridad.Shield {
 //            println "sexo: ${profsexo}"
             if ((mate != "MATERIA") && (profsexo in ['M', 'F'])) {      // no es el título
 //                println "procesa facultades"
-                def facl__id = datosFacl(univ, facl.toUpperCase())             // crea facultad
+                def facl__id = datosFacl(univ, facl.toUpperCase(),null)             // crea facultad
 //                println "procesa escuelas"
-                def escl__id = datosEscl(escl.toUpperCase(), facl__id)   // crea escuela
+                def escl__id = datosEscl(escl.toUpperCase(), facl__id, null)   // crea escuela
 //                println "procesa materias"
                 def mate__id = datosMate(matecdgo, mate, escl__id)   // crea escuela
 //                println "procesa profesores"
@@ -408,7 +414,7 @@ class ProcesosController extends seguridad.Shield {
         return [errores: errores, cnta: cnta]
     }
 
-    def datosFacl(univ, dscr) {
+    def datosFacl(univ, dscr, cod) {
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def cdgo = ""
@@ -416,12 +422,14 @@ class ProcesosController extends seguridad.Shield {
         def actual_id = 0
 
         if (dscr?.size() < 9) {
-            sql = "select facl__id, faclcdgo, facldscr from facl where faclcdgo = '${dscr}'"
-            cdgo = dscr
+//            sql = "select facl__id, faclcdgo, facldscr from facl where faclcdgo = '${dscr}'"
+            sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
+            cdgo = cod ?: dscr
             dscr = dscr
         } else {
-            sql = "select escl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
-            cdgo = dscr[0..7].trim()
+//            sql = "select escl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
+            sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
+            cdgo = cod ?: dscr[0..7].trim()
             dscr = dscr
         }
         sql += sqlWh
@@ -440,34 +448,49 @@ class ProcesosController extends seguridad.Shield {
         return actual_id
     }
 
-    def datosEscl(dscr, facl) {
+    def datosEscl(dscr, facl, cod) {
         def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
         def sql = ""
+        def sql2 = ""
         def cdgo = ""
         def reg
         def actual_id = 0
+        def repetido
 
         if (dscr?.size() < 9) {
-            sql = "select escl__id, esclcdgo, escldscr from escl " +
-                    "where esclcdgo = '${dscr}' and facl__id = ${facl}"
-            cdgo = dscr
+//            sql = "select escl__id, esclcdgo, escldscr from escl where esclcdgo = '${dscr}' and facl__id = ${facl}"
+            sql = "select escl__id, esclcdgo, escldscr from escl where escldscr = '${dscr}' and facl__id = ${facl}"
+            cdgo = cod ?: dscr
             dscr = dscr
         } else {
             sql = "select escl__id, esclcdgo, escldscr from escl where escldscr = '${dscr}' and facl__id = ${facl}"
-            cdgo = dscr[0..7].trim()
+            cdgo = cod ?: dscr[0..7].trim()
             dscr = dscr
         }
+
+        sql2 = "select esclcdgo from escl where esclcdgo = '${cod}'"
+
+        repetido = cn2.rows(sql2.toString())[0]?.esclcdgo
+
         reg = cn.rows(sql.toString())[0]
         actual_id = reg?.escl__id
-        if (!actual_id) {
-            println "---> inserta escuela: ${cdgo}"
-            sql = "insert into escl(escl__id, facl__id, esclcdgo, escldscr) " +
-                    "values (default, ${facl}, '${cdgo}', '${dscr}')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (reg.esclcdgo != cdgo && reg.escldscr != dscr) {
-            sql = "update escl set esclcdgo = '${cdgo}', escldscr = '${dscr}' where escl__id = ${actual_id}"
-            cn.execute(sql.toString())
+
+        if(!repetido){
+            if (!actual_id) {
+                println "---> inserta escuela: ${cdgo}"
+                sql = "insert into escl(escl__id, facl__id, esclcdgo, escldscr) " +
+                        "values (default, ${facl}, '${cdgo}', '${dscr}')"
+                actual_id = cn.executeInsert(sql.toString())[0][0]
+            } else if (reg.esclcdgo != cdgo && reg.escldscr != dscr) {
+                sql = "update escl set esclcdgo = '${cdgo}', escldscr = '${dscr}' where escl__id = ${actual_id}"
+                cn.execute(sql.toString())
+            }else if(reg.esclcdgo != cdgo){
+                sql = "update escl set esclcdgo = '${cdgo}' where escl__id = ${actual_id}"
+                cn.execute(sql.toString())
+            }
         }
+
         return actual_id
     }
 
@@ -724,37 +747,76 @@ class ProcesosController extends seguridad.Shield {
     }
 
 //    public static void readXLSXFile() throws IOException
-    def readXLSXFile() {
+//    def readXLSXFile() {
+//
+//        def path = servletContext.getRealPath("/")
+//        InputStream ExcelFileToRead = new FileInputStream(path + "xlsData/espol.xlsx");
+//        XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
+//
+//        XSSFWorkbook test = new XSSFWorkbook();
+//
+//        XSSFSheet sheet = wb.getSheetAt(0);
+//        XSSFRow row;
+//        XSSFCell cell;
+//
+//        Iterator rows = sheet.rowIterator();
+//
+//        while (rows.hasNext()) {
+//            row = (XSSFRow) rows.next();
+//            Iterator cells = row.cellIterator();
+//            while (cells.hasNext()) {
+//                cell = (XSSFCell) cells.next();
+//
+//                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+//                    System.out.print(cell.getStringCellValue() + " ");
+//                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+//                    System.out.print(cell.getNumericCellValue() + " ");
+//                } else {
+//                    //U Can Handel Boolean, Formula, Errors
+//                }
+//            }
+//            System.out.println();
+//        }
+//
+//    }
 
-        def path = servletContext.getRealPath("/")
-        InputStream ExcelFileToRead = new FileInputStream(path + "xlsData/espol.xlsx");
-        XSSFWorkbook wb = new XSSFWorkbook(ExcelFileToRead);
+    def cargarDatosFacultades (univ, row) {
 
-        XSSFWorkbook test = new XSSFWorkbook();
+        def errores = ""
+        def cnta = 0
 
-        XSSFSheet sheet = wb.getSheetAt(0);
-        XSSFRow row;
-        XSSFCell cell;
-
-        Iterator rows = sheet.rowIterator();
-
-        while (rows.hasNext()) {
-            row = (XSSFRow) rows.next();
-            Iterator cells = row.cellIterator();
-            while (cells.hasNext()) {
-                cell = (XSSFCell) cells.next();
-
-                if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
-                    System.out.print(cell.getStringCellValue() + " ");
-                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
-                    System.out.print(cell.getNumericCellValue() + " ");
-                } else {
-                    //U Can Handel Boolean, Formula, Errors
-                }
-            }
-            System.out.println();
+        if (row.size() == 2) {
+            def cod = row[0].toString().trim()
+            def facl = row[1].toString().trim()
+            def facl__id = datosFacl(univ, facl.toUpperCase(), cod.toUpperCase())
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0]} - columnas: ${row.size()} </li>"
         }
 
+        return [errores: errores, cnta: cnta]
+    }
+
+    def cargarDatosEscuelas (row) {
+        def cn = dbConnectionService.getConnection()
+        def sql = ""
+        def errores = ""
+        def cnta = 0
+        def facultadId = 0
+
+        if (row.size() == 3) {
+            def facl = row[0].toString().trim()
+            sql = "select facl__id from facl where faclcdgo = '${facl}'"
+            facultadId = cn.rows(sql.toString())[0]?.facl__id
+            def cod = row[1].toString().trim()
+            def escu = row[2].toString().trim()
+            def escu__id = datosEscl(escu.toUpperCase(),facultadId, cod.toUpperCase())
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] + " " + row[1] ?: ''} - columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
     }
 
 
