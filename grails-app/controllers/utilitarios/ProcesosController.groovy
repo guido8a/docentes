@@ -338,6 +338,16 @@ class ProcesosController extends seguridad.Shield {
                             errores += rslt.errores
                             contador += rslt.cnta
                             break
+                        case 'Materias que se dictan':
+                            def rslt = cargarDatosDictan(rgst, params.periodo)
+                            errores += rslt.errores
+                            contador += rslt.cnta
+                            break
+                        case 'Matriculados por materia':
+                            def rslt = cargarDatosMatriculados(rgst, params.periodo)
+                            errores += rslt.errores
+                            contador += rslt.cnta
+                            break
                         case 'Todo':
                             def rslt = cargaDatos(univ, rgst, prdo)
                             errores += rslt.errores
@@ -643,14 +653,20 @@ class ProcesosController extends seguridad.Shield {
         def cnta = 0
         def actual_id = 0
 
-        sql = "select crso__id from crso where crsocdgo = '${cdgo}' and crsodscr = '${nmbr}'"
+        if(cdgo != 'Código'){
+            sql = "select crso__id, crsodscr, crsocdgo from crso where crsocdgo = '${cdgo}'"
 //        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.crso__id
-        if (!actual_id) {
-            println "---> inserta crso: ${nmbr}"
-            sql = "insert into crso(crso__id, crsodscr) values (default, '${crso}')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
+            reg = cn.rows(sql.toString())[0]
+            actual_id = reg?.crso__id
+            if (!actual_id) {
+                println "---> inserta crso: ${nmbr}"
+                sql = "insert into crso(crso__id, crsodscr, crsocdgo) values (default, '${nmbr}', '${cdgo}')"
+                actual_id = cn.executeInsert(sql.toString())[0][0]
+            }else if (reg.crsocdgo != cdgo || reg.crsodscr != nmbr) {
+                sql = "update crso set crsodscr = '${nmbr}', crsocdgo = '${cdgo}' where crso__id = ${actual_id}"
+                cn.execute(sql.toString())
+                println "corrige crso: ${cdgo} de ${reg.crsocdgo} ${reg.crsodscr} a ${cdgo} ${nmbr}"
+            }
         }
         return actual_id
     }
@@ -663,17 +679,20 @@ class ProcesosController extends seguridad.Shield {
         def cnta = 0
         def actual_id = 0
 
-        sql = "select dcta__id, dctaprll from dcta where prof__id = ${prof} and mate__id = ${mate} and " +
-                "crso__id = ${crso} and prdo__id = ${prdo} and dctaprll = ${prll}"
+        if(prll != 'PARALELO'){
+            sql = "select dcta__id, dctaprll from dcta where prof__id = ${prof} and mate__id = ${mate} and " +
+                    "crso__id = ${crso} and prdo__id = ${prdo} and dctaprll = ${prll}"
 //        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.dcta__id
-        if (!actual_id) {
-            println "---> inserta dcta: ${prll}"
-            sql = "insert into dcta(dcta__id, prof__id, mate__id, crso__id, prdo__id, dctaprll) " +
-                    "values (default, ${prof}, ${mate}, ${crso}, ${prdo}, ${prll} )"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
+            reg = cn.rows(sql.toString())[0]
+            actual_id = reg?.dcta__id
+            if (!actual_id) {
+                println "---> inserta dcta: ${prll}"
+                sql = "insert into dcta(dcta__id, prof__id, mate__id, crso__id, prdo__id, dctaprll) " +
+                        "values (default, ${prof}, ${mate}, ${crso}, ${prdo}, ${prll} )"
+                actual_id = cn.executeInsert(sql.toString())[0][0]
+            }
         }
+
         return actual_id
     }
 
@@ -979,6 +998,89 @@ class ProcesosController extends seguridad.Shield {
             def nombre = row[1].toString()
 
             def curso = datosIngresoCrso(codigo, nombre.toUpperCase())
+
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
+    }
+
+    def cargarDatosDictan(row, periodo){
+
+        def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def sql = ""
+        def sql2 = ""
+        def cursoId = 0
+        def materiaId = 0
+
+        def errores = ""
+        def cnta = 0
+
+        if (row.size() == 4) {
+
+            def cedula = row[0].toString().trim()
+            def materia = row[1].toString()
+            def curso = row[2].toString()
+            def paralelo = row[3].toString()
+
+            sql = "select crso__id from crso where crsocdgo='${curso}'"
+            cursoId = cn.rows(sql.toString())[0]?.crso__id
+            sql2 = "select mate__id from mate where matecdgo = '${materia}'"
+            materiaId = cn2.rows(sql2.toString())[0]?.mate__id
+
+            def dictan = datosDcta(cedula, materiaId, cursoId, periodo, paralelo.toUpperCase())
+
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
+    }
+
+    def cargarDatosMatriculados(row, periodo){
+        def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def cn3 = dbConnectionService.getConnection()
+        def cn4 = dbConnectionService.getConnection()
+        def cn5 = dbConnectionService.getConnection()
+        def sql = ""
+        def sql2 = ""
+        def sql3 = ""
+        def sql4 = ""
+        def sql5 = ""
+        def cursoId = 0
+        def materiaId = 0
+        def estudianteId = 0
+        def profesorId = 0
+        def dictaId = 0
+
+        def errores = ""
+        def cnta = 0
+
+        if (row.size() == 5) {
+
+            def cedulaE = row[0].toString().trim()
+            def cedulaP = row[1].toString().trim()
+            def materia = row[2].toString()
+            def curso = row[3].toString()
+            def paralelo = row[4].toString()
+
+            sql3 = "select estd__id from estd where estdcdla = '${cedulaE}'"
+            estudianteId = cn3.rows(sql3.toString())[0]?.estd__id
+            sql = "select crso__id from crso where crsocdgo='${curso}'"
+            cursoId = cn.rows(sql.toString())[0]?.crso__id
+            sql2 = "select mate__id from mate where matecdgo = '${materia}'"
+            materiaId = cn2.rows(sql2.toString())[0]?.mate__id
+            sql4 = "select prof__id from prof where profcdla = '${cedulaP}'"
+            profesorId = cn4.rows(sql4.toString())[0]?.prof__id
+            sql5 = "select dcta__id from dcta where prof__id = ${profesorId} and mate__id = ${materiaId} and crso__id = ${cursoId} and prdo__id = ${periodo} and dctaprll = ${paralelo}"
+            dictaId = cn5.rows(sql5.toString())[0]?.dcta__id
+
+            def dictan = datosMatr(estudianteId, dictaId)
 
             cnta++
         }else{
