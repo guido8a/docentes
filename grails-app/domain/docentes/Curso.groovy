@@ -3,6 +3,7 @@ package docentes
 class Curso {
 
     String nombre
+    String codigo
 
     static mapping = {
         table 'crso'
@@ -13,13 +14,15 @@ class Curso {
         columns {
             id column: 'crso__id'
             nombre column: 'crsodscr'
+            codigo column: 'crsocdgo'
 
         }
     }
 
     static constraints = {
 
-        nombre(blank: true, nullable: true, size: 1..63)
+        nombre(blank: false, nullable: false, size: 1..63)
+        codigo(blank: false, nullable: false, size: 1..7)
 
     }
 }

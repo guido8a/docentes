@@ -318,6 +318,26 @@ class ProcesosController extends seguridad.Shield {
                             errores += rslt.errores
                             contador += rslt.cnta
                             break
+                        case 'Profesores':
+                            def rslt = cargarDatosProfesor(rgst)
+                            errores += rslt.errores
+                            contador += rslt.cnta
+                            break
+                        case 'Estudiantes':
+                            def rslt = cargarDatosEstudiante(rgst)
+                            errores += rslt.errores
+                            contador += rslt.cnta
+                            break
+                        case 'Materias':
+                            def rslt = cargarDatosMaterias(rgst)
+                            errores += rslt.errores
+                            contador += rslt.cnta
+                            break
+                        case 'Cursos':
+                            def rslt = cargarDatosCursos(rgst)
+                            errores += rslt.errores
+                            contador += rslt.cnta
+                            break
                         case 'Todo':
                             def rslt = cargaDatos(univ, rgst, prdo)
                             errores += rslt.errores
@@ -416,35 +436,51 @@ class ProcesosController extends seguridad.Shield {
 
     def datosFacl(univ, dscr, cod) {
         def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
         def sql = ""
+        def sql2 = ""
         def cdgo = ""
         def sqlWh = " and univ__id = ${univ}"
         def actual_id = 0
+        def repetido
 
-        if (dscr?.size() < 9) {
+        if(dscr != 'FACULTAD' && cod != 'CÓDIGO'){
+            if (dscr?.size() < 9) {
 //            sql = "select facl__id, faclcdgo, facldscr from facl where faclcdgo = '${dscr}'"
-            sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
-            cdgo = cod ?: dscr
-            dscr = dscr
-        } else {
+//                sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
+                cdgo = cod ?: dscr
+                dscr = dscr
+            } else {
 //            sql = "select escl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
-            sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
-            cdgo = cod ?: dscr[0..7].trim()
-            dscr = dscr
+//                sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}'"
+                cdgo = cod ?: dscr[0..7].trim()
+                dscr = dscr
+            }
+
+            sql2 = "select faclcdgo from facl where faclcdgo = '${cod}' and univ__id = '${univ}'"
+
+            sql = "select facl__id, faclcdgo, facldscr from facl where facldscr = '${dscr}' and faclcdgo= '${cdgo}'"
+
+            repetido = cn2.rows(sql2.toString())[0]?.faclcdgo
+
+            sql += sqlWh
+            actual_id = cn.rows(sql.toString())[0]?.facl__id
+            def facldscr = cn.rows(sql.toString())[0]?.facldscr
+            def faclcdgo = cn.rows(sql.toString())[0]?.faclcdgo
+
+            if(!repetido){
+                if (!actual_id) {
+                    println "---> inserta facultad: ${cdgo}"
+                    sql = "insert into facl(facl__id, faclcdgo, facldscr, univ__id) " +
+                            "values (default, '${cdgo}', '${dscr}', ${univ})"
+                    actual_id = cn.executeInsert(sql.toString())[0][0]
+                } else if (faclcdgo != cdgo && facldscr != dscr) {
+                    sql = "update facl set faclcdgo = '${cdgo}', facldscr = '${dscr}' where facl__id = ${actual_id}"
+                    cn.execute(sql.toString())
+                }
+            }
         }
-        sql += sqlWh
-        actual_id = cn.rows(sql.toString())[0]?.facl__id
-        def facldscr = cn.rows(sql.toString())[0]?.facldscr
-        def faclcdgo = cn.rows(sql.toString())[0]?.faclcdgo
-        if (!actual_id) {
-            println "---> inserta facultad: ${cdgo}"
-            sql = "insert into facl(facl__id, faclcdgo, facldscr, univ__id) " +
-                    "values (default, '${cdgo}', '${dscr}', ${univ})"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (faclcdgo != cdgo && facldscr != dscr) {
-            sql = "update facl set faclcdgo = '${cdgo}', facldscr = '${dscr}' where facl__id = ${actual_id}"
-            cn.execute(sql.toString())
-        }
+
         return actual_id
     }
 
@@ -458,37 +494,42 @@ class ProcesosController extends seguridad.Shield {
         def actual_id = 0
         def repetido
 
-        if (dscr?.size() < 9) {
+
+        if(dscr != 'DEPENDENCIA' && cod != 'CÓDIGO' && facl != 'FACULTAD'){
+            if (dscr?.size() < 9) {
 //            sql = "select escl__id, esclcdgo, escldscr from escl where esclcdgo = '${dscr}' and facl__id = ${facl}"
-            sql = "select escl__id, esclcdgo, escldscr from escl where escldscr = '${dscr}' and facl__id = ${facl}"
-            cdgo = cod ?: dscr
-            dscr = dscr
-        } else {
-            sql = "select escl__id, esclcdgo, escldscr from escl where escldscr = '${dscr}' and facl__id = ${facl}"
-            cdgo = cod ?: dscr[0..7].trim()
-            dscr = dscr
-        }
-
-        sql2 = "select esclcdgo from escl where esclcdgo = '${cod}'"
-
-        repetido = cn2.rows(sql2.toString())[0]?.esclcdgo
-
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.escl__id
-
-        if(!repetido){
-            if (!actual_id) {
-                println "---> inserta escuela: ${cdgo}"
-                sql = "insert into escl(escl__id, facl__id, esclcdgo, escldscr) " +
-                        "values (default, ${facl}, '${cdgo}', '${dscr}')"
-                actual_id = cn.executeInsert(sql.toString())[0][0]
-            } else if (reg.esclcdgo != cdgo && reg.escldscr != dscr) {
-                sql = "update escl set esclcdgo = '${cdgo}', escldscr = '${dscr}' where escl__id = ${actual_id}"
-                cn.execute(sql.toString())
-            }else if(reg.esclcdgo != cdgo){
-                sql = "update escl set esclcdgo = '${cdgo}' where escl__id = ${actual_id}"
-                cn.execute(sql.toString())
+//                sql = "select escl__id, esclcdgo, escldscr from escl where escldscr = '${dscr}' and facl__id = ${facl}"
+                cdgo = cod ?: dscr
+                dscr = dscr
+            } else {
+                cdgo = cod ?: dscr[0..7].trim()
+                dscr = dscr
             }
+
+            sql = "select escl__id, esclcdgo, escldscr from escl where escldscr = '${dscr}' and facl__id = ${facl} and esclcdgo = '${cdgo}'"
+
+            sql2 = "select esclcdgo from escl where esclcdgo = '${cdgo}' and facl__id = ${facl}"
+
+            repetido = cn2.rows(sql2.toString())[0]?.esclcdgo
+
+            reg = cn.rows(sql.toString())[0]
+            actual_id = reg?.escl__id
+
+            if(!repetido){
+                if (!actual_id) {
+                    println "---> inserta escuela: ${cdgo}"
+                    sql = "insert into escl(escl__id, facl__id, esclcdgo, escldscr) " +
+                            "values (default, ${facl}, '${cdgo}', '${dscr}')"
+                    actual_id = cn.executeInsert(sql.toString())[0][0]
+                } else if (reg.esclcdgo != cdgo && reg.escldscr != dscr) {
+                    sql = "update escl set esclcdgo = '${cdgo}', escldscr = '${dscr}' where escl__id = ${actual_id}"
+                    cn.execute(sql.toString())
+                }else if(reg.esclcdgo != cdgo){
+                    sql = "update escl set esclcdgo = '${cdgo}' where escl__id = ${actual_id}"
+                    cn.execute(sql.toString())
+                }
+            }
+
         }
 
         return actual_id
@@ -500,19 +541,22 @@ class ProcesosController extends seguridad.Shield {
         def reg
         def actual_id = 0
 
-        sql = "select mate__id, matecdgo, matedscr from mate " +
-                "where matecdgo = '${cdgo}' and escl__id = ${escl}"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.mate__id
-        if (!actual_id) {
-            println "---> inserta materia: ${cdgo}"
-            sql = "insert into mate(mate__id, escl__id, matecdgo, matedscr) " +
-                    "values (default, ${escl}, '${cdgo}', '${dscr}')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (reg.matedscr != dscr) {
-            sql = "update mate set matedscr = '${dscr}' where mate__id = ${actual_id}"
-            cn.execute(sql.toString())
+        if(cdgo != 'Código' && escl != 'Escuela'){
+            sql = "select mate__id, matecdgo, matedscr from mate " +
+                    "where matecdgo = '${cdgo}' and escl__id = ${escl}"
+            reg = cn.rows(sql.toString())[0]
+            actual_id = reg?.mate__id
+            if (!actual_id) {
+                println "---> inserta materia: ${cdgo}"
+                sql = "insert into mate(mate__id, escl__id, matecdgo, matedscr) " +
+                        "values (default, ${escl}, '${cdgo}', '${dscr}')"
+                actual_id = cn.executeInsert(sql.toString())[0][0]
+            } else if (reg.matedscr != dscr) {
+                sql = "update mate set matedscr = '${dscr}' where mate__id = ${actual_id}"
+                cn.execute(sql.toString())
+            }
         }
+
         return actual_id
     }
 
@@ -523,22 +567,24 @@ class ProcesosController extends seguridad.Shield {
         def cnta = 0
         def actual_id = 0
 
-        sql = "select prof__id, profnmbr, profapll, proftitl from prof " +
-                "where profcdla = '${cdla}'"
+        if(cdla != 'Cédula' && nmbr != 'NOMBRES' && apll !='APELLIDOS' && sexo !='SEXO' && titl != 'TÍTULO'){
+            sql = "select prof__id, profnmbr, profapll, proftitl from prof " +
+                    "where profcdla = '${cdla}'"
 //        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.prof__id
-        if (!actual_id) {
-//            println "---> inserta profesor: ${nmbr}"
-            sql = "insert into prof(prof__id, escl__id, profcdla, profnmbr, profapll, " +
-                    "profsexo, proftitl, profetdo, profeval) " +
-                    "values (default, ${escl}, '${cdla}', '${nmbr}', '${apll}', " +
-                    "'${sexo}', '${titl ?: ''}', 'N', 'N')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (reg.profnmbr != nmbr || reg.profapll != apll) {
-            sql = "update prof set profnmbr = '${nmbr}', profapll = '${apll}' where prof__id = ${actual_id}"
-            cn.execute(sql.toString())
-            println "corrige: ${cdla} de ${reg.profnmbr} ${reg.profapll} a ${nmbr} ${apll}"
+            reg = cn.rows(sql.toString())[0]
+            actual_id = reg?.prof__id
+            if (!actual_id) {
+                println "---> inserta profesor: ${nmbr}"
+                sql = "insert into prof(prof__id, escl__id, profcdla, profnmbr, profapll, " +
+                        "profsexo, proftitl, profetdo, profeval) " +
+                        "values (default, ${escl}, '${cdla}', '${nmbr}', '${apll}', " +
+                        "'${sexo}', '${titl ?: ''}', 'N', 'N')"
+                actual_id = cn.executeInsert(sql.toString())[0][0]
+            } else if (reg.profnmbr != nmbr || reg.profapll != apll) {
+                sql = "update prof set profnmbr = '${nmbr}', profapll = '${apll}' where prof__id = ${actual_id}"
+                cn.execute(sql.toString())
+                println "corrige: ${cdla} de ${reg.profnmbr} ${reg.profapll} a ${nmbr} ${apll}"
+            }
         }
         return actual_id
     }
@@ -550,21 +596,24 @@ class ProcesosController extends seguridad.Shield {
         def cnta = 0
         def actual_id = 0
 
-        sql = "select estd__id, estdnmbr, estdapll from estd " +
-                "where estdcdla = '${cdgo}'"
+        if(cdgo != 'Cédula' && nmbr != 'NOMBRES' && apll != 'APELLIDOS'){
+            sql = "select estd__id, estdnmbr, estdapll from estd " +
+                    "where estdcdla = '${cdgo}'"
 //        println "sql: $sql"
-        reg = cn.rows(sql.toString())[0]
-        actual_id = reg?.estd__id
-        if (!actual_id) {
-            println "---> inserta estd: ${nmbr}"
-            sql = "insert into estd(estd__id, estdcdla, estdnmbr, estdapll) " +
-                    "values (default, '${cdgo}', '${nmbr}', '${apll}')"
-            actual_id = cn.executeInsert(sql.toString())[0][0]
-        } else if (reg.estdnmbr != nmbr || reg.estdapll != apll) {
-            sql = "update estd set estdnmbr = '${nmbr}', estdapll = '${apll}' where estd__id = ${actual_id}"
-            cn.execute(sql.toString())
-            println "corrige estd: ${cdgo} de ${reg.estdnmbr} ${reg.estdapll} a ${nmbr} ${apll}"
+            reg = cn.rows(sql.toString())[0]
+            actual_id = reg?.estd__id
+            if (!actual_id) {
+                println "---> inserta estd: ${nmbr}"
+                sql = "insert into estd(estd__id, estdcdla, estdnmbr, estdapll) " +
+                        "values (default, '${cdgo}', '${nmbr}', '${apll}')"
+                actual_id = cn.executeInsert(sql.toString())[0][0]
+            } else if (reg.estdnmbr != nmbr || reg.estdapll != apll) {
+                sql = "update estd set estdnmbr = '${nmbr}', estdapll = '${apll}' where estd__id = ${actual_id}"
+                cn.execute(sql.toString())
+                println "corrige estd: ${cdgo} de ${reg.estdnmbr} ${reg.estdapll} a ${nmbr} ${apll}"
+            }
         }
+
         return actual_id
     }
 
@@ -586,6 +635,26 @@ class ProcesosController extends seguridad.Shield {
         }
         return actual_id
     }
+
+    def datosIngresoCrso(cdgo, nmbr) {
+        def cn = dbConnectionService.getConnection()
+        def sql = ""
+        def reg
+        def cnta = 0
+        def actual_id = 0
+
+        sql = "select crso__id from crso where crsocdgo = '${cdgo}' and crsodscr = '${nmbr}'"
+//        println "sql: $sql"
+        reg = cn.rows(sql.toString())[0]
+        actual_id = reg?.crso__id
+        if (!actual_id) {
+            println "---> inserta crso: ${nmbr}"
+            sql = "insert into crso(crso__id, crsodscr) values (default, '${crso}')"
+            actual_id = cn.executeInsert(sql.toString())[0][0]
+        }
+        return actual_id
+    }
+
 
     def datosDcta(prof, mate, crso, prdo, prll) {
         def cn = dbConnectionService.getConnection()
@@ -791,7 +860,7 @@ class ProcesosController extends seguridad.Shield {
             def facl__id = datosFacl(univ, facl.toUpperCase(), cod.toUpperCase())
             cnta++
         }else{
-            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0]} - columnas: ${row.size()} </li>"
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
         }
 
         return [errores: errores, cnta: cnta]
@@ -805,19 +874,118 @@ class ProcesosController extends seguridad.Shield {
         def facultadId = 0
 
         if (row.size() == 3) {
-            def facl = row[0].toString().trim()
+            def facl = row[2].toString().trim()
             sql = "select facl__id from facl where faclcdgo = '${facl}'"
             facultadId = cn.rows(sql.toString())[0]?.facl__id
-            def cod = row[1].toString().trim()
-            def escu = row[2].toString().trim()
+            def cod = row[0].toString().trim()
+            def escu = row[1].toString()
             def escu__id = datosEscl(escu.toUpperCase(),facultadId, cod.toUpperCase())
             cnta++
         }else{
-            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] + " " + row[1] ?: ''} - columnas: ${row.size()} </li>"
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
         }
 
         return [errores: errores, cnta: cnta]
     }
 
+    def cargarDatosProfesor(row){
+
+        def cn = dbConnectionService.getConnection()
+        def cn2 = dbConnectionService.getConnection()
+        def sql = ""
+        def sql2 = ""
+        def errores = ""
+        def cnta = 0
+        def facultadId = 0
+        def escuelaId = 0
+
+        if (row.size() == 7) {
+            def facl = row[0].toString().trim()
+            sql = "select facl__id from facl where faclcdgo = '${facl}'"
+            facultadId = cn.rows(sql.toString())[0]?.facl__id
+            def escu = row[1].toString().trim()
+            sql2 = "select escl__id from escl where esclcdgo = '${escu}'"
+            escuelaId = cn2.rows(sql2.toString())[0]?.escl__id
+
+            def cedula = row[2].toString().trim()
+            def nombres = row[3].toString()
+            def apellidos = row[4].toString()
+            def sexo = row[5].toString()[0]
+            def titulo = row[6].toString()
+            def profesor = datosProf(cedula, nombres.toUpperCase(), apellidos.toUpperCase(), sexo.toUpperCase(), titulo.toUpperCase(), escuelaId)
+
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
+    }
+
+    def cargarDatosEstudiante(row){
+
+        def errores = ""
+        def cnta = 0
+
+        if (row.size() == 3) {
+            def cedula = row[0].toString().trim()
+            def nombres = row[1].toString()
+            def apellidos = row[2].toString()
+
+            def estudiante = datosEstd(cedula, nombres.toUpperCase(), apellidos.toUpperCase())
+
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
+    }
+
+    def cargarDatosMaterias (row){
+
+        def cn = dbConnectionService.getConnection()
+        def sql = ""
+        def escuelaId = 0
+
+        def errores = ""
+        def cnta = 0
+
+        if (row.size() == 4) {
+
+            def codigo = row[0].toString().trim()
+            def nombre = row[1].toString().replace("'",'')
+            def escuela = row[3].toString()
+
+            sql = "select escl__id  from escl where esclcdgo='${escuela}'"
+            escuelaId = cn.rows(sql.toString())[0]?.escl__id
+
+            def materia = datosMate(codigo, nombre.toUpperCase(), escuelaId)
+
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
+    }
+
+    def cargarDatosCursos (row) {
+        def errores = ""
+        def cnta = 0
+
+        if (row.size() == 2) {
+            def codigo = row[0].toString().trim()
+            def nombre = row[1].toString()
+
+            def curso = datosIngresoCrso(codigo, nombre.toUpperCase())
+
+            cnta++
+        }else{
+            errores += "<li>No ingreso la cantidad correcta de columnas en el archivo: ${row[0] ?: row[1]} - número de columnas: ${row.size()} </li>"
+        }
+
+        return [errores: errores, cnta: cnta]
+    }
 
 }

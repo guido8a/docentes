@@ -261,6 +261,7 @@
         $("#cargarDatos").click(function () {
             if($("#archivo").val()!=""){
                 $("#tipoTabla").val($("#tabla").val());
+                openLoader("Procesando...");
                 $("#frmaArchivo").submit();
             }else{
                 bootbox.alert("No ha ingresado ningún archivo para ser cargado")

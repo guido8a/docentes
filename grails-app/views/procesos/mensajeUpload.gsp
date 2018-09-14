@@ -19,3 +19,11 @@
         </div>
     </body>
 </html>
+
+<script type="text/javascript">
+
+    $(function () {
+
+    });
+
+</script>
