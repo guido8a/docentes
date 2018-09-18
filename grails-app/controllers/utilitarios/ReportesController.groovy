@@ -533,7 +533,7 @@ class ReportesController extends seguridad.Shield {
             case 'CNI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni, matedscr, crsodscr, dctaprll " +
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
                         "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                         "order by profapll, profnmbr"
@@ -543,7 +543,7 @@ class ReportesController extends seguridad.Shield {
             case 'DAC':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac, matedscr, crsodscr, dctaprll " +
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
                         "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                         "order by profapll, profnmbr"
@@ -552,7 +552,7 @@ class ReportesController extends seguridad.Shield {
             case 'DCI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci, matedscr, crsodscr, dctaprll " +
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
                         "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                         "order by profapll, profnmbr"
@@ -562,7 +562,7 @@ class ReportesController extends seguridad.Shield {
             case 'DHD':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd, matedscr, crsodscr, dctaprll " +
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
                         "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                         "order by profapll, profnmbr"
@@ -572,7 +572,7 @@ class ReportesController extends seguridad.Shield {
             case 'DSC':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc, matedscr, crsodscr, dctaprll " +
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
                         "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                         "order by profapll, profnmbr"
@@ -582,7 +582,7 @@ class ReportesController extends seguridad.Shield {
             case 'EA':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea, matedscr, crsodscr, dctaprll " +
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
                         "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                         "order by profapll, profnmbr"
@@ -1107,27 +1107,27 @@ class ReportesController extends seguridad.Shield {
         switch(tipo?.codigo){
             case 'CNI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'dcni'
 
                 break;
             case 'DAC':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddac'
                 break;
             case 'DCI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddsc'
 
                 break;
             case 'DHD':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddhd'
 
@@ -1135,7 +1135,7 @@ class ReportesController extends seguridad.Shield {
             case 'DSC':
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'ddsc'
 
@@ -1143,7 +1143,7 @@ class ReportesController extends seguridad.Shield {
             case 'EA':
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
                 val = 'd_ea'
                 break;
@@ -1287,27 +1287,27 @@ class ReportesController extends seguridad.Shield {
         switch(tipo?.codigo){
             case 'CNI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by dcni DESC"
                 val = 'dcni'
 
                 break;
             case 'DAC':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddac DESC"
                 val = 'ddac'
                 break;
             case 'DCI':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddci DESC"
                 val = 'ddsc'
 
                 break;
             case 'DHD':
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddhd DESC"
                 val = 'ddhd'
 
@@ -1315,7 +1315,7 @@ class ReportesController extends seguridad.Shield {
             case 'DSC':
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddsc DESC"
                 val = 'ddsc'
 

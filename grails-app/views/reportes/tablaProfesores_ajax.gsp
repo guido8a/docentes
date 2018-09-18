@@ -21,28 +21,28 @@
                                 <button class="btn btn-info btnAlumnos" type="button"
                                     ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,alumnos,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="1" title="Evaluación Alumnos">
-                                    <i class="fa fa-dashboard"></i>
+                                    <i class="fa fa-bell-o"></i>
                                 </button>
                                 <button class="btn btn-info btnAlumnos" type="button"
                                     ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,auto,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="2"  title="Auto Evaluación">
-                                    <i class="fa fa-car"></i>
+                                    <i class="fa fa-bell-slash-o"></i>
                                 </button>
                                 <button class="btn btn-info btnAlumnos" type="button"
                                     ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,directivos,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="3" title="Evaluación Directivos">
-                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-user"></i>
                                 </button>
                                 <button class="btn btn-info btnAlumnos" type="button"
                                     ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)?.promedio > 0 ? '' : 'disabled'}
                                    data-id="${profesor.id}" data-tipo="4" title="Evaluación Pares">
-                                    <i class="fa fa-cubes"></i>
+                                    <i class="fa fa-male"></i>
                                 </button>
                                 <button class="btn btn-info btnAlumnos" type="button"
                                    data-id="${profesor.id}" data-tipo="5"
                                     ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor,periodo, total) ? '' : 'disabled'}
                                         title="Promedio General">
-                                    <i class="fa fa-pie-chart"></i>
+                                    <i class="fa fa-star-o"></i>
                                 </button>
                             </g:if>
                             <g:elseif test="${pantalla == '2'}">
@@ -55,19 +55,19 @@
                             <g:else>
                                 <a href="#" class="btn btn-success btnEncuestaDC"
                                    data-id="${profesor.id}" title="Evaluación de Desempeño Docente">
-                                    <i class="fa fa-cab"></i>
-                                </a>
-                                <a href="#" class="btn btn-success btnEncuestaDI"
-                                   data-id="${profesor.id}" title="Evaluación Directivo a Docente">
-                                    <i class="fa fa-bus"></i>
-                               </a>
-                         |        <a href="#" class="btn btn-success btnEncuestaPR"
-                                   data-id="${profesor.id}" title="Evaluación de Pares">
-                                    <i class="fa fa-bicycle"></i>
+                                    <i class="fa fa-bell-o"></i>
                                 </a>
                                 <a href="#" class="btn btn-success btnEncuestaAD"
                                    data-id="${profesor.id}" title="Autoevaluación Docentes">
-                                    <i class="fa fa-car"></i>
+                                    <i class="fa fa-bell-slash-o"></i>
+                                </a>
+                                <a href="#" class="btn btn-success btnEncuestaDI"
+                                   data-id="${profesor.id}" title="Evaluación Directivo a Docente">
+                                    <i class="fa fa-user"></i>
+                               </a>
+                               <a href="#" class="btn btn-success btnEncuestaPR"
+                                   data-id="${profesor.id}" title="Evaluación de Pares">
+                                    <i class="fa fa-male"></i>
                                 </a>
                             </g:else>
                         </td>

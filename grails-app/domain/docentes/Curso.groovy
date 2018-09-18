@@ -22,7 +22,7 @@ class Curso {
     static constraints = {
 
         nombre(blank: false, nullable: false, size: 1..63)
-        codigo(blank: false, nullable: false, size: 1..7)
+        codigo(blank: true, nullable: true, size: 1..7)
 
     }
 }

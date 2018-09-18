@@ -38,7 +38,7 @@ class ReportesGrafController extends seguridad.Shield  {
         def pattern1 = "###.##%"
 
         sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
                 "group by clase order by clase"
 //        println "sql: $sql"
         cn.eachRow(sql.toString()) { d ->
@@ -47,7 +47,7 @@ class ReportesGrafController extends seguridad.Shield  {
         }
 
         sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2"
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2"
 //        println "sql: $sql"
         rcmn = cn.rows(sql.toString())[0].cnta
 //        println "data: $data, rc: $rcmn, totl: $totl"
@@ -124,40 +124,58 @@ class ReportesGrafController extends seguridad.Shield  {
         data.facultad = facultad
 
         sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
 //        println "sql: $sql"
-        data.promedio = cn.rows(sql.toString())[0].prom * 100
+        data.promedio = cn.rows(sql.toString())[0]?.prom?:0 * 100
 
         sql = "select count(prof.prof__id) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
 //        println "sql prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
-                "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
+                "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
                 "tpen__id = 2"
 //        println "sql ptnv: $sql"
-        data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        if(data.prof) {
+            data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        } else {
+            data.ptnv = 0
+        }
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
-                "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
+                "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
                 "tpen__id = 2"
 //        println "sql ccbb: $sql"
-        data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        if(data.prof) {
+            data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        } else {
+            data.ccbb = 0
+        }
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
-                "facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
+                "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
                 "tpen__id = 2"
 //        println "sql fcex: $sql"
-        data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        if(data.prof) {
+            data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        } else {
+            data.fcex = 0
+        }
+
 
         sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and " +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
 //        println "sql rcmn: $sql"
-        data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        if(data.prof) {
+            data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
+        } else {
+            data.rcmn = 0
+        }
+
 
 //        println "data: $data"
 //        println "data: ${data as JSON}"
