@@ -10,10 +10,10 @@
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'nombre', 'error')} ">
             <span class="grupo">
-                <label for="nombre" class="col-md-2 control-label text-info">
+                <label for="nombre" class="col-md-3 control-label text-info">
                     Nombre
                 </label>
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <g:textField name="nombre" required="" class="form-control required" value="${universidadInstance?.nombre}"/>
                 </div>
                 
@@ -22,7 +22,7 @@
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'nombreContacto', 'error')} ">
             <span class="grupo">
-                <label for="nombreContacto" class="col-md-2 control-label text-info">
+                <label for="nombreContacto" class="col-md-3 control-label text-info">
                     Nombre Contacto
                 </label>
                 <div class="col-md-6">
@@ -34,7 +34,7 @@
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'apellidoContacto', 'error')} ">
             <span class="grupo">
-                <label for="apellidoContacto" class="col-md-2 control-label text-info">
+                <label for="apellidoContacto" class="col-md-3 control-label text-info">
                     Apellido Contacto
                 </label>
                 <div class="col-md-6">
@@ -46,10 +46,10 @@
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'fechaInicio', 'error')} ">
             <span class="grupo">
-                <label for="fechaInicio" class="col-md-2 control-label text-info">
+                <label for="fechaInicio" class="col-md-3 control-label text-info">
                     Fecha Inicio
                 </label>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <elm:datepicker name="fechaInicio"  class="datepicker form-control" value="${universidadInstance?.fechaInicio}" default="none" noSelection="['': '']" />
                 </div>
                 
@@ -58,10 +58,10 @@
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'fechaFin', 'error')} ">
             <span class="grupo">
-                <label for="fechaFin" class="col-md-2 control-label text-info">
+                <label for="fechaFin" class="col-md-3 control-label text-info">
                     Fecha Fin
                 </label>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <elm:datepicker name="fechaFin"  class="datepicker form-control" value="${universidadInstance?.fechaFin}" default="none" noSelection="['': '']" />
                 </div>
                 
@@ -70,11 +70,11 @@
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'logo', 'error')} ">
             <span class="grupo">
-                <label for="logo" class="col-md-2 control-label text-info">
+                <label for="logo" class="col-md-3 control-label text-info">
                     Logo
                 </label>
-                <div class="col-md-6">
-                    <g:textField name="logo" class="allCaps form-control" value="${universidadInstance?.logo}"/>
+                <div class="col-md-7">
+                    <g:textField name="logo" class=" form-control" value="${universidadInstance?.logo}"/>
                 </div>
                 
             </span>

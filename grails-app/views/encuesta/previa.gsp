@@ -34,24 +34,25 @@
 <div style="text-align: center;">
     %{--Para personalizar: UNACH: universidad1.jpg, UPEC universidad.jpg y en messages_es.properties la universidad--}%
     <div class="contenedor">
-    <div><img src="${resource(dir:'images',file:'universidad.jpeg')}" class="logotipo"></div>
-    <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>
-        <h4>Sistema para uso exclusivo de la esta Universidad</h4>
-        </div>
+        <div><img src="${logo}" class="logotipo"></div>
+        %{--<h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>--}%
+        <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${universidad}</h1>
+        %{--<h4>Sistema para uso exclusivo de la esta Universidad</h4>--}%
     </div>
+</div>
+
     <div class="bs-component col-sm-12 panel panel-info ">
         <div class="panel-heading" style="height: 50px; width: 100%">
-            <div class="col-md-2 col-xs-3" style="margin-top: -5px"><a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
+            <div class="col-md-2 col-xs-3" style="margin-top: -5px">
+                <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
                 <i class="fa fa-arrow-left"></i>
                 Cancelar</a>
             </div>
             <div class="disabled col-md-10 col-xs-9 panel-title">Usted se ha identificado como ${session.informante}</div>
         </div>
     </div>
-
-
 </div>
-<div style="width: 98%; margin-left: auto; margin-right: auto"">
+<div style="width: 98%; margin-left: auto; margin-right: auto">
 
     <g:if test="${matr}">
         <h3>Evaluación al Docente</h3> Elija al docente que desea evaluar y haga clic en el botón Evaluar correspondiente.

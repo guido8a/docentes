@@ -25,7 +25,7 @@
     }
 
     .logotipo{
-        max-width: 20%;
+        max-width: 40%;
         /*height: auto;*/
     }
 
@@ -73,9 +73,10 @@
 
 <div style="text-align: center;">
     %{--Para personalizar: UNACH: universidad1.jpg, UPEC universidad.jpg y en messages_es.properties la universidad--}%
-        <div><img src="${resource(dir:'images',file:'universidad.jpeg')}" class="logotipo"></div>
-        <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>
-            <h4>Sistema para uso exclusivo de la esta Universidad</h4>
+        <div><img src="${resource(dir:'images',file:'quanto.png')}" class="logotipo"></div>
+        %{--<h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>--}%
+        <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">Evaluación del desempeño docente</h1>
+            <h4>Convenio Interuniversitario de Cooperación <br>para la Mejora de la Evaluación del Desempeño Docente</h4>
         <div class="col-md-6 col-xs-12 center-block" style="float: inherit; margin: auto">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -119,7 +120,12 @@
                 var ln = vl.length;
                 var tipo = $(this).attr('tipo');
                 $("#tipoIf").val(tipo);
+
+                //si no valida cédulas ecuatorianas
+                $(".frma").submit();
+
 //                alert($("#tipoIf").val());
+/*
                 if (ln == 10) {
                     if(parseInt(vl.substring(9,10)) != cedula(vl)) {
                         $('.error').show();
@@ -145,11 +151,11 @@
                         },
                         callback: function (result) {
                             if(result) {
-//                                $('.error').hide();
                                 $(".frma").submit();
                             }
                         }
                     });
+*/
 
 /*
                     if (confirm("El número de cédula ingresado no es ECUATORIANO\nDesea continuar??")) {
@@ -159,7 +165,7 @@
                         event.preventDefault();
                     }
 */
-                }
+//                }
             });
         });
 

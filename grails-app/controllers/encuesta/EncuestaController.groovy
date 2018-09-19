@@ -3,10 +3,12 @@ package encuesta
 import docentes.Dictan
 import docentes.Encuesta
 import docentes.Estudiante
+import docentes.Periodo
 import docentes.Profesor
 import docentes.Teti
 import docentes.TipoEncuesta
 import docentes.TipoInformante
+import docentes.Universidad
 import groovy.time.TimeCategory
 
 class EncuestaController {
@@ -35,12 +37,16 @@ class EncuestaController {
     def ingreso() {
 //        println "ingreso: $params"
         session.tipoPersona = params.tipo
+
+/*
         session.periodo = encuestaService.periodActual()
         if(!session.periodo) {
             flash.message = "No se ha definido un periodo de evaluación"
             redirect(action: "inicio", params: params)
             return
         }
+*/
+
         if (params.tipo == 'E') {
 //            session.modulo = "prof" //??
             if ((existeEstudiante(params.cdla))) {
@@ -75,23 +81,27 @@ class EncuestaController {
         }
         def cn = dbConnectionService.getConnection()
         def tx = ""
+        def univ = Universidad.get(session.univ)
+        def logo = g.resource(dir: 'images/univ', file: univ.logo, absolute: true)
         session.encuesta = 0
+        println "universidado: ${logo}"
 //        println "ponePregunta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.periodo.id}"
 
-        if(encuestaService.factoresDeExito(session.informanteId, session.periodo.id)) { //si ya se ha completado FE muestra materias
+        if(encuestaService.factoresDeExito(session.informanteId, session.prdo)) { //si ya se ha completado FE muestra materias
             def matr
             tx = "select matr.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
                     "from matr, dcta, crso, mate, prof " +
-                    "where prdo__id = ${session.periodo.id} and dcta.dcta__id = matr.dcta__id and " +
+                    "where prdo__id = ${session.prdo} and dcta.dcta__id = matr.dcta__id and " +
                     "crso.crso__id = dcta.crso__id and " +
                     "mate.mate__id = dcta.mate__id and prof.prof__id = dcta.prof__id and " +
                     "estd__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where estd__id = ${session.informanteId} and dcta__id is not null and " +
-                    "encuetdo = 'C' and prdo__id = ${session.periodo.id} ) order by profnmbr"
-//            println "previa: $tx"
+                    "encuetdo = 'C' and prdo__id = ${session.prdo} ) order by profnmbr"
+            println "previa: $tx"
             matr = cn.rows(tx.toString())
-            [matr: matr]
+            [matr: matr, logo: logo, universidad: univ.nombre]
         }
+        [logo: logo, universidad: univ.nombre]
     }
 
     /**
@@ -105,12 +115,12 @@ class EncuestaController {
         def matr
         tx = "select dcta.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
                     "from dcta, crso, mate, prof " +
-                    "where prdo__id = ${session.periodo.id} and " +
+                    "where prdo__id = ${session.prdo} and " +
                     "crso.crso__id = dcta.crso__id and " +
                     "mate.mate__id = dcta.mate__id and prof.prof__id = dcta.prof__id and " +
                     "dcta.prof__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where prof__id = ${session.informanteId} and dcta__id is not null and " +
-                    "encuetdo = 'C' and prdo__id = ${session.periodo.id} and teti__id = 1) order by profnmbr"
+                    "encuetdo = 'C' and prdo__id = ${session.prdo} and teti__id = 1) order by profnmbr"
             println "previa: $tx"
             matr = cn.rows(tx.toString())
             [matr: matr]
@@ -123,7 +133,7 @@ class EncuestaController {
         def cn = dbConnectionService.getConnection()
         def tx = ""
         session.encuesta = 0
-        def auto = encuestaService.autoevaluacion(session.informanteId, session.periodo.id)
+        def auto = encuestaService.autoevaluacion(session.informanteId, session.prdo)
         println "auto: $auto"
         [auto: auto, pares: session.par, drtv: session.directivo]
 
@@ -162,23 +172,24 @@ class EncuestaController {
 
 
     def encuesta(tpen__id, tpif__id, prof__id, dcta__id, profeval) {
-        println "encuesta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.periodo.id}"
+        println "encuesta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.prdo}"
         def creado = false
         def tpen = TipoEncuesta.get(tpen__id)
         def total = encuestaService.totalPreguntas(tpen__id)  //total preguntas de la ponePregunta id
         def encu
+        def periodo = Periodo.get(session.prdo)
 
         def actual = 0
         if(tpen__id == 5) {  //PARES (informante, tpif, tpen, estd=0, dcta=0, par, drtv=0, prdo)
-            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, profeval, 0, session.periodo.id)
+            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, profeval, 0, session.prdo)
 
         } else if(tpen__id == 3) { //directivos (informante, tpif, tpen, estd=0, dcta=0, par=0, drtv, prdo)
-            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, 0, profeval, session.periodo.id)
+            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, 0, profeval, session.prdo)
 
         } else if(tpen__id == 4) { // factores de éxito (informante, tpif, tpen, estd=0, dcta=0, par=0, drtv=0, prdo)
-            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, 0, 0, session.periodo.id)
+            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, 0, 0, 0, 0, session.prdo)
         } else { // Evaluación al docente y autoevaluacion: (informante, tpif, tpen, estd, dcta, par=0, drtv=0, prdo)
-            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, session.informanteId, dcta__id, 0,0, session.periodo.id)
+            encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, session.informanteId, dcta__id, 0,0, session.prdo)
         }
 
         println "encuesta en curso: ${encu?.id}"
@@ -191,7 +202,7 @@ class EncuestaController {
                     encu.teti = Teti.findByTipoEncuestaAndTipoInformante(tpen, TipoInformante.findByCodigo(session.tipoPersona))
                     encu.fecha = new Date()
                     encu.estado = 'N'
-                    encu.periodo = session.periodo
+                    encu.periodo = periodo
                     break
                 case 2: //DC
                     encu.estudiante = Estudiante.get(session.informanteId)
@@ -200,7 +211,7 @@ class EncuestaController {
                     encu.estado = 'N'
                     encu.profesor = Profesor.get(prof__id)
                     encu.materiaDictada =  Dictan.get(dcta__id)
-                    encu.periodo = session.periodo
+                    encu.periodo = periodo
                     break
                 case 1: //AD
                     encu.teti = Teti.findByTipoEncuestaAndTipoInformante(tpen, TipoInformante.findByCodigo(session.tipoPersona))
@@ -208,7 +219,7 @@ class EncuestaController {
                     encu.estado = 'N'
                     encu.profesor = Profesor.get(session.informanteId)
                     encu.materiaDictada =  Dictan.get(dcta__id)
-                    encu.periodo = session.periodo
+                    encu.periodo = periodo
                     break
                 case 5: //PR
                     encu.teti = Teti.findByTipoEncuestaAndTipoInformante(tpen, TipoInformante.findByCodigo(session.tipoPersona))
@@ -216,7 +227,7 @@ class EncuestaController {
                     encu.estado = 'N'
                     encu.par = Profesor.get(session.informanteId)
                     encu.profesor = Profesor.get(profeval)
-                    encu.periodo = session.periodo
+                    encu.periodo = periodo
                     break
                 case 3: //DR
                     encu.teti = Teti.findByTipoEncuestaAndTipoInformante(tpen, TipoInformante.findByCodigo(session.tipoPersona))
@@ -224,7 +235,7 @@ class EncuestaController {
                     encu.estado = 'N'
                     encu.directivo = Profesor.get(session.informanteId)
                     encu.profesor = Profesor.get(profeval)
-                    encu.periodo = session.periodo
+                    encu.periodo = periodo
                     break
             }
 
@@ -243,7 +254,7 @@ class EncuestaController {
                 session.total = total
                 session.encuesta = encu
                 session.tipoEncuesta = tpen
-                if(tpen__id == 4) session.materias = encuestaService.materias(session.informanteId, session.periodo.id)
+                if(tpen__id == 4) session.materias = encuestaService.materias(session.informanteId, session.prdo)
                 ponePregunta(actual, total, encu, tpen)
             }
         } else {
@@ -253,7 +264,7 @@ class EncuestaController {
                 session.total = total
                 session.encuesta = encu
                 session.tipoEncuesta = tpen
-                if(tpen__id == 4) session.materias = encuestaService.materias(session.informanteId, session.periodo.id)
+                if(tpen__id == 4) session.materias = encuestaService.materias(session.informanteId, session.prdo)
                 ponePregunta(actual, total, encu, tpen)
             } else {
                 // ya ha terminado la ponePregunta
@@ -338,12 +349,18 @@ class EncuestaController {
     boolean existeEstudiante(cdla) {
 //        println "existeEstudiante $cdla"
         def cn = dbConnectionService.getConnection()
-        def tx = "select estd.estd__id, estdnmbr||' '||estdapll estudiante from estd, matr where estdcdla = '${cdla}' and matr.estd__id = estd.estd__id"
+        def tx = "select estd.estd__id, estdnmbr||' '||estdapll estudiante, univ__id, prdo.prdo__id " +
+                "from estd, matr, dcta, prdo " +
+                "where estdcdla = '${cdla}' and matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id and " +
+                "prdo.prdo__id = dcta.prdo__id and now() between prdofcin and coalesce(prdofcfn, now()) limit 1"
+        println "sql: $tx"
         try {
             cn.eachRow(tx) { d ->
 //                println "retorna cnta: ${d.cnta}"
                 session.informanteId = d.estd__id
                 session.informante = d.estudiante
+                session.univ = d.univ__id
+                session.prdo = d.prdo__id
             }
         }
         catch (e) {
@@ -579,7 +596,7 @@ class EncuestaController {
             redirect action: 'previaDc'
         } else if(session.tipoPersona == 'P' && (session.tipoEncuesta.codigo in ['AD'])) {
             //continuar con evaluacion a profesores
-            def auto = encuestaService.autoevaluacion(session.informanteId, session.periodo.id)
+            def auto = encuestaService.autoevaluacion(session.informanteId, session.prdo)
             println "auto: $auto"
             if(auto) {
                 redirect action: 'previaAd'
@@ -614,20 +631,20 @@ class EncuestaController {
         if(session.par) { // si puede evaluar PARES
             sql = "select dcta.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
                     "from dcta, mate, prof, crso " +
-                    "where prdo__id = ${session.periodo.id} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
+                    "where prdo__id = ${session.prdo} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
                     "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                     "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
-                    "select prof_par from encu where prof_par is not null and prdo__id = ${session.periodo.id} and " +
+                    "select prof_par from encu where prof_par is not null and prdo__id = ${session.prdo} and " +
 //                    "dcta__id <> dcta.dcta__id and encuetdo = 'C' ) and " +
                     "encuetdo = 'C' ) and " +
                     "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
         } else { // puede evaluar como DIRECTIVO
             sql = "select dcta.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
                     "from dcta, mate, prof, crso " +
-                    "where prdo__id = ${session.periodo.id} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
+                    "where prdo__id = ${session.prdo} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
                     "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                     "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
-                    "select profdrtv from encu where profdrtv is not null and prdo__id = ${session.periodo.id} and encuetdo = 'C') and " +
+                    "select profdrtv from encu where profdrtv is not null and prdo__id = ${session.prdo} and encuetdo = 'C') and " +
                     "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
         }
 

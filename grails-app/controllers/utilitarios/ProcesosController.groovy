@@ -428,7 +428,7 @@ class ProcesosController extends seguridad.Shield {
                 def estd__id = datosEstd(estdcdgo, estdnmbr, estdapll)   // crea estd
                 def crso__id = datosCrso(crso)   // crea estd
 //                def dcta__id = datosDcta(prof__id, mate__id, crso__id, prdo__id, prll)   // todo: params.prdo
-                def dcta__id = datosDcta(prof__id, mate__id, crso__id, 4, prll)   // todo: params.prdo
+                def dcta__id = datosDcta(prof__id, mate__id, crso__id, prdo, prll)   // todo: params.prdo
                 def matr__id = datosMatr(estd__id, dcta__id)
 //                println "---> ids: ${facl__id}, ${escl__id}, ${mate__id}"
                 cnta++
