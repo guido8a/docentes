@@ -29,7 +29,7 @@
                 </label>
 
                 <div class="col-md-6" style="width: 380px;">
-                    <g:textField name="descripcion" class="form-control allCaps" value="${prflInstance?.descripcion}" style="width: 360px;" maxlength="60"/>
+                    <g:textField name="descripcion" class="form-control" value="${prflInstance?.descripcion}" style="width: 360px;" maxlength="60"/>
                 </div>*
 
             </span>
@@ -42,7 +42,7 @@
                 </label>
 
                 <div class="col-md-6"  style="width: 380px">
-                    <g:textField name="nombre" class="form-control allCaps" value="${prflInstance?.nombre}" maxlength="60" style="width: 360px"/>
+                    <g:textField name="nombre" class="form-control" value="${prflInstance?.nombre}" maxlength="60" style="width: 360px"/>
                 </div> *
 
             </span>
@@ -55,7 +55,7 @@
                 </label>
 
                 <div class="col-md-6" style="width: 380px;">
-                    <g:textField name="observaciones" class="form-control allCaps" value="${prflInstance?.observaciones}" style="width: 360px;" maxlength="60"/>
+                    <g:textField name="observaciones" class="form-control" value="${prflInstance?.observaciones}" style="width: 360px;" maxlength="60"/>
                 </div> *
             </span>
         </div>

@@ -32,7 +32,7 @@
         /*color: @light;*/
         /*font-family: @family;*/
         font-variant: small-caps;
-        font-size: 14;
+        font-size: 14px;
     }
 
     </style>
@@ -41,7 +41,9 @@
 <body>
 <div align="center">
     <h1>Evaluaciones</h1>
-    <p style="font-size: 28px; color: rgba(63,113,186,0.9)">${seguridad.Persona.get(session.usuario.id)?.universidad?.nombre}</p>
+    <g:if test="${session.perfil.codigo != 'ADMG'}">
+        <p style="font-size: 28px; color: rgba(63,113,186,0.9)">${seguridad.Persona.get(session.usuario.id)?.universidad?.nombre}</p>
+    </g:if>
 </div>
 
 
