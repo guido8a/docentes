@@ -29,7 +29,7 @@
 
 <body>
 <div align="center">
-    <h1>Desempeño según la Estrategia Institucional</h1>
+    <h1>Relación de Potenciadores a Limitantes</h1>
     <p style="font-size: 28px; color: rgba(63,113,186,0.9)">${seguridad.Persona.get(session.usuario.id)?.universidad?.nombre}</p>
 </div>
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 10px">
@@ -221,8 +221,8 @@
 //                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
                                 data: [json.promedio, json.ptnv, json.fcex, 0, 0] },
                             {   label: ["Limitantes"],
-                                backgroundColor: "rgba(255,255,120,0.4)",
-                                borderColor: "rgba(160,160,120, 0.5)",
+                                backgroundColor: "rgba(255,120,0,0.4)",
+                                borderColor: "rgba(255,120,0, 0.5)",
                                 borderWidth: 4,
 //                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
                                 data: [json.promedio, 0, 0, json.ccbb, json.rcmn] },
@@ -283,8 +283,8 @@
                     data: {
                         labels: ['Evaluación Total', 'Potenciadores', 'Factores de Éxito', 'Cuellos de Botella', 'Recomendaciones'],
                         datasets: [
-                            {   label: ["Desempeño porcentual"],
-                                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                            {   label: ["Porcentajes"],
+                                backgroundColor: ["#20a5da", "#00af30","#80ff80", "#d45840", "#be5882"],
                                 data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
                             {   label: ["Mínimo"],
                                 backgroundColor: "rgba(255,160,160,0.1)",
