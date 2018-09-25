@@ -24,6 +24,17 @@
         text-align: center;
     }
 
+    .legend {
+        width: 50%;
+        position: absolute;
+        top: 100px;
+        right: 20px;
+        /*color: @light;*/
+        /*font-family: @family;*/
+        font-variant: small-caps;
+        font-size: 14;
+    }
+
     </style>
 </head>
 
@@ -328,12 +339,12 @@
 
 
                 var chartData = {
-                    type: 'pie',
+                    type: 'bar',
                     data: {
                         labels: ['Clase A', 'Clase B', 'Clase C'],
                         datasets: [
                             {
-                                label: ["A", "B", "C"],
+                                label: ["Profesores"],
                                 backgroundColor: ['#009608', '#ffa900', '#cc2902'],
                                 borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                 borderWidth: [3,3,3],
@@ -342,7 +353,12 @@
                         ]
                     },
                     options: {
-                        legend: { display: true }
+                        legend: { display: false,
+                            labels: {
+                                fontColor: 'rgb(20, 80, 100)',
+                                fontSize: 14
+                            }
+                        }
                     }
                 };
 
@@ -352,7 +368,7 @@
                         labels: ['Con recomendaciones', 'Sin recomendaciones'],
                         datasets: [
                             {
-                                label: ["R", "N"],
+//                                label: ["R", "N"],
                                 backgroundColor: ['#ff8f43', '#4678aa'],
                                 borderColor: ['#ffaf63', '#7697da'],
                                 borderWidth: [3,3],
@@ -361,7 +377,13 @@
                         ]
                     },
                     options: {
-                        legend: { display: true }
+                        legend: {
+                            display: true,
+                            labels: {
+                                fontColor: 'rgb(20, 80, 100)',
+                                fontSize: 14
+                            }
+                        }
                     }
                 }
                 myChart = new Chart(canvas, chartData, 1);

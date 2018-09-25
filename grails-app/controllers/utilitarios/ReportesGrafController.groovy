@@ -53,7 +53,10 @@ class ReportesGrafController extends seguridad.Shield  {
         rcmn = cn.rows(sql.toString())[0].cnta
 //        println "data: $data, rc: $rcmn, totl: $totl"
         subtitulo = "PROFESORES POR DESEMPEÑO"
-        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
+
+        /* para demostración */
+        render "60_71_28_Todas las Facultades_43_159_RECOMENDACIONES"
+//        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
     }
 
     def dialogo_ajax () {
@@ -180,6 +183,9 @@ class ReportesGrafController extends seguridad.Shield  {
 
 //        println "data: $data"
 //        println "data: ${data as JSON}"
+
+        /** valores para demostración **/
+        data = [facultad:"Todas las Facultades", promedio:84.8, prof:14, ptnv:17.1, ccbb:34.2, fcex:31.1, rcmn:42.8]
 
         render data as JSON
     }

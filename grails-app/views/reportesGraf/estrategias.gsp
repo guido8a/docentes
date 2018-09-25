@@ -3,7 +3,7 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Gráficos</title>
-    <script src="${resource(dir: 'js', file: 'Chart.js')}"></script>
+    <script src="${resource(dir: 'js', file: 'Chart.min.js')}"></script>
     <style type="text/css">
 
     .grafico{
@@ -116,7 +116,14 @@
 </div>
 
 %{--
-<div class="chart-container grafico" id="chart-area2" hidden>
+<div class="chart-container grafico" id="chart-area" hidden style="width: 60%; float: left">
+    <h3 id="titulo"></h3>
+    <div id="graf">
+        <canvas id="clases" style="margin-top: 30px"></canvas>
+    </div>
+
+</div>
+<div class="chart-container grafico" id="chart-area" hidden style="width: 48%; float: left">
     <h3 id="titulo2"></h3>
     <div id="graf2">
         <canvas id="clases2" style="margin-top: 30px"></canvas>
@@ -128,8 +135,8 @@
         </g:link>
     </div>
 </div>
-
 --}%
+
 <script type="text/javascript">
 
 
@@ -202,11 +209,23 @@
                                 backgroundColor: "rgba(255,255,255,0.05)",
                                 borderWidth: 1,
                                 data: [100,100,100,100,100] },
-                            {   label: ["Desempeño porcentual"],
-                                backgroundColor: "rgba(240,240,120,0.4)",
-                                borderColor: "rgba(120,120,80, 0.5)",
+//                            {   label: ["Desempeño porcentual"],
+//                                backgroundColor: "rgba(120,255,120,0.4)",
+//                                borderColor: "rgba(60,160,120, 0.5)",
+//                                borderWidth: 4,
+//                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
+                            {   label: ["Potenciadores"],
+                                backgroundColor: "rgba(120,255,120,0.4)",
+                                borderColor: "rgba(60,160,120, 0.5)",
                                 borderWidth: 4,
-                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
+//                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
+                                data: [json.promedio, json.ptnv, json.fcex, 0, 0] },
+                            {   label: ["Limitantes"],
+                                backgroundColor: "rgba(255,255,120,0.4)",
+                                borderColor: "rgba(160,160,120, 0.5)",
+                                borderWidth: 4,
+//                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
+                                data: [json.promedio, 0, 0, json.ccbb, json.rcmn] },
                             {   label: ["Mínimo"],
                                 backgroundColor: "rgba(255,240,240,0.2)",
                                 borderColor: "rgba(200,40,40, 0.3)",
@@ -221,7 +240,15 @@
 
                     },
                     options: {
-                        legend: { display: true }
+                        legend: {
+                            display: true,
+                            labels: {
+                                fontColor: 'rgb(20, 80, 100)',
+                                fontSize: 14,
+
+                            }
+                        }
+
                     }
                 };
 
@@ -272,7 +299,17 @@
 
                     },
                     options: {
-                        legend: { display: true }
+                        legend: {
+                            display: true,
+                            labels: {
+                                fontColor: 'rgb(20, 80, 100)',
+                                fontSize: 14
+                            },
+                            pointLabels: {
+                                fontSize: 16
+                            }
+                        }
+
                     }
                 };
 
