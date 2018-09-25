@@ -5,6 +5,7 @@ import docentes.Facultad
 import docentes.Periodo
 import docentes.Profesor
 import docentes.ReporteEncuesta
+import docentes.Universidad
 import grails.converters.JSON
 import groovy.json.JsonBuilder
 
@@ -292,5 +293,19 @@ class ReportesGrafController extends seguridad.Shield  {
         render respuesta
     }
 
+    def periodo_ajax () {
+
+        def universidad = Universidad.get(params.universidad)
+        def periodos = Periodo.findAllByUniversidad(universidad)
+
+        return [periodos: periodos]
+    }
+
+    def facultad_ajax () {
+        def universidad = Universidad.get(params.universidad)
+        def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
+
+        return[facultades: facultades]
+    }
 
 }

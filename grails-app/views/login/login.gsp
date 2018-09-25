@@ -13,6 +13,53 @@
         margin-top: 30px;
         text-align: center;
     }
+
+    .negrilla{
+
+        height:35px;
+        line-height: 35px;
+    }
+
+    .rotate{
+        -webkit-transform : rotate(-20deg);
+        -moz-transform    : rotate(-20deg);
+    }
+    .mensaje-svt{
+        width: 300px;
+        height: 30px;
+        padding: 3px;
+        border: 1px solid #A94442;
+        display: none;
+        background: #F2DEDE;
+        color: #ff1e25;
+    }
+    .mensaje-svt:before, .mensaje-svt:after{
+        position: absolute;
+        content: "";
+        width: 0px;
+        height: 0px;
+        border: 1px solid #A94442;
+    }
+    .mensaje-svt:before{
+        left:303px;
+        top:6px;
+        width: 16px;
+        height: 16px;
+        background: #F2DEDE;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+    }
+    .mensaje-svt:after{
+        left:322px;
+        top:12px;
+        width: 12px;
+        height: 12px;
+        background: #F2DEDE;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+    }
     </style>
 </head>
 
@@ -89,6 +136,15 @@
                 </g:form>
             </div>
         </div>
+
+        <div style=" position: absolute;left: 32px;bottom: 3px;" class=" mensaje-svt ui-corner-all" id="msg-container" >
+            <button type="button" class="close" id="close-mensaje">&times;</button>
+            <p>
+                <i class="fa fa-warning fa-1x pull-left  " style="margin-right: 5px;margin-top: 2px" ></i>
+                <span id="msg"></span>
+            </p>
+        </div>
+
     </div>
 </div>
 
@@ -96,15 +152,55 @@
     <img src="${resource(dir: 'images', file: 'spinner32.gif')}" alt='Cargando...' width="32px" height="32px"/>
 </div>
 
+
+
 <script type="text/javascript">
     var $frm = $("#frmLogin");
+//    function doLogin() {
+//        if ($frm.valid()) {
+//            $("#cargando").removeClass('hidden');
+//            $(".btn-login").replaceWith($("#cargando"));
+//            $("#frmLogin").submit();
+//        }
+//    }
+
+
+
+
     function doLogin() {
-        if ($frm.valid()) {
+        var band=true
+        $("#msg-container").fadeOut();
+        if($("#login").val()=="" || $("#pass").val()=="")
+            band=false;
+        if (band) {
+
             $("#cargando").removeClass('hidden');
             $(".btn-login").replaceWith($("#cargando"));
             $("#frmLogin").submit();
+
+
+            %{--$.ajax({--}%
+                %{--type    : "POST",--}%
+                %{--url     : "${g.createLink(action: 'validar')}",--}%
+                %{--data    : $(".frm-login").serialize(),--}%
+                %{--success : function (msg) {--}%
+                    %{--if(!msg.match("error")){--}%
+                        %{--$("#data").html(msg)--}%
+                    %{--}else{--}%
+                        %{--var parts=msg.split("_")--}%
+                        %{--$("#msg").html(parts[1])--}%
+                        %{--$("#msg-container").fadeIn("slow")--}%
+                    %{--}--}%
+                %{--}--}%
+            %{--});--}%
+        }else{
+            $("#msg").html("Ingrese su usuario y contraseña");
+            $("#msg-container").fadeIn("slow")
         }
     }
+
+
+
 
     function doPass() {
         if ($("#frmPass").valid()) {
@@ -114,6 +210,11 @@
     }
 
     $(function () {
+
+        $("#close-mensaje").click(function(){
+            $(this).parent().fadeOut("slow")
+        });
+
 
         $("#ingresar").click(function () {
             var initModalHeight = $('#modal-ingreso').outerHeight();

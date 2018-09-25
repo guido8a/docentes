@@ -1018,6 +1018,7 @@ class PersonaController extends seguridad.Shield {
                 def sesion = new Sesn()
                 sesion.usuario = personaInstance
                 sesion.perfil = perfil
+                sesion.fechaInicio = new Date();
                 if (!sesion.save(flush: true)) {
                     errores += renderErrors(bean: sesion)
                     println "error al guardar sesion: " + sesion.errors

@@ -1,5 +1,7 @@
 package seguridad
 
+import docentes.Universidad
+
 class Persona {
 
     Departamento departamento
@@ -17,6 +19,8 @@ class Persona {
     String autorizacion
     int activo
     String cargo
+
+    Universidad universidad
 
     static hasMany = [perfiles: Sesn]
 
@@ -45,6 +49,7 @@ class Persona {
             autorizacion column: 'prsnatrz'
             activo column: 'prsnactv'
             cargo column: 'prsncrgo'
+            universidad column: 'univ__id'
         }
     }
     static constraints = {
@@ -67,6 +72,7 @@ class Persona {
     String toString() {
         "${this.id}: ${this.nombre} ${this.apellido}"
     }
+
 
     def getEstaActivo() {
         if (this.activo != 1) {

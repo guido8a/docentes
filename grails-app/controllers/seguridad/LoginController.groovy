@@ -198,6 +198,9 @@ class LoginController {
                             return
                     }
 
+
+//                    println("perfiles " + perfiles.size())
+
                     if (perfiles.size() == 1) {
                         session.usuario.vaciarPermisos()
                         session.perfil = perfiles.first().perfil
