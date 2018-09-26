@@ -10,6 +10,7 @@
         <g:form class="form-horizontal" name="frmPersona" role="form" action="save_ajax" method="POST">
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'sexo', 'error')} ${hasErrors(bean: personaInstance, field: 'sexo', 'error')} required">
             <g:hiddenField name="id" value="${personaInstance?.id}"/>
+            <g:hiddenField name="universidad" value="${personaInstance?.universidad?.id}"/>
 
             <div class="col-md-6">
                 <span class="grupo">

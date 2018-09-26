@@ -78,7 +78,7 @@
             </div>
             
             <div class="col-md-3">
-                <g:fieldValue bean="${universidadInstance}" field="logo"/>
+                <g:img dir="/images/univ/" file="${universidadInstance?.logo}" width="100px" height="100"/>
             </div>
             
         </div>

@@ -68,21 +68,21 @@
         </div>
     </div>
 
-    <div class="col-md-1">
+    <div class="col-md-3">
         <div class="btn-group">
-            <a href="#" class="btn btn-xs btn-default" id="btnCollapseAll" title="Cerrar todos los nodos">
+            <a href="#" class="btn btn-sm btn-primary" id="btnCollapseAll" title="Cerrar todos los nodos">
                 <i class="fa fa-minus-square-o"></i>&nbsp;
             </a>
-            <a href="#" class="btn btn-xs btn-default" id="btnExpandAll" title="Abrir todos los nodos">
+            <a href="#" class="btn btn-sm btn-primary" id="btnExpandAll" title="Abrir todos los nodos">
                 <i class="fa fa-plus-square"></i>&nbsp;
             </a>
         </div>
     </div>
 
     <div class="col-md-4 text-right pull-right">
-        <i class="fa fa-user text-info"></i> Usuario
-        <i class="fa fa-user-secret text-warning"></i> Director
-        <i class="fa fa-user-secret text-danger"></i> Gerente
+        <i class="fa fa-university text-info"></i> Universidad
+        <i class="fa fa-user text-success"></i> Usuario
+        %{--<i class="fa fa-user-secret text-danger"></i> Gerente--}%
     </div>
 </div>
 
@@ -131,12 +131,13 @@
         }
         $.ajax({
             type    : "POST",
-            url     : "${createLink(controller: 'departamento', action:'form_ajax')}",
+            %{--url     : "${createLink(controller: 'departamento', action:'form_ajax')}",--}%
+            url     : "${createLink(controller: 'universidad', action:'form_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
                     id    : "dlgCreateEdit",
-                    title : title + " área de gestión",
+                    title : title + " Universidad",
 
                     class : "modal-lg",
 
@@ -203,7 +204,7 @@
         var title = id ? "Editar" : "Agregar";
         var data = id ? {id : id} : {};
         if (unidadId) {
-            data.unidad = unidadId;
+            data.universidad = unidadId;
         }
         $.ajax({
             type    : "POST",
@@ -268,6 +269,8 @@
                 return false;
             }
         };
+
+
 
         var createInput = function (num) {
             var $grupo = $("<div class='grupo'>");
@@ -391,6 +394,30 @@
         }, 500);
     }
 
+    function borrarUsuario(id){
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este usuario?", function (result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'persona', action: 'borrarUsuario_ajax')}',
+                    data:{
+                        id: id
+                    },
+                    success: function (msg){
+                        if(msg == 'ok'){
+                            log("Usuario borrado correctamente", "success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
+                        }else{
+                            log("Error al borrar el usuario" ,"error")
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     function createContextMenu(node) {
         $(".lzm-dropdown-menu").hide();
 
@@ -409,7 +436,7 @@
         var items = {};
 
         var agregarEntidad = {
-            label  : "Agregar área de gestión",
+            label  : "Agregar universidad",
             icon   : "fa fa-home text-success",
             action : function () {
                 createEditUnidad(null, nodeId);
@@ -464,19 +491,20 @@
         };
 
         var verEntidad = {
-            label            : "Ver datos del área de gestión",
+            label            : "Ver datos Universidad",
             icon             : "fa fa-laptop text-info",
             separator_before : true,
             action           : function () {
                 $.ajax({
                     type    : "POST",
-                    url     : "${createLink(controller: "departamento", action:'show_ajax')}",
+                    %{--url     : "${createLink(controller: "departamento", action:'show_ajax')}",--}%
+                    url     : "${createLink(controller: "universidad", action:'show_ajax')}",
                     data    : {
                         id : nodeId
                     },
                     success : function (msg) {
                         bootbox.dialog({
-                            title   : "Ver Área de gestión",
+                            title   : "Ver datos de Universidad",
                             message : msg,
                             buttons : {
                                 ok : {
@@ -493,7 +521,7 @@
         };
 
         var editarEntidad = {
-            label  : "Editar datos del área de gestión",
+            label  : "Editar datos universidad",
             icon   : "fa fa-pencil text-info",
             action : function () {
                 createEditUnidad(nodeId, null);
@@ -545,6 +573,18 @@
                 cambiarPassPersona(nodeId, "pass");
             }
         };
+
+
+        var eliminarUsuario = {
+            label            : "Eliminar usuario",
+            icon             : "fa fa-close text-danger",
+            separator_before : true,
+            action           : function () {
+                borrarUsuario(nodeId);
+            }
+        };
+
+
         var editarAuth = {
             label  : "Modificar autorización",
             icon   : "fa fa-unlock-alt text-info",
@@ -553,7 +593,7 @@
             }
         };
 
-        console.log("es root:", esRoot, "es principal", esPrincipal, "es unidad:", esUnidad)
+//        console.log("es root:", esRoot, "es principal", esPrincipal, "es unidad:", esUnidad)
 
         if (esRoot) {
 //                    items.agregarEntidad = agregarEntidad;
@@ -574,6 +614,7 @@
             items.ver = verUsuario;
             items.editar = editarUsuario;
             items.editarPass = editarPass;
+            items.eliminarUsuario = eliminarUsuario;
             %{--if (nodeId == "${session.usuario.id}") {--}%
                 %{--items.editarAuth = editarAuth;--}%
             %{--}--}%

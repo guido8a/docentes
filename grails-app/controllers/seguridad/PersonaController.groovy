@@ -1180,5 +1180,18 @@ class PersonaController extends seguridad.Shield {
         }
     }
 
+    def borrarUsuario_ajax() {
+        def persona = Persona.get(params.id)
+
+        try{
+            persona.delete(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al borrar persona " + e + persona.errors)
+            render "no"
+        }
+
+    }
+
 
 }

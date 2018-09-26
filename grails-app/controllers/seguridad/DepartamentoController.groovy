@@ -1,5 +1,6 @@
 package seguridad
 
+import docentes.Universidad
 import org.springframework.dao.DataIntegrityViolationException
 
 /**
@@ -269,31 +270,38 @@ class DepartamentoController extends Shield {
 
         if (id == "#") {
             //root
-            def hh = Departamento.countByPadreIsNull([sort: "nombre"])
-            if (hh > 0) {
+//            def hh = Departamento.countByPadreIsNull([sort: "nombre"])
+//            if (hh > 0) {
                 clase = "hasChildren jstree-closed"
-            }
+//            }
 
             tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
-                    "<a href='#' class='label_arbol'>Estructura de la Empresa</a>" +
+                    "<a href='#' class='label_arbol'>Universidades</a>" +
                     "</li>"
             if (clase == "") {
                 tree = ""
             }
         } else if (id == "root") {
-            hijos = Departamento.findAllByPadreIsNull([sort: 'orden'])
+//            hijos = Departamento.findAllByPadreIsNull([sort: 'orden'])
+            hijos = Universidad.list([sort: 'nombre'])
         } else {
             def parts = id.split("_")
             def node_id = parts[1].toLong()
-            padre = Departamento.get(node_id)
+//            padre = Departamento.get(node_id)
+            padre = Universidad.get(node_id)
             if (padre) {
                 hijos = []
-                hijos += Persona.findAllByDepartamento(padre, [sort: params.sort, order: params.order])
-                hijos += Departamento.findAllByPadre(padre, [sort: "nombre"])
+                hijos += Persona.findAllByUniversidad(padre, [sort: params.sort, order: params.order])
+//                hijos += Universidad.list()
+//                hijos += Departamento.findAllByPadre(padre, [sort: "nombre"])
             }
         }
 
+
+//        println(" id " + padre + " hijos " + hijos)
+
         if (tree == "" && (padre || hijos.size() > 0)) {
+
             tree += "<ul>"
             def lbl = ""
 
@@ -301,27 +309,39 @@ class DepartamentoController extends Shield {
                 def tp = ""
                 def data = ""
                 def ico = ""
-                if (hijo instanceof Departamento) {
+//                if (hijo instanceof Departamento) {
+                if (hijo instanceof Universidad) {
                     lbl = hijo.nombre
-                    if (hijo.codigo) {
-                        lbl += " (${hijo.codigo})"
+                    if (hijo.nombre) {
+                        lbl += " (${hijo.sigla})"
                     }
                     tp = "dep"
-                    def hijosH = Departamento.findAllByPadre(hijo, [sort: "nombre"])
-                    if (hijo.padre) {
-                        rel = (hijosH.size() > 0) ? "unidadPadre" : "unidadHijo"
-                    } else {
+//                    def hijosH = Departamento.findAllByPadre(hijo, [sort: "nombre"])
+                    def hijosH = Persona.findAllByUniversidad(hijo, [sort: "nombre"])
+//                    if (hijo.padre) {
+//                        rel = (hijosH.size() > 0) ? "unidadPadre" : "unidadHijo"
+//                    } else {
                         rel = "principal"
-                    }
+//                    }
 
-                    if (hijo.padre) {
-                        rel += hijo.activo ? "Activo" : "Inactivo"
-                    }
-                    hijosH += Persona.findAllByDepartamento(hijo, [sort: "apellido"])
+//                    if (hijo.padre) {
+//                        rel += hijo.activo ? "Activo" : "Inactivo"
+//                    }
+//                    hijosH += Persona.findAllByDepartamento(hijo, [sort: "apellido"])
+                    hijosH += Persona.findAllByUniversidad(hijo, [sort: "apellido"])
+
                     clase = (hijosH.size() > 0) ? "jstree-closed hasChildren" : ""
                     if (hijosH.size() > 0) {
+//                        hijosH.each {hih->
+//                            lbl += "${hih.apellido} ${hih.nombre} ${hih.login ? '(' + hih.login + ')' : ''}"
+//                        }
+
                         clase += " ocupado "
                     }
+
+                    ico = ", \"icon\":\"fa fa-university text-info\""
+
+
                 } else if (hijo instanceof Persona) {
                     switch (params.sort) {
                         case 'apellido':
@@ -334,11 +354,11 @@ class DepartamentoController extends Shield {
                             lbl = "${hijo.apellido} ${hijo.nombre} ${hijo.login ? '(' + hijo.login + ')' : ''}"
                     }
 
-                    if (hijo.esDirector) {
-                        ico = ", \"icon\":\"fa fa-user-secret text-warning\""
-                    } else if (hijo.esGerente) {
-                        ico = ", \"icon\":\"fa fa-user-secret text-danger\""
-                    }
+//                    if (hijo.esDirector) {
+//                        ico = ", \"icon\":\"fa fa-user-secret text-warning\""
+//                    } else if (hijo.esGerente) {
+                        ico = ", \"icon\":\"fa fa-user text-success\""
+//                    }
 
                     tp = "usu"
                     rel = "usuario"
@@ -346,11 +366,11 @@ class DepartamentoController extends Shield {
 
                     data += "data-usuario='${hijo.login}'"
 
-                    if (hijo.estaActivo == true) {
-                        rel += "Activo"
-                    } else {
-                        rel += "Inactivo"
-                    }
+//                    if (hijo.estaActivo == true) {
+//                        rel += "Activo"
+//                    } else {
+//                        rel += "Inactivo"
+//                    }
                 }
 
                 tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\" ${ico}}' >"
