@@ -291,16 +291,17 @@
 //                                createEditRow(id);
                                 location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id
                             }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
-                            }
                         }
+//                        ,
+//                        eliminar : {
+//                            label            : "Eliminar",
+//                            icon             : "fa fa-trash-o",
+//                            separator_before : true,
+//                            action           : function ($element) {
+//                                var id = $element.data("id");
+//                                deleteRow(id);
+//                            }
+//                        }
                     },
                     onShow : function ($element) {
                         $element.addClass("trHighlight");
