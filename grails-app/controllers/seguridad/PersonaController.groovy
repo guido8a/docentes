@@ -1181,16 +1181,27 @@ class PersonaController extends seguridad.Shield {
     }
 
     def borrarUsuario_ajax() {
-        def persona = Persona.get(params.id)
 
-        try{
-            persona.delete(flush: true)
-            render "ok"
-        }catch (e){
-            println("error al borrar persona " + e + persona.errors)
+        def usuario = Persona.get(params.id)
+        usuario.activo =  0
+
+        if(!usuario.save(flush: true)){
             render "no"
+        }else{
+            render "ok"
         }
+    }
 
+    def activarUsuario_ajax() {
+
+        def usuario = Persona.get(params.id)
+        usuario.activo =  1
+
+        if(!usuario.save(flush: true)){
+            render "no"
+        }else{
+            render "ok"
+        }
     }
 
 

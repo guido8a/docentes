@@ -395,7 +395,7 @@
     }
 
     function borrarUsuario(id){
-        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este usuario?", function (result) {
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de desactivar este usuario?", function (result) {
             if (result) {
                 $.ajax({
                     type: 'POST',
@@ -405,12 +405,36 @@
                     },
                     success: function (msg){
                         if(msg == 'ok'){
-                            log("Usuario borrado correctamente", "success");
+                            log("Usuario desactivado correctamente", "success");
                             setTimeout(function () {
                                 location.reload(true);
                             }, 800);
                         }else{
-                            log("Error al borrar el usuario" ,"error")
+                            log("Error al desactivar el usuario" ,"error")
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    function actUsuario(id){
+        bootbox.confirm("<i class='fa fa-check fa-3x text-success text-shadow'></i> Está seguro de activar este usuario?", function (result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'persona', action: 'activarUsuario_ajax')}',
+                    data:{
+                        id: id
+                    },
+                    success: function (msg){
+                        if(msg== 'ok'){
+                            log("Usuario activado correctamente", "success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 800);
+                        }else{
+                            log("Error al activar el usuario" ,"error")
                         }
                     }
                 });
@@ -432,6 +456,7 @@
         var esPrincipal = nodeType == "principal";
         var esUnidad = nodeType.contains("unidad");
         var esUsuario = nodeType.contains("usuario");
+        var esInactivo = nodeType.contains("usuarioInactivo");
 
         var items = {};
 
@@ -576,14 +601,22 @@
 
 
         var eliminarUsuario = {
-            label            : "Eliminar usuario",
-            icon             : "fa fa-close text-danger",
+            label            : "Desactivar usuario",
+            icon             : "fa fa-user text-danger",
             separator_before : true,
             action           : function () {
                 borrarUsuario(nodeId);
             }
         };
 
+        var activarUsuario = {
+            label            : "Activar usuario",
+            icon             : "fa fa-user text-success",
+            separator_before : true,
+            action           : function () {
+                actUsuario(nodeId);
+            }
+        };
 
         var editarAuth = {
             label  : "Modificar autorización",
@@ -611,10 +644,16 @@
             items.ver = verEntidad;
             items.editar = editarEntidad;
         } else if (esUsuario) {
-            items.ver = verUsuario;
-            items.editar = editarUsuario;
-            items.editarPass = editarPass;
-            items.eliminarUsuario = eliminarUsuario;
+
+
+            if(esInactivo){
+                items.activarUsuario = activarUsuario;
+            }else{
+                items.ver = verUsuario;
+                items.editar = editarUsuario;
+                items.editarPass = editarPass;
+                items.eliminarUsuario = eliminarUsuario;
+            }
             %{--if (nodeId == "${session.usuario.id}") {--}%
                 %{--items.editarAuth = editarAuth;--}%
             %{--}--}%

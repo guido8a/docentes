@@ -357,7 +357,7 @@ class DepartamentoController extends Shield {
 //                    if (hijo.esDirector) {
 //                        ico = ", \"icon\":\"fa fa-user-secret text-warning\""
 //                    } else if (hijo.esGerente) {
-                        ico = ", \"icon\":\"fa fa-user text-success\""
+//                        ico = ", \"icon\":\"fa fa-user text-success\""
 //                    }
 
                     tp = "usu"
@@ -366,11 +366,13 @@ class DepartamentoController extends Shield {
 
                     data += "data-usuario='${hijo.login}'"
 
-//                    if (hijo.estaActivo == true) {
-//                        rel += "Activo"
-//                    } else {
-//                        rel += "Inactivo"
-//                    }
+                    if (hijo.estaActivo) {
+                        rel += "Activo"
+                        ico = ", \"icon\":\"fa fa-user text-success\""
+                    } else {
+                        rel += "Inactivo"
+                        ico = ", \"icon\":\"fa fa-user text-primary\""
+                    }
                 }
 
                 tree += "<li id='li${tp}_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${rel}\" ${ico}}' >"
