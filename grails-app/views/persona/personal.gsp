@@ -74,10 +74,10 @@
     </div>
 
     <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headerPass">
-        <div style="width: 20%; float: left; margin-top: 20px; text-align: center">
+        <div style="float: left; margin-top: 20px; text-align: center">
             <img src="${resource(dir:'images',file:'pass.png')}">
         </div>
-        <div class="panel-body" style="width: 78%; float: right; margin-top: 40px;">
+        <div class="panel-body" style="width: 86%; float: right; margin-top: 40px;">
             <g:form class="form-inline" name="frmPass" action="updatePass">
                 <div class="form-group col-md-3">
                     <label for="input2">Clave actual</label>
@@ -88,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-3" style="margin-left: 40px;">
+                <div class="form-group col-md-3" style="margin-left: 0px;">
                     <label for="nuevoPass">Nueva clave</label>
 
                     <div class="input-group">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-3" style="margin-left: 40px;">
+                <div class="form-group col-md-3" style="margin-left: 0px;">
                     <label for="passConfirm">Confirme la clave nueva</label>
 
                     <div class="input-group">
@@ -105,15 +105,13 @@
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                     </div>
                 </div>
-                <div class="col-md-1" style="margin-top: 0px;">
-                <a href="#" id="btnSavePass" class="btn btn-primary">
-                    <i class="fa fa-save"></i> Guardar
-                </a>
-                </div>
-                <div class="col-md-1" style="margin-top: 5px;">
-                <a href="#" id="btnCancelar" class="btn btn-info">
-                    <i class="fa fa-times"></i> Cancelar
-                </a>
+                <div class="col-md-3" style="margin-top: 20px">
+                    <a href="#" id="btnSavePass" class="btn btn-success">
+                        <i class="fa fa-save"></i> Guardar
+                    </a>
+                    <a href="#" id="btnCancelar" class="btn btn-primary">
+                        <i class="fa fa-times"></i> Cancelar
+                    </a>
                 </div>
             </g:form>
         </div>

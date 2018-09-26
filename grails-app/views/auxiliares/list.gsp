@@ -216,6 +216,65 @@
                                 %{--});--}%
                             }
                         },
+                        fechas   : {
+                            label  : "Fechas",
+                            icon   : "fa fa-calendar",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                $.ajax({
+                                    type: "POST",
+                                    url: "${createLink(controller: 'auxiliares', action: 'fechas_ajax')}",
+                                    data: {
+                                        id: id
+                                    },
+                                    success: function (msg) {
+                                        var b = bootbox.dialog({
+                                            id: "dlgEditarFechas",
+                                            title: "Editar Fechas",
+                                            message: msg,
+                                            class: "small",
+                                            buttons: {
+                                                cancelar: {
+                                                    label: "Cancelar",
+                                                    className: "btn-primary",
+                                                    callback: function () {
+                                                    }
+                                                },
+                                                guardar: {
+                                                    id: "btnSave",
+                                                    label: "<i class='fa fa-save'></i> Guardar",
+                                                    className: "btn-success",
+                                                    callback: function () {
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "${createLink(controller: 'auxiliares', action: 'guardarFecha_ajax')}",
+                                                            data:{
+                                                                id: id,
+                                                                fechaInicio: $("#fechaInicio").val(),
+                                                                fechaFin: $("#fechaFin").val()
+                                                            },
+                                                            success: function (msg) {
+                                                                if(msg == 'ok'){
+                                                                    log("Fecha guardada correctamente","success");
+                                                                    setTimeout(function () {
+                                                                        location.reload(true);
+                                                                    }, 800);
+                                                                }else{
+                                                                    log("Error al guardar la fecha","error")
+                                                                }
+                                                            }
+                                                        });
+//                                                        return submitForm(tipo);
+                                                    } //callback
+                                                } //guardar
+                                            } //buttons
+                                        }); //dialog
+                                    } //success
+                                }); //ajax
+
+
+                            }
+                        },
                         editar   : {
                             label  : "Editar",
                             icon   : "fa fa-pencil",

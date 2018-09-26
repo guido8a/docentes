@@ -227,4 +227,27 @@ class AuxiliaresController extends Shield {
 
     }
 
+    def fechas_ajax () {
+        def auxiliar = Auxiliares.get(params.id)
+        return[ auxiliar: auxiliar]
+    }
+
+    def guardarFecha_ajax () {
+
+        def auxiliar = Auxiliares.get(params.id)
+        def fi = new Date().parse("dd-MM-yyyy", params.fechaInicio)
+        def ff = new Date().parse("dd-MM-yyyy", params.fechaFin)
+
+        auxiliar.fechaInicio = fi
+        auxiliar.fechaCierre = ff
+
+        try{
+            auxiliar.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al guardar las fechas " + e + auxiliar.errors)
+            render "no"
+        }
+    }
+
 }

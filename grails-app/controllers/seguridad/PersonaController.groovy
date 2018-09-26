@@ -308,7 +308,7 @@ class PersonaController extends seguridad.Shield {
         }
 
         personasFiltradas.remove(usuario)
-        return [usuario: usuario, params: params, personas: personasFiltradas]
+        return [persona: usuario, params: params, personas: personasFiltradas]
     }
 
     def personalAdm() {
@@ -1201,6 +1201,49 @@ class PersonaController extends seguridad.Shield {
             render "no"
         }else{
             render "ok"
+        }
+    }
+
+
+    def validar_pass_ajax() {
+        println("pass " + params)
+        params.input2 = params.input2.trim()
+        def obj = Persona.get(params.id)
+        if (obj.password == params.input2.encodeAsMD5()) {
+            render true
+        } else {
+            render false
+        }
+    }
+
+    /**
+     * Acción que actualiza la clave de ingreso al sistema
+     */
+    def updatePass() {
+        def usu = Persona.get(session.usuario.id)
+
+        def input = params.input2.toString().trim()
+        if (input != "") {
+            input = input.encodeAsMD5()
+        }
+        def valida = usu.password
+        if (valida == null || valida.trim() == "") {
+            valida = ""
+        }
+
+        if (input == valida) {
+            if (params.nuevoPass.toString().trim() == params.passConfirm.toString().trim()) {
+                usu.password = params.nuevoPass.toString().trim().encodeAsMD5()
+                if (usu.save(flush: true)) {
+                    render "SUCCESS*Clave de ingreso al sistema modificada exitosamente"
+                } else {
+                    render "ERROR*" + renderErrors(bean: usu)
+                }
+            } else {
+                render "ERROR*Las claves no concuerdan"
+            }
+        } else {
+            render "ERROR*La clave de ingreso es incorrecta"
         }
     }
 
