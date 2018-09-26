@@ -14,6 +14,7 @@
 
 <body>
 
+%{--
 <div class="panel panel-info">
     <div class="panel-heading" role="tab" id="headingOne">
         <h4 class="panel-title">
@@ -59,6 +60,7 @@
         </div>
     </div>
 </div>
+--}%
 
 %{--//password--}%
 
@@ -66,15 +68,18 @@
     <div class="panel-heading" role="tab" id="headerPass">
         <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                Cambiar clave de ingreso al sistema
+                Cambiar la clave de ingreso al sistema
             </a>
         </h4>
     </div>
 
     <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headerPass">
-        <div class="panel-body">
+        <div style="width: 20%; float: left; margin-top: 20px; text-align: center">
+            <img src="${resource(dir:'images',file:'pass.png')}">
+        </div>
+        <div class="panel-body" style="width: 78%; float: right; margin-top: 40px;">
             <g:form class="form-inline" name="frmPass" action="updatePass">
-                <div class="form-group">
+                <div class="form-group col-md-3">
                     <label for="input2">Clave actual</label>
 
                     <div class="input-group">
@@ -83,7 +88,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-left: 40px;">
+                <div class="form-group col-md-3" style="margin-left: 40px;">
                     <label for="nuevoPass">Nueva clave</label>
 
                     <div class="input-group">
@@ -92,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="margin-left: 40px;">
+                <div class="form-group col-md-3" style="margin-left: 40px;">
                     <label for="passConfirm">Confirme la clave nueva</label>
 
                     <div class="input-group">
@@ -100,9 +105,16 @@
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                     </div>
                 </div>
-                <a href="#" id="btnSavePass" class="btn btn-primary" style="margin-left: 40px;">
+                <div class="col-md-1" style="margin-top: 0px;">
+                <a href="#" id="btnSavePass" class="btn btn-primary">
                     <i class="fa fa-save"></i> Guardar
                 </a>
+                </div>
+                <div class="col-md-1" style="margin-top: 5px;">
+                <a href="#" id="btnCancelar" class="btn btn-info">
+                    <i class="fa fa-times"></i> Cancelar
+                </a>
+                </div>
             </g:form>
         </div>
     </div>
@@ -193,7 +205,7 @@
                         closeLoader();
                         $frmAuth[0].reset();
                         if (parts[0] == "SUCCESS") {
-                            location.href = "${createLink(controller: "inicio", action: "inicio" )}"
+                            location.href = "${createLink(controller: "inicio", action: "index" )}"
                         }
                     }
                 });
@@ -203,7 +215,6 @@
 
 
         $("#btnSavePass").click(function () {
-
             if ($frmPass.valid()) {
                 $.ajax({
                     type    : "POST",
@@ -215,7 +226,7 @@
                         log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
                         setTimeout(function () {
                             if (parts[0] == "SUCCESS") {
-                                location.href = "${createLink(controller: "inicio", action: "inicio" )}"
+                                location.href = "${createLink(controller: "inicio", action: "index" )}"
                             } else {
                             }
                         }, 1000);
@@ -223,6 +234,11 @@
                     }
                 });
             }
+            return false;
+        });
+
+        $("#btnCancelar").click(function () {
+            location.href = "${createLink(controller: "inicio", action: "index" )}"
             return false;
         });
 

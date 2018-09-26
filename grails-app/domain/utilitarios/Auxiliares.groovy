@@ -12,6 +12,7 @@ class Auxiliares {
     int maximoProfesores = 0
     Double minimo
     Double optimo
+    Date fechaInicio
     Date fechaCierre
     int ajusteModerado
     int ajusteExagerado
@@ -37,6 +38,7 @@ class Auxiliares {
             maximoProfesores column: 'max_prof'
             minimo column: 'estdmini'
             optimo column: 'estdoptm'
+            fechaInicio column: 'auxlfcin'
             fechaCierre column: 'auxlfcci'
             ajusteModerado column: 'ajstpnmo'
             ajusteExagerado column: 'ajstpnex'

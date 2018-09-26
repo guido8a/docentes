@@ -62,7 +62,7 @@ class Shield {
 //                println "AQUI??????"
 //                println "controlador: $controllerName acción: $actionName"
 
-                    session.departamento = Departamento.get(session.departamento.id).refresh()
+//                    session.departamento = Departamento.get(session.departamento.id).refresh()
                     def perms = session.usuario.permisos
                     session.usuario = Persona.get(session.usuario.id).refresh()
                     session.usuario.permisos = perms
@@ -90,7 +90,7 @@ class Shield {
                         return false
                     } else {
                         session.flag = session.flag - 1
-                        session.departamento = Departamento.get(session.departamento.id).refresh()
+//                        session.departamento = Departamento.get(session.departamento.id).refresh()
                         return true
                     }
                 }

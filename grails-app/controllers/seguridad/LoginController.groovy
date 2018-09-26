@@ -167,7 +167,7 @@ class LoginController {
                 session.usuario = user
                 session.usuarioKerberos = user.login
                 session.time = new Date()
-                session.departamento = user.departamento
+//                session.departamento = user.departamento
 
 //                println "pone valores " + session.usuario
 
@@ -193,7 +193,7 @@ class LoginController {
                             flash.tipo = "error"
                             flash.icon = "icon-warning"
                             session.usuario = null
-                            session.departamento = null
+//                            session.departamento = null
                             redirect(controller: 'login', action: "login")
                             return
                     }

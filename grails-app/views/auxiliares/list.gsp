@@ -45,19 +45,23 @@
                     <g:sortableColumn property="maximoAutoevaluacion" title="Ponderación para Autoevaluaciones" />
                     
                     <g:sortableColumn property="maximoEstudiantes" title="Ponderación para evaluación de Estudiantes" />
+                    <g:sortableColumn property="fechaInicio" title="Fecha de inicio Evaluaciones" />
+                    <g:sortableColumn property="fechaCierre" title="Fecha de cierre Evaluaciones" />
 
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${auxiliaresInstanceList}" status="i" var="auxiliaresInstance">
                     <tr data-id="${auxiliaresInstance.id}">
-                        <td>${auxiliaresInstance?.periodo?.nombre}</td>
+                        <td><strong>${auxiliaresInstance?.periodo?.nombre}</strong></td>
                         <td>${auxiliaresInstance?.minimo?.toInteger()}</td>
                         <td>${auxiliaresInstance?.optimo?.toInteger()}</td>
                         <td>${auxiliaresInstance?.maximoDirectivos}</td>
                         <td>${auxiliaresInstance?.maximoPares}</td>
                         <td>${auxiliaresInstance?.maximoAutoevaluacion}</td>
                         <td>${auxiliaresInstance?.maximoEstudiantes}</td>
+                        <td>${auxiliaresInstance?.fechaInicio.format('yyyy-MM-dd')}</td>
+                        <td>${auxiliaresInstance?.fechaCierre.format('yyyy-MM-dd')}</td>
                     </tr>
                 </g:each>
             </tbody>

@@ -190,7 +190,7 @@ class PrflController extends seguridad.Shield {
     * **/
 
     def grabar = {
-        println "grabar: $params"
+        println "parametros grabar: ${params}"
         def ids = params.ids
         def modulo = params.menu
         def prfl = params.prfl
@@ -208,45 +208,51 @@ class PrflController extends seguridad.Shield {
                 "prms.accn__id not in (select accn__id " +
                 "from accn where mdlo__id = " + modulo + " and  " +
                 "accn__id in (${ids})) and prfl__id = ${prfl} and tpac__id = ${tpac}"
-        println "a borrar: $tx"
+//
+        println "grabar SQL: ${tx}"
         cn.eachRow(tx.toString()) { d ->
             try {
-                def prms = Prms.get(d.prms__id)
-                println "borrando ${prms.id}"
-                prms.delete()
-            }
-            catch (Exception ex) {
-                println "borrar permiso: " + ex.getMessage()
+                Prms.get(d.prms__id).delete(flush: true)
+                println "borra: ${d.prms__id}"
+            } catch (e) {
+                println "error: $e"
             }
         }
+        //println "-------------borrado de permisos----------"
         // se debe barrer tosos los menús señalados y si está chequeado añadir a prms.
         tx = "select prms.accn__id from prms, accn where accn.accn__id = prms.accn__id and " +
                 "mdlo__id = ${modulo} and " +
                 "prms.accn__id in (select accn__id " +
                 "from accn where mdlo__id = " + modulo + " and accn__id in (${ids})) and prfl__id = ${prfl} and " +
                 "tpac__id = ${tpac}"
+        println "grabar IN SQL: ${tx}"
         exst = []
-        println "a añadir: $tx"
         cn.eachRow(tx) { d ->
             exst.add(d.accn__id)
         }
         tx = "select accn__id " +
                 "from accn where mdlo__id = " + modulo + " and accn__id in (${ids})"
+        //println "grabar señalados SQL: ${tx}"
         actl = []
         cn.eachRow(tx) { d ->
             actl.add(d.accn__id)
         }
+//        println "insercion  Actual: ${actl} \n Exst: ${exst}}"
         (actl - exst).each {
             tx1 = "insert into prms(prfl__id, accn__id) values (${prfl.toInteger()}, ${it})"
-            println "añadiendo: $tx1"
             try {
                 cn.execute(tx1)
+//                insertaKerveros(prfl.toInteger(), session.usuario, session.perfil)
+//          println "insertando.... ${tx1}"
             }
             catch (Exception ex) {
-                println "grabar: " + ex.getMessage()
+                println ex.getMessage()
             }
+            //resp += "<br>" + tx1
         }
         cn.close()
+        //println "recibido:" + params
+        //render(resp + "<br>Existe:" + exst + "<br>Actual:" + actl + "<br>a insertar: ${actl-exst}")
         redirect(action: 'ajaxPermisos', params: params)
     }
 

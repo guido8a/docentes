@@ -9,7 +9,7 @@ class MenuTagLib {
         def usuario = session.usuario
         def perfil = session.perfil
         def prfl = session.perfil.toString().size() < 20 ? session.perfil.toString() : session.perfil.toString()[0..17] + ".."
-        def dpto = session.departamento
+//        def dpto = session.departamento
         def strItems = ""
         if (!attrs.title) {
             attrs.title = "Bitácora"
@@ -118,7 +118,7 @@ class MenuTagLib {
         if (session.usuario) {
             usuario = session.usuario
             perfil = session.perfil
-            dpto = session.departamento
+//            dpto = session.departamento
         }
         def strItems = ""
         if (!attrs.title) {
