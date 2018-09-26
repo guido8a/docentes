@@ -214,19 +214,7 @@
         </div>
     </g:if>
     
-    <g:if test="${auxiliaresInstance?.password}">
-        <div class="row">
-            <div class="col-md-2 text-info">
-                Password
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${auxiliaresInstance}" field="password"/>
-            </div>
-            
-        </div>
-    </g:if>
-    
+
     <g:if test="${auxiliaresInstance?.periodo}">
         <div class="row">
             <div class="col-md-2 text-info">

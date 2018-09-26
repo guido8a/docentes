@@ -8,6 +8,7 @@ class Universidad {
     String nombreContacto
     String apellidoContacto
     String logo
+    String sigla
 
     static mapping = {
         table 'univ'
@@ -22,6 +23,7 @@ class Universidad {
             fechaInicio column: 'univfcin'
             fechaFin column: 'univfcfn'
             logo column: 'univlogo'
+            sigla column: 'univsgla'
 
         }
     }
@@ -33,6 +35,7 @@ class Universidad {
         fechaInicio(nullable: true, blank: true)
         fechaFin(nullable: true, blank: true)
         logo(nullable: true, blank: true)
+        sigla(nullable: true, blank: true)
     }
 
 }
