@@ -96,26 +96,28 @@
     var $treeContainer = $("#tree");
 
     function submitFormUnidad() {
-        var $form = $("#frmDepartamento");
+//        var $form = $("#frmDepartamento");
+        var $form = $("#frmUniversidad");
         var $btn = $("#dlgCreateEdit").find("#btnSave");
         if ($form.valid()) {
             $btn.replaceWith(spinner);
-            openLoader("Guardando Entidad");
+            openLoader("Guardando Universidad");
             $.ajax({
                 type    : "POST",
                 url     : $form.attr("action"),
                 data    : $form.serialize(),
                 success : function (msg) {
-                    var parts = msg.split("*");
-                    log(parts[1], parts[0] == "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                    setTimeout(function () {
-                        if (parts[0] == "SUCCESS") {
+                    closeLoader();
+                    if(msg == 'ok'){
+                        log("Universidad guardada correctamente","success");
+                        setTimeout(function () {
                             location.reload(true);
-                        } else {
-                            spinner.replaceWith($btn);
-                            return false;
-                        }
-                    }, 1000);
+                        }, 800);
+                    }else{
+                        log("Error al guardar la universidad","success");
+
+                    }
+
                 }
             });
         } else {

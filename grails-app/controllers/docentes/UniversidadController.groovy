@@ -115,6 +115,7 @@ class UniversidadController extends Shield {
         }
 
         universidadInstance.properties = params
+        universidadInstance.sigla = params.sigla.toUpperCase()
 
         try{
             universidadInstance.save(flush: true)

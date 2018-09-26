@@ -5,7 +5,7 @@
     <elm:notFound elem="Universidad" genero="o" />
 </g:if>
 <g:else>
-    <g:form class="form-horizontal" name="frmUniversidad" role="form" action="save" method="POST">
+    <g:form class="form-horizontal" name="frmUniversidad" role="form" action="save_ajax" method="POST">
         <g:hiddenField name="id" value="${universidadInstance?.id}" />
         
         <div class="form-group ${hasErrors(bean: universidadInstance, field: 'nombre', 'error')} ">
@@ -17,6 +17,17 @@
                     <g:textField name="nombre" required="" class="form-control required" value="${universidadInstance?.nombre}"/>
                 </div>
                 
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: universidadInstance, field: 'sigla', 'error')} ">
+            <span class="grupo">
+                <label for="nombre" class="col-md-3 control-label text-info">
+                    Siglas
+                </label>
+                <div class="col-md-3">
+                    <g:textField name="sigla" required="" maxlength="8" class="allCaps form-control required" value="${universidadInstance?.sigla}"/>
+                </div>
             </span>
         </div>
         
