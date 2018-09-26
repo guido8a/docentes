@@ -12,7 +12,7 @@
                 Nombre
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:fieldValue bean="${universidadInstance}" field="nombre"/>
             </div>
             
@@ -25,7 +25,7 @@
                 Nombre de Contacto
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:fieldValue bean="${universidadInstance}" field="nombreContacto"/>
             </div>
             
@@ -38,7 +38,7 @@
                 Apellido de Contacto
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:fieldValue bean="${universidadInstance}" field="apellidoContacto"/>
             </div>
             
@@ -51,7 +51,7 @@
                 Fecha Inicio
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:formatDate date="${universidadInstance?.fechaInicio}" format="dd-MM-yyyy" />
             </div>
             
@@ -64,7 +64,7 @@
                 Fecha Fin
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:formatDate date="${universidadInstance?.fechaFin}" format="dd-MM-yyyy" />
             </div>
             
@@ -77,7 +77,7 @@
                 Logo
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:img dir="/images/univ/" file="${universidadInstance?.logo}" width="100px" height="100"/>
             </div>
             
