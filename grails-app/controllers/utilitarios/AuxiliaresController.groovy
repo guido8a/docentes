@@ -236,10 +236,16 @@ class AuxiliaresController extends Shield {
 
         def auxiliar = Auxiliares.get(params.id)
         def fi = new Date().parse("dd-MM-yyyy", params.fechaInicio)
-        def ff = new Date().parse("dd-MM-yyyy", params.fechaFin)
+
+        if(params.fechaFin){
+            def ff = new Date().parse("dd-MM-yyyy", params.fechaFin)
+            auxiliar.fechaCierre = ff
+        }else{
+           auxiliar.fechaCierre = null
+        }
 
         auxiliar.fechaInicio = fi
-        auxiliar.fechaCierre = ff
+
 
         try{
             auxiliar.save(flush: true)

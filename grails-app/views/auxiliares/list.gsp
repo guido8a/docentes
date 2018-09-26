@@ -61,7 +61,7 @@
                         <td>${auxiliaresInstance?.maximoAutoevaluacion}</td>
                         <td>${auxiliaresInstance?.maximoEstudiantes}</td>
                         <td>${auxiliaresInstance?.fechaInicio.format('yyyy-MM-dd')}</td>
-                        <td>${auxiliaresInstance?.fechaCierre.format('yyyy-MM-dd')}</td>
+                        <td>${auxiliaresInstance?.fechaCierre ? auxiliaresInstance?.fechaCierre.format('yyyy-MM-dd') : ''}</td>
                     </tr>
                 </g:each>
             </tbody>
@@ -234,6 +234,14 @@
                                             message: msg,
                                             class: "small",
                                             buttons: {
+                                                cierre: {
+                                                    label: "<i class='fa fa-exclamation-circle'></i> Sin fecha de Cierre",
+                                                    className: "btn-warning",
+                                                    callback: function () {
+                                                        $("#fechaFin").val(null)
+                                                        return false
+                                                    }
+                                                },
                                                 cancelar: {
                                                     label: "Cancelar",
                                                     className: "btn-primary",
