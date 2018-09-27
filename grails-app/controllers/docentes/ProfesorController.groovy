@@ -59,13 +59,80 @@ class ProfesorController extends Shield {
         return list
     }
 
+
+    def getList2(params, all, uni) {
+
+        def universidad = Universidad.get(uni)
+
+        params = params.clone()
+        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
+        params.offset = params.offset ?: 0
+        if(all) {
+            params.remove("max")
+            params.remove("offset")
+        }
+        def list
+        if(params.search) {
+            def c = Profesor.createCriteria()
+            list = c.list(params) {
+
+                escuela{
+                    facultad{
+                        eq("universidad", universidad)
+                    }
+                }
+
+                or {
+                    /* TODO: cambiar aqui segun sea necesario */
+
+                    ilike("apellido", "%" + params.search + "%")
+                    ilike("cedula", "%" + params.search + "%")
+                    ilike("estado", "%" + params.search + "%")
+                    ilike("evaluar", "%" + params.search + "%")
+                    ilike("nombre", "%" + params.search + "%")
+                    ilike("observacion", "%" + params.search + "%")
+                    ilike("sexo", "%" + params.search + "%")
+                    ilike("titulo", "%" + params.search + "%")
+                }
+            }
+        } else {
+//            list = Profesor.list(params)
+            def c = Profesor.createCriteria()
+            list = c.list(params) {
+                escuela{
+                    facultad{
+                        eq("universidad", universidad)
+                    }
+                }
+            }
+        }
+        if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
+            params.offset = params.offset.toInteger() - 1
+            list = getList(params, all)
+        }
+        return list
+    }
+
+
     /**
      * Acción que muestra la lista de elementos
      * @return profesorInstanceList: la lista de elementos filtrados, profesorInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def profesorInstanceList = getList(params, false)
-        def profesorInstanceCount = getList(params, true).size()
+
+        def universidad
+        def profesorInstanceList
+        def profesorInstanceCount
+
+        if(session.perfil.codigo == 'ADMG'){
+            profesorInstanceList = getList(params, false)
+            profesorInstanceCount = getList(params, true).size()
+        }else{
+            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
+            profesorInstanceList = getList2(params, false, universidad.id)
+            profesorInstanceCount = getList2(params, true, universidad.id).size()
+        }
+
         return [profesorInstanceList: profesorInstanceList, profesorInstanceCount: profesorInstanceCount]
     }
 

@@ -28,8 +28,19 @@
     <div class="row">
         <div class="col-md-1 negrilla control-label">Facultad: </div>
         <div class="col-md-5">
-            <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
-                      class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" value="${profesorInstance?.escuela?.facultad?.id}"/>
+
+
+            <g:if test="${session.perfil.codigo == 'ADMG'}">
+                <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
+                          class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" value="${profesorInstance?.escuela?.facultad?.id}"/>
+            </g:if>
+            <g:else>
+                <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
+                          optionKey="id" name="facultad" id="facultadId" class="form-control"/>
+            </g:else>
+
+
+
         </div>
         <div class="col-md-1 negrilla control-label">Escuela: </div>
         <div class="col-md-5" id="divEscuela">

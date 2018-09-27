@@ -13,9 +13,6 @@
     <!-- botones -->
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
-                %{--<g:link action="form" class="btn btn-info btnCrear">--}%
-                    %{--<i class="fa fa-user"></i> Nuevo Profesor--}%
-                %{--</g:link>--}%
                 <g:link controller="profesor" action="profesor" class="btn btn-info">
                     <i class="fa fa-user"></i> Nuevo Profesor
                 </g:link>
@@ -45,8 +42,6 @@
                     <g:sortableColumn property="estado" title="Estado" />
                     
                     <g:sortableColumn property="evaluar" title="Evaluar" />
-                    
-                    %{--<g:sortableColumn property="fechaFin" title="Fecha Fin" />--}%
                     
                 </tr>
             </thead>

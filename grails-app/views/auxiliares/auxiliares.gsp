@@ -54,37 +54,45 @@
 
 
         </div>
-        <g:if test="${!auxiliar}">
-            %{--<div class="col-md-3">--}%
+
+
+        <div class="panel panel-info col-md-12" style="margin-top: 20px;">
+            <div class="panel-heading" style="height: 65px">
+
+                <g:if test="${!auxiliar}">
+                %{--<div class="col-md-3">--}%
                 %{--<div class="col-md-4"><h4><span class="label label-primary">Período: </span></h4></div>--}%
                 %{--<div class="col-md-6">--}%
-                    %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-                              %{--class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
+                %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
+                %{--class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
                 %{--</div>--}%
-            %{--</div>--}%
+                %{--</div>--}%
 
 
-            <g:if test="${session.perfil.codigo == 'ADMG'}">
-            <div class="col-md-2" style="margin-top: 10px"><h4><span class="label label-primary">Universidad: </span></h4></div>
-                <div class="col-sm-4" style="margin-top: 10px;">
-                    <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                              class="form-control" style="width: 280px"
-                              from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-                </div>
-            <div class="col-md-1" style="margin-top: 10px"><h4><span class="label label-primary">Período: </span></h4></div>
-                <div class="col-md-3" style="margin-top: 10px;" id="divPeriodos">
+                    <g:if test="${session.perfil.codigo == 'ADMG'}">
+                        <div class="col-md-2" style="margin-top: 10px"><h4><span class="label label-primary">Universidad: </span></h4></div>
+                        <div class="col-sm-4" style="margin-top: 10px;">
+                            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                                      class="form-control" style="width: 280px"
+                                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
+                        </div>
+                        <div class="col-md-1" style="margin-top: 10px"><h4><span class="label label-primary">Período: </span></h4></div>
+                        <div class="col-md-3" style="margin-top: 10px;" id="divPeriodos">
 
-                </div>
-            </g:if>
-            <g:else>
-            <div class="col-md-1" style="margin-top: 10px"><h4><span class="label label-primary">Período: </span></h4></div>
-                <div class="col-md-3" style="margin-top: 10px;">
-                    <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                              class="form-control" style="width: 150px"
-                              from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
-                </div>
-            </g:else>
-        </g:if>
+                        </div>
+                    </g:if>
+                    <g:else>
+                        <div class="col-md-1" style="margin-top: 10px"><h4><span class="label label-primary">Período: </span></h4></div>
+                        <div class="col-md-3" style="margin-top: 10px;">
+                            <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                                      class="form-control" style="width: 150px"
+                                      from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
+                        </div>
+                    </g:else>
+                </g:if>
+            </div>
+        </div>
+
     </div>
 </div>
 
