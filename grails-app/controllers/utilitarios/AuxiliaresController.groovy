@@ -1,6 +1,7 @@
 package utilitarios
 
 import docentes.Periodo
+import docentes.Universidad
 import org.springframework.dao.DataIntegrityViolationException
 import seguridad.Shield
 
@@ -254,6 +255,21 @@ class AuxiliaresController extends Shield {
             println("error al guardar las fechas " + e + auxiliar.errors)
             render "no"
         }
+    }
+
+    def tablaParametros_ajax () {
+
+        def universidad = Universidad.get(params.id)
+        def auxiliares = Auxiliares.withCriteria {
+
+            periodo{
+                eq("universidad", universidad)
+            }
+
+            order("periodo","asc")
+        }
+
+        return[auxiliaresInstanceList: auxiliares]
     }
 
 }
