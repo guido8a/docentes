@@ -45,20 +45,41 @@
 
 <div class="panel panel-info col-md-12" style="margin-top: 20px" >
     <div class="panel-heading">
-        <h3 class="panel-title" style="height: 35px; padding-left: 10px; padding-right: 110px">
-            <div class="col-md-2"></div>
-            <div class="col-md-5" style="margin-top: 10px;">
-                Procesamiento de las encuestas para el priodo:
+        <h3 class="panel-title" style="height: 55px; padding-left: 10px;">
+            %{--<div class="col-md-2"></div>--}%
+            <div class="col-md-3" style="margin-top: 10px;">
+                Procesamiento de las encuestas
             </div>
 
-            <div class="col-md-2"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                             class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
+            %{--<div class="col-md-2"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
+            %{--class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>--}%
+
+        <g:if test="${session.perfil.codigo == 'ADMG'}">
+            <div class="col-md-2" style="margin-top: 10px;">Universidad:</div>
+            <div class="col-sm-4" style="margin-top: 10px;">
+                <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                          class="form-control" style="width: 280px"
+                          from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
+            </div>
+            <div class="col-md-1" style="margin-top: 10px;">Período:</div>
+            <div class="col-md-1" style="margin-top: 10px;" id="divPeriodos">
+
+            </div>
+        </g:if>
+        <g:else>
+            <div class="col-md-1" style="margin-top: 10px;">Período:</div>
+            <div class="col-md-1" style="margin-top: 10px;">
+                <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                          class="form-control" style="width: 90px"
+                          from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
+            </div>
+        </g:else>
 
         </h3>
     </div>
+
+
     <div class="panel-body" style="text-align: center">
-
-
         <div class="progress progress-striped active row">
             <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">  <span class="fill" data-percentage="50"></span></div>
         </div>
@@ -80,6 +101,26 @@
 
 
 <script type="text/javascript">
+
+    cargarPeriodo($("#universidadId").val());
+
+    $("#universidadId").change(function () {
+        var id = $("#universidadId option:selected").val();
+        cargarPeriodo(id)
+    });
+
+    function cargarPeriodo(id) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',
+            data:{
+                universidad: id
+            },
+            success: function (msg){
+                $("#divPeriodos").html(msg)
+            }
+        });
+    }
 
     var url = "${resource(dir:'images', file:'spinner64.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' width='40px' height='40px'/><span> Procesando...</span>");
