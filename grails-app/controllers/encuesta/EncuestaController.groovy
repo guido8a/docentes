@@ -28,7 +28,7 @@ class EncuestaController {
     }
 
     def index() {
-        redirect inicio
+        redirect (action: "inicio", params: params)
     }
 
     def inicio() {
