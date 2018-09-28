@@ -9,7 +9,7 @@
         <table class="table-bordered table-condensed table-hover" width="1070px">
             <tbody>
             <g:each in="${estudiantes}" var="estudiante">
-                <tr>
+                <tr data-id="${estudiante?.id}">
                     <td style="width: 20%">${estudiante?.cedula}</td>
                     <td style="width: 40%">${estudiante?.apellido}</td>
                     <td style="width: 40%">${estudiante?.nombre}</td>
@@ -18,4 +18,73 @@
             </tbody>
         </table>
     </div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $("tbody tr").contextMenu({
+            items  : {
+                header   : {
+                    label  : "Acciones",
+                    header : true
+                },
+                ver      : {
+                    label  : "Ver",
+                    icon   : "fa fa-search",
+                    action : function ($element) {
+                        var id = $element.data("id");
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'show_ajax')}",
+                            data    : {
+                                id : id
+                            },
+                            success : function (msg) {
+                                bootbox.dialog({
+                                    title   : "Ver datos del estudiante",
+                                    message : msg,
+                                    buttons : {
+                                        ok : {
+                                            label     : "Aceptar",
+                                            className : "btn-primary",
+                                            callback  : function () {
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                },
+                editar   : {
+                    label  : "Editar",
+                    icon   : "fa fa-pencil",
+                    action : function ($element) {
+                        var id = $element.data("id");
+//                                createEditRow(id);
+                        location.href='${createLink(controller: 'estudiante', action: 'estudiante')}/' + id
+                    }
+                },
+                eliminar : {
+                    label            : "Eliminar",
+                    icon             : "fa fa-trash-o",
+                    separator_before : true,
+                    action           : function ($element) {
+                        var id = $element.data("id");
+                        deleteRow(id);
+                    }
+                }
+            },
+            onShow : function ($element) {
+                $element.addClass("trHighlight");
+            },
+            onHide : function ($element) {
+                $(".trHighlight").removeClass("trHighlight");
+            }
+        });
+    });
+
+
+</script>
 
