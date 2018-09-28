@@ -320,7 +320,7 @@ class EstudianteController extends Shield {
 
         if(session.perfil.codigo == 'ADMG'){
             if(!params.cedula && !params.nombre && !params.apellido){
-                estudiantes = Estudiante.list([sort: 'apellido', order: 'asc'])
+                estudiantes = Estudiante.list([sort: 'apellido', order: 'asc', max: 30])
             }else{
                 estudiantes = Estudiante.withCriteria {
 
@@ -329,6 +329,9 @@ class EstudianteController extends Shield {
                         ilike("cedula", "" + params.cedula + "%")
                         ilike("nombre", "%" + params.nombre + "%")
                     }
+
+                    maxResults(30)
+
                 }
             }
 
@@ -343,14 +346,14 @@ class EstudianteController extends Shield {
                         "  estdapll apellido from estd, matr, dcta, prdo\n" +
                         "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
                         "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' " +
-                        "group by estd.estd__id, estdcdla, estdnmbr, estdapll;"
+                        "group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
 
             }else{
                 sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
                         "  estdapll apellido from estd, matr, dcta, prdo\n" +
                         "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
                         "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' and estd.estdcdla ilike'${params.cedula}%'" +
-                        " and estd.estdapll ilike '%${params.apellido}%' and estd.estdnmbr ilike '%${params.nombre}%' group by estd.estd__id, estdcdla, estdnmbr, estdapll;"
+                        " and estd.estdapll ilike '%${params.apellido}%' and estd.estdnmbr ilike '%${params.nombre}%' group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
             }
 
             def cn = dbConnectionService.getConnection()
