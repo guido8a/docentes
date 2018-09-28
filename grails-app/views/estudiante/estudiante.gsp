@@ -53,8 +53,23 @@
                 Materias en las cuales está matriculado el alumno para el período
             </div>
 
-            <div class="col-md-4"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                             class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
+            <div class="col-md-4">
+
+
+                <g:if test="${session.perfil.codigo == 'ADMG'}">
+                    <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                              class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>
+
+                </g:if>
+                <g:else>
+                    <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                              class="form-control" style="width: 90px"
+                              from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
+                </g:else>
+
+
+
+            </div>
 
 
             <div class="col-md-3" style="float: right" id="divCopiar">
@@ -101,7 +116,7 @@
 
 
     $("#periodoId").change(function () {
-       var per = $(this).val();
+        var per = $(this).val();
         cargarMaterias(per);
         cargarMatriculados(per)
     });
@@ -116,7 +131,7 @@
 
     function cargarMaterias (periodo){
         $.ajax ({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'estudiante', action: 'materias_ajax')}',
             data:{
                 periodo: periodo,
