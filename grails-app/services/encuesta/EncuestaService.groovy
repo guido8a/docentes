@@ -25,6 +25,7 @@ class EncuestaService {
         def tx = "select count(*) cnta from encu, teti, tpen where prdo__id = ${prdo} and " +
                 "estd__id = ${estd} and teti.teti__id = encu.teti__id and tpen.tpen__id = teti.tpen__id and " +
                 "tpencdgo = 'FE' and encuetdo = 'C' and prdo__id = ${prdo} "
+        println "factoresDeExito: $tx"
         try {
             rt = (cn.rows(tx.toString())[0].cnta > 0)
         }

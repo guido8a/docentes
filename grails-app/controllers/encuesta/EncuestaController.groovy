@@ -84,10 +84,11 @@ class EncuestaController {
         def univ = Universidad.get(session.univ)
         def logo = g.resource(dir: 'images/univ', file: univ.logo, absolute: true)
         session.encuesta = 0
-        println "universidado: ${logo}"
+        println "universidad: ${logo}"
 //        println "ponePregunta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.periodo.id}"
 
         if(encuestaService.factoresDeExito(session.informanteId, session.prdo)) { //si ya se ha completado FE muestra materias
+//            println "ya completo FE"
             def matr
             tx = "select matr.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
                     "from matr, dcta, crso, mate, prof " +
@@ -99,9 +100,11 @@ class EncuestaController {
                     "encuetdo = 'C' and prdo__id = ${session.prdo} ) order by profnmbr"
             println "previa: $tx"
             matr = cn.rows(tx.toString())
+            println "matr: $matr, logo: $logo, universidad: ${univ.nombre}"
             [matr: matr, logo: logo, universidad: univ.nombre]
+        } else {
+            [logo: logo, universidad: univ.nombre]
         }
-        [logo: logo, universidad: univ.nombre]
     }
 
     /**
@@ -192,7 +195,7 @@ class EncuestaController {
             encu = encuestaService.encuestaEnCurso(session.informanteId, tpif__id, tpen.id, session.informanteId, dcta__id, 0,0, session.prdo)
         }
 
-        println "encuesta en curso: ${encu?.id}"
+        println "encuesta en curso: ${encu?.id}, tpen: ${tpen__id}"
         if(encu == null) {  // se debe crear la ponePregunta
             actual = 1
             encu = new Encuesta()
@@ -240,7 +243,7 @@ class EncuestaController {
             }
 
             try{
-//                println "inica save"
+//                println "inicia save"
                 encu.save(flush: true)
 //                println "creando ponePregunta.. ok"
                 creado = true
@@ -250,7 +253,7 @@ class EncuestaController {
             }
             if(creado) {
                 encu.refresh()
-//                println "Continua con encu: ${encu.id}, actual: $actual"
+//                println "-->Continua con encu: ${encu.id}, actual: $actual"
                 session.total = total
                 session.encuesta = encu
                 session.tipoEncuesta = tpen
@@ -259,7 +262,7 @@ class EncuestaController {
             }
         } else {
             actual  = encuestaService.preguntaActual(encu.id) + 1
-//            println "va a ponePregunta con encu: ${encu.id}, actual: $actual"
+            println "va a ponePregunta con encu: ${encu.id}, actual: $actual, total: ${total}"
             if(actual <= total) { //continuar con la ponePregunta
                 session.total = total
                 session.encuesta = encu
@@ -268,6 +271,8 @@ class EncuestaController {
                 ponePregunta(actual, total, encu, tpen)
             } else {
                 // ya ha terminado la ponePregunta
+                session.encuesta = encu
+                session.tipoEncuesta = encu.teti.tipoEncuesta
                 finalizaEncuesta(encu.id)
             }
         }
@@ -582,7 +587,7 @@ class EncuestaController {
     }
 
     def finalizaEncuesta(encu) {
-        println "llega encu: $encu, tipo: ${session.tipoPersona} encuesta: ${session.tipoEncuesta.codigo}"
+        println "llega encu: $encu, tipo: ${session?.tipoPersona} encuesta: ${session?.tipoEncuesta?.codigo}"
         encuestaService.poneFinalizado(encu)
 
         if(session.tipoPersona == 'E' && (session.tipoEncuesta.codigo == 'FE')){
