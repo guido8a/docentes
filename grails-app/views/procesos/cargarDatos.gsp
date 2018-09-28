@@ -37,7 +37,10 @@
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
 <div class="col-md-12 btn-block" style="text-align: center; height: 50px">
-    <a href="#" class="btn col-md-3 btn-danger" id="borrarDatos"><i class="fa fa-trash"></i> Borrar datos</a>
+    <g:link controller="inicio" action="index" class="col-md-3 btn btn-primary" title="Salir de cargar datos">
+        <i class="fa fa-chevron-left"></i> Salir de cargar datos
+    </g:link>
+    %{--<a href="#" class="btn col-md-3 btn-danger" id="borrarDatos"><i class="fa fa-trash"></i> Borrar datos</a>--}%
     %{--<a href="#" class="btn col-md-3 btn-primary" id="validarDatos"><i class="fa fa-filter"></i> Validar archivo</a>--}%
     <a href="#" class="btn col-md-3 btn-info" id="cargarDatos"><i class="fa fa-file-excel-o"></i> Cargar datos</a>
     %{--<a href="#" class="btn col-md-3 btn-info" id="cargarPrueba"><i class="fa fa-file-excel-o"></i> Prueba</a>--}%
@@ -119,8 +122,8 @@
     var url = "${resource(dir:'images', file:'spinner64.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' width='40px' height='40px'/><span> Cargando...</span>");
 
-    cargarBotones(1);
-    cargarFormato(1);
+    cargarBotones(9);
+    cargarFormato(9);
 
     function cargarBotones(boton) {
         $.ajax({

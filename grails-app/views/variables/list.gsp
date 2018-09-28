@@ -36,6 +36,8 @@
         <g:sortableColumn property="codigo" title="Código" />
 
         <g:sortableColumn property="descripcion" title="Descripción" />
+        <g:sortableColumn property="orden" title="Orden" />
+        <g:sortableColumn property="sigla" title="Sigla" />
 
     </tr>
     </thead>
@@ -46,6 +48,8 @@
             <td>${fieldValue(bean: variablesInstance, field: "codigo")}</td>
 
             <td>${fieldValue(bean: variablesInstance, field: "descripcion")}</td>
+            <td>${fieldValue(bean: variablesInstance, field: "orden")}</td>
+            <td>${fieldValue(bean: variablesInstance, field: "sigla")}</td>
 
         </tr>
     </g:each>
