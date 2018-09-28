@@ -104,7 +104,10 @@
                 </g:form>
             </div>
         </div>
-            <div class="col-md-12 col-xs-12"> Desarrollado por: TEDEIN SA &nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://www.tedein.com.ec">www.tedein.com.ec</a></div>
+            <div class="col-md-12 col-xs-12"> Desarrollado por: TEDEIN SA &nbsp;&nbsp;&nbsp;&nbsp;
+                <a target="_blank" href="http://www.tedein.com.ec">www.tedein.com.ec</a>
+                <span style="margin-left: 20px; font-size: smaller">Versión ${message(code: 'version', default: '1.1.0x')}</span>
+            </div>
 
 </div>
 

@@ -27,7 +27,9 @@ class EncuestaController {
         }
     }
 
-    def index() {}
+    def index() {
+        redirect inicio
+    }
 
     def inicio() {
         if(session.informanteId) session.invalidate()
