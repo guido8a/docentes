@@ -38,8 +38,8 @@
                 Estandar
             </div>
             
-            <div class="col-md-6">
-                ${indicadorInstance?.estandar?.codigo?.encodeAsHTML()}
+            <div class="col-md-10">
+                ${indicadorInstance?.estandar?.codigo?.encodeAsHTML() + " - " + indicadorInstance?.estandar?.descripcion?.encodeAsHTML()}
             </div>
             
         </div>

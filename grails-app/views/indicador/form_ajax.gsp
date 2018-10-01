@@ -37,8 +37,8 @@
                 <label for="estandar" class="col-md-2 control-label text-info">
                     Estandar
                 </label>
-                <div class="col-md-6">
-                    <g:select id="estandar" name="estandar.id" from="${docentes.Estandar.list()}" optionKey="id" optionValue="codigo" required="" value="${indicadorInstance?.estandar?.id}" class="many-to-one form-control"/>
+                <div class="col-md-9">
+                    <g:select id="estandar" name="estandar.id" from="${docentes.Estandar.list()}" optionKey="id" optionValue="${{it.codigo + " - " + it.descripcion}}" required="" value="${indicadorInstance?.estandar?.id}" class="many-to-one form-control"/>
                 </div>
                 
             </span>
@@ -49,7 +49,7 @@
                 <label for="variables" class="col-md-2 control-label text-info">
                     Variables
                 </label>
-                <div class="col-md-8">
+                <div class="col-md-9">
                     <g:select id="variables" name="variables.id" from="${docentes.Variables.list()}" optionKey="id" optionValue="descripcion" required="" value="${indicadorInstance?.variables?.id}" class="many-to-one form-control"/>
                 </div>
                 
