@@ -1,8 +1,15 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 01/10/18
+  Time: 15:07
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
-    <title>Reportes</title>
+    <title>Reportes de Evaluación</title>
     <style type="text/css">
     @page {
         size: 8.5in 11in;  /* width height */
@@ -55,27 +62,8 @@
 <body>
 <div class="dialog">
     <div style="text-align: center;" class="row"><h2 class="titl">
-        <p class="text-warning">Reportes Generales</p> </h2>
+        <p class="text-warning">Reportes de Evaluación</p> </h2>
     </div>
-
-    %{--<div class="row text-info" style="font-size: 11pt">--}%
-    %{--<div class="col-md-1"></div>--}%
-    %{--<div class="col-md-2">Seleccione el periodo de evaluaciones:</div>--}%
-
-    %{--<div class="col-sm-1"><g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-    %{--class="form-control" style="width: 90px"--}%
-    %{--from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-    %{--<div class="col-md-5">--}%
-    %{--<g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-    %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"/>--}%
-    %{--</div>--}%
-
-    %{--</div>--}%
-
 
 
     <div class="row text-info" style="font-size: 11pt;">
@@ -101,18 +89,6 @@
                 </div>
             </div>
 
-
-        %{--<div class="col-md-1">Universidad:</div>--}%
-        %{--<div class="col-sm-3">--}%
-        %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-        %{--class="form-control" style="width: 280px"--}%
-        %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-        %{--</div>--}%
-        %{--<div class="col-md-1">Período:</div>--}%
-        %{--<div class="col-sm-1" id="divPeriodos">--}%
-
-        %{--</div>--}%
-
             <div class="form-group col-md-6" style="margin-left: 10px">
                 <div class="col-md-1">Facultad:</div>
 
@@ -123,11 +99,6 @@
                 </div>
             </div>
 
-        %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-        %{--<div class="col-md-4" id="divFacultad">--}%
-
-        %{--</div>--}%
         </g:if>
         <g:else>
             <div class="form-group col-md-1" style="margin-left: 180px">
@@ -156,178 +127,67 @@
         </g:else>
     </div>
 
-    %{--<div class="body ui-corner-all"--}%
-         %{--style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 280px; ">--}%
+    <div class="body ui-corner-all"
+         style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 280px; ">
 
-        %{--<div class="ui-corner-all item fuera">--}%
-            %{--<div class="ui-corner-all item">--}%
-                %{--<div class="imagen" style="height: 100%; width: 200px;">--}%
-                    %{--<img src="${resource(dir: 'images', file: 'evaluar.png')}" width="150px" height="auto"--}%
-                         %{--style=" margin-top:0px"/>--}%
-                %{--</div>--}%
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="imprimirNoEvaluados">--}%
-                        %{--<span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong>--}%
-                            %{--profesores que no cuentan con evaluaciones--}%
-                        %{--</span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
+        <div class="ui-corner-all item fuera">
+            <div class="ui-corner-all item">
+                <div class="imagen" style="height: 100%; width: 200px;">
+                    <img src="${resource(dir: 'images', file: 'evaluar.png')}" width="150px" height="auto"
+                         style=" margin-top:0px"/>
+                </div>
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="imprimirNoEvaluados">
+                        <span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong>
+                            profesores que no cuentan con evaluaciones
+                        </span>
+                    </div>
+                </a>
 
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="imprimirEvaluados">--}%
-                        %{--<span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que tienen al menos una evaluación--}%
-                        %{--</span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="imprimirEvaluados">
+                        <span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que tienen al menos una evaluación
+                        </span>
+                    </div>
+                </a>
 
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="imprimirNoAutoeva">--}%
-                        %{--<span class="text-success"><strong>Profesores que NO han realizado su autoevaluación</strong>--}%
-                        %{--</span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="imprimirNoAutoeva">
+                        <span class="text-success"><strong>Profesores que NO han realizado su autoevaluación</strong>
+                        </span>
+                    </div>
+                </a>
 
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="imprimirAutoeva">--}%
-                        %{--<span class="text-success"><strong>Profesores que YA han realizado su autoevaluación</strong>--}%
-                        %{--</span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="imprimirAutoeva">
+                        <span class="text-success"><strong>Profesores que YA han realizado su autoevaluación</strong>
+                        </span>
+                    </div>
+                </a>
 
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="imprimirEstudiante">--}%
-                        %{--<span class="text-success"><strong>Estudiantes que han realizado la evaluación</strong></span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="imprimirEstudiante">
+                        <span class="text-success"><strong>Estudiantes que han realizado la evaluación</strong></span>
+                    </div>
+                </a>
 
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="imprimirNoEstudiante">--}%
-                        %{--<span class="text-success"><strong>Estudiantes que NO han realizado la evaluación</strong>--}%
-                        %{--</span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="imprimirNoEstudiante">
+                        <span class="text-success"><strong>Estudiantes que NO han realizado la evaluación</strong>
+                        </span>
+                    </div>
+                </a>
 
-                %{--<a href="#" style="text-decoration: none">--}%
-                    %{--<div class="texto" id="asignaturas">--}%
-                        %{--<span class="text-success"><strong>Asignaturas que faltan por evaluar</strong>--}%
-                        %{--</span>--}%
-                    %{--</div>--}%
-                %{--</a>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-</div>
-
-<div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 280px; ">
-
-    <div class="ui-corner-all item fuera" style="height: 290px">
-        <div class="ui-corner-all item" style="height: 290px">
-            <div class="imagen" style="height: 100%; width: 200px;">
-                <img src="${resource(dir: 'images', file: 'evaluar-3.png')}" width="150px" height="auto"
-                     style=" margin-top:20px"/>
+                <a href="#" style="text-decoration: none">
+                    <div class="texto" id="asignaturas">
+                        <span class="text-success"><strong>Asignaturas que faltan por evaluar</strong>
+                        </span>
+                    </div>
+                </a>
             </div>
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirPorAvariables">
-                    <span class="text-success"><i class="fa fa-graduation-cap"></i><strong> Desempeño académico</strong> de los profesores por variables
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirDesempeno">
-                    <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Informe del desempeño académico</strong> de los profesores
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirReco">
-                    <span class="text-success"><i class="fa fa-star"></i><strong> Recomendaciones</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirBotella">
-                    <span class="text-success"><i class="fa fa-flask"></i><strong> Cuellos de Botella</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirPotencia">
-                    <span class="text-success"><i class="fa fa-flash"></i><strong>  Factores de Potenciación</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirExito">
-                    <span class="text-success"><i class="fa fa-sun-o"></i><strong> Factores de Éxito</strong></span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirTotales">
-                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Totales del desempeño académico</strong> de los profesores por variables
-                    </span>
-                </div>
-            </a>
-
-            %{--<a href="#" style="text-decoration: none">--}%
-            %{--<div class="texto" id="imprimirClasificacion">--}%
-            %{--<span class="text-success"><i class="fa fa-signal"></i><strong> Clasificación del desempeño académico</strong> de los profesores--}%
-            %{--</span>--}%
-            %{--</div>--}%
-            %{--</a>--}%
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirCatego">
-                    <span class="text-success"><i class="fa fa-bars"></i><strong> Ordenamiento por variables </strong> de profesores
-                    </span>
-                </div>
-            </a>
         </div>
     </div>
 </div>
-
-
-
-
-
-<div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 150px; ">
-
-    <div class="ui-corner-all item fuera" style="height: 150px">
-        <div class="ui-corner-all item" style="height: 150px">
-            <div class="imagen" style="height: 100%; width: 200px;">
-                <img src="${resource(dir: 'images', file: 'survey.png')}" width="100px" height="auto"
-                     style=" margin-top:0px; margin-left: 30px"/>
-            </div>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirEncuesta">
-                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Encuestas </strong> de profesores
-                    </span>
-                </div>
-            </a>
-
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirFactores">
-                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Factores de éxito</strong>
-                    </span>
-                </div>
-            </a>
-            <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirEvaluacionesPro">
-                    <span class="text-success"><i class="fa fa-pencil-square-o"></i><strong> Evaluaciones del profesor</strong>
-                    </span>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-
-
 
 
 

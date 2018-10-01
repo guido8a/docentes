@@ -237,6 +237,10 @@ class ReportesController extends seguridad.Shield {
 
     }
 
+    def reportesEvaluacion () {
+
+    }
+
     def reportesGraf () {
 
     }
