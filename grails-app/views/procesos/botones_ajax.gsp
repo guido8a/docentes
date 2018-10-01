@@ -1,5 +1,5 @@
 <div class="list-group">
-    <a href="#" class="list-group-item ${boton == '9' ? "list-group-item-danger" : "disabled"} btnFormato" data-id="9" id="btn9">Archivo Único de datos</a>
+    <a href="#" class="list-group-item ${boton == '9' ? "list-group-item-danger" : "disabled"} btnFormato" data-id="9" id="btn9">Archivo único de datos</a>
     %{--<a href="#" class="list-group-item ${boton == '1' ? "list-group-item-danger" : "disabled"} btnFormato" data-id="1" id="btn1">Facultades</a>--}%
     <a href="#" class="list-group-item btnFormato" data-id="1" id="btn1">Facultades</a>
     <a href="#" class="list-group-item btnFormato" data-id="2" id="btn2">Escuelas</a>
@@ -18,4 +18,4 @@
         cargarFormato(boton);
     });
 
-</script>
+</script>                   7

@@ -1327,7 +1327,7 @@ class ReportesController extends seguridad.Shield {
             case 'EA':
 
                 sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
-                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and facl__id = ${params.facl} and " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by d_ea DESC"
                 val = 'd_ea'
                 break;
@@ -1570,7 +1570,7 @@ class ReportesController extends seguridad.Shield {
 
         def sql = "select rpec.prof__id, dctaprll, cb_causa, matedscr, prof.prof__id, profnmbr, profapll  " +
                 "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-                "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "and escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
                 "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
                 "and cb_tipo = 'A' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
 
@@ -1598,7 +1598,7 @@ class ReportesController extends seguridad.Shield {
 
         def sql = "select rpec.prof__id, dctaprll, matedscr, cb_causa, prof.prof__id, profnmbr, profapll " +
                 "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-                "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "and escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
                 "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
                 "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
 
@@ -1629,7 +1629,7 @@ class ReportesController extends seguridad.Shield {
         def sql = "select rpec.prof__id, dctaprll, matedscr, escldscr, " +
                 "prof.prof__id, profnmbr, profapll from rpec, " +
                 "prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-                "and escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' " +
+                "and escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
                 "and con_rcmn > 0 and tpen__id = 2 and dcta.dcta__id = rpec.dcta__id " +
                 "and mate.mate__id = dcta.mate__id group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, escldscr;"
 
@@ -1792,7 +1792,7 @@ class ReportesController extends seguridad.Shield {
         def sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
                 "from rpec, prof, escl, dcta, mate " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl__id::varchar ilike '${facultadId}' and dcta.dcta__id = rpec.dcta__id and " +
+                "rpec.facl__id::varchar ilike '${facultadId}' and dcta.dcta__id = rpec.dcta__id and " +
                 "mate.mate__id = dcta.mate__id and clase is not null and rpec.prdo__id = ${periodo.id} and " +
                 "tpen__id = 2 " +
                 "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +

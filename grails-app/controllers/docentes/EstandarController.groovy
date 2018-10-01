@@ -58,8 +58,11 @@ class EstandarController extends Shield {
      * @return estandarInstanceList: la lista de elementos filtrados, estandarInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def estandarInstanceList = getList(params, false)
+//        def estandarInstanceList = getList(params, false).sort{it.codigo}
+        params.sort = 'codigo'
+        def estandarInstanceList = Estandar.list(params)
         def estandarInstanceCount = getList(params, true).size()
+        println "${estandarInstanceList.codigo}"
         return [estandarInstanceList: estandarInstanceList, estandarInstanceCount: estandarInstanceCount]
     }
 
