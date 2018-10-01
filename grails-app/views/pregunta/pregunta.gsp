@@ -101,8 +101,8 @@
 
 <div class="row">
     <div class="col-md-1 negrilla control-label">Estrategia: </div>
-    <div class="col-md-5">
-        <g:textArea name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}" class="form-control" maxlength="127" style="resize: none" readonly="${preguntaInstance?.estado == 'R'}"/>
+    <div class="col-md-9">
+        <g:textField name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}" class="form-control" maxlength="127" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 <div class="row">
