@@ -5,20 +5,19 @@
     <title>Preguntas a aplicarse en la encuesta</title>
 
     <style>
-        .tabrow {
-            text-align: center;
-            list-style: none;
-            margin: 0;
-            padding: 10px;
-            line-height: 25px;
-        }
-        .tabrow li {
-            background: linear-gradient(to bottom, #deedfc 33%, #a0a0a0 100%);
-            box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
-            text-shadow: 0 1px #FFF;
-            /*margin: 0 -5px;*/
-            padding: 0 20px;
-        }
+    .tabrow {
+        text-align: center;
+        list-style: none;
+        margin: 0;
+        padding: 10px;
+        line-height: 25px;
+    }
+    .tabrow li {
+        background: linear-gradient(to bottom, #deedfc 33%, #a0a0a0 100%);
+        box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
+        text-shadow: 0 1px #FFF;
+        padding: 0 20px;
+    }
     </style>
 
 </head>
@@ -72,14 +71,11 @@
         <g:select name="variable" id="variableId" optionKey="id" optionValue="descripcion"
                   class="form-control" from="${docentes.Variables.list([sort: 'descripcion', order: 'asc'])}" value="${preguntaInstance?.variables?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
     </div>
-    <div class="col-md-1 negrilla control-label">Tipo de Valoración: </div>
-    <div class="col-md-2">
-        <g:select name="vloración" id="valoracionId" optionKey="id" optionValue="descripcion"
-                  class="form-control" from="${docentes.TipoRespuesta.list([sort: 'descripcion', order: 'asc'])}" value="${preguntaInstance?.tipoRespuesta?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
-    </div>
-    <div class="col-md-1 negrilla control-label">Estado: </div>
-    <div class="col-md-1">
-        <g:textField name="estado_name" id="estadoPregunta" style="text-align: center" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
+
+    <div class="col-md-1 negrilla control-label">Indicador: </div>
+    <div class="col-md-4" id="divIndicador">
+
+
     </div>
 </div>
 
@@ -92,6 +88,18 @@
     <div class="col-md-1">
         <g:textField name="numero_name" id="numeroRespuestas" value="${preguntaInstance?.numeroRespuestas}" class="form-control required number" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
+    <div class="col-md-1 negrilla control-label">Tipo de Valoración: </div>
+    <div class="col-md-2">
+        <g:select name="vloración" id="valoracionId" optionKey="id" optionValue="descripcion"
+                  class="form-control" from="${docentes.TipoRespuesta.list([sort: 'descripcion', order: 'asc'])}" value="${preguntaInstance?.tipoRespuesta?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
+    </div>
+    <div class="col-md-1 negrilla control-label">Estado: </div>
+    <div class="col-md-1">
+        <g:textField name="estado_name" id="estadoPregunta" style="text-align: center" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-1 negrilla control-label">Estrategia: </div>
     <div class="col-md-5">
         <g:textArea name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}" class="form-control" maxlength="127" style="resize: none" readonly="${preguntaInstance?.estado == 'R'}"/>
@@ -201,6 +209,26 @@
 
 <script type="text/javascript">
 
+    $("#variableId").change(function () {
+        cargarIndicador($("#variableId option:selected").val());
+    });
+
+    cargarIndicador($("#variableId option:selected").val());
+
+    function cargarIndicador (id) {
+        $.ajax({
+           type: 'POST',
+            url: '${createLink(controller: 'pregunta', action: 'indicador_ajax')}',
+            data:{
+                id: id,
+                pregunta: '${preguntaInstance?.id}'
+            },
+            success: function (msg){
+                $("#divIndicador").html(msg)
+            }
+        });
+    }
+
     $("#btnAgregarItem").click(function () {
         var descripcion = $("#descripcionItem").val();
         var orden = $("#ordenItem").val();
@@ -233,52 +261,52 @@
 
     $(".btnRegistrar").click(function () {
         var idPregunta = ${preguntaInstance?.id}
-                bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de registrar esta pregunta?", function (result) {
-                    if (result) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '${createLink(controller: 'pregunta', action: 'registrar_ajax')}',
-                            data:{
-                                id: '${preguntaInstance?.id}'
-                            },
-                            success: function (msg){
-                                if(msg == 'ok'){
-                                    log("Pregunta registrada correctamente","success");
-                                    setTimeout(function () {
-                                        location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + idPregunta
-                                    }, 800);
-                                }else{
-                                    log("Error al registrar la pregunta","error")
-                                }
+            bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de registrar esta pregunta?", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(controller: 'pregunta', action: 'registrar_ajax')}',
+                        data:{
+                            id: '${preguntaInstance?.id}'
+                        },
+                        success: function (msg){
+                            if(msg == 'ok'){
+                                log("Pregunta registrada correctamente","success");
+                                setTimeout(function () {
+                                    location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + idPregunta
+                                }, 800);
+                            }else{
+                                log("Error al registrar la pregunta","error")
                             }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
+            });
     });
 
     $(".btnDesregistrar").click(function () {
         var idPregunta = ${preguntaInstance?.id}
-                bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de desregistrar esta pregunta?", function (result) {
-                    if (result) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '${createLink(controller: 'pregunta', action: 'desregistrar_ajax')}',
-                            data:{
-                                id: '${preguntaInstance?.id}'
-                            },
-                            success: function (msg){
-                                if(msg == 'ok'){
-                                    log("Pregunta desregistrada correctamente","success");
-                                    setTimeout(function () {
-                                        location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + idPregunta
-                                    }, 800);
-                                }else{
-                                    log("Error al desregistrar la pregunta","error")
-                                }
+            bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de desregistrar esta pregunta?", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(controller: 'pregunta', action: 'desregistrar_ajax')}',
+                        data:{
+                            id: '${preguntaInstance?.id}'
+                        },
+                        success: function (msg){
+                            if(msg == 'ok'){
+                                log("Pregunta desregistrada correctamente","success");
+                                setTimeout(function () {
+                                    location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + idPregunta
+                                }, 800);
+                            }else{
+                                log("Error al desregistrar la pregunta","error")
                             }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
+            });
 
 
     });
@@ -290,6 +318,7 @@
         var numero = $("#numeroRespuestas").val();
         var estrategia = $("#estrategiaPregunta").val();
         var pregunta = $("#descripcionPregunta").val();
+        var indicador = $("#indicadorId").val();
         $.ajax({
             type: 'POST',
             url:'${createLink(controller: 'pregunta', action: 'guardarPregunta_ajax')}',
@@ -300,7 +329,8 @@
                 codigo: codigo,
                 numero: numero,
                 estrategia: estrategia,
-                pregunta: pregunta
+                pregunta: pregunta,
+                indicador: indicador
 
             },
             success: function (msg) {
@@ -390,7 +420,7 @@
 
     $(".btnRecomendacion").click(function () {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: "${createLink(controller: 'recomendacion', action: 'recomendacion_ajax')}",
             data:{
                 id: '${preguntaInstance?.id}'

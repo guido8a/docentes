@@ -250,25 +250,21 @@ class PreguntaController extends Shield {
         def pregunta
         def tipoRespuesta = TipoRespuesta.get(params.valoracion)
         def variable = Variables.get(params.variable)
+        def indicador = Indicador.get(params.indicador)
         if(params.id){
             pregunta = Pregunta.get(params.id)
-            pregunta.codigo = params.codigo
-            pregunta.descripcion = params.pregunta
-            pregunta.estrategia = params.estrategia
-            pregunta.tipoRespuesta = tipoRespuesta
-            pregunta.variables = variable
-            pregunta.numeroRespuestas = params.numero.toInteger()
-
         }else{
             pregunta = new Pregunta()
-            pregunta.codigo = params.codigo
-            pregunta.descripcion = params.pregunta
-            pregunta.estrategia = params.estrategia
-            pregunta.tipoRespuesta = tipoRespuesta
-            pregunta.variables = variable
-            pregunta.numeroRespuestas = params.numero.toInteger()
             pregunta.estado = 'N'
         }
+
+        pregunta.codigo = params.codigo
+        pregunta.descripcion = params.pregunta
+        pregunta.estrategia = params.estrategia
+        pregunta.tipoRespuesta = tipoRespuesta
+        pregunta.variables = variable
+        pregunta.numeroRespuestas = params.numero.toInteger()
+        pregunta.indicador = indicador
 
         try {
             pregunta.save(flush: true)
@@ -445,7 +441,14 @@ class PreguntaController extends Shield {
         }else{
             render "no"
         }
+    }
 
+    def indicador_ajax () {
+        def variable = Variables.get(params.id)
+        def pregunta = Pregunta.get(params.pregunta)
+        def indicadores = Indicador.findAllByVariables(variable)
+
+        return[indicadores:indicadores, preguntaInstance: pregunta]
     }
 
 }

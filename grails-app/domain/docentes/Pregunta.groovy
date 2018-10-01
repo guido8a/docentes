@@ -9,6 +9,7 @@ class Pregunta {
     int numeroRespuestas
     String estado
     String estrategia
+    Indicador indicador
 
     static mapping = {
         table 'preg'
@@ -25,6 +26,7 @@ class Pregunta {
             numeroRespuestas column: 'pregnmrp'
             estado column: 'pregetdo'
             estrategia column: 'pregestt'
+            indicador column: 'indi__id'
         }
     }
 
@@ -32,6 +34,6 @@ class Pregunta {
         codigo(nullable: false, blank: false, size: 1..8)
         descripcion(nullable: false, blank: false, size: 1..255)
         estrategia(nullable: true, blank: true)
-
+        indicador(nullable: true, blank:true)
     }
 }

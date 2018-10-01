@@ -59,7 +59,6 @@
                 <g:if test="${session.perfil.codigo == 'ADMG'}">
                     <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                               class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>
-
                 </g:if>
                 <g:else>
                     <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"

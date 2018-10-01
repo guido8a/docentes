@@ -2,7 +2,10 @@ package docentes
 
 class Indicador {
     String codigo
-    String descipcion
+    String descripcion
+    Variables variables
+    Estandar estandar
+
 
     static mapping = {
         table 'indi'
@@ -13,12 +16,16 @@ class Indicador {
         columns {
             id column: 'indi__id'
             codigo column: 'indicdgo'
-            descipcion column: 'indidscr'
+            descripcion column: 'indidscr'
+            variables column: 'vrbl__id'
+            estandar column: 'estn__id'
         }
     }
 
     static constraints = {
-        codigo(blank: false, nullable: false, size: 1..8)
-        descipcion(blank: false, nullable: false, size: 1..255)
+        codigo(blank: false, nullable: false, size: 1..15)
+        descripcion(blank: false, nullable: false, size: 1..255)
+        estandar(nullable: false, blank:false)
+        variables(nullable: false, blank: false)
     }
 }
