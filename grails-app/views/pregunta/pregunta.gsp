@@ -73,7 +73,7 @@
     </div>
 
     <div class="col-md-1 negrilla control-label">Indicador: </div>
-    <div class="col-md-4" id="divIndicador">
+    <div class="col-md-6" id="divIndicador">
 
 
     </div>
@@ -81,7 +81,7 @@
 
 <div class="row">
     <div class="col-md-1 negrilla control-label">Código: </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         <g:textField name="codigo_name" id="codigoPregunta" value="${preguntaInstance?.codigo}" class="allCaps form-control required" maxlength="8" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
     <div class="col-md-1 negrilla control-label">Respuestas: </div>
@@ -93,6 +93,7 @@
         <g:select name="vloración" id="valoracionId" optionKey="id" optionValue="descripcion"
                   class="form-control" from="${docentes.TipoRespuesta.list([sort: 'descripcion', order: 'asc'])}" value="${preguntaInstance?.tipoRespuesta?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
     </div>
+    <div class="col-md-2"></div>
     <div class="col-md-1 negrilla control-label">Estado: </div>
     <div class="col-md-1">
         <g:textField name="estado_name" id="estadoPregunta" style="text-align: center" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
@@ -101,21 +102,21 @@
 
 <div class="row">
     <div class="col-md-1 negrilla control-label">Estrategia: </div>
-    <div class="col-md-9">
+    <div class="col-md-11">
         <g:textField name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}" class="form-control" maxlength="127" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 <div class="row">
     <div class="col-md-1 negrilla control-label">Pregunta: </div>
-    <div class="col-md-9">
+    <div class="col-md-11">
         <g:textArea name="descripcion_name" id="descripcionPregunta" value="${preguntaInstance?.descripcion}" class="form-control required" maxlength="255" style="height: 80px; resize: none; margin-bottom: 20px" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 
 <div class="col-md-12 ${preguntaInstance ? '' : 'hidden'}" >
-    <ul class="nav nav-pills tabrow">
+    <ul class="nav nav-pills tabrow" style="margin-left: 10%;">
         <li class="active col-md-5"><a data-toggle="tab" href="#home">Respuestas de la Pregunta</a></li>
-        <li class="col-md-5"><a data-toggle="tab" href="#itemsTab">Items de la Pregunta</a></li>
+        <li class="col-md-6"><a data-toggle="tab" href="#itemsTab">Items de la Pregunta</a></li>
     </ul>
 
     <div class="tab-content">
@@ -140,7 +141,7 @@
                 </a>
             </div>
 
-            <div class="col-md-11">
+            <div class="col-md-12">
                 <table class="table table-condensed table-bordered table-striped" style="margin-top: 20px">
                     <thead>
                     <tr>
@@ -184,15 +185,15 @@
             </div>
 
 
-            <div class="col-md-11">
+            <div class="col-md-12">
                 <table class="table table-condensed table-bordered table-striped" style="margin-top: 20px">
                     <thead>
                     <tr>
                         %{--<th style="width: 8%">Pregunta</th>--}%
-                        <th style="width: 8%">Orden</th>
-                        <th style="width: 30%">Descripción</th>
-                        <th style="width: 8%">Tipo</th>
-                        <th style="width: 9%" class="${preguntaInstance?.estado == 'N' ? '' : 'hidden'}">Acciones</th>
+                        <th style="width: 4%">Orden</th>
+                        <th style="width: 40%">Descripción</th>
+                        <th style="width: 4%">Tipo</th>
+                        <th style="width: 6%" class="${preguntaInstance?.estado == 'N' ? '' : 'hidden'}">Acciones</th>
                     </tr>
                     </thead>
                 </table>

@@ -22,20 +22,20 @@
 <g:if test="${items}">
     <div class="row-fluid"  style="width: 99.7%;height: 300px;overflow-y: auto;float: right;">
         <div class="span12">
-            <div style="width: 960px; height: 300px;">
+            %{--<div style="width: 960px; height: 300px;">--}%
                 <table class="table table-condensed table-bordered table-striped">
                     <tbody>
                     <g:each in="${items}" var="item">
                         <tr data-id="${item.id}">
                             %{--<td style="width: 8%">${item?.pregunta?.codigo}</td>--}%
-                            <td style="width: 8%">${item?.orden}</td>
-                            <td style="width: 32%">${item?.descripcion}</td>
-                            <td style="width: 8%">${item?.tipo}</td>
-                            <td style="width: 8%" class="${item?.pregunta?.estado == 'N' ? '' : 'hidden'}">
-                                <a href="#" class="btn btn-success btnEditarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Editar el item">
+                            <td style="width: 4%">${item?.orden}</td>
+                            <td style="width: 40%">${item?.descripcion}</td>
+                            <td style="width: 4%">${item?.tipo}</td>
+                            <td style="width: 5%" class="${item?.pregunta?.estado == 'N' ? '' : 'hidden'}">
+                                <a href="#" class="btn-sm btn-success btnEditarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Editar el item">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger btnBorrarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Borrar el item">
+                                <a href="#" class="btn-sm btn-danger btnBorrarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Borrar el item">
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
@@ -44,7 +44,7 @@
                     </g:each>
                     </tbody>
                 </table>
-            </div>
+            %{--</div>--}%
         </div>
     </div>
 </g:if>

@@ -13,17 +13,17 @@
 --%>
 
 <g:if test="${respuestas}">
-    <div class="row-fluid"  style="width: 99.7%;height: 300px;overflow-y: auto;float: right;">
-        <div class="span12">
-            <div style="width: 960px; height: 300px;">
+    %{--<div class="row-fluid"  style="width: 99.7%;height: 300px;overflow-y: auto;float: right;">--}%
+        <div class="col-md-12">
+            %{--<div style="width: 960px; height: 300px;">--}%
                 <table class="table table-condensed table-bordered table-striped">
                     <tbody>
                     <g:each in="${respuestas}" var="respuesta">
                         <tr data-id="${respuesta.id}">
                             <td style="width: 8%">${respuesta?.respuesta?.codigo}</td>
-                            <td style="width: 32%">${respuesta.respuesta?.descripcion}</td>
+                            <td style="width: 33%">${respuesta.respuesta?.descripcion}</td>
                             <td style="width: 14%">${respuesta?.valor}</td>
-                            <td style="width: 6%" class="${pregunta?.estado == 'N' ? '' : 'hidden'}">
+                            <td style="width: 8%" class="${pregunta?.estado == 'N' ? '' : 'hidden'}">
                             <a href="#" class="btn btn-success btnEditar ${pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${respuesta.id}"  title="Editar la respuesta">
                                 <i class="fa fa-pencil"></i>
                             </a>
@@ -36,9 +36,9 @@
                     </g:each>
                     </tbody>
                 </table>
-            </div>
+            %{--</div>--}%
         </div>
-    </div>
+    %{--</div>--}%
 </g:if>
 <g:else>
     <div class="row-fluid"  style="width: 99.7%;height: 180px;overflow-y: auto;float: right;">
