@@ -719,7 +719,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
@@ -984,10 +984,11 @@ class Reportes2Controller extends seguridad.Shield {
 
     def factores () {
 
-        println "reporteClasificacion $params"
+//        println "reporteClasificacion $params"
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escuela)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -1017,30 +1018,17 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase(), fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad?.nombre  ?: '', fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre  ?: '', fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-//        def titulo = ''
-//
-//        switch(params.tipo){
-//            case '1':
-//                titulo="Autoevaluación Docentes"
-//                break;
-//            case '2':
-//                titulo="Evaluación de Desempeño Docente"
-//                break;
-//            case '3':
-//                titulo="Evaluación Directivo a Docente"
-//                break;
-//            case '5':
-//                titulo="Evaluación de Pares"
-//                break;
-//        }
-
+        Paragraph parrafoTitulo = new Paragraph("ENCUESTAS DE FACTORES DE ÉXITO"  ?: '', fontTitulo)
+        parrafoTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph uso = new Paragraph("(SOLO PARA USO INTERNO)", fontTitulo2)
         uso.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
@@ -1049,6 +1037,8 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
+        document.add(parrafoTitulo)
         document.add(uso)
 
         /*todo: facultad!*/

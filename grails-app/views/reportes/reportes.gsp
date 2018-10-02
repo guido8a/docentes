@@ -749,7 +749,11 @@
     $("#imprimirEvaluacionesPro").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facl;
+        if($("#facultad").val() != 0){
+            location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facl;
+        }else{
+            log("Seleccione una facultad","error")
+        }
     });
 
 </script>
