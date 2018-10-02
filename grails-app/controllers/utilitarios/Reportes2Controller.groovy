@@ -1052,7 +1052,10 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(uso)
 
         /*todo: facultad!*/
-        def sql = "select encu__id from encu where encuetdo = 'C' and teti__id = 4;"
+        def sql = "select encu__id from encu, matr, dcta, mate " +
+                "where encuetdo = 'C' and teti__id = 4 and " +
+                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = dcta.mate__id and " +
+                "escl__id = ${params.escuela} group by encu__id"
 
 //        println("---> " + sql)
 
