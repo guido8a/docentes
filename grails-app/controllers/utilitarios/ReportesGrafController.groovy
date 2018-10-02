@@ -231,7 +231,7 @@ class ReportesGrafController extends seguridad.Shield  {
 
         /* se envía el mapa como objeto JSON */
         def respuesta = "${facultades.join('_')}||${data as JSON}"
-//        println respuesta
+        println respuesta
 //        render data as JSON
         render respuesta
     }

@@ -1806,5 +1806,58 @@ class ReportesController extends seguridad.Shield {
         return[facultad: facultad, res: res]
     }
 
+    def reporteTipoEncuesta () {
+
+        def periodo = Periodo.get(params.periodo)
+
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def data1 = [:]
+        def data2 = [:]
+        def data3 = [:]
+        def data4 = [:]
+
+        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr " +
+                "from rpec, prof, escl, facl, tpen " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.periodo} and " +
+                "tpen.tpen__id = rpec.tpen__id " +
+                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
+        def datos = cn.rows(sql.toString())
+
+//        println("datos " + datos)
+
+        datos.each {
+
+            def cod = TipoEncuesta.get(it.tpen__id).codigo
+
+            switch (cod) {
+                case 'AD':
+                    data1.put(it.prom,it.facl__id)
+                    break
+                case 'DC':
+                    data2.put(it.prom,it.facl__id)
+                    break
+                case 'DI':
+                    data3.put(it.prom,it.facl__id)
+                    break
+                case 'PR':
+                    data4.put(it.prom,it.facl__id)
+                    break
+            }
+        }
+
+
+        def ord1 = data1.sort { a,b -> b.key <=> a.key }
+        def ord2 = data2.sort { a,b -> b.key <=> a.key }
+        def ord3 = data3.sort { a,b -> b.key <=> a.key }
+        def ord4 = data4.sort { a,b -> b.key <=> a.key }
+
+
+//        println("1 " + data1 + " 2 " + data2 + " 3 " + data3 + " 4 " + data4)
+
+        return[datos1: ord1, datos2: ord2, datos3: ord3, datos4: ord4, periodo: periodo]
+
+        }
 
 }

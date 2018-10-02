@@ -171,7 +171,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados1">
+                <div class="texto" id="imprimirTipoEncuesta">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
                         Gráfico comparativo general del promedio obtenido por tipo de evaluación
                     </span>
@@ -222,6 +222,14 @@
         var url = "${createLink(controller: 'reportes', action: 'recomendaciones')}?periodo=" + prdo + "Wfacultad=" + facl;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
     });
+
+    $("#imprimirTipoEncuesta").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'reporteTipoEncuesta')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=tipoEncuesta.pdf";
+    });
+
 
 
     $("#imprimirNoEstudiante").click(function () {
