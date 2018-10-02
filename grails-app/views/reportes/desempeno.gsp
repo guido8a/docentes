@@ -92,7 +92,7 @@
         var ced = $("#cedulaBusqueda").val();
         var nom = $("#nombresBusqueda").val();
         var ape = $("#apellidosBusqueda").val();
-        var fac = ${facultad?.id};
+        var fac = '${facultad?.id}';
         var per = ${periodo?.id};
         var pantalla = ${pantalla};
         $.ajax({

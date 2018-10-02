@@ -94,9 +94,8 @@
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre ?: ''}"/></strong>
 </p>
-
 
 <p class="alineado">
     <strong style="font-size: 14pt"><util:renderHTML html="${"Cuellos de Botella"}"/></strong>
@@ -105,9 +104,6 @@
 <p class="alineado">
     <strong style="font-size: 14pt"><util:renderHTML html="${facultad ?: ''}"/></strong>
 </p>
-
-
-
 
 <g:if test="${facultad != ''}">
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">

@@ -489,7 +489,9 @@ class ReportesController extends seguridad.Shield {
 
 
     def reporteVariables() {
-        println "reporteVariables $params"
+//        println "reporteVariables $params"
+
+        def periodo = Periodo.get(params.periodo)
 
         def tipo = Variables.get(params.tipo)
 
@@ -512,10 +514,10 @@ class ReportesController extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + (Facultad.get(params.facl)?.nombre ?: ''), fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         /* todo: Parametrizar para obtener la variable de la base de datos y modificar el sql */
@@ -920,6 +922,7 @@ class ReportesController extends seguridad.Shield {
     def desempenoAlumnos () {
         println("params alum " + params)
 
+
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
         Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
@@ -969,7 +972,7 @@ class ReportesController extends seguridad.Shield {
 
         document.open();
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
         Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
         parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
@@ -1067,6 +1070,7 @@ class ReportesController extends seguridad.Shield {
         println "reporteTotalDes $params"
 
         def tipo = Variables.get(params.tipo)
+        def periodo = Periodo.get(params.periodo)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -1089,7 +1093,7 @@ class ReportesController extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
@@ -1235,7 +1239,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'totalesDesempeñoAcademico')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1245,10 +1249,10 @@ class ReportesController extends seguridad.Shield {
 
     def reporteOrdenamiento () {
 
-
-        println "reporteOrdenamiento $params"
+//        println "reporteOrdenamiento $params"
 
         def tipo = Variables.get(params.tipo)
+        def periodo = Periodo.get(params.periodo)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -1269,7 +1273,7 @@ class ReportesController extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
@@ -1413,7 +1417,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'ordenamientoPorVariables')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1555,6 +1559,8 @@ class ReportesController extends seguridad.Shield {
 
     def cuellosBotella () {
 
+        def periodo = Periodo.get(params.periodo)
+
         def cn = dbConnectionService.getConnection()
         def facultad
         def facultadId
@@ -1578,10 +1584,12 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res]
+        return[facultad: facultad, res: res,periodo: periodo]
     }
 
     def potenciadores () {
+
+        def periodo = Periodo.get(params.periodo)
 
         def cn = dbConnectionService.getConnection()
         def facultad
@@ -1606,12 +1614,12 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res]
-
-
+        return[facultad: facultad, res: res, periodo: periodo]
     }
 
     def recomendaciones () {
+
+        def periodo = Periodo.get(params.periodo)
 
         def cn = dbConnectionService.getConnection()
         def facultad
@@ -1637,8 +1645,7 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res]
-
+        return[facultad: facultad, res: res,periodo: periodo]
 
     }
 
@@ -1803,7 +1810,7 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res]
+        return[facultad: facultad, res: res, periodo: periodo]
     }
 
     def reporteTipoEncuesta () {
@@ -1859,5 +1866,11 @@ class ReportesController extends seguridad.Shield {
         return[datos1: ord1, datos2: ord2, datos3: ord3, datos4: ord4, periodo: periodo]
 
         }
+
+    def escuelas_ajax () {
+        def facultad = Facultad.get(params.facl)
+        def escuelas = Escuela.findAllByFacultad(facultad)
+        return[escuelas: escuelas]
+    }
 
 }

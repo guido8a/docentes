@@ -187,7 +187,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         def dictas = res.dcta__id.unique()
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facultad).nombre, fontTitulo)
@@ -300,7 +300,7 @@ class Reportes2Controller extends seguridad.Shield {
     }
 
     def botella () {
-        println "reporteBotella $params"
+//        println "reporteBotella $params"
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
@@ -333,7 +333,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
@@ -356,7 +356,6 @@ class Reportes2Controller extends seguridad.Shield {
 //        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
         def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' order by prof"
 
-        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -424,7 +423,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'cuellosDeBotella')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
@@ -464,7 +463,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
@@ -552,7 +551,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDePotenciacion')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
@@ -592,7 +591,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
@@ -679,7 +678,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDeExito')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -821,7 +820,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
@@ -985,7 +984,7 @@ class Reportes2Controller extends seguridad.Shield {
 
     def factores () {
 
-        //        println "reporteClasificacion $params"
+        println "reporteClasificacion $params"
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
@@ -1196,7 +1195,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph preface = new Paragraph();
         preface.add(new Paragraph("Reporte", fontTitulo));
 
-        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase(), fontTitulo)
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)

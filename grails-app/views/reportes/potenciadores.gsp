@@ -99,7 +99,7 @@
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre ?: ''}"/></strong>
 </p>
 
 <p class="alineado">
