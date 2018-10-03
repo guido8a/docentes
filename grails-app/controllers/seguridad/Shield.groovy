@@ -68,7 +68,7 @@ class Shield {
                     session.usuario.permisos = perms
 
                             if (!isAllowed()) {
-                                redirect(controller: 'shield', action: 'unauthorized')
+                                redirect(controller: 'shield', action: 'ataques')
                                 return false
                             }
 
