@@ -286,17 +286,16 @@
                         labels: ['Evaluación Total', 'Potenciadores', 'Factores de Éxito', 'Cuellos de Botella', 'Recomendaciones'],
                         datasets: [
                             {   label: ["Porcentajes"],
-                                backgroundColor: ["#20a5da", "#00af30","#80ff80", "#d45840", "#be5882"],
-                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] },
-                            {   label: ["Mínimo"],
-                                backgroundColor: "rgba(255,160,160,0.1)",
-//                                borderColor: "rgba(255,255,255,0.8)",
+//                                backgroundColor: ["#20a5da", "#00af30","#80ff80", "#d45840", "#be5882"],
+                                backgroundColor: ["rgba(32,165,218,0.5)", "#00af30","#80ff80", "#d45840", "rgba(206,88,130,0.6)"],
+                                data: [json.promedio, json.ptnv, json.fcex, json.ccbb, json.rcmn] }
+//                            {   label: ["Mínimo"],
+//                                backgroundColor: "rgba(255,160,160,0.1)",
+//                                data: [40,40,40,40,40] },
+//                            {   label: ["Óptimo"],
+//                                backgroundColor: "rgba(160,160,240,0.05)",
 //                                borderWidth: 1,
-                                data: [40,40,40,40,40] },
-                            {   label: ["Óptimo"],
-                                backgroundColor: "rgba(160,160,240,0.05)",
-                                borderWidth: 1,
-                                data: [80,80,80,80,80] }
+//                                data: [80,80,80,80,80] }
                         ]
 
                     },

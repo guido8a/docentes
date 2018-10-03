@@ -264,23 +264,9 @@
     </div>
     %{--</div>--}%
 
+    <div style="text-align: center;"><h1 class="titl" style="font-size: 26px;">${univ.nombre}</h1></div>
 
     <div class="body ui-corner-all" style="width: 1020px;position: relative;margin: auto;margin-top: 40px;height: 280px; ">
-
-
-        %{--<a href= "${createLink(controller:'encuesta', action: 'inicio')}" style="text-decoration: none">--}%
-        %{--<div class="ui-corner-all item fuera">--}%
-        %{--<div class="ui-corner-all item">--}%
-        %{--<div class="imagen">--}%
-        %{--<img src="${resource(dir: 'images', file: 'q_docente.png')}" width="100%" height="100%"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="texto">--}%
-        %{--<span class="text-success"><strong>Evaluación al Docente</strong> por Pares, Directivos, Estudiantes y Autoevaluación</span></div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</a>--}%
-
 
 
         <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
@@ -290,27 +276,13 @@
             <div class="caption">
                 <div class="blur"></div>
                 <div class="caption-text">
-                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Evaluación</h3>
+                    <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Evaluaciones</h3>
                     <p><strong>Evaluación al Docente por Pares, Directivos, Estudiantes y Autoevaluación</strong></p>
-                    <a class=" btn btn-default" href="${createLink(controller:'encuesta', action: 'inicio')}" target="_blank"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                    <a class=" btn btn-default" href="${createLink(controller:'encuesta', action: 'inicio')}" target="_blank">
+                        <span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
             </div>
         </div>
-
-
-
-        %{--<a href= "${createLink(controller:'pregunta', action: 'list')}" style="text-decoration: none">--}%
-        %{--<div class="ui-corner-all item fuera">--}%
-        %{--<div class="ui-corner-all item">--}%
-        %{--<div class="imagen">--}%
-        %{--<img src="${resource(dir: 'images', file: 'preguntas.png')}" width="100%" height="100%"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="texto">--}%
-        %{--<span class="text-success"><strong>Encuestas</strong> preguntas y estructura de los distintos tipos de encuesta a aplicarse</span></div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</a>--}%
 
         <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
             <p style="text-align:center;" class="imagen">
@@ -321,24 +293,10 @@
                 <div class="caption-text">
                     <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Encuestas</h3>
                     <p><strong>Preguntas y estructura de los distintos tipos de encuesta a aplicarse</strong></p>
-                    <a class=" btn btn-default" href="${createLink(controller:'pregunta', action: 'list')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                    <a class=" btn btn-default" href="${m_preg}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
             </div>
         </div>
-
-        %{--<a href= "${createLink(controller:'profesor', action: 'list')}" style="text-decoration: none">--}%
-        %{--<div class="ui-corner-all item fuera">--}%
-        %{--<div class="ui-corner-all item">--}%
-        %{--<div class="imagen">--}%
-        %{--<img src="${resource(dir: 'images', file: 'profesor.png')}" width="100%" height="100%"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="texto">--}%
-        %{--<span class="text-success"><strong>Docentes</strong> registro de personal docente y materias que dicta</span></div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</a>--}%
-
 
         <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
             <p style="text-align:center;" class="imagen">
@@ -349,25 +307,10 @@
                 <div class="caption-text">
                     <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Docente</h3>
                     <p><strong>Registro de personal docente y materias que dicta</strong></p>
-                    <a class=" btn btn-default" href="${createLink(controller:'profesor', action: 'list')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                    <a class=" btn btn-default" href="${m_prof}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
             </div>
         </div>
-
-
-        %{--<a href= "${createLink(controller:'estudiante', action: 'list')}" style="text-decoration: none">--}%
-        %{--<div class="ui-corner-all item fuera">--}%
-        %{--<div class="ui-corner-all item">--}%
-        %{--<div class="imagen">--}%
-        %{--<img src="${resource(dir: 'images', file: 'estudiante.png')}" width="100%" height="100%"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="texto">--}%
-        %{--<span class="text-success"><strong>Estudiantes</strong> registro de estudiantes y matrícula</span></div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</a>--}%
-
 
         <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
             <p style="text-align:center;" class="imagen">
@@ -378,23 +321,10 @@
                 <div class="caption-text">
                     <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Estudiante</h3>
                     <p><strong>Registro de estudiantes y matrícula</strong></p>
-                    <a class=" btn btn-default" href="${createLink(controller:'estudiante', action: 'list')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                    <a class=" btn btn-default" href="${m_estd}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
             </div>
         </div>
-
-        %{--<a href= "${createLink(controller:'buscarActividad', action: 'busquedaActividad')}" style="text-decoration: none">--}%
-        %{--<div class="ui-corner-all item fuera">--}%
-        %{--<div class="ui-corner-all item">--}%
-        %{--<div class="imagen">--}%
-        %{--<img src="${resource(dir: 'images', file: 'datos.png')}" width="100%" height="100%"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="texto">--}%
-        %{--<span class="text-success"><strong>Cargar datos</strong> cargar datos desde archivos de hoja de cálculo</span></div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</a>--}%
 
         <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
             <p style="text-align:center;" class="imagen">
@@ -405,23 +335,10 @@
                 <div class="caption-text">
                     <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Cargar Datos</h3>
                     <p><strong>Cargar datos desde archivos de hoja de cálculo</strong></p>
-                    <a class=" btn btn-default" href="${createLink(controller:'procesos', action: 'cargarDatos')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                    <a class=" btn btn-default" href="${m_prcs}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
             </div>
         </div>
-
-        %{--<a href= "${createLink(controller:'reportes', action: 'reportes')}" style="text-decoration: none">--}%
-        %{--<div class="ui-corner-all item fuera">--}%
-        %{--<div class="ui-corner-all item">--}%
-        %{--<div class="imagen">--}%
-        %{--<img src="${resource(dir: 'images', file: 'reportes.png')}" width="100%" height="100%"/>--}%
-        %{--</div>--}%
-
-        %{--<div class="texto">--}%
-        %{--<span class="text-success"><strong>Reportes</strong> reportes del desempeño académico</span></div>--}%
-        %{--</div>--}%
-        %{--</div>--}%
-        %{--</a>--}%
 
         <div class="cuadro_intro_hover item ui-corner-all" style="background-color:#cccccc;">
             <p style="text-align:center;" class="imagen" >
@@ -432,7 +349,7 @@
                 <div class="caption-text">
                     <h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Reportes</h3>
                     <p><strong>Reportes del desempeño académico</strong></p>
-                    <a class=" btn btn-default" href="${createLink(controller:'reportes', action: 'reportes')}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
+                    <a class=" btn btn-default" href="${m_rprt}"><span class="glyphicon glyphicon-plus"> Continuar</span></a>
                 </div>
             </div>
         </div>
