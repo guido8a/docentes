@@ -53,13 +53,65 @@ class FacultadController extends Shield {
         return list
     }
 
+    def getList2(params, all, uni) {
+
+        def universidad = Universidad.get(uni)
+
+        params = params.clone()
+        params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
+        params.offset = params.offset ?: 0
+        if(all) {
+            params.remove("max")
+            params.remove("offset")
+        }
+        def list
+        if(params.search) {
+            def c = Facultad.createCriteria()
+            list = c.list(params) {
+
+
+                eq("universidad", universidad)
+
+                or {
+                    /* TODO: cambiar aqui segun sea necesario */
+
+                    ilike("codigo", "%" + params.search + "%")
+                    ilike("nombre", "%" + params.search + "%")
+                }
+            }
+        } else {
+//            list = Facultad.list(params)
+            def c = Facultad.createCriteria()
+            list = c.list(params) {
+                eq("universidad", universidad)
+            }
+        }
+        if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
+            params.offset = params.offset.toInteger() - 1
+            list = getList(params, all)
+        }
+        return list
+    }
+
     /**
      * Acción que muestra la lista de elementos
      * @return facultadInstanceList: la lista de elementos filtrados, facultadInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        def facultadInstanceList = getList(params, false)
-        def facultadInstanceCount = getList(params, true).size()
+
+        def universidad
+        def facultadInstanceList
+        def facultadInstanceCount
+
+        if(session.perfil.codigo == 'ADMG'){
+            facultadInstanceList = getList(params, false)
+            facultadInstanceCount = getList(params, true).size()
+        }else{
+            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
+            facultadInstanceList = getList2(params, false, universidad.id)
+            facultadInstanceCount = getList2(params, true, universidad.id).size()
+        }
+
         return [facultadInstanceList: facultadInstanceList, facultadInstanceCount: facultadInstanceCount]
     }
 

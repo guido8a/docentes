@@ -38,7 +38,12 @@
                     Universidad
                 </label>
                 <div class="col-md-10">
-                    <g:select name="universidad" from="${docentes.Universidad.list().sort{it.nombre}}" optionKey="id" optionValue="nombre" value="${facultadInstance?.universidad?.id}" class="form-control required"/>
+                    <g:if test="${session.perfil.codigo == 'ADMG'}">
+                        <g:select name="universidad" from="${docentes.Universidad.list().sort{it.nombre}}" optionKey="id" optionValue="nombre" value="${facultadInstance?.universidad?.id}" class="form-control required"/>
+                    </g:if>
+                    <g:else>
+                        <g:select name="universidad" from="${docentes.Universidad.list().sort{it.nombre}}" optionKey="id" optionValue="nombre" value="${facultadInstance?.universidad?.id}" class="uni form-control required"/>
+                    </g:else>
                 </div>
 
             </span>
@@ -47,6 +52,11 @@
     </g:form>
 
     <script type="text/javascript">
+
+        if("${session.perfil.codigo != 'ADMG'}"){
+            $(".uni").attr("disabled", true)
+        }
+
         var validator = $("#frmFacultad").validate({
             errorClass     : "help-block",
             errorPlacement : function (error, element) {
