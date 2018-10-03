@@ -149,7 +149,7 @@
     <g:each in="${datos2}" var="d2">
         <tr>
             <td style="width: 30%">${docentes.Facultad.get(d2.value).nombre}</td>
-            <td style="width: 30%" >${d2.key}</td>
+            <td style="width: 30%; text-align: center" >${d2.key}</td>
         </tr>
     </g:each>
     </tbody>

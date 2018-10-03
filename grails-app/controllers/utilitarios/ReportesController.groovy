@@ -1873,4 +1873,56 @@ class ReportesController extends seguridad.Shield {
         return[escuelas: escuelas]
     }
 
+    def reporteDesempenoVariables () {
+
+        def periodo = Periodo.get(params.periodo)
+
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def data = [:]
+        def ord
+        def d = []
+        def facultad = []
+
+        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
+                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
+                "facl.facl__id, facldscr " +
+                "from rpec, prof, escl, facl " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.periodo} " +
+                "group by facldscr, facl.facl__id order by facl.facl__id"
+//        println "sql: $sql"
+        def datos = cn.rows(sql.toString())
+
+//        println("datos " + datos)
+
+//        println("data " + data)
+
+        def tx_ddsc, tx_ddac, tx_ddhd, tx_ddci, tx_dcni, tx_d_ea
+        def tx_1, tx_2, tx_3, tx_4, tx_5, tx_6
+        def facl = datos.facl__id.unique()
+
+        for(j in facl) {
+            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
+            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
+            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
+            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
+            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
+            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
+
+            data[1] = [vrbl: 'INTEGRACIÓN DE CONOCIMIENTOS', valor: tx_ddsc]
+            data[2] = [vrbl: 'DESARROLLO DE ACTITUDES Y VALORES', valor: tx_ddac]
+            data[3] = [vrbl: 'DESARROLLO DE HABILIDADES Y DESTREZAS', valor: tx_ddhd]
+            data[4] = [vrbl: 'INVESTIGACIÓN FORMATIVA', valor: tx_ddci]
+            data[5] = [vrbl: 'NORMATIVIDAD INSTITUCIONAL', valor: tx_dcni]
+            data[6] = [vrbl: 'EVALUACIÓN DE APRENDIZAJE', valor: tx_d_ea]
+
+            ord = data.sort { a,b -> b.value.valor <=> a.value.valor }
+
+            d += ord
+        }
+
+        return [datos: datos, periodo: periodo, data: d, fac: facl]
+    }
+
 }

@@ -210,7 +210,7 @@
             </a>
 
             <a href="#" style="text-decoration: none">
-                <div class="texto" id="imprimirRecomendados2">
+                <div class="texto" id="imprimirIndicadorVariables">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
                         Gráfico comparativo de los prmedios alcanzados en las distintas variables
                     </span>
@@ -297,6 +297,12 @@
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=tipoEncuesta.pdf";
     });
 
+    $("#imprimirIndicadorVariables").click(function () {
+        var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
+        var url = "${createLink(controller: 'reportes', action: 'reporteDesempenoVariables')}?periodo=" + prdo + "Wfacultad=" + facl;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=desempenoPorVariables.pdf";
+    });
 
 
     $("#imprimirNoEstudiante").click(function () {
