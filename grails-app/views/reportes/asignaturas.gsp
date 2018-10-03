@@ -72,7 +72,7 @@
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre?.toUpperCase() ?: ''}"/></strong>
 </p>
 
 
@@ -89,7 +89,6 @@
 
     <table class="table table-condensed table-bordered table-striped table-hover ${escuelas.size() > (j+1)? 'roto' : ''}" style="width: 100%">
         <thead>
-
         <tr>
             <th class="back" rowspan="2" style="width: 40%">Materia</th>
             <th class="back" rowspan="2" style="width: 40%">Profesor</th>
@@ -106,9 +105,6 @@
                     <td style="width: 20%; font-size: 9pt">${r[2]}</td>
                 </tr>
             </g:if>
-            <g:else>
-                %{--<tr class="roto"></tr>--}%
-            </g:else>
         </g:each>
         </tbody>
     </table>

@@ -259,40 +259,60 @@
     $("#imprimirNoEvaluados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
+        if($("#facultad").val() != 0){
+            var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
+        }else{
+            log("Seleccione una facultad","error")
+        }
     });
 
 
     $("#imprimirEvaluados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        %{--var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 2;--}%
-        var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
+
+        if($("#facultad").val() != 0){
+            var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
+        }else{
+            log("Seleccione una facultad","error")
+        }
+
     });
 
 
     $("#imprimirNoAutoeva").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";
+        if($("#facultad").val() != 0){
+            var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";
+        }else{
+            log("Seleccione una facultad","error")
+        }
     });
-
 
     $("#imprimirAutoeva").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";
+        if($("#facultad").val() != 0){
+            var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";
+        }else{
+            log("Seleccione una facultad","error")
+        }
     });
 
     $("#imprimirEstudiante").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
+        if($("#facultad").val() != 0){
+            var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
+        }else{
+            log("Seleccione una facultad","error")
+        }
     });
 
     $("#btonVariables").click(function () {
@@ -306,76 +326,88 @@
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var facultad = $("#facultad").find("option:selected").text();
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
-            data: {facl: facl},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgFacultad",
-                    title: "Seleccionar Escuela de: " + facultad,
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                var escuela = $("#escuelaRprt").val();
-                                var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
-//                                return false
-                            }
-                        }
 
-                    } //buttons
-                }); //dialog
-            }
-        });
+        if($("#facultad").val() != 0){
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
+                data: {facl: facl},
+                success: function (msg) {
+                    var b = bootbox.dialog({
+                        id: "dlgFacultad",
+                        title: "Seleccionar Escuela de: " + facultad,
+//                    class   : "long",
+                        message: msg,
+                        buttons: {
+                            cancelar: {
+                                label: "Cancelar",
+                                className: "btn-primary",
+                                callback: function () {
+                                }
+                            },
+                            aceptar: {
+                                label: "<i class='fa fa-print'></i> Imprimir",
+                                className: "btn-success",
+                                callback: function () {
+                                    var escuela = $("#escuelaRprt").val();
+                                    var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela;
+                                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
+                                }
+                            }
+                        } //buttons
+                    }); //dialog
+                }
+            });
+        }else{
+            log("Seleccione una facultad","error")
+        }
     });
 
     $("#asignaturas").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var facultad = $("#facultad").find("option:selected").text();
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
-            data: {facl: facl},
-            success: function (msg) {
-                var b = bootbox.dialog({
-                    id: "dlgFacultad",
-                    title: "Seleccionar Escuela de: " + facultad,
-//                    class   : "long",
-                    message: msg,
-                    buttons: {
-                        cancelar: {
-                            label: "Cancelar",
-                            className: "btn-primary",
-                            callback: function () {
-                            }
-                        },
-                        aceptar: {
-                            label: "<i class='fa fa-print'></i> Imprimir",
-                            className: "btn-success",
-                            callback: function () {
-                                var escuela = $("#escuelaRprt").val();
-                                var url = "${createLink(controller: 'reportes', action: 'asignaturas')}?periodo=" + prdo + "Wtipo=" + 7 + "Wescl=" + escuela;
-                                location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
-//                                return false
-                            }
-                        }
 
-                    } //buttons
-                }); //dialog
-            }
-        });
+
+        if($("#facultad").val() != 0){
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
+                data: {facl: facl},
+                success: function (msg) {
+                    var b = bootbox.dialog({
+                        id: "dlgFacultad",
+                        title: "Seleccionar Escuela de: " + facultad,
+//                    class   : "long",
+                        message: msg,
+                        buttons: {
+                            cancelar: {
+                                label: "Cancelar",
+                                className: "btn-primary",
+                                callback: function () {
+                                }
+                            },
+                            aceptar: {
+                                label: "<i class='fa fa-print'></i> Imprimir",
+                                className: "btn-success",
+                                callback: function () {
+                                    var escuela = $("#escuelaRprt").val();
+                                    var url = "${createLink(controller: 'reportes', action: 'asignaturas')}?periodo=" + prdo + "Wtipo=" + 7 + "Wescl=" + escuela;
+                                    location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
+//                                return false
+                                }
+                            }
+
+                        } //buttons
+                    }); //dialog
+                }
+            });
+        }else{
+            log("Seleccione una facultad","error")
+        }
+
+
+
     });
 
     $("#imprimirPorAvariables").click(function () {

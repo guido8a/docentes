@@ -89,7 +89,7 @@ class ReportesController extends seguridad.Shield {
     def asignaturas () {
         println "asignaturas $params"
 
-        def periodo
+        def periodo = Periodo.get(params.periodo)
         def cn = dbConnectionService.getConnection()
         def sql
         def tipo = params.tipo
@@ -111,13 +111,13 @@ class ReportesController extends seguridad.Shield {
         def res = cn.rows(sql.toString());
         def escuelas = res.escldscr.unique()
 
-        return [res: res, escuelas: escuelas, titulo: titulo]
+        return [res: res, escuelas: escuelas, titulo: titulo, periodo: periodo]
     }
 
     def profesNoEvaluados () {
         println "profesNoEvaluados $params"
 
-        def periodo
+        def periodo = Periodo.get(params.periodo)
         def cn = dbConnectionService.getConnection()
         def sql
         def tipo = params.tipo
@@ -213,14 +213,14 @@ class ReportesController extends seguridad.Shield {
 //        println("escuelas " + escuelas)
 //        println("sql " + sql)
 
-        return [res: res, escuelas: escuelas, titulo: titulo, facultad: facultad]
+        return [res: res, escuelas: escuelas, titulo: titulo, facultad: facultad, periodo: periodo]
     }
 
     def profesEvaluados () {
 
         println "profesEvaluados $params"
 
-        def periodo
+        def periodo = Periodo.get(params.periodo)
         def cn = dbConnectionService.getConnection()
 
         def titulo = "Profesores que han sido evaluados por los alumnos"
@@ -229,7 +229,7 @@ class ReportesController extends seguridad.Shield {
         def res = cn.rows(sql.toString());
         def facultad = Facultad.get(params.facl)
 
-        return [res: res, titulo: titulo, facultad: facultad]
+        return [res: res, titulo: titulo, facultad: facultad, periodo: periodo]
 
     }
 
