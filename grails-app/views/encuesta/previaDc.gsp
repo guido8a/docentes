@@ -83,7 +83,7 @@
 
     <g:if test="${!(drtv || pares || auto)}">
         <a href="#" class="btn btn-primary" id="btnDrtv" title="Usted ha realizado todas las evaluaciones">
-            <i class="fa fa-pencil"></i>
+            <i class="fa fa-check"></i>
             Usted ha realizado todas las evaluaciones</a>
     </g:if>
 
