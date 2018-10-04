@@ -103,7 +103,7 @@ class Shield {
     boolean isAllowed() {
 //        println "session: ${session.permisos}"
         try {
-            if (request.method == "POST") {
+            if (request.method == "POST" || actionName == 'pdfLink') {
 //                println "es post no audit"
                 return true
             }

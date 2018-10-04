@@ -69,12 +69,10 @@
 
         <div class="panel-body col-md-7">
             <label>Universidad</label>
-            <g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" id="universidadId" class="form-control" optionValue="nombre" optionKey="id"/>
+            <g:select from="${docentes.Universidad.findAllByNombreNotLike("Todas").sort{it.nombre}}" name="universidad" id="universidadId" class="form-control" optionValue="nombre" optionKey="id"/>
         </div>
 
         <div class="panel-body col-md-5" id="divPeriodo">
-            %{--<label>Período</label>--}%
-            %{--<g:select from="${docentes.Universidad.list().sort{it.nombre}}" name="universidad" class="form-control" optionValue="nombre" optionKey="id"/>--}%
         </div>
 
         <div class="panel-body">

@@ -1185,6 +1185,7 @@ class PersonaController extends seguridad.Shield {
         def usuario = Persona.get(params.id)
         usuario.activo =  0
 
+
         if(!usuario.save(flush: true)){
             render "no"
         }else{

@@ -54,7 +54,7 @@ class Persona {
     }
     static constraints = {
         nombre(size: 3..30, blank: false)
-        apellido(size: 3..30, blank: false)
+        apellido(size: 2..30, blank: false)
         sexo(inList: ["F", "M"], size: 1..1, blank: false, attributes: ['mensaje': 'Sexo de la persona'])
         mail(size: 3..63, blank: true, nullable: true)
         sigla(size: 1..4, blank: true, nullable: true)
@@ -68,6 +68,7 @@ class Persona {
         fechaFin(blank: true, nullable: true, attributes: [title: 'Fecha de finalización'])
         cargo(blank: true, nullable: true, size: 1..255, attributes: [mensaje: 'Cargo'])
         departamento(nullable: true, blank:true)
+        fecha(nullable: true, blank:true)
     }
 
     String toString() {

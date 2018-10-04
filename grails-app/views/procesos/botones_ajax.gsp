@@ -18,4 +18,4 @@
         cargarFormato(boton);
     });
 
-</script>                   7
+</script>
