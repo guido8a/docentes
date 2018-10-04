@@ -37,7 +37,7 @@ class EncuestaController {
     }
 
     def ingreso() {
-//        println "ingreso: $params"
+        println "ingreso: $params"
         session.tipoPersona = params.tipo
 
 /*
@@ -61,7 +61,7 @@ class EncuestaController {
             }
         } else if (params.tipo == 'P') {
             if (existeProfesor(params.cdla)) {
-//                println "si existe profesor"
+                println "si existe profesor"
                 redirect(action: "previaDc", params: params)
                 return
             } else {
@@ -115,6 +115,8 @@ class EncuestaController {
     def previaAd() {
         def cn = dbConnectionService.getConnection()
         def tx = ""
+        def univ = Universidad.get(session.univ)
+        def logo = g.resource(dir: 'images/univ', file: univ.logo, absolute: true)
         session.encuesta = 0
 
         def matr
@@ -128,7 +130,7 @@ class EncuestaController {
                     "encuetdo = 'C' and prdo__id = ${session.prdo} and teti__id = 1) order by profnmbr"
             println "previa: $tx"
             matr = cn.rows(tx.toString())
-            [matr: matr]
+            [matr: matr, logo: logo, universidad: univ.nombre]
     }
 
     /**
@@ -137,10 +139,12 @@ class EncuestaController {
     def previaDc() {
         def cn = dbConnectionService.getConnection()
         def tx = ""
+        def univ = Universidad.get(session.univ)
+        def logo = g.resource(dir: 'images/univ', file: univ.logo, absolute: true)
         session.encuesta = 0
         def auto = encuestaService.autoevaluacion(session.informanteId, session.prdo)
-        println "auto: $auto"
-        [auto: auto, pares: session.par, drtv: session.directivo]
+        println "auto: $auto, periodo: ${session.prdo}, univ: ${session.univ}"
+        [auto: auto, pares: session.par, drtv: session.directivo, logo: logo, universidad: univ.nombre]
 
     }
 
@@ -380,13 +384,20 @@ class EncuestaController {
     boolean existeProfesor(cdla) {
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def tx = "select prof__id, profnmbr||' '||profapll profesor, profeval from prof where profcdla = '${cdla}'"
+        def tx = "select prof.prof__id, profnmbr||' '||profapll profesor, profeval, univ__id, prdo.prdo__id " +
+                "from prof, matr, dcta, prdo " +
+                "where profcdla = '${cdla}' and dcta.prof__id = prof.prof__id and dcta.dcta__id = matr.dcta__id and " +
+                "  prdo.prdo__id = dcta.prdo__id and " +
+                "  now() between prdofcin and coalesce(prdofcfn, now()) limit 1"
+        println "sql: $tx"
         try {
             cn.eachRow(tx) { d ->
                 session.informanteId = d.prof__id
                 session.informante = d.profesor
                 session.par = d.profeval == 'P'
                 session.directivo = d.profeval == 'S'
+                session.univ = d.univ__id
+                session.prdo = d.prdo__id
             }
         }
         catch (e) {
@@ -620,12 +631,14 @@ class EncuestaController {
     def docentes() {
 //        println "........ $params"
         def titl = ""
+        def univ = Universidad.get(session.univ)
+        def logo = g.resource(dir: 'images/univ', file: univ.logo, absolute: true)
         if(params.tipo == 'PR') {
             titl = "Evaluación de Pares"
         } else if(params.tipo == 'DR') {
             titl = "Evaluación del Directivo al Docente"
         }
-        [titulo: titl]
+        [titulo: titl, logo: logo, universidad: univ.nombre]
     }
 
     def tablaProfesores() {

@@ -43,6 +43,9 @@
             cursor: pointer;
             color: #ccc;
         }
+        .logotipo{
+            max-width: 20%;
+        }
     </style>
 </head>
 <body>
@@ -50,11 +53,23 @@
 
 <div style="text-align: center;">
     %{--Para personalizar: UNACH: universidad1.jpg, UPEC universidad.jpg y en messages_es.properties la universidad--}%
+
+    <div style="text-align: center;">
+        %{--Para personalizar: UNACH: universidad1.jpg, UPEC universidad.jpg y en messages_es.properties la universidad--}%
+        <div class="contenedor">
+            <div><img src="${logo}" class="logotipo"></div>
+            %{--<h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>--}%
+            <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${universidad}</h1>
+                %{--<h4>Sistema para uso exclusivo de la esta Universidad</h4>--}%
+        </div>
+    </div>
+
+
+%{--
     <div class="contenedor">
-        %{--<div class="logo"><img src="${resource(dir:'images',file:'universidad.jpeg')}" height="100px"></div>--}%
-        %{--<div class="logo_tx"><h1>${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1></div>--}%
         <h1>${titulo}</h1>
     </div>
+--}%
         %{--<br>Sistema para uso exclusivo de la esta Universidad</div>--}%
     <p class="bs-component">
         <span class="btn btn-primary btn-md btn-block disabled" style="cursor: default; color: #ffffc0 ">

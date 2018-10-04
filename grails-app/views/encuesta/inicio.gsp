@@ -77,6 +77,7 @@
         %{--<h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">${message(code: 'universidad', default: 'Tedein S.A. - Pruebas')}</h1>--}%
         <h3 class="logo_tx"><h1 class="entry-title post-title h2 h1-sm" itemprop="name">Evaluación del desempeño docente</h1>
         <div style="height: 40px;"><h3>Convenio Interuniversitario de Cooperación</h3></div>
+        <div style="height: 40px;" class="text-info">Si desea ejecutar la encuesta en su <strong>celular</strong> use el navegador <strong>Firefox o Chrome</strong></div>
         <div class="col-md-6 col-xs-12 center-block" style="float: inherit; margin: auto">
             <div class="panel panel-primary">
                 <div class="panel-heading">
