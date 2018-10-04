@@ -81,6 +81,13 @@
             Evaluación de los Directivos a los Profesores</a>
     </g:if>
 
+    <g:if test="${!(drtv || pares || auto)}">
+        <a href="#" class="btn btn-primary" id="btnDrtv" title="Usted ha realizado todas las evaluaciones">
+            <i class="fa fa-pencil"></i>
+            Usted ha realizado todas las evaluaciones</a>
+    </g:if>
+
+
     <div id="tabla">
     </div>
 

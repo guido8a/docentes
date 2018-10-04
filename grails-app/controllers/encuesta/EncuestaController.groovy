@@ -40,6 +40,11 @@ class EncuestaController {
         println "ingreso: $params"
         session.tipoPersona = params.tipo
 
+        if(!params.cdla) {
+            redirect(action: "inicio", params: params)
+            return
+        }
+
 /*
         session.periodo = encuestaService.periodActual()
         if(!session.periodo) {
@@ -556,7 +561,11 @@ class EncuestaController {
     */
     def seleccionaPregunta(tpen, actual){
         def cn = dbConnectionService.getConnection()
-        def tx = "select prte__id, prtenmro, prte.preg__id id, pregdscr dscr from preg, prte " +
+        def txpreg = ""
+        txpreg = tpen == 1? "replace(upper(pregdscr), 'EL DOCENTE', 'USTED')" : "pregdscr"
+
+        def tx = "select prte__id, prtenmro, prte.preg__id id, ${txpreg} dscr " +
+                "from preg, prte " +
                 "where tpen__id = ${tpen} and prtenmro >= ${actual} and preg.preg__id = prte.preg__id " +
                 "order by prtenmro limit 1"
         def preg = []
