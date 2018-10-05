@@ -230,11 +230,18 @@ class EstudianteController extends Shield {
 
 
     def estudiante () {
+
+        println("params --- " + params)
+
         def estudiante
         if(params.id){
             estudiante = Estudiante.get(params.id)
         }
-        return [estudianteInstance: estudiante]
+
+        def universidad = Universidad.get(params.universidad)
+        def periodo = Periodo.findAllByUniversidad(universidad).sort{it.nombre}
+
+        return [estudianteInstance: estudiante, periodo: periodo]
     }
 
     def saveEstudiante_ajax () {
@@ -242,15 +249,13 @@ class EstudianteController extends Shield {
         def estudiante
         if(params.id){
             estudiante = Estudiante.get(params.id)
-            estudiante.nombre = params.nombre.toUpperCase()
-            estudiante.apellido = params.apellido.toUpperCase()
-            estudiante.cedula = params.cedula
         }else{
             estudiante = new Estudiante()
-            estudiante.nombre = params.nombre.toUpperCase()
-            estudiante.apellido = params.apellido.toUpperCase()
-            estudiante.cedula = params.cedula
         }
+
+        estudiante.nombre = params.nombre.toUpperCase()
+        estudiante.apellido = params.apellido.toUpperCase()
+        estudiante.cedula = params.cedula
 
         try {
             estudiante.save(flush: true)
@@ -318,11 +323,18 @@ class EstudianteController extends Shield {
         def estudiantes
         def universidad
 
-        if(session.perfil.codigo == 'ADMG'){
-            if(!params.cedula && !params.nombre && !params.apellido){
-                estudiantes = Estudiante.list([sort: 'apellido', order: 'asc', max: 30])
-            }else{
-                estudiantes = Estudiante.withCriteria {
+//        if(session.perfil.codigo == 'ADMG'){
+
+
+            universidad = Universidad.get(params.universidad)
+
+//            if(!params.cedula && !params.nombre && !params.apellido){
+//                estudiantes = Estudiante.list([sort: 'apellido', order: 'asc', max: 30])
+//            }else{
+//
+                  estudiantes = Estudiante.withCriteria {
+
+                        eq("universidad", universidad)
 
                     and{
                         ilike("apellido", "%" + params.apellido + "%")
@@ -330,38 +342,40 @@ class EstudianteController extends Shield {
                         ilike("nombre", "%" + params.nombre + "%")
                     }
 
+                    order("apellido","asc")
+
                     maxResults(30)
 
                 }
-            }
+//            }
+//
+//
+//        }else{
+//            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
 
+//            def sql
+//
+//            if(!params.cedula && !params.nombre && !params.apellido){
+//                sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
+//                        "  estdapll apellido from estd, matr, dcta, prdo\n" +
+//                        "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
+//                        "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' " +
+//                        "group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
+//
+//            }else{
+//                sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
+//                        "  estdapll apellido from estd, matr, dcta, prdo\n" +
+//                        "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
+//                        "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' and estd.estdcdla ilike'${params.cedula}%'" +
+//                        " and estd.estdapll ilike '%${params.apellido}%' and estd.estdnmbr ilike '%${params.nombre}%' group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
+//            }
+//
+//            def cn = dbConnectionService.getConnection()
+//            estudiantes = cn.rows(sql.toString());
 
-        }else{
-            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
+//        }
 
-            def sql
-
-            if(!params.cedula && !params.nombre && !params.apellido){
-                sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
-                        "  estdapll apellido from estd, matr, dcta, prdo\n" +
-                        "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
-                        "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' " +
-                        "group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
-
-            }else{
-                sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
-                        "  estdapll apellido from estd, matr, dcta, prdo\n" +
-                        "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
-                        "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' and estd.estdcdla ilike'${params.cedula}%'" +
-                        " and estd.estdapll ilike '%${params.apellido}%' and estd.estdnmbr ilike '%${params.nombre}%' group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
-            }
-
-            def cn = dbConnectionService.getConnection()
-            estudiantes = cn.rows(sql.toString());
-
-        }
-
-        return[estudiantes: estudiantes]
+        return[estudiantes: estudiantes, universidad: universidad]
 
     }
 

@@ -10,9 +10,9 @@
         Copiar Período <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
-        <g:each in="${lista}" var="periodo" >
-            <li><a href="#" class="btnCopiarPeriodo" data-id="${periodo.id}">${periodo?.nombre}</a></li>
-        </g:each>
+            <g:each in="${lista}" var="periodo" >
+                <li><a href="#" class="btnCopiarPeriodo" data-id="${periodo.id}">${periodo?.nombre}</a></li>
+            </g:each>
     </ul>
 </div>
 

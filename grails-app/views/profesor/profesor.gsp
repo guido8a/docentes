@@ -32,7 +32,7 @@
 
             <g:if test="${session.perfil.codigo == 'ADMG'}">
                 <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
-                          class="form-control" from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" value="${profesorInstance?.escuela?.facultad?.id}"/>
+                          class="form-control" from="${docentes.Facultad.findAllByUniversidad(universidad).sort{it.nombre}}" value="${profesorInstance?.escuela?.facultad?.id}"/>
             </g:if>
             <g:else>
                 <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
@@ -112,8 +112,7 @@
             </div>
 
             <div class="col-md-4"> <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                             class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/> </div>
-
+                                             class="form-control" from="${Periodo.findAllByUniversidad(universidad).sort{it.nombre}}"/> </div>
 
             <div class="col-md-3" style="float: right" id="divCopiar">
 

@@ -221,12 +221,12 @@ class ProfesorController extends Shield {
 
     def profesor () {
 //        println("params profe " + params)
+        def universidad = Universidad.get(params.universidad)
         def profesor
         if(params.id){
             profesor = Profesor.get(params.id)
         }
-        return [profesorInstance: profesor]
-
+        return [profesorInstance: profesor, universidad: universidad]
     }
 
 
@@ -358,7 +358,8 @@ class ProfesorController extends Shield {
 
     def copiar_ajax () {
         def periodo = Periodo.get(params.periodo)
-        def lista = Periodo.list() - periodo
+        def universidad = Universidad.get(periodo.universidad.id)
+        def lista = Periodo.findAllByUniversidad(universidad) - periodo
         def profesor = Profesor.get(params.idProfe)
 
         return  [lista: lista, profesor: profesor, periodo: periodo]
@@ -421,6 +422,33 @@ class ProfesorController extends Shield {
         }else{
             render "no"
         }
+    }
+
+    def tablaProfesores_ajax () {
+
+//        println("params " + params)
+
+        def universidad = Universidad.get(params.universidad)
+
+        def profesores = Profesor.withCriteria {
+
+            escuela {
+                facultad{
+                    eq("universidad",universidad)
+                }
+            }
+
+            and{
+                ilike("apellido", "%" + params.apellido + "%")
+                ilike("cedula", "" + params.cedula + "%")
+                ilike("nombre", "%" + params.nombre + "%")
+            }
+
+            order("apellido","asc")
+            maxResults(30)
+        }
+
+        return[profesores: profesores]
     }
 
 }

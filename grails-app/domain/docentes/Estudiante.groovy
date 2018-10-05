@@ -5,6 +5,7 @@ class Estudiante {
     String cedula
     String nombre
     String apellido
+    Universidad universidad
 
     static mapping = {
         table 'estd'
@@ -17,6 +18,7 @@ class Estudiante {
             nombre column: 'estdnmbr'
             apellido column: 'estdapll'
             cedula column: 'estdcdla'
+            universidad column: 'univ__id'
         }
     }
 

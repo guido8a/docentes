@@ -1,18 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: gato
-  Date: 28/09/18
-  Time: 11:17
+  Date: 05/10/18
+  Time: 10:17
 --%>
 
-<div class="" style="width: 99.7%;height: 450px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-condensed table-hover" width="1070px">
+<div class="" style="width: 100%;height: 450px; overflow-y: auto; margin-top: -20px">
+    <table class="table-bordered table-condensed table-hover" width="1120px">
         <tbody>
-        <g:each in="${estudiantes}" var="estudiante">
-            <tr data-id="${estudiante?.id}" data-uni="${universidad?.id}">
-                <td style="width: 20%">${estudiante?.cedula}</td>
-                <td style="width: 40%">${estudiante?.apellido}</td>
-                <td style="width: 40%">${estudiante?.nombre}</td>
+        <g:each in="${profesores}" var="profesor">
+            <tr data-id="${profesor?.id}" data-uni="${profesor?.escuela?.facultad?.universidad?.id}">
+                <td style="width: 10%">${profesor?.cedula}</td>
+                <td style="width: 34%">${profesor?.apellido}</td>
+                <td style="width: 33%">${profesor?.nombre}</td>
+                <td style="width: 11%">${profesor?.estado}</td>
+                <td style="width: 11%">${profesor?.evaluar}</td>
             </tr>
         </g:each>
         </tbody>
@@ -21,11 +23,12 @@
 
 <div class="panel panel-info col-md-12" style="margin-top: 10px" >
     <div class="panel-heading">
-            * Máxima cantidad de registros en pantalla 30
+        * Máxima cantidad de registros en pantalla 30
     </div>
 </div>
 
 <script type="text/javascript">
+
 
     $(function () {
 
@@ -48,7 +51,7 @@
                             },
                             success : function (msg) {
                                 bootbox.dialog({
-                                    title   : "Ver datos del estudiante",
+                                    title   : "Ver",
                                     message : msg,
                                     buttons : {
                                         ok : {
@@ -68,8 +71,8 @@
                     icon   : "fa fa-pencil",
                     action : function ($element) {
                         var id = $element.data("id");
-                        var unive = $element.data("uni");
-                        location.href="${createLink(controller: 'estudiante', action: 'estudiante')}?id=" + id + '&universidad=' + unive
+                        var uni = $element.data("uni");
+                        location.href='${createLink(controller: 'profesor', action: 'profesor')}?id=' + id + "&universidad=" + uni;
                     }
                 },
                 eliminar : {
@@ -89,8 +92,9 @@
                 $(".trHighlight").removeClass("trHighlight");
             }
         });
+
+
+
     });
 
-
 </script>
-

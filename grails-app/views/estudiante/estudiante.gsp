@@ -54,22 +54,16 @@
             </div>
 
             <div class="col-md-4">
-
-
                 <g:if test="${session.perfil.codigo == 'ADMG'}">
                     <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                              class="form-control" from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>
+                              class="form-control" from="${periodo}"/>
                 </g:if>
                 <g:else>
                     <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                               class="form-control" style="width: 90px"
                               from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
                 </g:else>
-
-
-
             </div>
-
 
             <div class="col-md-3" style="float: right" id="divCopiar">
 
@@ -85,8 +79,6 @@
 
                 </div>
             </div>
-
-
             <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
                 <thead>
                 <tr>
@@ -120,13 +112,10 @@
         cargarMatriculados(per)
     });
 
-
-
     if('${estudianteInstance}'){
         cargarMaterias($("#periodoId").val());
         cargarMatriculados($("#periodoId").val());
     }
-
 
     function cargarMaterias (periodo){
         $.ajax ({
@@ -142,7 +131,6 @@
         });
     }
 
-
     function  cargarMatriculados(periodo){
         $.ajax ({
             type: 'POST',
@@ -156,8 +144,6 @@
             }
         });
     }
-
-
 
     $(".btnGuardar").click(function () {
         var nombre = $("#nombreEstudiante").val();

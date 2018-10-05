@@ -33,9 +33,29 @@
 </div>
 
 
+<div class="row" style="margin-left: 190px;">
+    <g:if test="${session.perfil.codigo == 'ADMG'}">
+        <div class="col-md-1"><b>Universidad:</b></div>
+        <div class="col-sm-3">
+            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                      class="form-control" style="width: 300px"
+                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
+        </div>
+    </g:if>
+    <g:else>
+        <div class="col-md-1"><b>Universidad:</b></div>
+        <div class="col-sm-3">
+            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                      class="uni form-control" style="width: 300px"
+                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}" value="${seguridad.Persona.get(session.usuario.id)?.universidad?.id}"/>
+        </div>
+    </g:else>
+</div>
+
+
+
 
 <div class="row" style="margin-bottom: 10px;">
-
     <div class="row-fluid">
         <div style="margin-left: 20px;">
 
@@ -90,32 +110,42 @@
 
 <script type="text/javascript">
 
+    <g:if test="${session.perfil.codigo != 'ADMG'}">
+    $(".uni").attr("disabled", true);
+    </g:if>
+
+    $("#universidadId").change(function () {
+        cargarTablaEstudiantes(null, null, null, $("#universidadId option:selected").val());
+    });
+
     $("#btnLimpiarBusqueda").click(function () {
         $("#cedula").val('');
         $("#nombre").val('');
         $("#apellido").val('');
-        cargarTablaEstudiantes(null, null, null);
+        cargarTablaEstudiantes(null, null, null, $("#universidadId option:selected").val());
     });
 
     $("#btnBusqueda").click(function () {
         var ced = $("#cedula").val();
         var nom = $("#nombre").val();
         var ape = $("#apellido").val();
+        var un = $("#universidadId option:selected").val();
 
-        cargarTablaEstudiantes(ced, nom, ape);
+        cargarTablaEstudiantes(ced, nom, ape,un);
     });
 
-    cargarTablaEstudiantes(null, null, null);
+    cargarTablaEstudiantes(null, null, null, $("#universidadId option:selected").val());
 
-    function cargarTablaEstudiantes (c,n,a){
+    function cargarTablaEstudiantes (c,n,a,u){
         openLoader("Cargando....");
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'estudiante', action: 'tablaEstudiantes_ajax')}',
             data:{
                 cedula: c,
                 nombre: n,
-                apellido: a
+                apellido: a,
+                universidad: u
             },
             success: function (msg){
                 closeLoader();
@@ -272,8 +302,8 @@
                     icon   : "fa fa-pencil",
                     action : function ($element) {
                         var id = $element.data("id");
-//                                createEditRow(id);
-                        location.href='${createLink(controller: 'estudiante', action: 'estudiante')}/' + id
+                        var unive = $element.data("uni");
+                        location.href="${createLink(controller: 'estudiante', action: 'estudiante')}?id=" + id + '&universidad=' + unive
                     }
                 },
                 eliminar : {
