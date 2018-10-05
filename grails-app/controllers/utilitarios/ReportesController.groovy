@@ -1467,7 +1467,7 @@ class ReportesController extends seguridad.Shield {
         switch(tipo){
             case '1':
                 sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                        "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
                         "group by clase order by clase"
 
 
@@ -1537,11 +1537,11 @@ class ReportesController extends seguridad.Shield {
         document.add(linea)
         Paragraph refe = new Paragraph("Referencia:", fontTitulo)
         Paragraph claseA = new Paragraph("La clase 'A' corresponde a un desempeño académico igual " +
-                "o superior a ${prmt.optimo}", font12)
+                "o superior a ${prmt?.optimo}", font12)
         Paragraph claseB = new Paragraph("La clase 'B' corresponde a un desempeño académico menor " +
-                "a ${prmt.optimo} y mayor o igual a ${prmt.minimo}", font12)
+                "a ${prmt?.optimo} y mayor o igual a ${prmt.minimo}", font12)
         Paragraph claseC = new Paragraph("La clase 'C' corresponde a un desempeño académico menor " +
-                "a ${prmt.minimo}", font12)
+                "a ${prmt?.minimo}", font12)
 
         document.add(refe)
         document.add(claseA)
@@ -1686,7 +1686,7 @@ class ReportesController extends seguridad.Shield {
         def totl = 0
         def cuenta = 0
         def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
                 "group by clase order by clase"
 
         cn.eachRow(sql2.toString()) { d ->
@@ -1698,8 +1698,10 @@ class ReportesController extends seguridad.Shield {
 
         switch(tipo){
             case '1':
-                sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                        "escl.escl__id = prof.escl__id and facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2"
+                sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl " +
+                        "where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
+                        "con_rcmn > 0 and tpen__id = 2"
 
 
                 println "sql: $sql"
