@@ -309,13 +309,17 @@ class ProfesorController extends Shield {
     }
 
     def materias_ajax () {
-        def profesor = Profesor.get(params.id)
-        def materias = Materia.findAllByEscuela(profesor.escuela, [sort: 'nombre', order: 'asc'])
+//        def profesor = Profesor.get(params.id)
+//        def materias = Materia.findAllByEscuela(profesor.escuela, [sort: 'nombre', order: 'asc'])
+
+        def escuela = Escuela.get(params.escuela)
+        def materias = Materia.findAllByEscuela(escuela, [sort: 'nombre', order: 'asc'])
+
         return [materias: materias]
     }
 
     def agregarMateria_ajax () {
-        println("params agregar m " + params)
+//        println("params agregar m " + params)
         def profesor = Profesor.get(params.id)
         def materia = Materia.get(params.materia)
         def curso = Curso.get(params.curso)
@@ -449,6 +453,20 @@ class ProfesorController extends Shield {
         }
 
         return[profesores: profesores]
+    }
+
+    def escuelaAsignadas_ajax () {
+
+        def profesor
+        if(params.profesor){
+            profesor = Profesor.get(params.profesor)
+        }
+        def facultad = Facultad.get(params.facultad)
+        def escuelas = Escuela.findAllByFacultad(facultad)
+
+        return [escuelas: escuelas, profesor: profesor]
+
+
     }
 
 }

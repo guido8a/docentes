@@ -17,7 +17,7 @@
                             <td style="width: 34%">${materia?.materia?.nombre}</td>
                             <td style="width: 15%">${materia?.curso?.nombre}</td>
                             <td style="width: 8%">${materia?.paralelo}</td>
-                            <td style="width: 25%">${materia?.profesor?.escuela?.nombre}</td>
+                            <td style="width: 25%">${materia?. materia?.escuela?.nombre}</td>
                             <td style="width: 5%"><a href="#" class="btn btn-danger btnBorrar" data-id="${materia.id}"  title="Retirar materia asignada al profesor">
                                 <i class="fa fa-trash"></i>
                             </a></td>

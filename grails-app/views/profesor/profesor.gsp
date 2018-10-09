@@ -28,8 +28,6 @@
     <div class="row">
         <div class="col-md-1 negrilla control-label">Facultad: </div>
         <div class="col-md-5">
-
-
             <g:if test="${session.perfil.codigo == 'ADMG'}">
                 <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
                           class="form-control" from="${docentes.Facultad.findAllByUniversidad(universidad).sort{it.nombre}}" value="${profesorInstance?.escuela?.facultad?.id}"/>
@@ -38,10 +36,7 @@
                 <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
                           optionKey="id" name="facultad" id="facultadId" class="form-control"/>
             </g:else>
-
-
-
-        </div>
+       </div>
         <div class="col-md-1 negrilla control-label">Escuela: </div>
         <div class="col-md-5" id="divEscuela">
 
@@ -122,6 +117,25 @@
     <div class="panel-body">
         <div class="list-group" style="text-align: center">
 
+            <div class="row">
+                <div class="col-md-1 negrilla control-label">Facultad: </div>
+                <div class="col-md-4">
+                    <g:if test="${session.perfil.codigo == 'ADMG'}">
+                        <g:select name="facultad_name" id="facultadAsig" optionKey="id" optionValue="nombre"
+                                  class="form-control" from="${docentes.Facultad.findAllByUniversidad(universidad).sort{it.nombre}}" value="${profesorInstance?.escuela?.facultad?.id}"/>
+                    </g:if>
+                    <g:else>
+                        <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
+                                  optionKey="id" name="facultad_name" id="facultadAsig" class="form-control" value="${profesorInstance?.escuela?.facultad?.id}"/>
+                    </g:else>
+                </div>
+
+                <div class="col-md-1 negrilla control-label">Escuela: </div>
+                <div class="col-md-5" id="divEscuelaAsig">
+
+                </div>
+            </div>
+
             <div class="row ${!profesorInstance ? 'hidden' : ''}" id="divMateria">
                 <div class="col-md-1 negrilla control-label">Materias: </div>
                 <div class="col-md-4" id="divMaterias">
@@ -167,25 +181,47 @@
 
 <script type="text/javascript">
 
+    cargarEscuelaAsignada($("#facultadAsig").val(),'${profesorInstance?.id}');
 
-    if('${profesorInstance}'){
-        cargarComboMaterias('${profesorInstance?.id}');
-    }
+    $("#facultadAsig").change(function () {
+        var facultadA = $("#facultadAsig option:selected").val();
+        cargarEscuelaAsignada(facultadA,'${profesorInstance?.id}')
+    });
 
-    function cargarComboMaterias (profesor) {
+    function cargarEscuelaAsignada (facultad, profesor) {
         $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'profesor',action: 'materias_ajax')}',
+           type: 'POST',
+            url: '${createLink(controller: 'profesor', action: 'escuelaAsignadas_ajax')}',
             data:{
-                id: profesor
+                facultad: facultad,
+                profesor: profesor
             },
-            success: function (msg){
-                $("#divMaterias").html(msg)
+            success: function (msg) {
+                $("#divEscuelaAsig").html(msg)
             }
         });
     }
 
+
+    %{--if('${profesorInstance}'){--}%
+        %{--cargarComboMaterias('${profesorInstance?.id}');--}%
+    %{--}--}%
+
+    %{--function cargarComboMaterias (profesor) {--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'profesor',action: 'materias_ajax')}',--}%
+            %{--data:{--}%
+                %{--id: profesor--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+                %{--$("#divMaterias").html(msg)--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
+
     cargarTablaMaterias($("#periodoId").val());
+
     cargarBotonCopiar($("#periodoId").val());
 
 
@@ -249,9 +285,6 @@
         var facultad = $("#facultadId").val();
         cargarEscuela(facultad)
     });
-
-
-
 
 
     $(".btnGuardar").click(function () {

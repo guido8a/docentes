@@ -223,6 +223,17 @@ class MateriaController extends Shield {
         def codigo = params.codigo.toString().trim()
         def nombreMateria = params.materia.toString().trim()
 
+        def matriculadas = Matriculado.withCriteria {
+
+            eq("estudiante", estudiante)
+
+            materiaDictada{
+                eq("periodo", periodo)
+            }
+
+        }
+
+
         def dicta = Dictan.withCriteria {
 
             eq("periodo",periodo)
@@ -233,9 +244,14 @@ class MateriaController extends Shield {
 
                 order("nombre","asc")
             }
+
+            maxResults (30)
         }
 
-        return [materias: dicta, estudiante: estudiante]
+        def filtrados = dicta - matriculadas.materiaDictada
+
+
+        return [materias: filtrados, estudiante: estudiante]
 
     }
 

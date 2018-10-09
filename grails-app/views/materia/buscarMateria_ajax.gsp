@@ -45,6 +45,12 @@
 
     </div>
 
+    <div class="panel panel-info col-md-12" style="margin-top: 10px" >
+        <div class="panel-heading">
+            * Máxima cantidad de registros en pantalla 30
+        </div>
+    </div>
+
 </div>
 
 
