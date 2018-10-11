@@ -86,15 +86,15 @@ class EncuestaService {
                 break
             case 5: //PAR
                 tx = "select encu__id from encu, teti where prdo__id = ${prdo} and " +
-                        "encu.prof__id = ${informante} and " +
+                        "encu.prof_par = ${informante} and " +
                         "teti.teti__id = encu.teti__id and teti.tpen__id = $tpen and tpif__id = $tpif and " +
-                        "prof_par = $par"
+                        "prof__id = $par"
                 break
             case 3: //DI
                 tx = "select encu__id from encu, teti where prdo__id = ${prdo} and " +
-                        "encu.prof__id = ${informante} and " +
+                        "encu.profdrtv = ${informante} and " +
                         "teti.teti__id = encu.teti__id and teti.tpen__id = $tpen and tpif__id = $tpif and " +
-                        "profdrtv = $drtv"
+                        "prof__id = $drtv"
                 break
             default:
                 tx = "select 0"

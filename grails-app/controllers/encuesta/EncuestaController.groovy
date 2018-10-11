@@ -186,7 +186,8 @@ class EncuestaController {
 
 
     def encuesta(tpen__id, tpif__id, prof__id, dcta__id, profeval) {
-        println "encuesta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.prdo}"
+        println "encuesta persona: ${session.tipoPersona}, tipo: ${tpen__id} ponePregunta: ${session.encuesta}, " +
+                "params: $params, id: ${session.informanteId}, pr: ${session.prdo}"
         def creado = false
         def tpen = TipoEncuesta.get(tpen__id)
         def total = encuestaService.totalPreguntas(tpen__id)  //total preguntas de la ponePregunta id
@@ -667,7 +668,7 @@ class EncuestaController {
                     "where prdo__id = ${session.prdo} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
                     "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                     "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
-                    "select prof_par from encu where prof_par is not null and prdo__id = ${session.prdo} and " +
+                    "select prof__id from encu where prof_par is not null and prdo__id = ${session.prdo} and " +
 //                    "dcta__id <> dcta.dcta__id and encuetdo = 'C' ) and " +
                     "encuetdo = 'C' ) and " +
                     "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
@@ -677,11 +678,11 @@ class EncuestaController {
                     "where prdo__id = ${session.prdo} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
                     "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
                     "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
-                    "select profdrtv from encu where profdrtv is not null and prdo__id = ${session.prdo} and encuetdo = 'C') and " +
+                    "select prof__id from encu where profdrtv is not null and prdo__id = ${session.prdo} and encuetdo = 'C') and " +
                     "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
         }
 
-//        println "...sql: $sql"
+        println "...sql: $sql"
         resultado = cn.rows(sql.toString())
 
         if(resultado?.size() > 20){
