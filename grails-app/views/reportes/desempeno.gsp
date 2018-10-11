@@ -85,7 +85,7 @@
 
 <script type="text/javascript">
 
-
+    buscar();
 
     function buscar () {
         openLoader("Buscando...");

@@ -456,4 +456,31 @@ class ProfesorController extends Shield {
 
         return [escuelas: escuelas, profesor: profesor]
     }
+
+    def registrar_ajax () {
+
+        println("params " + params)
+
+        def profesor = Profesor.get(params.id.toInteger())
+        def universidad = Universidad.get(params.universidad.toInteger())
+        def texto = ''
+
+        if(params.tipo == '1'){
+            profesor.estado = 'R'
+            texto = 'Profesor registrado correctamente'
+        }else{
+            profesor.estado = 'N'
+            texto = "Profesor desregistrado correctamente"
+        }
+
+        try{
+            profesor.save(flush: true)
+            render "ok_" + profesor?.id + "_" + universidad?.id + "_" + texto
+        }catch (e){
+            println("error al registrar profesor" + e)
+            render "no"
+        }
+
+
+    }
  }

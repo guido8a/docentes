@@ -11,9 +11,25 @@
 <g:link controller="profesor" action="list" class="btn btn-primary" title="Regresar a la lista de profesores">
     <i class="fa fa-chevron-left"></i> Lista
 </g:link>
-<a href="#" class="btn btn-success btnGuardar" >
-    <i class="fa fa-save"></i> Guardar
-</a>
+
+<g:if test="${profesorInstance?.estado != 'R'}">
+    <a href="#" class="btn btn-success btnGuardar">
+        <i class="fa fa-save"></i> Guardar
+    </a>
+</g:if>
+
+<g:if test="${profesorInstance}">
+    <g:if test="${profesorInstance?.estado == 'N'}">
+        <a href="#" class="btn btn-info btnRegistrar" >
+            <i class="fa fa-check"></i> Registrar
+        </a>
+    </g:if>
+    <g:else>
+        <a href="#" class="btn btn-warning btnDesRegistrar" >
+            <i class="fa fa-check"></i> Desregistrar
+        </a>
+    </g:else>
+</g:if>
 </div>
 
 </div>
@@ -194,6 +210,38 @@
 
 <script type="text/javascript">
 
+
+    $(".btnRegistrar").click(function () {
+        cambiarEstado(1);
+    });
+
+    $(".btnDesRegistrar").click(function () {
+        cambiarEstado(2);
+    });
+
+    function cambiarEstado (tipo) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'profesor', action: 'registrar_ajax')}',
+            data:{
+                id: '${profesorInstance?.id}',
+                universidad: '${universidad?.id}',
+                tipo: tipo
+            },
+            success: function (msg){
+                var parts = msg.split("_");
+                if(parts[0] == 'ok'){
+                    log(parts[3], "success");
+                    setTimeout(function () {
+                        location.href='${createLink(controller: 'profesor', action: 'profesor')}?id=' + parts[1] + "&universidad=" + parts[2]
+                    }, 700);
+                }else{
+                    log("Error al cambiar de estado","error")
+                }
+            }
+        })
+    }
+
     cargarEscuelaAsignada($("#facultadAsig").val(),'${profesorInstance?.id}');
 
     $("#facultadAsig").change(function () {
@@ -298,6 +346,7 @@
         var facultad = $("#facultadId").val();
         cargarEscuela(facultad)
     });
+
 
 
     $(".btnGuardar").click(function () {
