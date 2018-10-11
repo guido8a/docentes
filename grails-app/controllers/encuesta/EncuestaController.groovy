@@ -575,6 +575,10 @@ class EncuestaController {
 //        println " a ejecutar seleccionaPregunta: ${tx}"
 
         def prte = cn.rows(tx.toString())[0]
+//        println "dscr: ${prte.dscr}"
+        prte.dscr = tpen == 1? prte.dscr.replaceAll('EL PROFESOR', 'USTED') : prte.dscr
+
+
         preg.add(prte.prtenmro)
         preg.add([id: prte.prte__id, dscr: prte.dscr])   //prte__id y pregunta respectiva
 
