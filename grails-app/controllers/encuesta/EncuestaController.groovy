@@ -366,7 +366,7 @@ class EncuestaController {
     boolean existeEstudiante(cdla) {
 //        println "existeEstudiante $cdla"
         def cn = dbConnectionService.getConnection()
-        def tx = "select estd.estd__id, estdnmbr||' '||estdapll estudiante, univ__id, prdo.prdo__id " +
+        def tx = "select estd.estd__id, estdnmbr||' '||estdapll estudiante, estd.univ__id, prdo.prdo__id " +
                 "from estd, matr, dcta, prdo " +
                 "where estdcdla = '${cdla}' and matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id and " +
                 "prdo.prdo__id = dcta.prdo__id and now() between prdofcin and coalesce(prdofcfn, now()) limit 1"
