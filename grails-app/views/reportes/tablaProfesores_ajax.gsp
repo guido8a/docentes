@@ -70,7 +70,7 @@
                                     <i class="fa fa-male"></i>
                                 </a>
                             </g:else>
-                            <a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" title="Enviar por correo al profesor">
+                            <a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" data-nom="${profesor?.apellido + " " + profesor?.nombre}" title="Enviar por correo al profesor">
                                 <i class="fa fa-envelope"></i>
                             </a>
                         </td>
@@ -86,11 +86,13 @@
 
     $(".btnIM").click(function () {
         var idProfe = $(this).data('id');
+        var nomProfe = $(this).data('nom');
         var perio = ${periodo?.id};
 
-        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de enviar este reporte al profesor ?", function (result) {
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de enviar este reporte al profesor " + "<b style='color: rgba(63,113,186,0.9)'>" + nomProfe + "</b>" + "?", function (result) {
             if (result) {
                 %{--location.href = "${createLink(controller: 'reportes', action: 'reporteEnviarProfesores')}?profesor=" + idProfe + "&periodo=" + perio--}%
+
                 openLoader("Enviando...");
                 $.ajax({
                     type: 'POST',
@@ -101,10 +103,11 @@
                     },
                     success: function (msg){
                         closeLoader();
-                        if(msg == 'ok'){
+                        var parts = msg.split("_");
+                        if(parts[0] == 'ok'){
                             log("Email enviado correctamente", "success")
                         }else{
-                            log("error", "error")
+                            log(parts[1], "error")
                         }
                     }
                 });

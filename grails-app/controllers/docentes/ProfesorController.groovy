@@ -258,42 +258,30 @@ class ProfesorController extends Shield {
 
         if(params.id){
             profesor = Profesor.get(params.id)
-            escuela = Escuela.get(params.escuela)
-            profesor.escuela = escuela
-            profesor.nombre = params.nombre.toUpperCase()
-            profesor.apellido = params.apellido.toUpperCase()
-            profesor.titulo = params.titulo.toUpperCase()
-            profesor.cedula = params.cedula
-            profesor.sexo = params.sexo.toString()
-            profesor.evaluar = params.evalua
-            profesor.observacion = params.observacion
-            profesor.estado = 'N'
-
         }else{
             profesor = new Profesor()
-            escuela = Escuela.get(params.escuela)
-            profesor.escuela = escuela
-            profesor.nombre = params.nombre.toUpperCase()
-            profesor.apellido = params.apellido.toUpperCase()
-            profesor.titulo = params.titulo.toUpperCase()
-            profesor.cedula = params.cedula
-            profesor.sexo = params.sexo.toString()
-            profesor.evaluar = params.evalua
-            profesor.observacion = params.observacion
             profesor.estado = 'N'
         }
+
+        escuela = Escuela.get(params.escuela)
+        profesor.escuela = escuela
+        profesor.nombre = params.nombre.toUpperCase()
+        profesor.apellido = params.apellido.toUpperCase()
+        profesor.titulo = params.titulo.toUpperCase()
+        profesor.cedula = params.cedula
+        profesor.sexo = params.sexo.toString()
+        profesor.evaluar = params.evalua
+        profesor.observacion = params.observacion
+        profesor.mail = params.mail.toLowerCase()
 
         try {
             profesor.save(flush: true)
-//            println("profesor " + profesor)
-            render 'ok_'+ profesor?.id
+            render 'ok_'+ profesor?.id + "_" + escuela?.facultad?.universidad?.id
         }catch (e){
             render 'no'
-            println("error al guardar el profesor " + profesor.errors)
+            println("error al guardar el profesor " + profesor.errors + "_ " + e)
         }
-
     }
-
 
     def tablaMaterias_ajax () {
 //        println("params tabla mat " + params)

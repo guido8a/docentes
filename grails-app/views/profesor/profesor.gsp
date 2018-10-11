@@ -14,11 +14,6 @@
 <a href="#" class="btn btn-success btnGuardar" >
     <i class="fa fa-save"></i> Guardar
 </a>
-<div class="btn-group">
-    <g:link controller="profesor" action="profesor" class="btn btn-info">
-        <i class="fa fa-file-o"></i> Nuevo
-    </g:link>
-</div>
 </div>
 
 </div>
@@ -36,13 +31,12 @@
                 <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
                           optionKey="id" name="facultad" id="facultadId" class="form-control"/>
             </g:else>
-       </div>
+        </div>
         <div class="col-md-1 negrilla control-label">Escuela: </div>
         <div class="col-md-5" id="divEscuela">
 
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-md-1 negrilla control-label">Nombres: </div>
@@ -56,31 +50,50 @@
     </div>
 
     <div class="row">
-        <div class="col-md-1 negrilla control-label">Cédula: </div>
-        <div class="col-md-2">
-            <g:textField name="cedula_name" id="cedulaProfesor" value="${profesorInstance ? profesorInstance?.cedula : ''}" class="form-control number required" maxlength="15"/>
+        <div class="col-md-2" style="margin-left: 80px">
+            %{--<div class="col-md-3 negrilla control-label">Cédula: </div>--}%
+            <div class="col-md-12">
+                <label>Cédula</label>
+                <g:textField name="cedula_name" id="cedulaProfesor" value="${profesorInstance ? profesorInstance?.cedula : ''}" class="form-control number required" maxlength="15"/>
+            </div>
         </div>
-        <div class="col-md-1 negrilla control-label">Título: </div>
         <div class="col-md-2">
-            <g:textField name="titulo_name" id="tituloProfesor" value="${profesorInstance ? profesorInstance?.titulo : ''}" class="allCaps form-control" maxlength="8"/>
+            %{--<div class="col-md-3 negrilla control-label">Título: </div>--}%
+            <div class="col-md-12">
+                <label>Título</label>
+                <g:textField name="titulo_name" id="tituloProfesor" value="${profesorInstance ? profesorInstance?.titulo : ''}" class="allCaps form-control" maxlength="125"/>
+            </div>
         </div>
-        <div class="col-md-1 negrilla control-label">Sexo: </div>
-        <div class="col-md-2">
-            <g:if test="${profesorInstance}">
-                <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${profesorInstance?.sexo == 'M' ? 'M' : 'F'}"  optionKey="key" optionValue="value"/>
-            </g:if>
-            <g:else>
-                <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${''}"  optionKey="key" optionValue="value"/>
-            </g:else>
+        <div class="col-md-3">
+            %{--<div class="col-md-3 negrilla control-label">Email: </div>--}%
+            <div class="col-md-12">
+                <label>Email</label>
+                <g:textField name="mail_name" id="mailProfesor" value="${profesorInstance ? profesorInstance?.mail : ''}" class="email mail form-control" maxlength="62"/>
+            </div>
         </div>
-        <div class="col-md-1 negrilla control-label">Evalua: </div>
         <div class="col-md-2">
-            <g:if test="${profesorInstance}">
-                <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="${profesorInstance?.evaluar == 'S' ? 'S' : profesorInstance?.evaluar == 'P' ? 'P' : 'N'}" />
-            </g:if>
-            <g:else>
-                <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="" />
-            </g:else>
+            %{--<div class="col-md-3 negrilla control-label">Sexo: </div>--}%
+            <div class="col-md-12">
+                <label>Sexo</label>
+                <g:if test="${profesorInstance}">
+                    <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${profesorInstance?.sexo == 'M' ? 'M' : 'F'}"  optionKey="key" optionValue="value"/>
+                </g:if>
+                <g:else>
+                    <g:select from="${[ 'M': 'Masculino', 'F': 'Femenino']}" name="sexo_name" id="sexoProfesor" class="form-control" value="${''}"  optionKey="key" optionValue="value"/>
+                </g:else>
+            </div>
+        </div>
+        <div class="col-md-2">
+            %{--<div class="col-md-1 negrilla control-label">Evalua: </div>--}%
+            <div class="col-md-12">
+                <label>Evalua</label>
+                <g:if test="${profesorInstance}">
+                    <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="${profesorInstance?.evaluar == 'S' ? 'S' : profesorInstance?.evaluar == 'P' ? 'P' : 'N'}" />
+                </g:if>
+                <g:else>
+                    <g:select from="${[ 'S':'Como directivo', 'P':'Como par', 'N':'Ninguno']}" name="evalua_name" id="evaluaProfesor"  optionValue="value" optionKey="key" class="form-control" value="" />
+                </g:else>
+            </div>
         </div>
     </div>
 
@@ -190,7 +203,7 @@
 
     function cargarEscuelaAsignada (facultad, profesor) {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'profesor', action: 'escuelaAsignadas_ajax')}',
             data:{
                 facultad: facultad,
@@ -204,20 +217,20 @@
 
 
     %{--if('${profesorInstance}'){--}%
-        %{--cargarComboMaterias('${profesorInstance?.id}');--}%
+    %{--cargarComboMaterias('${profesorInstance?.id}');--}%
     %{--}--}%
 
     %{--function cargarComboMaterias (profesor) {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: '${createLink(controller: 'profesor',action: 'materias_ajax')}',--}%
-            %{--data:{--}%
-                %{--id: profesor--}%
-            %{--},--}%
-            %{--success: function (msg){--}%
-                %{--$("#divMaterias").html(msg)--}%
-            %{--}--}%
-        %{--});--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url: '${createLink(controller: 'profesor',action: 'materias_ajax')}',--}%
+    %{--data:{--}%
+    %{--id: profesor--}%
+    %{--},--}%
+    %{--success: function (msg){--}%
+    %{--$("#divMaterias").html(msg)--}%
+    %{--}--}%
+    %{--});--}%
     %{--}--}%
 
     cargarTablaMaterias($("#periodoId").val());
@@ -299,6 +312,7 @@
         var evalua = $("#evaluaProfesor").val();
         var observa = $("#profesorObser").val();
         var idProfesor = '${profesorInstance?.id}';
+        var mail = $("#mailProfesor").val();
 
         var $form = $("#frmProfesor");
         if ($form.valid()) {
@@ -316,14 +330,15 @@
                     inicio: inicio,
                     evalua: evalua,
                     id: idProfesor,
-                    observacion: observa
+                    observacion: observa,
+                    mail: mail
                 },
                 success: function (msg){
                     var parts = msg.split("_");
                     if(parts[0] == 'ok'){
-                        log("Información guardada correctamente","success")
+                        log("Información guardada correctamente","success");
                         setTimeout(function () {
-                            location.href='${createLink(controller: 'profesor', action: 'profesor')}/' + parts[1]
+                            location.href='${createLink(controller: 'profesor', action: 'profesor')}?id=' + parts[1] + "&universidad=" + parts[2]
                         }, 500);
                     }else{
                         log("Error al guardar la información","error")
@@ -336,7 +351,6 @@
 
 
     $("#btnAgregar").click(function () {
-
 
         var materia = $("#materiasId").val();
         var curso = $("#cursoId").val();

@@ -2071,7 +2071,6 @@ class ReportesController extends seguridad.Shield {
 
         println("params rp " + params)
 
-
         def pl = new ByteArrayOutputStream()
         byte[] b
         def pdfs = []  /** pdfs a armar en el nuevo documento **/
@@ -2090,74 +2089,77 @@ class ReportesController extends seguridad.Shield {
         def promedio = TipoEncuesta.findByCodigo("FE")
         def total = TipoEncuesta.findByCodigo("TT")
 
-        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, alumnos, periodo)?.promedio > 0){
-            params.tipo = '1'
-            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
-            pdfs.add(pl.toByteArray())
-            contador++
-        }
+        if(profesor?.mail){
 
-        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, auto, periodo)?.promedio > 0){
-            params.tipo = '2'
-            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
-            pdfs.add(pl.toByteArray())
-            contador++
-        }
 
-        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, directivos, periodo)?.promedio > 0){
-            params.tipo = '3'
-            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
-            pdfs.add(pl.toByteArray())
-            contador++
-        }
-
-        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, pares, periodo)?.promedio > 0){
-            params.tipo = '4'
-            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
-            pdfs.add(pl.toByteArray())
-            contador++
-        }
-
-        if(docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor, periodo, total)){
-            params.tipo = '5'
-            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
-            pdfs.add(pl.toByteArray())
-            contador++
-        }
-
-        if(contador >= 1) {
-            def baos = new ByteArrayOutputStream()
-            com.lowagie.text.Document document
-            document = new com.lowagie.text.Document(com.lowagie.text.PageSize.A4);
-
-            def pdfw = com.lowagie.text.pdf.PdfWriter.getInstance(document, baos);
-            document.open();
-            com.lowagie.text.pdf.PdfContentByte cb = pdfw.getDirectContent();
-
-            pdfs.each {f ->
-                com.lowagie.text.pdf.PdfReader reader = new com.lowagie.text.pdf.PdfReader(f);
-                for (int i = 1; i <= reader.getNumberOfPages(); i++) {
-                    //nueva página
-                    document.newPage();
-                    //importa la página "i" de la fuente "reader"
-                    com.lowagie.text.pdf.PdfImportedPage page = pdfw.getImportedPage(reader, i);
-                    //añade página
-                    cb.addTemplate(page, 0, 0);
-                }
+            if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, alumnos, periodo)?.promedio > 0){
+                params.tipo = '1'
+                pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+                pdfs.add(pl.toByteArray())
+                contador++
             }
-            document.close();
 
-            b = baos.toByteArray();
-            fos = new FileOutputStream(archivo);
-            fos.write(b);
-            fos.close();
+            if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, auto, periodo)?.promedio > 0){
+                params.tipo = '2'
+                pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
 
-        } else {
-            b = pl.toByteArray();
-        }
+            if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, directivos, periodo)?.promedio > 0){
+                params.tipo = '3'
+                pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
+
+            if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, pares, periodo)?.promedio > 0){
+                params.tipo = '4'
+                pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
+
+            if(docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor, periodo, total)){
+                params.tipo = '5'
+                pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
+
+            if(contador >= 1) {
+                def baos = new ByteArrayOutputStream()
+                com.lowagie.text.Document document
+                document = new com.lowagie.text.Document(com.lowagie.text.PageSize.A4);
+
+                def pdfw = com.lowagie.text.pdf.PdfWriter.getInstance(document, baos);
+                document.open();
+                com.lowagie.text.pdf.PdfContentByte cb = pdfw.getDirectContent();
+
+                pdfs.each {f ->
+                    com.lowagie.text.pdf.PdfReader reader = new com.lowagie.text.pdf.PdfReader(f);
+                    for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+                        //nueva página
+                        document.newPage();
+                        //importa la página "i" de la fuente "reader"
+                        com.lowagie.text.pdf.PdfImportedPage page = pdfw.getImportedPage(reader, i);
+                        //añade página
+                        cb.addTemplate(page, 0, 0);
+                    }
+                }
+                document.close();
+
+                b = baos.toByteArray();
+                fos = new FileOutputStream(archivo);
+                fos.write(b);
+                fos.close();
+
+            } else {
+                b = pl.toByteArray();
+            }
 
 
-        //descomentar para imprimir
+            //descomentar para imprimir
 
 //        response.setContentType("application/pdf")
 //        response.setHeader("Content-disposition", "attachment; filename=${'desempeno_' + profesor?.cedula}")
@@ -2165,35 +2167,39 @@ class ReportesController extends seguridad.Shield {
 //        response.getOutputStream().write(b)
 
 
-        //envio de email  al profesor
+            //envio de email  al profesor
 
-        def mailTedein = "informacion@tedein.com.ec"
-        def mailTedein2 = "guido8a@gmail.com"
-        def errores = ''
+            def mailTedein = "informacion@tedein.com.ec"
+            def mailTedein2 = "${profesor?.mail}"
+            def errores = ''
 
-        def fileGuardar = new File(archivo)
+            def fileGuardar = new File(archivo)
 
-        try{
-            mailService.sendMail {
-                multipart true
-                to mailTedein2
-                subject "Reporte de desempeño"
-                body "Desempeño profesor"
-                attachBytes "desempeno_" + "${profesor?.cedula ?: 'sinCC'}" + "_" + "${new Date().format("dd-MM-yyyy")}" + ".pdf",'application/pdf', fileGuardar.readBytes()
+            try{
+                mailService.sendMail {
+                    multipart true
+                    to mailTedein2
+                    subject "Reporte de desempeño"
+                    body "Desempeño profesor"
+                    attachBytes "desempeno_" + "${profesor?.cedula ?: 'sinCC'}" + "_" + "${new Date().format("dd-MM-yyyy")}" + ".pdf",'application/pdf', fileGuardar.readBytes()
+                }
+
+                fileGuardar.delete()
+
+            }catch (e){
+                println("Error al enviar el mail" + e)
+                errores += e
             }
 
-            fileGuardar.delete()
-
-        }catch (e){
-            println("Error al enviar el mail" + e)
-            errores += e
-        }
-
-        if(errores == ''){
-            render "ok"
+            if(errores == ''){
+                render "ok"
+            }else{
+                render "no_Error al enviar el mail"
+            }
         }else{
-            render "no"
+            render "no_El profesor seleccionado no tiene email"
         }
+
 
     }
 

@@ -14,6 +14,7 @@ class Profesor {
     String observacion
     String evaluar
     Escuela escuela
+    String mail
 
 
     static mapping = {
@@ -36,12 +37,12 @@ class Profesor {
             estado column: 'profetdo'
             observacion column: 'profobsr'
             evaluar column: 'profeval'
+            mail column: 'profmail'
         }
     }
 
 
     static constraints = {
-
         cedula(blank: false, nullable: false)
         nombre(blank: false, nullable: false, size: 1..31)
         apellido(blank: false, nullable: false, size: 1..31)
@@ -50,7 +51,6 @@ class Profesor {
         fechaFin(nullable: true)
         fechaNacimiento(nullable: true)
         fechaInicio(nullable: true)
-
-
+        mail(nullable: true, blank: true)
     }
 }
