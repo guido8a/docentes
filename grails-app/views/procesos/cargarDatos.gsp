@@ -36,6 +36,15 @@
 
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
+
+
+<a href="#" class="btn btn-warning" id="btnMail">
+    <i class="fa fa-email"></i> Enviar Mail
+</a>
+
+
+
+
 <div class="col-md-12 btn-block" style="text-align: center; height: 50px">
     <g:link controller="inicio" action="index" class="col-md-3 btn btn-primary" title="Salir de cargar datos">
         <i class="fa fa-chevron-left"></i> Salir de cargar datos
@@ -69,7 +78,12 @@
 
         <div class="panel-body col-md-7">
             <label>Universidad</label>
-            <g:select from="${docentes.Universidad.findAllByNombreNotLike("Todas").sort{it.nombre}}" name="universidad" id="universidadId" class="form-control" optionValue="nombre" optionKey="id"/>
+            <g:if test="${session.perfil.codigo == 'ADMG'}">
+                <g:select from="${docentes.Universidad.findAllByNombreNotLike("Todas").sort{it.nombre}}" name="universidad" id="universidadId" class="form-control" optionValue="nombre" optionKey="id"/>
+            </g:if>
+            <g:else>
+                <g:select from="${seguridad.Persona.get(session.usuario.id).universidad}" name="universidad" id="universidadId" class="form-control" optionValue="nombre" optionKey="id"/>
+            </g:else>
         </div>
 
         <div class="panel-body col-md-5" id="divPeriodo">
@@ -200,7 +214,7 @@
     $("#validarDatos").click(function () {
         var arch = $('#archivo').val();
         var boton = $("#tabla").val();
-        console.log('archivo:', arch);
+//        console.log('archivo:', arch);
         if (arch) {
             $.ajax({
                 type: 'POST',
@@ -269,6 +283,9 @@
             }
         });
     });
+
+
+
 
 
 </script>

@@ -70,6 +70,9 @@
                                     <i class="fa fa-male"></i>
                                 </a>
                             </g:else>
+                            <a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" title="Enviar por correo al profesor">
+                                <i class="fa fa-envelope"></i>
+                            </a>
                         </td>
                     </tr>
                 </g:each>
@@ -80,6 +83,37 @@
 </div>
 
 <script type="text/javascript">
+
+    $(".btnIM").click(function () {
+        var idProfe = $(this).data('id');
+        var perio = ${periodo?.id};
+
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de enviar este reporte al profesor ?", function (result) {
+            if (result) {
+                %{--location.href = "${createLink(controller: 'reportes', action: 'reporteEnviarProfesores')}?profesor=" + idProfe + "&periodo=" + perio--}%
+                openLoader("Enviando...");
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'reportes', action: 'reporteEnviarProfesores')}",
+                    data:{
+                        profesor: idProfe,
+                        periodo: perio
+                    },
+                    success: function (msg){
+                        closeLoader();
+                        if(msg == 'ok'){
+                            log("Email enviado correctamente", "success")
+                        }else{
+                            log("error", "error")
+                        }
+                    }
+                });
+
+
+
+            }
+        });
+    });
 
     $(".btnAlumnos").click(function () {
         var idProfe = $(this).data('id');
@@ -121,6 +155,10 @@
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
         location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 1
+    });
+
+    $("#btnMail").click(function () {
+
     });
 
 

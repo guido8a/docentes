@@ -83,6 +83,7 @@ class ReportesController extends seguridad.Shield {
 //class ReportesController {
 
     def dbConnectionService
+    def mailService
 
     def index() { }
 
@@ -155,15 +156,15 @@ class ReportesController extends seguridad.Shield {
                 titulo = "Profesores que NO han realizado su autoevaluación"
 
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                      "from dcta, mate, prof, crso, escl, matr " +
-                      "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
-                      "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and " +
-                      "dcta.dcta__id = matr.dcta__id and " +
-                      "dcta.dcta__id not in (select distinct dcta__id from encu " +
-                      "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
-                      "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
-                      "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
-                      "order by escldscr, profapll, profnmbr"
+                        "from dcta, mate, prof, crso, escl, matr " +
+                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
+                        "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and " +
+                        "dcta.dcta__id = matr.dcta__id and " +
+                        "dcta.dcta__id not in (select distinct dcta__id from encu " +
+                        "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
+                        "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
+                        "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
+                        "order by escldscr, profapll, profnmbr"
                 break;
             case '4':  // profesores que YA han realizado su autoevaluación
                 titulo = "Profesores que han realizado su autoevaluación"
@@ -920,6 +921,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def desempenoAlumnos () {
+
         println("params alum " + params)
 
 
@@ -1049,11 +1051,149 @@ class ReportesController extends seguridad.Shield {
 
         document.close();
         pdfw.close()
+
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+
+    }
+
+
+    def desempenoAlumnosMail (prof, per) {
+
+        println("params alum " + params)
+
+
+        Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+
+        def profesor = Profesor.get(prof)
+        def periodo = Periodo.get(per)
+        def alumnos = TipoEncuesta.findByCodigo("DC")
+        def auto = TipoEncuesta.findByCodigo("AD")
+        def directivos = TipoEncuesta.findByCodigo("DI")
+        def pares = TipoEncuesta.findByCodigo("PR")
+        def totales = TipoEncuesta.findByCodigo("TT")
+
+        def baos = new ByteArrayOutputStream()
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+        def tipo = params.tipo
+        def subtitulo = ''
+        def rpec
+        def pattern1 = "###.##%"
+        def percentform = new DecimalFormat(pattern1)
+
+
+
+        switch(tipo){
+            case '1':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,alumnos,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Alumnos)"
+                break;
+            case '2':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,auto,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Autoevaluación)"
+                break;
+            case '3':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,directivos,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Evaluación Directivos)"
+                break;
+            case '4':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,pares,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Evaluación por Pares)"
+                break;
+            case '5':
+                rpec = ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor,totales,periodo)
+                subtitulo = "INFORME DEL DESEMPEÑO ACADÉMICO (Total)"
+                break;
+        }
+
+        document.open();
+
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
+        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + profesor?.escuela?.facultad?.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+//        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + ((rpec?.promedio*100)) + "%", fontNormal)
+        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (percentform.format(rpec?.promedio)), fontNormal)
+        document.add(parrafoUniversidad)
+        document.add(parrafoProfesor)
+        document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
+        document.add(parrafoPromedio)
+
+        def chart3 = createChart( createDataset("Referencias: ",rpec.ddsc, rpec.ddac, rpec.ddhd, rpec.ddci,rpec.dcni, rpec.d_ea), subtitulo);
+        def ancho = 540
+        def alto = 540
+
+        try {
+
+            PdfContentByte contentByte = pdfw.getDirectContent();
+
+            Paragraph parrafo1 = new Paragraph();
+            Paragraph parrafo2 = new Paragraph();
+
+            PdfTemplate template = contentByte.createTemplate(ancho, alto);
+            PdfTemplate template2 = contentByte.createTemplate(ancho, alto);
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper());
+            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto, new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
+            Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto);
+
+            chart.draw(graphics2d, rectangle2d);
+
+            graphics2d.dispose();
+            Image chartImage = Image.getInstance(template);
+            parrafo1.add(chartImage);
+
+            chart3.draw(graphics2d2, rectangle2d2);
+            graphics2d2.dispose();
+            Image chartImage3 = Image.getInstance(template2);
+            parrafo2.add(chartImage3);
+
+            document.add(parrafo2)
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //pie
+        PdfPTable tablaD = new PdfPTable(3);
+
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([49, 2, 49]))
+        addCellTabla(tablaD, new Paragraph("REFERENCIAS:", fontNormal), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("D-DSC: DESARROLLO DE SABERES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("D-DCI: DESARROLLO DE CAPACIDAD DE INVESTIGAR", fontNormal8), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("D-DAC: DESAROLLO DE ACTITUDES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("D-CNI: CUMPLIMIENTO DE LA NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("D-DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("D-EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+
+        document.add(tablaD);
+
+        document.close();
+        pdfw.close()
+        return baos
+
     }
 
     def variables_ajax () {
@@ -1867,7 +2007,7 @@ class ReportesController extends seguridad.Shield {
 
         return[datos1: ord1, datos2: ord2, datos3: ord3, datos4: ord4, periodo: periodo]
 
-        }
+    }
 
     def escuelas_ajax () {
         def facultad = Facultad.get(params.facl)
@@ -1925,6 +2065,136 @@ class ReportesController extends seguridad.Shield {
         }
 
         return [datos: datos, periodo: periodo, data: d, fac: facl]
+    }
+
+    def reporteEnviarProfesores() {
+
+        println("params rp " + params)
+
+
+        def pl = new ByteArrayOutputStream()
+        byte[] b
+        def pdfs = []  /** pdfs a armar en el nuevo documento **/
+        def contador = 0
+        def periodo = Periodo.get(params.periodo)
+        def profesor = Profesor.get(params.profesor)
+        FileOutputStream fos = null
+
+        def pathPdf = servletContext.getRealPath("/") + "pdf/"
+        def archivo = pathPdf + "desempeno_" + "${profesor?.cedula ?: 'sinCC'}" + "_" + "${new Date().format("dd-MM-yyyy")}" + ".pdf"
+
+        def alumnos = TipoEncuesta.findByCodigo("DC")
+        def auto = TipoEncuesta.findByCodigo("AD")
+        def directivos = TipoEncuesta.findByCodigo("DI")
+        def pares = TipoEncuesta.findByCodigo("PR")
+        def promedio = TipoEncuesta.findByCodigo("FE")
+        def total = TipoEncuesta.findByCodigo("TT")
+
+        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, alumnos, periodo)?.promedio > 0){
+            params.tipo = '1'
+            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+            pdfs.add(pl.toByteArray())
+            contador++
+        }
+
+        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, auto, periodo)?.promedio > 0){
+            params.tipo = '2'
+            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+            pdfs.add(pl.toByteArray())
+            contador++
+        }
+
+        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, directivos, periodo)?.promedio > 0){
+            params.tipo = '3'
+            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+            pdfs.add(pl.toByteArray())
+            contador++
+        }
+
+        if(docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, pares, periodo)?.promedio > 0){
+            params.tipo = '4'
+            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+            pdfs.add(pl.toByteArray())
+            contador++
+        }
+
+        if(docentes.ReporteEncuesta.findByProfesorAndPeriodoAndTipoEncuesta(profesor, periodo, total)){
+            params.tipo = '5'
+            pl = desempenoAlumnosMail(profesor?.id, periodo?.id)
+            pdfs.add(pl.toByteArray())
+            contador++
+        }
+
+        if(contador >= 1) {
+            def baos = new ByteArrayOutputStream()
+            com.lowagie.text.Document document
+            document = new com.lowagie.text.Document(com.lowagie.text.PageSize.A4);
+
+            def pdfw = com.lowagie.text.pdf.PdfWriter.getInstance(document, baos);
+            document.open();
+            com.lowagie.text.pdf.PdfContentByte cb = pdfw.getDirectContent();
+
+            pdfs.each {f ->
+                com.lowagie.text.pdf.PdfReader reader = new com.lowagie.text.pdf.PdfReader(f);
+                for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+                    //nueva página
+                    document.newPage();
+                    //importa la página "i" de la fuente "reader"
+                    com.lowagie.text.pdf.PdfImportedPage page = pdfw.getImportedPage(reader, i);
+                    //añade página
+                    cb.addTemplate(page, 0, 0);
+                }
+            }
+            document.close();
+
+            b = baos.toByteArray();
+            fos = new FileOutputStream(archivo);
+            fos.write(b);
+            fos.close();
+
+        } else {
+            b = pl.toByteArray();
+        }
+
+
+        //descomentar para imprimir
+
+//        response.setContentType("application/pdf")
+//        response.setHeader("Content-disposition", "attachment; filename=${'desempeno_' + profesor?.cedula}")
+//        response.setContentLength(b.length)
+//        response.getOutputStream().write(b)
+
+
+        //envio de email  al profesor
+
+        def mailTedein = "informacion@tedein.com.ec"
+        def mailTedein2 = "guido8a@gmail.com"
+        def errores = ''
+
+        def fileGuardar = new File(archivo)
+
+        try{
+            mailService.sendMail {
+                multipart true
+                to mailTedein2
+                subject "Reporte de desempeño"
+                body "Desempeño profesor"
+                attachBytes "desempeno_" + "${profesor?.cedula ?: 'sinCC'}" + "_" + "${new Date().format("dd-MM-yyyy")}" + ".pdf",'application/pdf', fileGuardar.readBytes()
+            }
+
+            fileGuardar.delete()
+
+        }catch (e){
+            println("Error al enviar el mail" + e)
+            errores += e
+        }
+
+        if(errores == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
+
     }
 
 }

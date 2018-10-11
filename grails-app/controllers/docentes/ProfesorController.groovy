@@ -9,6 +9,8 @@ import seguridad.Shield
  */
 class ProfesorController extends Shield {
 
+
+
     static allowedMethods = [save_ajax: "POST", delete_ajax: "POST"]
 
     /**
@@ -465,8 +467,5 @@ class ProfesorController extends Shield {
         def escuelas = Escuela.findAllByFacultad(facultad)
 
         return [escuelas: escuelas, profesor: profesor]
-
-
     }
-
-}
+ }
