@@ -71,7 +71,7 @@
 
         <div class="mensaje" style="display: none;"></div>
 
-        <div class="panel panel-default fila3">
+        <div class="panel panel-default fila">
             <div class="panel-heading">
                 <h3 class="panel-title">Pregunta ${actual} de ${total}</h3>
             </div>
@@ -96,7 +96,7 @@
             %{--</div>--}%
         %{--</div>--}%
 
-        <div class="panel panel-default fila3">
+        <div class="panel panel-default fila">
             <div class="panel-heading">
                 <span style="font-weight: bold">Seleccione una Respuesta</span>
             </div>
@@ -110,17 +110,30 @@
                     %{--</div>--}%
                 %{--</g:each>--}%
                 <g:each in="${materias}" var="m" status="i">
-                    <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
-                        <label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">
-                            <input type="radio" name="materia" id="${m.id}_${i}" class="radioMat"
-                                   value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ''}>${m.dscr}</label>
+
+                    <div class="radio-toolbar" style="margin-bottom: 1.5em;">
+                        <input type="radio" name="materia" value="${m.id}"
+                            ${(m.id == resp[1] ? 'checked' : ' ')} id="${m.id}_${i}">
+                        <label for="${m.id}_${i}">${m.dscr}</label>
                     </div>
+
+
+                    %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
+                        %{--<label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">--}%
+                            %{--<input type="radio" name="materia" id="${m.id}_${i}" class="radioMat"--}%
+                                   %{--value="${m.id}" ${(m.id == resp[0]) ? 'checked' : ''}>${m.dscr}</label>--}%
+                    %{--</div>--}%
                 </g:each>
-                <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
-                    <label  id="div_${-1}_${-1}" class="marca ${(-1 == resp[-1]) ? 'marcado' : ''}">
-                        <input type="radio" name="materia" id="${-1}_${-1}" class="radioMat"
-                               value="${-1}" ${(-1 == resp[-1]) ? 'checked' : ''}>${"NINGUNA"}</label>
+                <div class="radio-toolbar" style="margin-bottom: 1.5em;">
+                    <input type="radio" name="materia" value="${-1}"
+                        ${(-1== resp[1] ? 'checked' : ' ')} id="${-1}_${i}">
+                    <label for="${-1}_${i}">${"NINGUNA"}</label>
                 </div>
+                %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
+                    %{--<label  id="div_${-1}_${-1}" class="marca ${(-1 == resp[1]) ? 'marcado' : ''}">--}%
+                        %{--<input type="radio" name="materia" id="${-1}_${-1}" class="radioMat"--}%
+                               %{--value="${-1}" ${(-1 == resp[0]) ? 'checked' : ''}>${"NINGUNA"}</label>--}%
+                %{--</div>--}%
             </div>
         </div>
 
