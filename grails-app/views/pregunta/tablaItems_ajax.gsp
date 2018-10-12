@@ -1,23 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 20/09/16
-  Time: 12:58
---%>
 
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 16/09/16
-  Time: 11:23
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 07/09/16
-  Time: 11:42
---%>
 
 <g:if test="${items}">
     <div class="row-fluid"  style="width: 99.7%;height: 300px;overflow-y: auto;float: right;">

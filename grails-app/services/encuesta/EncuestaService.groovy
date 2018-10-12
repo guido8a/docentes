@@ -192,6 +192,9 @@ class EncuestaService {
         rt
     }
 
+    /*
+    *  determina respuesta de pregunta CCB-1: 1 (Asignatura o 116 Ninguna)
+    * */
     def esAsignatura(rppg) {
         def cn = dbConnectionService.getConnection()
         def rt = false

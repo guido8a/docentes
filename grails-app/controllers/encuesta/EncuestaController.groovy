@@ -428,10 +428,14 @@ class EncuestaController {
     * materia:   dcta__id
     * preg__id:  prte__id  **/
     def respuestaAsgn() {
-        println "ponePregunta: $params"
+        println "respuestaAsgn: $params"
         def cn = dbConnectionService.getConnection()
         def dtec
-        def asignatura = encuestaService.esAsignatura(params.respuestas)
+//        def asignatura = encuestaService.esAsignatura(params.respuestas)
+        def asignatura = params.materia != '-1'
+        def respuestas = asignatura? 1 : 116
+
+        println "asignatura: $asignatura, respuestas: $respuestas"
         def tx = "select dtec__id from dtec, prte where encu__id = ${params.encu__id} and " +
                 "prte.prte__id = dtec.prte__id and prte.prte__id = ${params.preg__id} and tpen__id = ${params.tpen__id}"
 //        println "respuestaAsgn sql: $tx"
@@ -440,18 +444,18 @@ class EncuestaController {
         if(asignatura) {
 //            println "actualiza cuando respuesta es asignatura: ${params.respuestas} == 1"
             if(dtec) {
-                tx = "update dtec set rppg__id = ${params.respuestas}, dcta__id = ${params.materia} " +
+                tx = "update dtec set rppg__id = ${respuestas}, dcta__id = ${params.materia} " +
                         "where dtec__id = ${dtec}"
             } else {
                 tx = "insert into dtec(prte__id, rppg__id, encu__id, dcta__id) " +
-                        "values(${params.preg__id}, ${params.respuestas}, ${params.encu__id}, ${params.materia})"
+                        "values(${params.preg__id}, ${respuestas}, ${params.encu__id}, ${params.materia})"
             }
         } else {
             if(dtec) {
-                tx = "update dtec set rppg__id = ${params.respuestas}, dcta__id = null where dtec__id = ${dtec}"
+                tx = "update dtec set rppg__id = ${respuestas}, dcta__id = null where dtec__id = ${dtec}"
             } else {
                 tx = "insert into dtec(prte__id, rppg__id, encu__id) " +
-                        "values(${params.preg__id}, ${params.respuestas}, ${params.encu__id})"
+                        "values(${params.preg__id}, ${respuestas}, ${params.encu__id})"
             }
         }
         try {
