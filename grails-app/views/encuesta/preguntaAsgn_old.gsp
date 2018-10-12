@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 12/10/18
-  Time: 10:32
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <html lang="es">
@@ -22,7 +15,7 @@
     .fila3 {
         border: 1px solid #495a6b;
         float: left;
-        width: 78%;
+        width: 76%;
     }
 
     .fila {
@@ -80,98 +73,70 @@
             <input type="hidden" name="preg__id" value="${pregunta.id}">
         </div>
 
-        %{--<div class="panel panel-default fila1">--}%
-            %{--<div class="panel-heading">--}%
-                %{--<span style="font-weight: bold">Seleccione una Respuesta</span>--}%
-            %{--</div>--}%
-
-            %{--<div class="panel-body">--}%
-                %{--<g:each in="${rp}" var="respuesta">--}%
-                    %{--<div class="radio-toolbar resp" style="margin-bottom: 1.5em;">--}%
-                        %{--<input type="radio" name="respuestas" value="${respuesta.id}"--}%
-                            %{--${(respuesta.id == resp[0] ? 'checked' : ' ')} id="${respuesta.id}">--}%
-                        %{--<label for="${respuesta.id}">${respuesta.dscr}</label>--}%
-                    %{--</div>--}%
-                %{--</g:each>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        <div class="panel panel-default fila3">
+        <div class="panel panel-default fila1">
             <div class="panel-heading">
                 <span style="font-weight: bold">Seleccione una Respuesta</span>
             </div>
 
             <div class="panel-body">
-                %{--<g:each in="${rp}" var="respuesta">--}%
-                    %{--<div class="radio-toolbar" style="margin-bottom: 1.5em;">--}%
-                        %{--<input type="radio" name="respuestas" value="${respuesta.id}"--}%
-                            %{--${(respuesta.id == resp[0] ? 'checked' : ' ')} id="${respuesta.id}">--}%
-                        %{--<label for="${respuesta.id}">${respuesta.dscr.split(' ')[0]}</label>--}%
-                    %{--</div>--}%
-                %{--</g:each>--}%
-                <g:each in="${materias}" var="m" status="i">
-                    <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
-                        <label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">
-                            <input type="radio" name="materia" id="${m.id}_${i}" class="radioMat"
-                                   value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ''}>${m.dscr}</label>
+                <g:each in="${rp}" var="respuesta">
+                    <div class="radio-toolbar resp" style="margin-bottom: 1.5em;">
+                        <input type="radio" name="respuestas" value="${respuesta.id}"
+                                ${(respuesta.id == resp[0] ? 'checked' : ' ')} id="${respuesta.id}">
+                        <label for="${respuesta.id}">${respuesta.dscr}</label>
                     </div>
                 </g:each>
-                <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
-                    <label  id="div_${-1}_${-1}" class="marca ${(-1 == resp[-1]) ? 'marcado' : ''}">
-                        <input type="radio" name="materia" id="${-1}_${-1}" class="radioMat"
-                               value="${-1}" ${(-1 == resp[-1]) ? 'checked' : ''}>${"NINGUNA"}</label>
-                </div>
             </div>
         </div>
 
     %{--${materias}--}%
-        %{--<div id="materias" class="modal fade">--}%
-            %{--<div class="modal-dialog">--}%
-                %{--<div class="modal-content">--}%
-                    %{--<div class="modal-header">--}%
-                        %{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}%
-                            %{--<span aria-hidden="true">&times;</span></button>--}%
-                        %{--<h4 class="modal-title" id="exampleModalLabel">Seleccione una materia</h4>--}%
-                    %{--</div>--}%
-                    %{--<!-- dialog body -->--}%
-                    %{--<div class="modal-body">--}%
-                        %{--<g:each in="${materias}" var="m" status="i">--}%
-                            %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
-                                %{--<label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">--}%
-                                    %{--<input type="radio" name="respMat" id="${m.id}_${i}" class="radioMat"--}%
-                                           %{--value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ''}>${m.dscr}</label>--}%
-                            %{--</div>--}%
-                        %{--</g:each>--}%
+        <div id="materias" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Seleccione una materia</h4>
+                    </div>
+                    <!-- dialog body -->
+                    <div class="modal-body">
+                    <g:each in="${materias}" var="m" status="i">
+                        <div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">
+                            <label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">
+                                <input type="radio" name="respMat" id="${m.id}_${i}" class="radioMat"
+                                       value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ''}>${m.dscr}</label>
+                        </div>
+                    </g:each>
 
-                        %{--<script>--}%
-                            %{--$(".marca").mousedown(function () {--}%
-                                %{--$(".marca").removeClass("marcado");--}%
-                                %{--$(this).addClass("marcado")--}%
-                            %{--});--}%
-                        %{--</script>--}%
-                    %{--</div>--}%
-                    %{--<!-- dialog buttons -->--}%
-                    %{--<div class="modal-footer">--}%
-                        %{--<button type="button" class="btn btn-primary" id="modalCancelar">Cancelar</button>--}%
-                        %{--<button type="button" class="btn btn-success" id="modalOk">Aceptar</button>--}%
-                    %{--</div>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</div>--}%
+                    <script>
+                        $(".marca").mousedown(function () {
+                            $(".marca").removeClass("marcado");
+                            $(this).addClass("marcado")
+                        });
+                    </script>
+                    </div>
+                    <!-- dialog buttons -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="modalCancelar">Cancelar</button>
+                        <button type="button" class="btn btn-success" id="modalOk">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        %{--<div class="panel panel-default fila" id="divAsignatura" style="display: none">--}%
-            %{--<div class="panel-heading">--}%
-                %{--<h3 class="panel-title">Asignatura</h3>--}%
-            %{--</div>--}%
+        <div class="panel panel-default fila" id="divAsignatura" style="display: none">
+            <div class="panel-heading">
+                <h3 class="panel-title">Asignatura</h3>
+            </div>
 
-            %{--<div class="panel-body col-md-12 col-xs-12" style="font-size: 1.2em">--}%
-                %{--<input type="text" readonly id="matVal" name="asignatura" style="color: #000; width: 75%"--}%
-                       %{--value="${materias.find { it.id == resp[1] }?.dscr}" class="form-control col-md-8 col-xs-7">--}%
+            <div class="panel-body col-md-12 col-xs-12" style="font-size: 1.2em">
+                <input type="text" readonly id="matVal" name="asignatura" style="color: #000; width: 75%"
+                       value="${materias.find { it.id == resp[1] }?.dscr}" class="form-control col-md-8 col-xs-7">
                 %{--<input type="text" disabled id="matVal" style="color: #000; width: 400px;" value="">--}%
-                %{--<input id="buscar" type="button" value="Buscar asignatura" class="btn btn-primary col-md-2 col-xs-3">--}%
-                %{--<input type="hidden" name="materia" id="materia" value="${resp[1]}">--}%
-            %{--</div>--}%
-        %{--</div>--}%
+                <input id="buscar" type="button" value="Buscar asignatura" class="btn btn-primary col-md-2 col-xs-3">
+                <input type="hidden" name="materia" id="materia" value="${resp[1]}">
+            </div>
+        </div>
     </g:form>
 
 </div>
@@ -266,21 +231,15 @@
 
 
         $("#siguiente").click(function () {
-//            var resp = $('input[name=respuestas]:checked').length;
-            var resp =  $('input[name=materia]:checked').length;
-//            var ning =  $('input[name=resPNinguna]:checked').length;
-//            var mate = $("input[name=asignatura]").val();
-            //            console.log('mate:', mate, resp);
-
-            console.log("--- " + $('input[name=materia]:checked').val())
-
-//            if (resp == 0 || mate === undefined) {
-            if (resp == 0) {
+            var resp = $('input[name=respuestas]:checked').length;
+//            var mate = $('#matval').val();
+            var mate = $("input[name=asignatura]").val();
+//            console.log('mate:', mate, resp);
+            if (resp == 0 || mate === undefined) {
                 bootbox.alert({
                     title: "No ha seleccionado una respuesta",
-//                    message: "Escoja una de las opciones de 'Seleccione una Respuesta', si ha seleccionado " +
-//                    "ASIGNATURA, asegúrese de haber escogido una.",
-                    message: "Escoja una de las opciones de 'Seleccione una Respuesta' ",
+                    message: "Escoja una de las opciones de 'Seleccione una Respuesta', si ha seleccionado " +
+                      "ASIGNATURA, asegúrese de haber escogido una.",
                     buttons: {
                         ok: {
                             label: '<i class="fa fa-check"></i> Aceptar',

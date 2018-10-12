@@ -428,7 +428,7 @@ class EncuestaController {
     * materia:   dcta__id
     * preg__id:  prte__id  **/
     def respuestaAsgn() {
-//        println "ponePregunta: $params"
+        println "ponePregunta: $params"
         def cn = dbConnectionService.getConnection()
         def dtec
         def asignatura = encuestaService.esAsignatura(params.respuestas)
@@ -468,7 +468,12 @@ class EncuestaController {
         if(actual > session.total) {// ya ha terminado la ponePregunta
             finalizaEncuesta(session.encuesta.id)
         } else {
-            ponePregunta(actual, session.total, session.encuesta, session.tipoEncuesta)
+//            if(params.materia == '-1'){
+//                ponePregunta((actual + 1), session.total, session.encuesta, session.tipoEncuesta)
+//            }else{
+                ponePregunta(actual, session.total, session.encuesta, session.tipoEncuesta)
+//            }
+
         }
     }
 
