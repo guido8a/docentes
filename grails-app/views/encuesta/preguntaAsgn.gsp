@@ -126,7 +126,7 @@
                 </g:each>
                 <div class="radio-toolbar" style="margin-bottom: 1.5em;">
                     <input type="radio" name="materia" value="${-1}"
-                        ${(-1== resp[1] ? 'checked' : ' ')} id="${-1}_${i}">
+                        ${(0 == resp[1] ? 'checked' : ' ')} id="${-1}_${i}">
                     <label for="${-1}_${i}">${"NINGUNA"}</label>
                 </div>
                 %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
