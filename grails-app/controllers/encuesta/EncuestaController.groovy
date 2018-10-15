@@ -424,7 +424,8 @@ class EncuestaController {
         println "anterior sql: $tx"
         if((cn.rows(tx.toString())[0]?.teti__id == 4) && params.actual.toInteger() == 3) {
             tx = "select count(*) cnta from encu, dtec where encu.encu__id = ${params.encu__id} and " +
-                    "dtec.encu__id = encu.encu__id and prte__id = 68"
+                    "dtec.encu__id = encu.encu__id and prte__id = 68 and prit__id <> 2"
+            println "... $tx"
             if(cn.rows(tx.toString())[0]?.cnta == 0)
                 actual--
         }
@@ -476,13 +477,13 @@ class EncuestaController {
             }
             println "preg: <<${preg}>>"
             if(preg == 'CCB-1'){
-                tx2 = "select count(*) cnta from dtec where encu__id = ${params.encu__id} and prte__id = 68"
-                if(cn.rows(tx2.toString())[0]?.cnta) {
-                    tx2 = "delete from dtec where encu__id = ${params.encu__id} and prte__id = 68"
-                    tx2 = "insert into dtec(prte__id, rppg__id, encu__id) " +
-                            "values(${params.preg__id}, ${respuestas}, ${params.encu__id})"
+                tx2 = "select dtec__id from dtec where encu__id = ${params.encu__id} and prte__id = 68"
+                def dtec_id = cn.rows(tx2.toString())[0]?.dtec__id
+                if(dtec_id) {
+                    tx2 = "update dtec set rppg__id = 383, prit__id = 2 where dtec__id = ${dtec_id}"
                 } else {
-
+                    tx2 = "insert into dtec(prte__id, rppg__id, encu__id, prit__id) " +
+                            "values(68, 383, ${params.encu__id}, 2)"
                 }
                 params.actual = params.actual.toInteger() + 1
             } else {
@@ -490,6 +491,7 @@ class EncuestaController {
             }
         }
         try {
+            println "--> $tx2"
             cn.execute(tx.toString())
             if(tx2) cn.execute(tx2.toString())
         }
