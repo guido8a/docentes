@@ -16,9 +16,9 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group">
-        <g:link action="estudiante" class="btn btn-info btnCrear">
+        <a href="#" class="btn btn-info btnCrear">
             <i class="fa fa-user"></i> Nuevo estudiante
-        </g:link>
+        </a>
     </div>
     %{--<div class="btn-group pull-right col-md-3">--}%
     %{--<div class="input-group">--}%
@@ -258,8 +258,8 @@
     $(function () {
 
         $(".btnCrear").click(function() {
-//                    createEditRow();
-            location.href='${createLink(controller: 'estudiante', action: 'estudiante')}'
+            var universidad = $("#universidadId option:selected").val();
+            location.href="${createLink(controller: 'estudiante', action: 'estudiante')}?universidad=" + universidad;
 //                    return false;
         });
 

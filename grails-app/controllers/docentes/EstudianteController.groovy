@@ -231,23 +231,26 @@ class EstudianteController extends Shield {
 
     def estudiante () {
 
-        println("params --- " + params)
+//        println("estud " + params)
 
         def estudiante
-        if(params.id){
+        if(params.id && params.id != 'null'){
             estudiante = Estudiante.get(params.id)
         }
 
         def universidad = Universidad.get(params.universidad)
         def periodo = Periodo.findAllByUniversidad(universidad).sort{it.nombre}
 
-        return [estudianteInstance: estudiante, periodo: periodo]
+        return [estudianteInstance: estudiante, periodo: periodo, universidad: universidad]
     }
 
     def saveEstudiante_ajax () {
 
+//        println("save est " + params)
+
         def estudiante
-        if(params.id){
+        def universidad = Universidad.get(params.universidad)
+        if(params.id && params.id != 'null'){
             estudiante = Estudiante.get(params.id)
         }else{
             estudiante = new Estudiante()
@@ -256,10 +259,13 @@ class EstudianteController extends Shield {
         estudiante.nombre = params.nombre.toUpperCase()
         estudiante.apellido = params.apellido.toUpperCase()
         estudiante.cedula = params.cedula
+        estudiante.universidad = universidad
+
+//        println("universidad " + universidad?.id)
 
         try {
             estudiante.save(flush: true)
-            render 'ok_'+ estudiante?.id
+            render 'ok_'+ estudiante?.id + "_" + universidad?.id
         }catch (e){
             render 'no'
             println("error al guardar el profesor " + estudiante.errors)

@@ -17,11 +17,11 @@
         <a href="#" class="btn btn-success btnGuardar" >
             <i class="fa fa-save"></i> Guardar
         </a>
-        <div class="btn-group">
-            <g:link controller="estudiante" action="estudiante" class="btn btn-info">
-                <i class="fa fa-file-o"></i> Nuevo
-            </g:link>
-        </div>
+        %{--<div class="btn-group">--}%
+            %{--<g:link controller="estudiante" action="estudiante" class="btn btn-info">--}%
+                %{--<i class="fa fa-file-o"></i> Nuevo--}%
+            %{--</g:link>--}%
+        %{--</div>--}%
     </div>
 
 </div>
@@ -150,6 +150,7 @@
         var apellido = $("#apellidoEstudiante").val();
         var cedula = $("#cedulaEstudiante").val();
         var idEstudiante = '${estudianteInstance?.id}';
+        var univ = ${universidad?.id};
 
         var $form = $("#frmEstudiante");
         if ($form.valid()) {
@@ -160,14 +161,15 @@
                     nombre: nombre,
                     apellido: apellido,
                     cedula: cedula,
-                    id: idEstudiante
+                    id: idEstudiante,
+                    universidad: univ
                 },
                 success: function (msg){
                     var parts = msg.split("_");
                     if(parts[0] == 'ok'){
                         log("Información guardada correctamente","success");
                         setTimeout(function () {
-                            location.href='${createLink(controller: 'estudiante', action: 'estudiante')}/' + parts[1]
+                            location.href='${createLink(controller: 'estudiante', action: 'estudiante')}?id=' + parts[1] + '&universidad=' + parts[2]
                         }, 500);
                     }else{
                         log("Error al guardar la información","error")
