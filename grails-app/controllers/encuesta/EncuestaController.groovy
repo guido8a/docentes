@@ -417,8 +417,18 @@ class EncuestaController {
     }
 
     def anterior() {
-//        println "params: $params"
+        println "params anterior: $params"
+        def cn = dbConnectionService.getConnection()
         def actual = params.actual.toInteger() - 1
+        def tx = "select teti__id from encu where encu__id = ${params.encu__id}"
+        println "anterior sql: $tx"
+        if((cn.rows(tx.toString())[0]?.teti__id == 4) && params.actual.toInteger() == 3) {
+            tx = "select count(*) cnta from encu, dtec where encu.encu__id = ${params.encu__id} and " +
+                    "dtec.encu__id = encu.encu__id and prte__id = 68"
+            if(cn.rows(tx.toString())[0]?.cnta == 0)
+                actual--
+        }
+
         ponePregunta(actual, session.total, session.encuesta, session.tipoEncuesta)
     }
 
@@ -431,12 +441,19 @@ class EncuestaController {
         println "respuestaAsgn: $params"
         def cn = dbConnectionService.getConnection()
         def dtec
+        def tx = "select rppg__id, pregcdgo from rppg, prte, preg where prte__id = ${params.preg__id} and " +
+                "rppg.preg__id = prte.preg__id and resp__id <> 1 and preg.preg__id = prte.preg__id"
+        def tx2 = ""
+        def resp = cn.rows(tx.toString())[0]?.rppg__id
+        def preg = cn.rows(tx.toString())[0]?.pregcdgo.trim()
+        println "respuesta sql: $tx"
+
 //        def asignatura = encuestaService.esAsignatura(params.respuestas)
         def asignatura = params.materia != '-1'
-        def respuestas = asignatura? 1 : 116
+        def respuestas = asignatura? 1 : resp
 
         println "asignatura: $asignatura, respuestas: $respuestas"
-        def tx = "select dtec__id from dtec, prte where encu__id = ${params.encu__id} and " +
+        tx = "select dtec__id from dtec, prte where encu__id = ${params.encu__id} and " +
                 "prte.prte__id = dtec.prte__id and prte.prte__id = ${params.preg__id} and tpen__id = ${params.tpen__id}"
 //        println "respuestaAsgn sql: $tx"
         dtec = cn.rows(tx.toString())[0]?.dtec__id
@@ -457,9 +474,24 @@ class EncuestaController {
                 tx = "insert into dtec(prte__id, rppg__id, encu__id) " +
                         "values(${params.preg__id}, ${respuestas}, ${params.encu__id})"
             }
+            println "preg: <<${preg}>>"
+            if(preg == 'CCB-1'){
+                tx2 = "select count(*) cnta from dtec where encu__id = ${params.encu__id} and prte__id = 68"
+                if(cn.rows(tx2.toString())[0]?.cnta) {
+                    tx2 = "delete from dtec where encu__id = ${params.encu__id} and prte__id = 68"
+                    tx2 = "insert into dtec(prte__id, rppg__id, encu__id) " +
+                            "values(${params.preg__id}, ${respuestas}, ${params.encu__id})"
+                } else {
+
+                }
+                params.actual = params.actual.toInteger() + 1
+            } else {
+                tx2 = ""
+            }
         }
         try {
             cn.execute(tx.toString())
+            if(tx2) cn.execute(tx2.toString())
         }
         catch (e) {
             println e.getMessage()
