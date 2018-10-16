@@ -16,11 +16,11 @@
             <g:textField name="materiaBusqueda_name" id="materiaBusqueda" class="form-control" maxlength="31"/>
         </div>
 
-        <a href="#" id="btnBuscar" class="btn btn-success" title="Buscar la materia">
+        <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar la materia">
             <i class="fa fa-search-plus"></i> Buscar
         </a>
-        <a href="#" id="btnLimpiar" class="btn btn-primary" title="Limpiar los campos de búsqueda">
-            <i class="fa fa-eraser"></i> Limpiar
+        <a href="#" id="btnLimpiar" class="btn btn-warning" title="Limpiar los campos de búsqueda">
+            <i class="fa fa-eraser"></i>
         </a>
     </div>
 </g:form>
@@ -63,8 +63,7 @@
         $("#materiaBusqueda").val('');
     });
 
-
-    $("#btnBuscar").click(function () {
+    function buscarMat () {
         openLoader('Buscando...');
         var codigo = $("#codigoMateria").val();
         var materia = $("#materiaBusqueda").val();
@@ -72,16 +71,23 @@
             type: 'POST',
             url : '${createLink(controller: 'materia', action: 'tablaBusqueda_ajax')}',
             data: {
-                    codigo: codigo,
-                    materia: materia,
-                    periodo : '${periodo?.id}',
-                    id: '${estudiante?.id}'
+                codigo: codigo,
+                materia: materia,
+                periodo : '${periodo?.id}',
+                id: '${estudiante?.id}'
             },
             success: function (msg){
                 closeLoader();
                 $("#divTablaBusqueda").html(msg)
             }
         });
+    }
+
+
+    buscarMat();
+
+    $("#btnBuscar").click(function () {
+        buscarMat();
     });
 
 

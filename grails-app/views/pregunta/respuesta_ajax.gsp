@@ -11,13 +11,18 @@
 <script type="text/javascript">
 
     cargarCodigo($("#respuestaNueva").val());
-    cargarValor($("#respuestaNueva").val());
+
+    if(${tipo}){
+        cargarValor($("#respuestaNueva").val(), ${valor});
+    }else{
+        cargarValor($("#respuestaNueva").val(), null);
+    }
 
 
     $("#respuestaNueva").change(function (msg) {
         var respuesta = $(this).val();
         cargarCodigo(respuesta);
-        cargarValor(respuesta);
+        cargarValor(respuesta, null);
     });
 
     function cargarCodigo (resp) {
@@ -33,12 +38,13 @@
         });
     }
 
-    function cargarValor (resp) {
+    function cargarValor (resp, vlor) {
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'pregunta', action: 'valoracion_ajax')}',
             data:{
-                id: resp
+                id: resp,
+                valor: vlor
             },
             success: function (msg){
                 $("#divValoracion").html(msg)

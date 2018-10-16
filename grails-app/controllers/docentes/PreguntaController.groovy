@@ -190,7 +190,7 @@ class PreguntaController extends Shield {
 
     def valoracion_ajax () {
         def respuesta = Respuesta.get(params.id)
-        return [respuesta: respuesta]
+        return [respuesta: respuesta, valor: params.valor]
     }
 
     def codigo_ajax () {
@@ -203,13 +203,25 @@ class PreguntaController extends Shield {
         def respuestas
         def lista
         def filtrados
-        if(params.id){
-            pregunta = Pregunta.get(params.id)
-            respuestas = RespuestaPregunta.findAllByPregunta(pregunta).respuesta
-            lista = Respuesta.list([sort: 'descripcion', order: 'asc']).id - respuestas.id
-            filtrados = Respuesta.findAllByIdInList(lista)
+        def tipo = false
+        def vl = 0
+
+        if(params.tpo){
+            def rpp = RespuestaPregunta.get(params.id)
+            filtrados = rpp.respuesta
+            pregunta = rpp.pregunta
+            vl = rpp.valor
+            tipo = true
+        }else{
+            if(params.id){
+                pregunta = Pregunta.get(params.id)
+                respuestas = RespuestaPregunta.findAllByPregunta(pregunta).respuesta
+                lista = Respuesta.list([sort: 'descripcion', order: 'asc']).id - respuestas.id
+                filtrados = Respuesta.findAllByIdInList(lista)
+            }
         }
-        return [preguntaInstance: pregunta, lista: filtrados]
+
+        return [preguntaInstance: pregunta, lista: filtrados, tipo: tipo, valor: vl]
     }
 
     def agregarRespuesta_ajax () {
@@ -223,6 +235,24 @@ class PreguntaController extends Shield {
         preguntaRespuesta = new RespuestaPregunta()
         preguntaRespuesta.respuesta = respuesta
         preguntaRespuesta.pregunta = pregunta
+        preguntaRespuesta.valor = params.valor.toDouble()
+
+        try {
+            preguntaRespuesta.save(flush: true)
+            render "ok"
+
+        }catch (e){
+            render "no"
+            println("error al guardar la respuesta" + preguntaRespuesta.errors)
+        }
+    }
+
+    def actualizarRespuesta_ajax () {
+
+        println("params pp " + params)
+
+        def preguntaRespuesta = RespuestaPregunta.get(params.idP)
+
         preguntaRespuesta.valor = params.valor.toDouble()
 
         try {

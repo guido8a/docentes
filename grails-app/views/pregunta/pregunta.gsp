@@ -132,6 +132,8 @@
 
             <div class="row">
 
+                <g:hiddenField name="resp_name" id="idRespuestaPregunta" value="${''}"/>
+
                 <div class="col-md-1 negrilla control-label">Respuesta: </div>
                 <div class="col-md-5" id="divRespuesta">
                 </div>
@@ -146,6 +148,12 @@
 
                 <a href="#" id="btnAgregar" class="btn btn-success ${preguntaInstance?.estado == 'N' ? '' : 'hidden'}" title="">
                     <i class="fa fa-plus"></i>
+                </a>
+                <a href="#" id="btnActualizar" class="btn btn-warning hidden" title="Actualizar respuesta">
+                    <i class="fa fa-save"></i>
+                </a>
+                <a href="#" id="btnCancelarAct" class="btn btn-primary hidden" title="Cancelar actualización">
+                    <i class="fa fa-close"></i>
                 </a>
             </div>
 
@@ -354,6 +362,43 @@
         });
     });
 
+
+    $("#btnCancelarAct").click(function () {
+        cargarTablaRespuestas();
+        cargarRespuesta('${preguntaInstance?.id}', null);
+        $("#btnActualizar").addClass('hidden');
+        $("#btnAgregar").removeClass('hidden');
+        $("#btnCancelarAct").addClass('hidden');
+    });
+
+
+    $("#btnActualizar").click(function () {
+        var idRespuesta = $("#respuestaNueva").val();
+        var id = $("#idRespuestaPregunta").val();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'pregunta', action : 'actualizarRespuesta_ajax')}',
+            data:{
+                id: '${preguntaInstance?.id}',
+                respuesta: idRespuesta,
+                valor: $("#valoracionRespuesta").val(),
+                idP: id
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    log("Respuesta actualizada correctamente","success");
+                    cargarTablaRespuestas();
+                    cargarRespuesta('${preguntaInstance?.id}', null);
+                    $("#btnActualizar").addClass('hidden');
+                    $("#btnAgregar").removeClass('hidden');
+                    $("#btnCancelarAct").addClass('hidden');
+                }else{
+                    log("Error al actualizar la respuesta","error")
+                }
+            }
+        })
+    });
+
     $("#btnAgregar").click(function () {
         var idRespuesta = $("#respuestaNueva").val();
         $.ajax({
@@ -368,7 +413,7 @@
                 if(msg == 'ok'){
                     log("Respuesta agregada correctamente","success");
                     cargarTablaRespuestas();
-                    cargarRespuesta();
+                    cargarRespuesta('${preguntaInstance?.id}', null);
                 }else{
                     log("Error al agregar la respuesta","error")
                 }
@@ -377,12 +422,13 @@
     });
 
 
-    function cargarRespuesta () {
+    function cargarRespuesta (id, tpo) {
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'pregunta', action : 'respuesta_ajax')}',
             data:{
-                id: '${preguntaInstance?.id}'
+                id: id,
+                tpo: tpo
             },
             success: function (msg){
                 $("#divRespuesta").html(msg)
@@ -392,7 +438,7 @@
 
 
     if('${preguntaInstance}'){
-        cargarRespuesta ();
+        cargarRespuesta ('${preguntaInstance?.id}', null);
         cargarTablaRespuestas();
         cargarTablaItems();
     }

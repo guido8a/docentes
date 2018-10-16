@@ -19,7 +19,7 @@
                 <table class="table table-condensed table-bordered table-striped">
                     <tbody>
                     <g:each in="${respuestas}" var="respuesta">
-                        <tr data-id="${respuesta.id}">
+                        <tr data-id="${respuesta.id}" data-valor="${respuesta?.valor}">
                             <td style="width: 8%">${respuesta?.respuesta?.codigo}</td>
                             <td style="width: 33%">${respuesta.respuesta?.descripcion}</td>
                             <td style="width: 14%">${respuesta?.valor}</td>
@@ -60,58 +60,68 @@
 
     $(".btnEditar").click(function () {
         var idPR = $(this).data("id");
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'pregunta', action: 'editarRespuesta_ajax')}',
-            data:{
-                id: idPR
-            },
-            success: function (msg){
-                var b =  bootbox.dialog({
-                    id      : "dlgEditarRespuesta",
-                    title   : "Editar Respuesta",
-                    class   : "long",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        aceptar : {
-                            label     : "Aceptar",
-                            className : "btn-success",
-                            callback  : function () {
 
-                                if($("#valoracionEditar").val() == ''){
-                                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar un valor numérico en valoración!")
-                                    return false;
-                                }else{
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '${createLink(controller: 'pregunta', action: 'editarSave_ajax')}',
-                                        data:{
-                                            id: idPR,
-                                            valor: $("#valoracionEditar").val()
-                                        },
-                                        success: function (msg){
-                                            if(msg == 'ok'){
-                                                log("Valoración de la respuesta actualizada correctamente","success");
-                                                cargarTablaRespuestas();
-                                            }else{
-                                                log("Error al actualizar la valoración de la respuesta","error")
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        }
+        $("#btnActualizar").removeClass('hidden');
+        $("#btnAgregar").addClass('hidden');
+        $("#btnCancelarAct").removeClass('hidden');
 
-                    } //buttons
-                }); //dialog
-            }
-        });
+         $("#idRespuestaPregunta").val(idPR);
+
+        cargarRespuesta(idPR, true);
+
+
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'pregunta', action: 'editarRespuesta_ajax')}',--}%
+            %{--data:{--}%
+                %{--id: idPR--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+                %{--var b =  bootbox.dialog({--}%
+                    %{--id      : "dlgEditarRespuesta",--}%
+                    %{--title   : "Editar Respuesta",--}%
+                    %{--class   : "long",--}%
+                    %{--message : msg,--}%
+                    %{--buttons : {--}%
+                        %{--cancelar : {--}%
+                            %{--label     : "Cancelar",--}%
+                            %{--className : "btn-primary",--}%
+                            %{--callback  : function () {--}%
+                            %{--}--}%
+                        %{--},--}%
+                        %{--aceptar : {--}%
+                            %{--label     : "Aceptar",--}%
+                            %{--className : "btn-success",--}%
+                            %{--callback  : function () {--}%
+
+                                %{--if($("#valoracionEditar").val() == ''){--}%
+                                    %{--bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar un valor numérico en valoración!")--}%
+                                    %{--return false;--}%
+                                %{--}else{--}%
+                                    %{--$.ajax({--}%
+                                        %{--type: 'POST',--}%
+                                        %{--url: '${createLink(controller: 'pregunta', action: 'editarSave_ajax')}',--}%
+                                        %{--data:{--}%
+                                            %{--id: idPR,--}%
+                                            %{--valor: $("#valoracionEditar").val()--}%
+                                        %{--},--}%
+                                        %{--success: function (msg){--}%
+                                            %{--if(msg == 'ok'){--}%
+                                                %{--log("Valoración de la respuesta actualizada correctamente","success");--}%
+                                                %{--cargarTablaRespuestas();--}%
+                                            %{--}else{--}%
+                                                %{--log("Error al actualizar la valoración de la respuesta","error")--}%
+                                            %{--}--}%
+                                        %{--}--}%
+                                    %{--});--}%
+                                %{--}--}%
+                            %{--}--}%
+                        %{--}--}%
+
+                    %{--} //buttons--}%
+                %{--}); //dialog--}%
+            %{--}--}%
+        %{--});--}%
     });
 
     $(".btnBorrar").click(function () {
@@ -128,7 +138,10 @@
                         if(msg == 'ok'){
                             log("Respuesta borrada correctamente","success");
                             cargarTablaRespuestas();
-                            cargarRespuesta();
+                            cargarRespuesta('${pregunta?.id}', null);
+                            $("#btnActualizar").addClass('hidden');
+                            $("#btnAgregar").removeClass('hidden');
+                            $("#btnCancelarAct").addClass('hidden');
                         }else{
                             log("Error al borrar la respuesta","error")
                         }
