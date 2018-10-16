@@ -126,7 +126,7 @@ class Shield {
         }
             return false
 */
-        return true
+        return true     /* comentar para validar */
     }
 
 /*

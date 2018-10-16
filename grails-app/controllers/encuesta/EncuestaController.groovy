@@ -301,6 +301,24 @@ class EncuestaController {
         println "----> $actual, $total, $encu, $tpen"
         def pruebasInicio = new Date()
         def pruebasFin
+        def cn = dbConnectionService.getConnection()
+        def tx = "select rppg__id, rppg.preg__id from rppg, prte where prtenmro = ${actual} and " +
+                "rppg.preg__id = prte.preg__id and resp__id <> 10 and tpen__id = ${tpen.id}"
+        println "ninguna sql: $tx"
+        def ninguna
+        def preg__id
+        cn.eachRow(tx.toString()) { d ->
+            ninguna = d?.rppg__id
+            preg__id = d?.preg__id
+        }
+
+//        tx = "select prit__id, pritdscr from prit where preg__id = ${preg__id} order by random()"
+        tx = "select prit__id, pritdscr from prit where preg__id = ${preg__id} order by pritordn"
+        println "ninguna sql: $tx"
+        def comp = []
+        cn.eachRow(tx.toString()) { d ->
+            comp.add([id: d?.prit__id, dscr: d?.pritdscr])
+        }
 
 
         def tipoPregunta = encuestaService.tipoPregunta(actual, tpen.id)
@@ -312,6 +330,7 @@ class EncuestaController {
 //        println "tipo de pregunta: $tipoPregunta"
 
         preg = seleccionaPregunta(tpen.id, actual)
+        println "preg:---> $preg"
         actual   = preg[0]
         pregunta = preg[1]  // id:dscr
         rp = preg[2]        // id:dscr
@@ -325,13 +344,25 @@ class EncuestaController {
         pruebasFin = new Date()
         println "tiempo ejecución ponePregunta: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
 
+        println "tipo ${tipoPregunta.split('_')[0]}"
 
         switch (tipoPregunta.split('_')[0]) {
             case 'Asgn':
-//                println "-----------------> asgn materias: ${session.materias}"
+                println "-----------------> materias: ${session.materias + [id: 116, dscr:'NINGUNA']}"
+                println "-----------------> resp: ${resp}, ${[ninguna,0,0]}"
+                if(resp == [ninguna,0,0]) resp = [1, ninguna, 0]
+
                 render (view: 'preguntaAsgn',
                         model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp, resp: resp,
-                                materias: session.materias, asgn: tipoPregunta.split('_')[1]])
+                                materias: session.materias + [id: ninguna, dscr:'NINGUNA'], asgn: tipoPregunta.split('_')[1]])
+                break
+            case 'Cp':
+                println "cp: .... ninguna: $ninguna"
+                if(resp == [ninguna,0,0]) resp = [1, ninguna, 0]
+
+                render (view: 'preguntaAsgn',
+                        model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp, resp: resp,
+                                materias: comp, asgn: tipoPregunta.split('_')[1]])
                 break
             case 'Prit':
 //                println "-----------------> prit"
@@ -449,8 +480,8 @@ class EncuestaController {
         def preg = cn.rows(tx.toString())[0]?.pregcdgo.trim()
         println "respuesta sql: $tx"
 
-//        def asignatura = encuestaService.esAsignatura(params.respuestas)
-        def asignatura = params.materia != '-1'
+        println "asig: ${params.materia}, resp: ${resp}"
+        def asignatura = params.materia.toInteger() != resp
         def respuestas = asignatura? 1 : resp
 
         println "asignatura: $asignatura, respuestas: $respuestas"

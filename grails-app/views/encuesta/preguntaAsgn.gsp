@@ -120,24 +120,14 @@
                             ${(m.id == resp[1] ? 'checked' : ' ')} id="${m.id}_${i}">
                         <label for="${m.id}_${i}">${m.dscr}</label>
                     </div>
-
-
-                    %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
-                        %{--<label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">--}%
-                            %{--<input type="radio" name="materia" id="${m.id}_${i}" class="radioMat"--}%
-                                   %{--value="${m.id}" ${(m.id == resp[0]) ? 'checked' : ''}>${m.dscr}</label>--}%
-                    %{--</div>--}%
                 </g:each>
+%{--
                 <div class="radio-toolbar" style="margin-bottom: 1.5em;">
                     <input type="radio" name="materia" value="${-1}"
                         ${(0 == resp[1] ? 'checked' : ' ')} id="${-1}_${i}">
                     <label for="${-1}_${i}">${"NINGUNA"}</label>
                 </div>
-                %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
-                    %{--<label  id="div_${-1}_${-1}" class="marca ${(-1 == resp[1]) ? 'marcado' : ''}">--}%
-                        %{--<input type="radio" name="materia" id="${-1}_${-1}" class="radioMat"--}%
-                               %{--value="${-1}" ${(-1 == resp[0]) ? 'checked' : ''}>${"NINGUNA"}</label>--}%
-                %{--</div>--}%
+--}%
             </div>
         </div>
 

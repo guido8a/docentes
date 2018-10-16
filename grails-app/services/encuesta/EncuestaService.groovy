@@ -124,14 +124,25 @@ class EncuestaService {
     def tipoPregunta(actual, tpen) {
         def cn = dbConnectionService.getConnection()
         // si es asignatura, debe tener es respuesta como alternativa
-        def tx = "select rppg.rppg__id from prte, rppg, resp " +
+        def tx = "select rppg.rppg__id, respcdgo from prte, rppg, resp " +
                 "where tpen__id = $tpen and prtenmro = $actual and rppg.preg__id = prte.preg__id and " +
-                "resp.resp__id = rppg.resp__id and respcdgo = 'ASG'"
+                "resp.resp__id = rppg.resp__id and respcdgo in ('ASG', 'CP')"
 //        println "seleccionaPregunta sql: $tx"
 
-        def rppg = cn.rows(tx.toString())[0]?.rppg__id
+        def rppg
+        def tipo
+
+        cn.eachRow(tx.toString()) { d ->
+            rppg = d?.rppg__id
+            tipo = d?.respcdgo
+        }
+
         if(rppg) {
-            return "Asgn_${rppg}"
+            if(tipo == 'ASG') {
+                return "Asgn_${rppg}"
+            } else {
+                return "Cp_${rppg}"
+            }
         } else {
             tx = "select count(*) cnta from prte, prit " +
                     "where tpen__id = $tpen and prtenmro = $actual and prit.preg__id = prte.preg__id"

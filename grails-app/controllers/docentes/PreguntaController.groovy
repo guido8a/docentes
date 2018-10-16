@@ -178,7 +178,8 @@ class PreguntaController extends Shield {
         if(params.id){
             pregunta = Pregunta.get(params.id)
         }
-        return [preguntaInstance: pregunta]
+        def escuela = Escuela.findAllByFacultadInList(Facultad.findAllByUniversidad(Universidad.get(2)))
+        return [preguntaInstance: pregunta, escuela: escuela]
     }
 
     def tablaRespuestas_ajax () {

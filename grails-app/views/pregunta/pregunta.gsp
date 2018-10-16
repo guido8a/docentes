@@ -19,11 +19,9 @@
         padding: 0 20px;
     }
     </style>
-
 </head>
 
 <body>
-
 
 
 <div class="btn-toolbar toolbar">
@@ -69,7 +67,8 @@
     <div class="col-md-1 negrilla control-label">Variable: </div>
     <div class="col-md-4">
         <g:select name="variable" id="variableId" optionKey="id" optionValue="descripcion"
-                  class="form-control" from="${docentes.Variables.list([sort: 'descripcion', order: 'asc'])}" value="${preguntaInstance?.variables?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
+                  class="form-control" from="${docentes.Variables.list([sort: 'descripcion', order: 'asc'])}"
+                  value="${preguntaInstance?.variables?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
     </div>
 
     <div class="col-md-1 negrilla control-label">Indicador: </div>
@@ -82,34 +81,43 @@
 <div class="row">
     <div class="col-md-1 negrilla control-label">Código: </div>
     <div class="col-md-2">
-        <g:textField name="codigo_name" id="codigoPregunta" value="${preguntaInstance?.codigo}" class="allCaps form-control required" maxlength="8" readonly="${preguntaInstance?.estado == 'R'}"/>
+        <g:textField name="codigo_name" id="codigoPregunta" value="${preguntaInstance?.codigo}"
+                     class="allCaps form-control required" maxlength="8" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
     <div class="col-md-1 negrilla control-label">Respuestas: </div>
     <div class="col-md-1">
-        <g:textField name="numero_name" id="numeroRespuestas" value="${preguntaInstance?.numeroRespuestas}" class="form-control required number" readonly="${preguntaInstance?.estado == 'R'}"/>
+        <g:textField name="numero_name" id="numeroRespuestas" value="${preguntaInstance?.numeroRespuestas}"
+                     class="form-control required number" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
     <div class="col-md-1 negrilla control-label">Tipo de Valoración: </div>
     <div class="col-md-2">
         <g:select name="vloración" id="valoracionId" optionKey="id" optionValue="descripcion"
-                  class="form-control" from="${docentes.TipoRespuesta.list([sort: 'descripcion', order: 'asc'])}" value="${preguntaInstance?.tipoRespuesta?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
+                  class="form-control" from="${docentes.TipoRespuesta.list([sort: 'descripcion', order: 'asc'])}"
+                  value="${preguntaInstance?.tipoRespuesta?.id}" disabled="${preguntaInstance?.estado == 'R'}"/>
     </div>
     <div class="col-md-2"></div>
     <div class="col-md-1 negrilla control-label">Estado: </div>
     <div class="col-md-1">
-        <g:textField name="estado_name" id="estadoPregunta" style="text-align: center" value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control" readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
+        <g:textField name="estado_name" id="estadoPregunta" style="text-align: center"
+                     value="${preguntaInstance ? preguntaInstance?.estado : 'N'}" class="form-control"
+                     readonly="true" title="${preguntaInstance?.estado == 'R' ? 'Registrado' : 'No Registrado'}"/>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-1 negrilla control-label">Estrategia: </div>
     <div class="col-md-11">
-        <g:textField name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}" class="form-control" maxlength="127" readonly="${preguntaInstance?.estado == 'R'}"/>
+        <g:textField name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}"
+                     class="form-control" maxlength="127" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 <div class="row">
     <div class="col-md-1 negrilla control-label">Pregunta: </div>
     <div class="col-md-11">
-        <g:textArea name="descripcion_name" id="descripcionPregunta" value="${preguntaInstance?.descripcion}" class="form-control required" maxlength="255" style="height: 80px; resize: none; margin-bottom: 20px" readonly="${preguntaInstance?.estado == 'R'}"/>
+        <g:textArea name="descripcion_name" id="descripcionPregunta" value="${preguntaInstance?.descripcion}"
+                    class="form-control required" maxlength="255"
+                    style="height: 80px; resize: none; margin-bottom: 20px"
+                    readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 
@@ -163,19 +171,17 @@
 
             <div class="row ${preguntaInstance?.estado == 'R' ? 'hidden' : ''}">
 
-                <div class="col-md-1 negrilla control-label">Descripción: </div>
-                <div class="col-md-5">
-                    <g:textField name="descripcionItem_name" id="descripcionItem" class="form-control required" maxlength="127" />
+                <div class="col-md-8 negrilla control-label">Descripción:
+                    <g:textField name="descripcionItem_name" id="descripcionItem" class="form-control required"
+                                 maxlength="127" />
                 </div>
 
-                <div class="col-md-1 negrilla control-label">Orden: </div>
-                <div class="col-md-1">
-                    <g:textField name="ordenItem_name" id="ordenItem" class="form-control required number" maxlength="2" />
+                <div class="col-md-1 negrilla control-label">Orden:
+                    <g:textField name="ordenItem_name" id="ordenItem" class="form-control required number"
+                                 maxlength="2" />
                 </div>
 
-                <div class="col-md-1 negrilla control-label">Tipo: </div>
-                <div class="col-md-1">
-                    %{--<g:textField name="tipoItem_name" id="tipoItem" class="allCaps form-control required" maxlength="1"/>--}%
+                <div class="col-md-1 negrilla control-label">Tipo:
                     <g:select name="tipoItem_name" id="tipoItem" class="form-control" from="${['A','B']}"/>
                 </div>
 
