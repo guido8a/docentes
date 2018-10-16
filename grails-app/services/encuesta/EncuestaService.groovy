@@ -161,8 +161,20 @@ class EncuestaService {
     def itemsPregunta(pregunta) {
         def cn = dbConnectionService.getConnection()
         def tx = "select prit__id id, pritdscr dscr from prte, prit " +
-                "where prte.prte__id = $pregunta and prit.preg__id = prte.preg__id " +
-                "order by prit__id * random()"
+                "where prte.prte__id = $pregunta and prit.preg__id = prte.preg__id and pritordn > 0 " +
+                "order by random()"
+//        println "itemsPregunta sql: $tx"
+        def resp = cn.rows(tx.toString())
+        cn.close()
+        resp
+    }
+
+    def competencias() {
+        def cn = dbConnectionService.getConnection()
+        def wh = "0, 1"  /* TODO: seleccinar carr__id en base a escl__id */
+        def tx = "select cmpt__id id, cmptdscr dscr from cmpt " +
+                "where carr__id in (${wh}) " +
+                "order by random()"
 //        println "itemsPregunta sql: $tx"
         def resp = cn.rows(tx.toString())
         cn.close()

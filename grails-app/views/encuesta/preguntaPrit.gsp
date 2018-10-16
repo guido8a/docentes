@@ -76,7 +76,7 @@
 
         <div class="panel panel-default fila2">
             <div class="panel-heading">
-                <span style="font-weight: bold">Seleccione la Causa</span>
+                <span style="font-weight: bold">Seleccione la Causa y luego la respuesta</span>
             </div>
 
             <div class="panel-body">

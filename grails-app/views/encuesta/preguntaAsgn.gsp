@@ -81,6 +81,7 @@
 
             <div class="panel-body" style="font-size: 1.4em">${pregunta.dscr}</div>
             <input type="hidden" name="preg__id" value="${pregunta.id}">
+            <input type="hidden" name="tipopreg" value="${tppr}">
         </div>
 
         %{--<div class="panel panel-default fila1">--}%
@@ -99,10 +100,10 @@
             %{--</div>--}%
         %{--</div>--}%
 
-        <div class="panel panel-default fila text-info">
+        <div class="panel panel-default fila ${tppr == 'Cp' ? 'text-danger':'text-info'}">
         %{--<div class="panel panel-default" style="width: 70%; margin: 0 auto">--}%
             <div class="panel-heading">
-                <span style="font-weight: bold">Seleccione una Respuesta</span>
+                <span style="font-weight: bold; font-size: large">Seleccione una ${tppr == 'Cp'? 'Competencia': 'Asignatura'}</span>
             </div>
 
             <div class="panel-body">
@@ -204,11 +205,6 @@
     var spinner = $("<div class='btn col-md-4 col-xs-4' style='height: auto; border-color: #495a6b'><img  src='" + url + "'/><span> Cargando...</span></div>");
 
     $(function () {
-        $(document).ready(function () {
-            // Handler for .ready() called.
-            $(".resp").change();
-        });
-
 
         $("#buscar").click(function () {
             $(".marca").removeClass("marcado");
@@ -275,20 +271,10 @@
 
 
         $("#siguiente").click(function () {
-//            var resp = $('input[name=respuestas]:checked').length;
             var resp =  $('input[name=materia]:checked').length;
-//            var ning =  $('input[name=resPNinguna]:checked').length;
-//            var mate = $("input[name=asignatura]").val();
-            //            console.log('mate:', mate, resp);
-
-//            console.log("--- " + $('input[name=materia]:checked').val())
-
-//            if (resp == 0 || mate === undefined) {
             if (resp == 0) {
                 bootbox.alert({
                     title: "No ha seleccionado una respuesta",
-//                    message: "Escoja una de las opciones de 'Seleccione una Respuesta', si ha seleccionado " +
-//                    "ASIGNATURA, asegúrese de haber escogido una.",
                     message: "Escoja una de las opciones de 'Seleccione una Respuesta' ",
                     buttons: {
                         ok: {
@@ -303,16 +289,6 @@
                 $("#forma").submit();
                 return true;
             }
-        });
-
-        $(".resp").change(function () {
-//            console.log('cambia resp');
-            if ($('input[name=respuestas]:checked').val() === '${asgn}') {
-                $('#divAsignatura').show(500);
-            } else {
-                $('#divAsignatura').hide(500);
-            }
-            ;
         });
 
     });

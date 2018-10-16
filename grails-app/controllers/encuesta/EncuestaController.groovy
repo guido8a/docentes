@@ -298,28 +298,19 @@ class EncuestaController {
      * seleccina pregunta que toca e invoca la acción correspondiente al tipo
      */
     def ponePregunta(actual, total, encu, tpen) {
-        println "----> $actual, $total, $encu, $tpen"
+        println "ponePregunta ----> $actual, $total, $encu, $tpen"
         def pruebasInicio = new Date()
         def pruebasFin
         def cn = dbConnectionService.getConnection()
         def tx = "select rppg__id, rppg.preg__id from rppg, prte where prtenmro = ${actual} and " +
-                "rppg.preg__id = prte.preg__id and resp__id <> 10 and tpen__id = ${tpen.id}"
-        println "ninguna sql: $tx"
+                "rppg.preg__id = prte.preg__id and resp__id <> 1 and tpen__id = ${tpen.id}"
+//        println "ninguna sql: $tx"
         def ninguna
         def preg__id
         cn.eachRow(tx.toString()) { d ->
             ninguna = d?.rppg__id
             preg__id = d?.preg__id
         }
-
-//        tx = "select prit__id, pritdscr from prit where preg__id = ${preg__id} order by random()"
-        tx = "select prit__id, pritdscr from prit where preg__id = ${preg__id} order by pritordn"
-        println "ninguna sql: $tx"
-        def comp = []
-        cn.eachRow(tx.toString()) { d ->
-            comp.add([id: d?.prit__id, dscr: d?.pritdscr])
-        }
-
 
         def tipoPregunta = encuestaService.tipoPregunta(actual, tpen.id)
         def pregunta = ""
@@ -330,7 +321,7 @@ class EncuestaController {
 //        println "tipo de pregunta: $tipoPregunta"
 
         preg = seleccionaPregunta(tpen.id, actual)
-        println "preg:---> $preg"
+//        println "preg:---> $preg"
         actual   = preg[0]
         pregunta = preg[1]  // id:dscr
         rp = preg[2]        // id:dscr
@@ -344,12 +335,13 @@ class EncuestaController {
         pruebasFin = new Date()
         println "tiempo ejecución ponePregunta: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
 
-        println "tipo ${tipoPregunta.split('_')[0]}"
+//        println "tipo ${tipoPregunta.split('_')[0]}"
 
-        switch (tipoPregunta.split('_')[0]) {
+        def tppr = tipoPregunta.split('_')[0]
+        switch (tppr) {
             case 'Asgn':
-                println "-----------------> materias: ${session.materias + [id: 116, dscr:'NINGUNA']}"
-                println "-----------------> resp: ${resp}, ${[ninguna,0,0]}"
+//                println "-----------------> materias: ${session.materias + [id: 116, dscr:'NINGUNA']}"
+//                println "-----------------> resp: ${resp}, ${[ninguna,0,0]}"
                 if(resp == [ninguna,0,0]) resp = [1, ninguna, 0]
 
                 render (view: 'preguntaAsgn',
@@ -357,12 +349,13 @@ class EncuestaController {
                                 materias: session.materias + [id: ninguna, dscr:'NINGUNA'], asgn: tipoPregunta.split('_')[1]])
                 break
             case 'Cp':
+                def cmpt = encuestaService.competencias()
                 println "cp: .... ninguna: $ninguna"
                 if(resp == [ninguna,0,0]) resp = [1, ninguna, 0]
 
                 render (view: 'preguntaAsgn',
                         model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp, resp: resp,
-                                materias: comp, asgn: tipoPregunta.split('_')[1]])
+                                materias: cmpt + [id: ninguna, dscr:'NINGUNA'], tppr: tppr])
                 break
             case 'Prit':
 //                println "-----------------> prit"
@@ -470,21 +463,23 @@ class EncuestaController {
     * materia:   dcta__id
     * preg__id:  prte__id  **/
     def respuestaAsgn() {
-        println "respuestaAsgn: $params"
+//        println "respuestaAsgn: $params"
         def cn = dbConnectionService.getConnection()
         def dtec
+        def resp__id = params.tipopreg == 'Cp' ? "10" : "1"
+        def columna  = params.tipopreg == 'Cp' ? "cmpt__id" : "dcta__id"
         def tx = "select rppg__id, pregcdgo from rppg, prte, preg where prte__id = ${params.preg__id} and " +
-                "rppg.preg__id = prte.preg__id and resp__id <> 1 and preg.preg__id = prte.preg__id"
+                "rppg.preg__id = prte.preg__id and resp__id <> ${resp__id} and preg.preg__id = prte.preg__id"
         def tx2 = ""
         def resp = cn.rows(tx.toString())[0]?.rppg__id
         def preg = cn.rows(tx.toString())[0]?.pregcdgo.trim()
-        println "respuesta sql: $tx"
+//        println "respuesta sql: $tx"
 
         println "asig: ${params.materia}, resp: ${resp}"
         def asignatura = params.materia.toInteger() != resp
         def respuestas = asignatura? 1 : resp
 
-        println "asignatura: $asignatura, respuestas: $respuestas"
+//        println "asignatura: $asignatura, respuestas: $respuestas"
         tx = "select dtec__id from dtec, prte where encu__id = ${params.encu__id} and " +
                 "prte.prte__id = dtec.prte__id and prte.prte__id = ${params.preg__id} and tpen__id = ${params.tpen__id}"
 //        println "respuestaAsgn sql: $tx"
@@ -493,15 +488,15 @@ class EncuestaController {
         if(asignatura) {
 //            println "actualiza cuando respuesta es asignatura: ${params.respuestas} == 1"
             if(dtec) {
-                tx = "update dtec set rppg__id = ${respuestas}, dcta__id = ${params.materia} " +
+                tx = "update dtec set rppg__id = ${respuestas}, ${columna} = ${params.materia} " +
                         "where dtec__id = ${dtec}"
             } else {
-                tx = "insert into dtec(prte__id, rppg__id, encu__id, dcta__id) " +
+                tx = "insert into dtec(prte__id, rppg__id, encu__id, ${columna}) " +
                         "values(${params.preg__id}, ${respuestas}, ${params.encu__id}, ${params.materia})"
             }
         } else {
             if(dtec) {
-                tx = "update dtec set rppg__id = ${respuestas}, dcta__id = null where dtec__id = ${dtec}"
+                tx = "update dtec set rppg__id = ${respuestas}, ${columna} = null where dtec__id = ${dtec}"
             } else {
                 tx = "insert into dtec(prte__id, rppg__id, encu__id) " +
                         "values(${params.preg__id}, ${respuestas}, ${params.encu__id})"
@@ -668,7 +663,8 @@ class EncuestaController {
         }
         preg.add(resp)
 
-        tx = "select rppg__id, dcta__id, prit__id from dtec, prte where encu__id = ${session.encuesta.id} and " +
+        tx = "select rppg__id, coalesce(dcta__id, cmpt__id) dcta__id, prit__id from dtec, prte " +
+                "where encu__id = ${session.encuesta.id} and " +
                 "prte.prte__id = dtec.prte__id and prtenmro = ${actual} and tpen__id = ${tpen}"
 //        println "++seleccionaPregunta: ${tx}"
         cn.eachRow(tx.toString()) { d ->
