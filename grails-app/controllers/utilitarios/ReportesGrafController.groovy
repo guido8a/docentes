@@ -299,6 +299,69 @@ class ReportesGrafController extends seguridad.Shield  {
         render respuesta
     }
 
+    def competencias() {
+
+    }
+
+    def cmptData() {
+//        println "variablesData $params"
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def data = [:]
+
+        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
+                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
+                "facl.facl__id, facldscr " +
+                "from rpec, prof, escl, facl " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.prdo} " +
+                "group by facldscr, facl.facl__id order by facl.facl__id"
+//        println "sql: $sql"
+        def datos = cn.rows(sql.toString())
+//        println datos
+        def txto = ""
+        def tx_ddsc, tx_ddac, tx_ddhd, tx_ddci, tx_dcni, tx_d_ea
+        def tx_1, tx_2, tx_3, tx_4, tx_5, tx_6
+        tx_1 = ""; tx_2 = ""; tx_3 = ""; tx_4 = ""; tx_5 = ""; tx_6 = "";
+        def facl = datos.facl__id.unique()
+        def facultades = datos.facldscr.unique()
+
+//        sql = "select vrblcdgo||': '||vrbldscr from vrbl order by vrblordn "
+//        def variables = cn.rows(sql.toString())
+
+//        println "facl: $facl"
+//        println "tpen: $tpen"
+
+        for(j in facl) {
+            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
+            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
+            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
+            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
+            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
+            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
+            tx_1 += tx_1? "_$tx_ddsc" : tx_ddsc
+            tx_2 += tx_2? "_$tx_ddac" : tx_ddac
+            tx_3 += tx_3? "_$tx_ddhd" : tx_ddhd
+            tx_4 += tx_4? "_$tx_ddci" : tx_ddci
+            tx_5 += tx_5? "_$tx_dcni" : tx_dcni
+            tx_6 += tx_6? "_$tx_d_ea" : tx_d_ea
+        }
+
+        data[1] = [vrbl: 'DSC', valor: tx_1]
+        data[2] = [vrbl: 'DAC', valor: tx_2]
+        data[3] = [vrbl: 'DHD', valor: tx_3]
+        data[4] = [vrbl: 'DCI', valor: tx_4]
+        data[5] = [vrbl: 'CNI', valor: tx_5]
+        data[6] = [vrbl: 'EA', valor: tx_6]
+
+//        println "datos: ${data as JSON}"
+
+        /* se envía el mapa como objeto JSON */
+        def respuesta = "${facultades.join('_')}||${data as JSON}"
+//        println respuesta
+        render respuesta
+    }
+
     def periodo_ajax () {
 
         def universidad = Universidad.get(params.universidad)

@@ -9,16 +9,20 @@ class Shield {
      */
     def auth() {
         println "acción: " + actionName + " controlador: " + controllerName + "  "
-        println "shield sesión: " + session.usuario
+        println "shield sesión: " + session?.usuario
         session.an = actionName
         session.cn = controllerName
         session.pr = params
 
+/*
         if(controllerName in ['reportes', 'reportesGraf', 'reportes2'] ){
             return true
         }
+*/
 
-
+        if((actionName == 'pdfLink') || (actionName == 'certificacion')) {
+            return true
+        }
 
 
 
@@ -102,7 +106,6 @@ class Shield {
 
     boolean isAllowed() {
 //        println "session: ${session.permisos}"
-/*
         try {
             if (request.method == "POST" || actionName == 'pdfLink') {
                 return true
@@ -125,8 +128,7 @@ class Shield {
             return false
         }
             return false
-*/
-        return true     /* comentar para validar */
+//        return true     /* comentar para validar */
     }
 
 /*
