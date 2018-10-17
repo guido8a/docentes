@@ -20,7 +20,11 @@ class Shield {
         }
 */
 
-        if((actionName == 'pdfLink') || (actionName == 'certificacion')) {
+
+//        if(actionName in ['pdfLink', 'reporteVariables', 'desempeno', 'desempenoAlumnos', 'recomendaciones',
+//                          'botella', 'potencia', 'exito', 'reporteTotalesDesempeno']) {
+        if(actionName in ['pdfLink', 'desempeno', 'desempenoAlumnos', 'recomendaciones',
+                          'botella', 'potencia', 'exito', 'reporteTotalesDesempeno']) {
             return true
         }
 
