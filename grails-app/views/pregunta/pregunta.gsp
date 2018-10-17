@@ -178,6 +178,7 @@
         <div id="itemsTab" class="tab-pane fade">
 
             <div class="row ${preguntaInstance?.estado == 'R' ? 'hidden' : ''}">
+                <g:hiddenField name="respI_name" id="idResItem" value="${''}"/>
 
                 <div class="col-md-8 negrilla control-label">Descripción:
                     <g:textField name="descripcionItem_name" id="descripcionItem" class="form-control required"
@@ -190,11 +191,18 @@
                 </div>
 
                 <div class="col-md-1 negrilla control-label">Tipo:
-                    <g:select name="tipoItem_name" id="tipoItem" class="form-control" from="${['A','B']}"/>
+                    <g:select name="tipoItem_name" id="tipoItem" class="form-control" from="${['','A','B']}"/>
                 </div>
 
-                <a href="#" id="btnAgregarItem" class="btn btn-success ${preguntaInstance?.estado == 'N' ? '' : 'hidden'}" title="">
+                <a href="#" id="btnAgregarItem" style="margin-top: 20px" class="btn btn-success ${preguntaInstance?.estado == 'N' ? '' : 'hidden'}" title="">
                     <i class="fa fa-plus"></i>
+                </a>
+
+                <a href="#" id="btnActualizarItem" style="margin-top: 20px" class="btn btn-warning hidden" title="">
+                    <i class="fa fa-save"></i>
+                </a>
+                <a href="#" id="btnCancelarActItem" style="margin-top: 20px" class="btn btn-primary hidden" title="">
+                    <i class="fa fa-close"></i>
                 </a>
             </div>
 
@@ -244,10 +252,23 @@
         });
     }
 
-    $("#btnAgregarItem").click(function () {
+
+    $("#btnCancelarActItem").click(function () {
+        cargarTablaItems();
+        $("#idResItem").val('');
+        $("#descripcionItem").val('');
+        $("#ordenItem").val('');
+        $("#tipoItem").val('');
+        $("#btnActualizarItem").addClass('hidden');
+        $("#btnAgregarItem").removeClass('hidden');
+        $("#btnCancelarActItem").addClass('hidden');
+    });
+
+    $("#btnAgregarItem, #btnActualizarItem").click(function () {
         var descripcion = $("#descripcionItem").val();
         var orden = $("#ordenItem").val();
         var tipo = $("#tipoItem").val();
+        var id = $("#idResItem").val();
 
         if(descripcion == '' || orden == ''){
             bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar todos los datos solicitados!")
@@ -260,14 +281,24 @@
                     pregunta: '${preguntaInstance?.id}',
                     descripcion: descripcion,
                     orden: orden,
-                    tipo: tipo
+                    tipo: tipo,
+                    id: id
                 },
                 success: function (msg){
-                    if(msg == 'ok'){
-                        log("Item agregado correctamente","success");
+                    var parts = msg.split("_");
+                    if(parts[0] == 'ok'){
+                        log(parts[1],"success");
                         cargarTablaItems();
+                        $("#idResItem").val('');
+                        $("#descripcionItem").val('');
+                        $("#ordenItem").val('');
+                        $("#tipoItem").val('');
+
+                        $("#btnActualizarItem").addClass('hidden');
+                        $("#btnAgregarItem").removeClass('hidden');
+                        $("#btnCancelarActItem").addClass('hidden');
                     }else{
-                        log("Error al agregar el item","error")
+                        log(parts[1],"error")
                     }
                 }
             })

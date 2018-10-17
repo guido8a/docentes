@@ -4,27 +4,27 @@
     <div class="row-fluid"  style="width: 99.7%;height: 300px;overflow-y: auto;float: right;">
         <div class="span12">
             %{--<div style="width: 960px; height: 300px;">--}%
-                <table class="table table-condensed table-bordered table-striped">
-                    <tbody>
-                    <g:each in="${items}" var="item">
-                        <tr data-id="${item.id}">
-                            %{--<td style="width: 8%">${item?.pregunta?.codigo}</td>--}%
-                            <td style="width: 4%">${item?.orden}</td>
-                            <td style="width: 40%">${item?.descripcion}</td>
-                            <td style="width: 4%">${item?.tipo}</td>
-                            <td style="width: 5%" class="${item?.pregunta?.estado == 'N' ? '' : 'hidden'}">
-                                <a href="#" class="btn-sm btn-success btnEditarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Editar el item">
-                                    <i class="fa fa-pencil"></i>
-                                </a>
-                                <a href="#" class="btn-sm btn-danger btnBorrarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Borrar el item">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            </td>
+            <table class="table table-condensed table-bordered table-striped">
+                <tbody>
+                <g:each in="${items}" var="item">
+                    <tr data-id="${item.id}" data-orden="${item?.orden}" data-desc="${item?.descripcion}" data-tipo="${item?.tipo}">
+                        %{--<td style="width: 8%">${item?.pregunta?.codigo}</td>--}%
+                        <td style="width: 4%">${item?.orden}</td>
+                        <td style="width: 40%">${item?.descripcion}</td>
+                        <td style="width: 4%">${item?.tipo}</td>
+                        <td style="width: 5%" class="${item?.pregunta?.estado == 'N' ? '' : 'hidden'}">
+                            <a href="#" class="btn-sm btn-success btnEditarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Editar el item">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a href="#" class="btn-sm btn-danger btnBorrarItem ${item?.pregunta?.estado == 'N' ? '' : 'hidden'}" data-id="${item?.id}"  title="Borrar el item">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
 
-                        </tr>
-                    </g:each>
-                    </tbody>
-                </table>
+                    </tr>
+                </g:each>
+                </tbody>
+            </table>
             %{--</div>--}%
         </div>
     </div>
@@ -48,67 +48,84 @@
 <script type="text/javascript">
 
     $(".btnEditarItem").click(function () {
+        var $tr = $(this).parents("tr");
         var idI = $(this).data("id");
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'pregunta', action: 'editarItem_ajax')}',
-            data:{
-                id: idI
-            },
-            success: function (msg){
-                var b =  bootbox.dialog({
-                    id      : "dlgEditarItem",
-                    title   : "Editar Item de la Pregunta",
-                    class   : "long",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        aceptar : {
-                            label     : "Aceptar",
-                            className : "btn-success",
-                            callback  : function () {
+        var ordenI = $tr.data("orden");
+        var descI = $tr.data("desc");
+        var tipoI = $tr.data("tipo");
 
-                                var descripcion = $("#descripcionItemEditar").val();
-                                var orden = $("#ordenItemEditar").val();
-                                var tipo = $("#tipoItemEditar").val();
+        $("#descripcionItem").val(descI);
+        $("#ordenItem").val(ordenI);
+        $("#tipoItem").val(tipoI);
+
+        $("#btnActualizarItem").removeClass('hidden');
+        $("#btnAgregarItem").addClass('hidden');
+        $("#btnCancelarActItem").removeClass('hidden');
+
+        $("#idResItem").val(idI);
 
 
-                                if(descripcion == '' || orden == ''){
-                                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar todos los datos solicitados!");
-                                    return false;
-                                }else{
-                                    $.ajax({
-                                        type: 'POST',
-                                        url: '${createLink(controller: 'pregunta', action : 'guardarItem_ajax')}',
-                                        data:{
-                                            pregunta: '${pregunta.id}',
-                                            descripcion: descripcion,
-                                            orden: orden,
-                                            tipo: tipo,
-                                            id: idI
-                                        },
-                                        success: function (msg){
-                                            if(msg == 'ok'){
-                                                log("Item guardado correctamente","success");
-                                                cargarTablaItems();
-                                            }else{
-                                                log("Error al guardar el item","error")
-                                            }
-                                        }
-                                    })
-                                }
-                            }
-                        }
 
-                    } //buttons
-                }); //dialog
-            }
-        });
+        %{--$.ajax({--}%
+        %{--type: 'POST',--}%
+        %{--url: '${createLink(controller: 'pregunta', action: 'editarItem_ajax')}',--}%
+        %{--data:{--}%
+        %{--id: idI--}%
+        %{--},--}%
+        %{--success: function (msg){--}%
+        %{--var b =  bootbox.dialog({--}%
+        %{--id      : "dlgEditarItem",--}%
+        %{--title   : "Editar Item de la Pregunta",--}%
+        %{--class   : "long",--}%
+        %{--message : msg,--}%
+        %{--buttons : {--}%
+        %{--cancelar : {--}%
+        %{--label     : "Cancelar",--}%
+        %{--className : "btn-primary",--}%
+        %{--callback  : function () {--}%
+        %{--}--}%
+        %{--},--}%
+        %{--aceptar : {--}%
+        %{--label     : "Aceptar",--}%
+        %{--className : "btn-success",--}%
+        %{--callback  : function () {--}%
+
+        %{--var descripcion = $("#descripcionItemEditar").val();--}%
+        %{--var orden = $("#ordenItemEditar").val();--}%
+        %{--var tipo = $("#tipoItemEditar").val();--}%
+
+
+        %{--if(descripcion == '' || orden == ''){--}%
+        %{--bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe ingresar todos los datos solicitados!");--}%
+        %{--return false;--}%
+        %{--}else{--}%
+        %{--$.ajax({--}%
+        %{--type: 'POST',--}%
+        %{--url: '${createLink(controller: 'pregunta', action : 'guardarItem_ajax')}',--}%
+        %{--data:{--}%
+        %{--pregunta: '${pregunta.id}',--}%
+        %{--descripcion: descripcion,--}%
+        %{--orden: orden,--}%
+        %{--tipo: tipo,--}%
+        %{--id: idI--}%
+        %{--},--}%
+        %{--success: function (msg){--}%
+        %{--if(msg == 'ok'){--}%
+        %{--log("Item guardado correctamente","success");--}%
+        %{--cargarTablaItems();--}%
+        %{--}else{--}%
+        %{--log("Error al guardar el item","error")--}%
+        %{--}--}%
+        %{--}--}%
+        %{--})--}%
+        %{--}--}%
+        %{--}--}%
+        %{--}--}%
+
+        %{--} //buttons--}%
+        %{--}); //dialog--}%
+        %{--}--}%
+        %{--});--}%
     });
 
     $(".btnBorrarItem").click(function () {

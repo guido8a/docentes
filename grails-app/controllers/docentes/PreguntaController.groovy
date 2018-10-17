@@ -377,58 +377,90 @@ class PreguntaController extends Shield {
         def items = ItemPregunta.findAllByPregunta(pregunta)
         def orden = items.orden
 
+        def itemsFiltrados3
+        def errores = ''
+        def texto = ''
 
-        itemsFiltrados = ItemPregunta.findAllByPreguntaAndOrdenGreaterThanEquals(pregunta, ordenActual, [sort: 'orden', order: 'desc'])
-        def itemsFiltrados2 = ItemPregunta.findAllByPreguntaAndOrdenGreaterThan(pregunta, ordenActual, [sort: 'orden', order: 'desc'])
-        println("items " + itemsFiltrados.orden)
 
+        itemsFiltrados = ItemPregunta.findAllByPreguntaAndOrdenGreaterThanEquals(pregunta, ordenActual, [sort: 'orden', order: 'asc'])
+        def itemsFiltrados2 = ItemPregunta.findAllByPreguntaAndOrdenGreaterThan(pregunta, ordenActual, [sort: 'orden', order: 'asc'])
 
+//        def itemsFiltrados3 = ItemPregunta.findAllByPreguntaAndOrdenNotEqual(pregunta, ordenActual, [sort: 'orden', order: 'asc'])
+
+//        println("items " + items.orden)
 
 
         if(params.id){
             itemPregunta = ItemPregunta.get(params.id)
 
-            if(itemPregunta.orden != ordenActual){
-                itemsFiltrados.each {p->
-                    if(p.id != itemPregunta.id){
-                        p.orden = p.orden + 1
-                        p.save(flush: true)
-                    }else{
-                        println("no hace nada, mismo id")
-                    }
-                }
+            itemsFiltrados3 = ItemPregunta.findAllByPreguntaAndOrdenNotEqual(pregunta, itemPregunta.orden, [sort: 'orden', order: 'asc'])
+
+//            println("items " + itemsFiltrados3.orden)
+
+            if(itemsFiltrados3.orden.contains(ordenActual)){
+                errores += 'no'
+                texto = 'Número de orden repetido'
             }else{
-                println("no hace nada, mismo orden")
+
+                itemPregunta.descripcion = params.descripcion
+                itemPregunta.orden = params.orden.toInteger()
+                itemPregunta.tipo = params.tipo.toUpperCase()
+
+                texto = 'Item actualizado correctamente'
+
             }
 
 
-            itemPregunta.descripcion = params.descripcion
-            itemPregunta.orden = params.orden.toInteger()
-            itemPregunta.tipo = params.tipo.toUpperCase()
+
+//            if(itemPregunta.orden != ordenActual){
+//                itemsFiltrados.each {p->
+//                    if(p.id != itemPregunta.id){
+//                        p.orden = p.orden + 1
+//                        p.save(flush: true)
+//                    }else{
+//                        println("no hace nada, mismo id")
+//                    }
+//                }
+//            }else{
+//                println("no hace nada, mismo orden")
+//            }
+
+
+
         }else {
-            itemPregunta = new ItemPregunta()
 
-            itemsFiltrados.each{q->
-                q.orden = q.orden + 1
-                q.save(flush: true)
+            if(items.orden.contains(params.orden.toInteger())){
+                errores += 'no'
+                texto = 'Número de orden repetido'
+            }else{
+                itemPregunta = new ItemPregunta()
+                itemPregunta.pregunta = pregunta
+                itemPregunta.descripcion = params.descripcion
+                itemPregunta.orden = params.orden.toInteger()
+                itemPregunta.tipo = params.tipo.toUpperCase()
+                texto = 'Item creado correctamente'
             }
 
-            itemPregunta.pregunta = pregunta
-            itemPregunta.descripcion = params.descripcion
-            itemPregunta.orden = params.orden.toInteger()
-            itemPregunta.tipo = params.tipo.toUpperCase()
+//            itemsFiltrados.each{q->
+//                q.orden = q.orden + 1
+//                q.save(flush: true)
+//            }
+
         }
+//
+      if(errores == ''){
+          try {
+              itemPregunta.save(flush: true)
+              render "ok_" + texto
+          }catch (e){
+              render "no_" + texto
+              println("error al guardar el item "  +  itemPregunta.errors )
+          }
+      }else{
+            render "no_" + texto
+      }
 
 
-
-
-        try {
-            itemPregunta.save(flush: true)
-           render "ok"
-        }catch (e){
-            render "no"
-            println("error al guardar el item "  +  itemPregunta.errors )
-        }
     }
 
 
@@ -452,8 +484,8 @@ class PreguntaController extends Shield {
         def recomendacion
         def rcpr
         if(params.recomendacion){
-              recomendacion = Recomendacion.get(params.recomendacion)
-              rcpr = Rcpr.findByPregunta(pregunta)
+            recomendacion = Recomendacion.get(params.recomendacion)
+            rcpr = Rcpr.findByPregunta(pregunta)
             if(rcpr){
                 rcpr.recomendacion = recomendacion
             }else{
