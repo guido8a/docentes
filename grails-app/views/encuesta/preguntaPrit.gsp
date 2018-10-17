@@ -23,13 +23,13 @@
     .fila2 {
         border: 1px solid #495a6b;
         float: left;
-        width: 78%;
+        width: 65%;
     }
 
     .fila3 {
         border: 1px solid #495a6b;
         float: right;
-        width: 20%;
+        width: 33%;
     }
 
 
@@ -39,15 +39,19 @@
 
     .radio-toolbar label {
         line-height: 1.0em;
-        padding: 0 3px;
+        padding: 2px 5px;
         margin-top: -2px;
         font-weight: normal;
         border-radius: 8px;
+        font-size: 14px;
+        border-style: solid;
+        border-color: #d0d0e0;
+        border-width: 1px;
     }
 
     .radio-toolbar input[type="radio"]:checked + label {
         font-weight: bold;
-        background-color: #ffe869;
+        background-color: #fff3d0;
     }
 
     </style>
@@ -76,7 +80,7 @@
 
         <div class="panel panel-default fila2">
             <div class="panel-heading">
-                <span style="font-weight: bold">Seleccione la Causa y luego la respuesta</span>
+                <span style="font-weight: bold">Seleccione una opción</span>
             </div>
 
             <div class="panel-body">
@@ -94,7 +98,7 @@
         <div class="panel panel-default fila3">
 
             <div class="panel-heading">
-                <span style="font-weight: bold">Seleccione una Respuesta</span>
+                <span style="font-weight: bold">Seleccione una opción</span>
             </div>
 
             <div class="panel-body">

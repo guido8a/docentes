@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 12/10/18
-  Time: 10:32
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <html lang="es">
@@ -49,6 +42,7 @@
         border-radius: 8px;
         font-size: 14px;
         border-style: solid;
+        border-color: #d0d0ff;
         border-width: 1px;
     }
 
@@ -84,36 +78,13 @@
             <input type="hidden" name="tipopreg" value="${tppr}">
         </div>
 
-        %{--<div class="panel panel-default fila1">--}%
-            %{--<div class="panel-heading">--}%
-                %{--<span style="font-weight: bold">Seleccione una Respuesta</span>--}%
-            %{--</div>--}%
-
-            %{--<div class="panel-body">--}%
-                %{--<g:each in="${rp}" var="respuesta">--}%
-                    %{--<div class="radio-toolbar resp" style="margin-bottom: 1.5em;">--}%
-                        %{--<input type="radio" name="respuestas" value="${respuesta.id}"--}%
-                            %{--${(respuesta.id == resp[0] ? 'checked' : ' ')} id="${respuesta.id}">--}%
-                        %{--<label for="${respuesta.id}">${respuesta.dscr}</label>--}%
-                    %{--</div>--}%
-                %{--</g:each>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        <div class="panel panel-default fila ${tppr == 'Cp' ? 'text-danger':'text-info'}">
+        <div class="panel panel-default fila ${tppr == 'Cp' ? 'text-success':'text-info'}">
         %{--<div class="panel panel-default" style="width: 70%; margin: 0 auto">--}%
             <div class="panel-heading">
                 <span style="font-weight: bold; font-size: large">Seleccione una ${tppr == 'Cp'? 'Competencia': 'Asignatura'}</span>
             </div>
 
             <div class="panel-body">
-                %{--<g:each in="${rp}" var="respuesta">--}%
-                    %{--<div class="radio-toolbar" style="margin-bottom: 1.5em;">--}%
-                        %{--<input type="radio" name="respuestas" value="${respuesta.id}"--}%
-                            %{--${(respuesta.id == resp[0] ? 'checked' : ' ')} id="${respuesta.id}">--}%
-                        %{--<label for="${respuesta.id}">${respuesta.dscr.split(' ')[0]}</label>--}%
-                    %{--</div>--}%
-                %{--</g:each>--}%
                 <g:each in="${materias}" var="m" status="i">
 
                     <div class="radio-toolbar" style="margin-bottom: 0">
@@ -122,64 +93,9 @@
                         <label for="${m.id}_${i}">${m.dscr}</label>
                     </div>
                 </g:each>
-%{--
-                <div class="radio-toolbar" style="margin-bottom: 1.5em;">
-                    <input type="radio" name="materia" value="${-1}"
-                        ${(0 == resp[1] ? 'checked' : ' ')} id="${-1}_${i}">
-                    <label for="${-1}_${i}">${"NINGUNA"}</label>
-                </div>
---}%
             </div>
         </div>
 
-    %{--${materias}--}%
-        %{--<div id="materias" class="modal fade">--}%
-            %{--<div class="modal-dialog">--}%
-                %{--<div class="modal-content">--}%
-                    %{--<div class="modal-header">--}%
-                        %{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}%
-                            %{--<span aria-hidden="true">&times;</span></button>--}%
-                        %{--<h4 class="modal-title" id="exampleModalLabel">Seleccione una materia</h4>--}%
-                    %{--</div>--}%
-                    %{--<!-- dialog body -->--}%
-                    %{--<div class="modal-body">--}%
-                        %{--<g:each in="${materias}" var="m" status="i">--}%
-                            %{--<div class="radio-toolbar respRadio" style="margin-bottom: 1.0em;">--}%
-                                %{--<label  id="div_${m.id}_${i}" class="marca ${(m.id == resp[1]) ? 'marcado' : ''}">--}%
-                                    %{--<input type="radio" name="respMat" id="${m.id}_${i}" class="radioMat"--}%
-                                           %{--value="${m.id}" ${(m.id == resp[1]) ? 'checked' : ''}>${m.dscr}</label>--}%
-                            %{--</div>--}%
-                        %{--</g:each>--}%
-
-                        %{--<script>--}%
-                            %{--$(".marca").mousedown(function () {--}%
-                                %{--$(".marca").removeClass("marcado");--}%
-                                %{--$(this).addClass("marcado")--}%
-                            %{--});--}%
-                        %{--</script>--}%
-                    %{--</div>--}%
-                    %{--<!-- dialog buttons -->--}%
-                    %{--<div class="modal-footer">--}%
-                        %{--<button type="button" class="btn btn-primary" id="modalCancelar">Cancelar</button>--}%
-                        %{--<button type="button" class="btn btn-success" id="modalOk">Aceptar</button>--}%
-                    %{--</div>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-        %{--<div class="panel panel-default fila" id="divAsignatura" style="display: none">--}%
-            %{--<div class="panel-heading">--}%
-                %{--<h3 class="panel-title">Asignatura</h3>--}%
-            %{--</div>--}%
-
-            %{--<div class="panel-body col-md-12 col-xs-12" style="font-size: 1.2em">--}%
-                %{--<input type="text" readonly id="matVal" name="asignatura" style="color: #000; width: 75%"--}%
-                       %{--value="${materias.find { it.id == resp[1] }?.dscr}" class="form-control col-md-8 col-xs-7">--}%
-                %{--<input type="text" disabled id="matVal" style="color: #000; width: 400px;" value="">--}%
-                %{--<input id="buscar" type="button" value="Buscar asignatura" class="btn btn-primary col-md-2 col-xs-3">--}%
-                %{--<input type="hidden" name="materia" id="materia" value="${resp[1]}">--}%
-            %{--</div>--}%
-        %{--</div>--}%
     </g:form>
 
 </div>
