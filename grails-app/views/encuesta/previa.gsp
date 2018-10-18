@@ -44,9 +44,16 @@
     <div class="bs-component col-sm-12 panel panel-info ">
         <div class="panel-heading" style="height: 50px; width: 100%">
             <div class="col-md-2 col-xs-3" style="margin-top: -5px">
-                <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
-                <i class="fa fa-arrow-left"></i>
-                Cancelar</a>
+                    <g:if test="${encufe && !matr}">
+                        <a href="${g.createLink(action: 'inicio')}" class="btn btn-info" title="Salir de Evaluaciones">
+                            <i class="fa fa-arrow-left"></i>
+                        Salir </a>
+                    </g:if>
+                    <g:else>
+                        <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
+                            <i class="fa fa-arrow-left"></i>
+                        Cancelar</a>
+                    </g:else>
             </div>
             <div class="disabled col-md-10 col-xs-9 panel-title">Usted se ha identificado como ${session.informante}</div>
         </div>
@@ -85,10 +92,20 @@
         </table>
     </g:if>
     <g:else>
-        <g:link action="encuestaFE" class="btn btn-info col-md-6 col-xs-6 center-block" style="float: inherit; margin: auto">
-            <i class="fa fa-pencil"></i> Iniciar Evaluación
-        </g:link>
+        <g:if test="${!encufe}">
+            <g:link action="encuestaFE" class="btn btn-info col-md-6 col-xs-6 center-block" style="float: inherit; margin: auto">
+                <i class="fa fa-pencil"></i> Iniciar Evaluación
+            </g:link>
+        </g:if>
+        <g:else>
+            <div style="text-align: center;">
+            <a href="${g.createLink(action: 'inicio')}" class="btn btn-primary" title="Salir de Evaluaciones">
+                <img src="${resource(dir:'images',file:'echo1.png')}">
+                Usted ha realizado todas las evaluaciones. ¡Muchas gracias!</a>
+            </div>
+        </g:else>
     </g:else>
+
 
     <hr style="border-color: #0A246A; size: 2px"/>
     <div class="col-md-12 col-xs-12"> Desarrollado por: TEDEIN SA &nbsp;&nbsp;&nbsp;&nbsp;

@@ -86,6 +86,7 @@ class EncuestaController {
             redirect action: 'previaDc'
             return
         }
+
         def cn = dbConnectionService.getConnection()
         def tx = ""
         def univ = Universidad.get(session.univ)
@@ -94,7 +95,9 @@ class EncuestaController {
         println "universidad: ${logo}"
 //        println "ponePregunta tipo: ${session.tipoPersona}, ponePregunta: ${session.encuesta}, params: $params, id: ${session.informanteId}, pr: ${session.periodo.id}"
 
-        if(encuestaService.factoresDeExito(session.informanteId, session.prdo)) { //si ya se ha completado FE muestra materias
+        def evaluadoFE = encuestaService.factoresDeExito(session.informanteId, session.prdo)
+        println "evaluadoFE: $evaluadoFE"
+        if(evaluadoFE) { //si ya se ha completado FE muestra materias
 //            println "ya completo FE"
             def matr
             tx = "select matr.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
@@ -108,7 +111,7 @@ class EncuestaController {
             println "previa: $tx"
             matr = cn.rows(tx.toString())
             println "matr: $matr, logo: $logo, universidad: ${univ.nombre}"
-            [matr: matr, logo: logo, universidad: univ.nombre]
+            [matr: matr, logo: logo, universidad: univ.nombre, encufe: evaluadoFE]
         } else {
             [logo: logo, universidad: univ.nombre]
         }
@@ -148,9 +151,11 @@ class EncuestaController {
         def logo = g.resource(dir: 'images/univ', file: univ.logo, absolute: true)
         session.encuesta = 0
         def auto = encuestaService.autoevaluacion(session.informanteId, session.prdo)
-        println "auto: $auto, periodo: ${session.prdo}, univ: ${session.univ}"
-        [auto: auto, pares: session.par, drtv: session.directivo, logo: logo, universidad: univ.nombre]
+        def compPar = encuestaService.completaPares(session.prdo, session.informanteId)
+        def compDire = encuestaService.completaDire(session.prdo, session.informanteId)
 
+        println "auto: $auto, periodo: ${session.prdo}, pares: ${session.par}, dire: ${session.directivo}"
+        [auto: auto, pares: session.par && compPar, drtv: session.directivo && compDire, logo: logo, universidad: univ.nombre]
     }
 
 
@@ -411,6 +416,10 @@ class EncuestaController {
         return (session.informanteId != null)
     }
 
+    /*
+    * Si el profesor dicta en varias universidades habría que presentar una pantalla para que la seleccione
+    * antes de ingresar.
+    * */
     boolean existeProfesor(cdla) {
         def cn = dbConnectionService.getConnection()
         def rt = false
@@ -765,8 +774,8 @@ class EncuestaController {
         cn.close()
 
         return [bases: resultado, msg: msg]
-
     }
+
 
     def prueba () {
         ponePregunta(2,7, Encuesta.get(130364), TipoEncuesta.get(4))

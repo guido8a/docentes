@@ -232,4 +232,41 @@ class EncuestaService {
         rt
     }
 
+    def completaPares(prdo, id) {
+        def cn = dbConnectionService.getConnection()
+        def rt = false
+        def sql = "select count(*) cnta from dcta, mate, prof, crso" +
+                    "where prdo__id = ${prdo} and crso.crso__id = dcta.crso__id and " +
+                    "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
+                    "select prof__id from encu where prof_par is not null and prdo__id = ${prdo} and " +
+                    "encuetdo = 'C' ) and prof.prof__id <> ${id} and dcta.dcta__id in " +
+                    "(select distinct dcta__id from matr)"
+        try {
+            rt = (cn.rows(sql.toString())[0].cnta > 0)
+        }
+        catch (e) {
+            println e.getMessage()
+        }
+        rt
+    }
+
+    def completaDire(prdo, id) {
+        def cn = dbConnectionService.getConnection()
+        def rt = false
+        def sql = "select count(*) cnta from dcta, mate, prof, crso " +
+                    "where prdo__id = ${prdo} and " +
+                    "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
+                    "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
+                    "select prof__id from encu where profdrtv is not null and prdo__id = ${prdo} and encuetdo = 'C') and " +
+                    "prof.prof__id <> ${id} and dcta.dcta__id in (select distinct dcta__id from matr)"
+        println "sql Dire: $sql"
+        try {
+            rt = (cn.rows(sql.toString())[0].cnta > 0)
+        }
+        catch (e) {
+            println e.getMessage()
+        }
+        rt
+    }
+
 }

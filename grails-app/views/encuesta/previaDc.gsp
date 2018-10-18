@@ -58,9 +58,17 @@
             <strong>Usted se ha identificado como ${session.informante}</strong></span>
     </p>
 
-    <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
-        <i class="fa fa-arrow-left"></i>
-        Cancelar</a>
+    <g:if test="${!(drtv || pares || auto)}">
+        <a href="${g.createLink(action: 'inicio')}" class="btn btn-info" title="Salir de Evaluaciones">
+            <i class="fa fa-arrow-left"></i>
+            Salir </a>
+    </g:if>
+    <g:else>
+        <a href="${g.createLink(action: 'inicio')}" class="btn btn-danger" title="Retornar a la pantalla inicial de Evaluaciones">
+            <i class="fa fa-arrow-left"></i>
+            Cancelar</a>
+    </g:else>
+
 
     <g:if test="${auto}">
         <a href="${g.createLink(action: 'previaAd', params: [tipo: 'AD'])}" class="btn btn-primary"
@@ -82,9 +90,10 @@
     </g:if>
 
     <g:if test="${!(drtv || pares || auto)}">
-        <a href="#" class="btn btn-primary" id="btnDrtv" title="Usted ha realizado todas las evaluaciones">
-            <i class="fa fa-check"></i>
-            Usted ha realizado todas las evaluaciones</a>
+        <span style="width: 40px; display: inline-block"></span>
+        <a href="${g.createLink(action: 'inicio')}" class="btn btn-primary" id="btnDrtv" title="Salir de Evaluaciones">
+            <img src="${resource(dir:'images',file:'echo1.png')}">
+            Usted ha realizado todas las evaluaciones. ¡Muchas gracias!</a>
     </g:if>
 
 
