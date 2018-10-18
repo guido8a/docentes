@@ -374,7 +374,7 @@ class ReportesGrafController extends seguridad.Shield  {
         def universidad = Universidad.get(params.universidad)
         def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
 
-        return[facultades: facultades]
+        return[facultades: facultades, universidad: universidad]
     }
 
 }
