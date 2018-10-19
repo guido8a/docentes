@@ -83,10 +83,12 @@
             <g:each in="${matr}" status="i" var="materia">
                 <tr>
                     %{--<td style="font-weight: bold">${materia.profesor}-${materia.prof__id}</td>--}%
-                    <td>${materia.matedscr} - prof__id:${materia.prof__id}</td>
+                    %{--<td>${materia.matedscr} - prof__id:${materia.prof__id}</td>--}%
+                    <td>${materia.matedscr}</td>
 
                     <td>${materia.crsodscr}</td>
-                    <td style="text-align: center">${materia.dctaprll}-${materia.dcta__id}</td>
+                    %{--<td style="text-align: center">${materia.dctaprll}-${materia.dcta__id}</td>--}%
+                    <td style="text-align: center">${materia.dctaprll}</td>
                     <td style="text-align: center">
                         <a href="#" class="btn btn-info btn-sm btnEncuesta" title="Evaluar" data-id="${materia?.dcta__id}"
                             data-asignatura="${materia?.matedscr}<br><br>Curso: ${materia.crsodscr}<br>Paralelo: ${materia.dctaprll}"
