@@ -23,8 +23,7 @@ class Shield {
 
 //        if(actionName in ['pdfLink', 'reporteVariables', 'desempeno', 'desempenoAlumnos', 'recomendaciones',
 //                          'botella', 'potencia', 'exito', 'reporteTotalesDesempeno']) {
-        if(actionName in ['pdfLink', 'desempeno', 'desempenoAlumnos', 'recomendaciones',
-                          'botella', 'potencia', 'exito', 'reporteTotalesDesempeno']) {
+        if(actionName in ['pdfLink', 'profesNoEvaluados', 'profesEvaluados', 'asignaturas', 'recomendaciones', 'reporteDesempeno', 'cuellosBotella', 'potenciadores', 'reporteTipoEncuesta', 'reporteDesempenoVariables']) {
             return true
         }
 

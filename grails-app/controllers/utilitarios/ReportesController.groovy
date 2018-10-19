@@ -88,7 +88,7 @@ class ReportesController extends seguridad.Shield {
     def index() { }
 
     def asignaturas () {
-        println "asignaturas $params"
+//        println "asignaturas $params"
 
         def periodo = Periodo.get(params.periodo)
         def cn = dbConnectionService.getConnection()
@@ -205,7 +205,7 @@ class ReportesController extends seguridad.Shield {
                 break;
         }
 
-        println "sql: $sql"
+//        println "sql: $sql"
 
         def res = cn.rows(sql.toString());
         def escuelas = res.escldscr.unique()
@@ -354,6 +354,24 @@ class ReportesController extends seguridad.Shield {
 
 //        JFreeChart jfreechart = ChartFactory.createPieChart3D(
         JFreeChart chart = ChartFactory.createPieChart(
+                titulo,      // title
+                datos,       // data
+                false,       // incluye legenda bajo el gráfico
+                false,
+                false);
+        return chart;
+    }
+
+    private static JFreeChart creaBarras(titulo, data) {
+
+        DefaultPieDataset datos = new DefaultPieDataset();
+        data.each(){
+            datos.setValue(it.key, it.value)
+        }
+
+//        JFreeChart jfreechart = ChartFactory.createPieChart3D(
+//        JFreeChart chart = ChartFactory.createPieChart(
+        JFreeChart chart = ChartFactory.createBarChart(
                 titulo,      // title
                 datos,       // data
                 false,       // incluye legenda bajo el gráfico
@@ -1641,6 +1659,7 @@ class ReportesController extends seguridad.Shield {
         document.add(linea)
 
         def chart = creaPastel("", data);
+//        def chart = creaBarras('', data);
         def ancho =  440  //540
         def alto =  440   //540
         document.add(linea)
@@ -1679,7 +1698,7 @@ class ReportesController extends seguridad.Shield {
         Paragraph claseA = new Paragraph("La clase 'A' corresponde a un desempeño académico igual " +
                 "o superior a ${prmt?.optimo}", font12)
         Paragraph claseB = new Paragraph("La clase 'B' corresponde a un desempeño académico menor " +
-                "a ${prmt?.optimo} y mayor o igual a ${prmt.minimo}", font12)
+                "a ${prmt?.optimo} y mayor o igual a ${prmt?.minimo}", font12)
         Paragraph claseC = new Paragraph("La clase 'C' corresponde a un desempeño académico menor " +
                 "a ${prmt?.minimo}", font12)
 
