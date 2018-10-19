@@ -169,13 +169,32 @@ class EncuestaService {
         resp
     }
 
-    def competencias() {
+    def competencias(pregunta, tppr, prsn, prdo) {
         def cn = dbConnectionService.getConnection()
-        def wh = "0, 1"  /* TODO: seleccinar carr__id en base a escl__id */
-        def tx = "select cmpt__id id, cmptdscr dscr from cmpt " +
-                "where carr__id in (${wh}) " +
-                "order by random()"
-//        println "itemsPregunta sql: $tx"
+        def where = ""
+        def tx = "select pregcdgo from preg, prte where prte__id = ${pregunta} and preg.preg__id = prte.preg__id"
+        println "competencias --- $tx"
+        def cdgo = cn.rows(tx.toString())[0]?.pregcdgo.trim()
+        println "cdgo: $cdgo"
+        if(cdgo.toUpperCase() == 'CP-1') {
+            where = "where carr__id = 0"
+        } else {
+            if(tppr == 'E') {
+                tx = "select carr__id from escr, dcta, matr, prof where matr.estd__id = ${prsn} and " +
+                        "dcta.dcta__id = matr.dcta__id and prof.prof__id = dcta.prof__id and prdo__id = ${prdo} and " +
+                        "escr.escl__id = prof.escl__id"
+                where = "where carr__id = ${cn.rows(tx.toString())[0]?.carr__id}"
+                println "carr estd --> $tx, $where"
+            } else {
+                tx = "select carr__id from escr, dcta, prof where dcta.prof__id = ${prsn} and " +
+                        "prdo__id = ${prdo} and prof.prof__id = dcta.prof__id and escr.escl__id = prof.escl__id"
+                println "carr prof --> $tx"
+                where = "where carr__id = ${cn.rows(tx.toString())[0]?.carr__id}"
+            }
+        }
+
+        tx = "select cmpt__id id, cmptdscr dscr from cmpt ${where} order by random()"
+        println "itemsPregunta sql: $tx"
         def resp = cn.rows(tx.toString())
         cn.close()
         resp

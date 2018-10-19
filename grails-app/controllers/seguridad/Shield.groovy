@@ -14,16 +14,9 @@ class Shield {
         session.cn = controllerName
         session.pr = params
 
-/*
-        if(controllerName in ['reportes', 'reportesGraf', 'reportes2'] ){
-            return true
-        }
-*/
-
-
-//        if(actionName in ['pdfLink', 'reporteVariables', 'desempeno', 'desempenoAlumnos', 'recomendaciones',
-//                          'botella', 'potencia', 'exito', 'reporteTotalesDesempeno']) {
-        if(actionName in ['pdfLink', 'profesNoEvaluados', 'profesEvaluados', 'asignaturas', 'recomendaciones', 'reporteDesempeno', 'cuellosBotella', 'potenciadores', 'reporteTipoEncuesta', 'reporteDesempenoVariables']) {
+        if(actionName in ['pdfLink', 'profesNoEvaluados', 'profesEvaluados', 'asignaturas', 'recomendaciones',
+                          'reporteDesempeno', 'cuellosBotella', 'potenciadores', 'reporteTipoEncuesta',
+                          'reporteDesempenoVariables']) {
             return true
         }
 
@@ -133,41 +126,6 @@ class Shield {
             return false
 //        return true     /* comentar para validar */
     }
-
-/*
-    boolean isAllowedBloqueo() {
-        def permitidas = [
-                "inicio"          : ["index"],
-                "tramite"         : ["bandejaEntrada", "tablaBandeja", "busquedaBandeja", "revisarConfidencial", "revisarHijos", "archivar", "saveTramite"],
-                "tramite3"        : ["detalles", "arbolTramite", "recibirTramite", "bandejaEntradaDpto", "tablaBandejaEntradaDpto", "enviarTramiteJefe", "infoRemitente", "busquedaBandeja"],
-                "documentoTramite": ["verAnexos", "cargaDocs"],
-                "alertas"         : ["list", "revisar"],
-                "persona"         : ["show_ajax"],
-                "departamento"    : ["show_ajax"],
-                "tramiteExport"   : ["crearPdf"],
-                "pdf"   : ["pdfLink"],
-                "reportes"   : ["cuellosBotella"],
-
-
-        ]
-
-        try {
-
-            if (!permitidas[controllerName]) {
-                return false
-            }
-            if (permitidas[controllerName].contains(actionName)) {
-                return true
-            }
-        } catch (e) {
-            println "Shield execption e: " + e
-            return false
-        }
-
-        return false
-    }
-*/
-
 
 }
  

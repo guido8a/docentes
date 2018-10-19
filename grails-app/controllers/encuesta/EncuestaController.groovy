@@ -340,7 +340,7 @@ class EncuestaController {
         pruebasFin = new Date()
         println "tiempo ejecución ponePregunta: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
 
-//        println "tipo ${tipoPregunta.split('_')[0]}"
+        println "pregunta ${pregunta.id}, persona: ${session.tipoPersona}"
 
         def tppr = tipoPregunta.split('_')[0]
         switch (tppr) {
@@ -354,7 +354,7 @@ class EncuestaController {
                                 materias: session.materias + [id: ninguna, dscr:'NINGUNA'], asgn: tipoPregunta.split('_')[1]])
                 break
             case 'Cp':
-                def cmpt = encuestaService.competencias()
+                def cmpt = encuestaService.competencias(pregunta.id, session.tipoPersona, session.informanteId, session.prdo)
                 println "cp: .... ninguna: $ninguna"
                 if(resp == [ninguna,0,0]) resp = [1, ninguna, 0]
 
@@ -364,7 +364,7 @@ class EncuestaController {
                 break
             case 'Prit':
 //                println "-----------------> prit"
-                def prit = encuestaService.itemsPregunta(pregunta.id)
+                def prit = encuestaService.itemsPregunta(pregunta.codigo)
                 render (view: 'preguntaPrit',
                         model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp, resp: resp,
                                 prit: prit])
@@ -399,7 +399,7 @@ class EncuestaController {
                 "from estd, matr, dcta, prdo " +
                 "where estdcdla = '${cdla}' and matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id and " +
                 "prdo.prdo__id = dcta.prdo__id and now() between prdofcin and coalesce(prdofcfn, now()) limit 1"
-        println "sql: $tx"
+        println "..0..sql: $tx"
         try {
             cn.eachRow(tx) { d ->
 //                println "retorna cnta: ${d.cnta}"
