@@ -70,9 +70,11 @@
                                     <i class="fa fa-male"></i>
                                 </a>
                             </g:else>
-                            <a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" data-nom="${profesor?.apellido + " " + profesor?.nombre}" title="Enviar por correo al profesor">
-                                <i class="fa fa-envelope"></i>
-                            </a>
+                            <g:if test="${pantalla == '1'}">
+                                <a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" data-nom="${profesor?.apellido + " " + profesor?.nombre}" title="Enviar por correo al profesor">
+                                    <i class="fa fa-envelope"></i>
+                                </a>
+                            </g:if>
                         </td>
                     </tr>
                 </g:each>

@@ -407,7 +407,8 @@
     $("#imprimirClases").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo +
+        var universidad = $("#universidadId option:selected").val();
+        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo + "&universidad=" + universidad +
             "&facultad=" + facl + "&tipo=" + 1;
     });
 

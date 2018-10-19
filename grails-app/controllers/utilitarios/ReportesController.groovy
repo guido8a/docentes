@@ -14,9 +14,12 @@ import docentes.Periodo
 import docentes.Profesor
 import docentes.ReporteEncuesta
 import docentes.TipoEncuesta
+import docentes.Universidad
 import docentes.Variables
+import org.jfree.chart.plot.CategoryPlot
 import org.jfree.chart.plot.PiePlot
 import org.jfree.chart.plot.PlotOrientation
+import org.jfree.chart.renderer.category.BarRenderer
 import org.jfree.chart.title.Title
 import org.jfree.data.category.DefaultCategoryDataset
 
@@ -364,20 +367,65 @@ class ReportesController extends seguridad.Shield {
 
     private static JFreeChart creaBarras(titulo, data) {
 
-        DefaultPieDataset datos = new DefaultPieDataset();
-        data.each(){
-            datos.setValue(it.key, it.value)
-        }
+//        DefaultPieDataset datos = new DefaultPieDataset();
+//        data.each(){
+//            datos.setValue(it.key, it.value)
+//        }
 
-//        JFreeChart jfreechart = ChartFactory.createPieChart3D(
-//        JFreeChart chart = ChartFactory.createPieChart(
-        JFreeChart chart = ChartFactory.createBarChart(
-                titulo,      // title
-                datos,       // data
-                false,       // incluye legenda bajo el gráfico
-                false,
-                false);
-        return chart;
+
+//        CategoryDataset dataset = createDataset();
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        // Population in 2005
+        dataset.addValue(10, "USA", "2005");
+        dataset.addValue(15, "India", "2005");
+        dataset.addValue(20, "China", "2005");
+
+        // Population in 2010
+        dataset.addValue(15, "USA", "2010");
+        dataset.addValue(20, "India", "2010");
+        dataset.addValue(25, "China", "2010");
+
+        // Population in 2015
+        dataset.addValue(20, "USA", "2015");
+        dataset.addValue(25, "India", "2015");
+        dataset.addValue(30, "China", "2015");
+
+
+
+        JFreeChart chart=ChartFactory.createBarChart(
+                "Bar Chart Example | BORAJI.COM", //Chart Title
+                "Year", // Category axis
+                "Population in Million", // Value axis
+                dataset,
+                PlotOrientation.VERTICAL,
+                true,true,false
+        );
+
+        return chart
+    }
+
+
+    private CategoryDataset createDatasetB() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        // Population in 2005
+        dataset.addValue(10, "USA", "2005");
+        dataset.addValue(15, "India", "2005");
+        dataset.addValue(20, "China", "2005");
+
+        // Population in 2010
+        dataset.addValue(15, "USA", "2010");
+        dataset.addValue(20, "India", "2010");
+        dataset.addValue(25, "China", "2010");
+
+        // Population in 2015
+        dataset.addValue(20, "USA", "2015");
+        dataset.addValue(25, "India", "2015");
+        dataset.addValue(30, "China", "2015");
+
+        return dataset;
     }
 
 
@@ -773,6 +821,7 @@ class ReportesController extends seguridad.Shield {
         return chart;
     }
 
+
     def grafica() {
         def baos = new ByteArrayOutputStream()
 //        PdfWriter writer = null;
@@ -862,6 +911,27 @@ class ReportesController extends seguridad.Shield {
         response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+    }
+
+    public static JFreeChart crearBarChart(titulo,datos) {
+
+//        println("---- " + datos)
+
+        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+
+//        datos.each{
+//
+//        }
+
+        dataSet.setValue(60, "Clase", "A");
+        dataSet.setValue(71, "Clase", "B");
+        dataSet.setValue(28, "Clase", "C");
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "${titulo}", "Clase", "Valor",
+                dataSet, PlotOrientation.VERTICAL, false, true, false);
+
+        return chart;
     }
 
     def informes () {
@@ -1588,7 +1658,7 @@ class ReportesController extends seguridad.Shield {
     }
 
 
-    def profesoresClases() {
+    def profesoresClases_old() {
         println "profesoresClases $params"
         def cn = dbConnectionService.getConnection()
 
@@ -1691,29 +1761,204 @@ class ReportesController extends seguridad.Shield {
         }
 
         //pie
-        def prmt = Auxiliares.findByPeriodo(periodo)
-
-        document.add(linea)
-        Paragraph refe = new Paragraph("Referencia:", fontTitulo)
-        Paragraph claseA = new Paragraph("La clase 'A' corresponde a un desempeño académico igual " +
-                "o superior a ${prmt?.optimo}", font12)
-        Paragraph claseB = new Paragraph("La clase 'B' corresponde a un desempeño académico menor " +
-                "a ${prmt?.optimo} y mayor o igual a ${prmt?.minimo}", font12)
-        Paragraph claseC = new Paragraph("La clase 'C' corresponde a un desempeño académico menor " +
-                "a ${prmt?.minimo}", font12)
-
-        document.add(refe)
-        document.add(claseA)
-        document.add(claseB)
-        document.add(claseC)
-
-        document.close()
+//        def prmt = Auxiliares.findByPeriodo(periodo)
+//
+//        document.add(linea)
+//        Paragraph refe = new Paragraph("Referencia:", fontTitulo)
+//        Paragraph claseA = new Paragraph("La clase 'A' corresponde a un desempeño académico igual " +
+//                "o superior a ${prmt?.optimo}", font12)
+//        Paragraph claseB = new Paragraph("La clase 'B' corresponde a un desempeño académico menor " +
+//                "a ${prmt?.optimo} y mayor o igual a ${prmt?.minimo}", font12)
+//        Paragraph claseC = new Paragraph("La clase 'C' corresponde a un desempeño académico menor " +
+//                "a ${prmt?.minimo}", font12)
+//
+//        document.add(refe)
+//        document.add(claseA)
+//        document.add(claseB)
+//        document.add(claseC)
+//
+//        document.close()
         pdfw.close()
         byte[] b = baos.toByteArray()
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+    }
+
+
+
+    def profesoresClases () {
+
+
+        println "profesoresClases $params"
+        def cn = dbConnectionService.getConnection()
+
+        Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font font12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
+        Font fontTtlo = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad
+        def facultadId
+        if(params.facultad.toInteger()) {
+            facultad = Facultad.get(params.facultad).nombre
+            facultadId = "${params.facultad}"
+        } else {
+            facultad = "Todas las Facultades"
+            facultadId = "%"
+        }
+
+        def universidad = Universidad.get(params.universidad)
+
+        def sql
+        def data = [:]
+
+        def tipo = params.tipo
+        def subtitulo = ''
+        def pattern1 = "###.##%"
+
+
+
+        switch(tipo){
+            case '1':
+                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+                        "group by clase order by clase"
+
+
+//                println "sql: $sql"
+                data = [:]
+                cn.eachRow(sql.toString()) { d ->
+                    data["Profeso-res ${d.clase}: ${d.cnta}"] = d.cnta
+                }
+//                println "data: $data"
+                subtitulo = "PROFESORES POR DESEMPEÑO"
+                break;
+        }
+
+        def baos = new ByteArrayOutputStream()
+
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+
+        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD " + universidad?.nombre.toUpperCase(), fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph linea = new Paragraph(" ", fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+
+//        Paragraph titulo = new Paragraph(subtitulo, fontTtlo)
+//        titulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(linea)
+//        document.add(linea)
+//        document.add(titulo)
+//        document.add(linea)
+
+
+        def chart = crearBarChart(subtitulo,data)
+        def chart2 = generatePieChart()
+        def ancho = 500
+        def alto = 300
+
+        try {
+
+            PdfContentByte contentByte = pdfw.getDirectContent();
+
+            Paragraph parrafo1 = new Paragraph();
+            Paragraph parrafo2 = new Paragraph();
+
+            PdfTemplate template = contentByte.createTemplate(ancho, alto);
+            PdfTemplate template2 = contentByte.createTemplate(ancho, alto/10);
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper());
+            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto/10, new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
+
+            //color
+            CategoryPlot plot = chart.getCategoryPlot();
+            BarRenderer renderer = (BarRenderer) plot.getRenderer();
+            Color color = new Color(79, 129, 189);
+            renderer.setSeriesPaint(0, color);
+
+            chart.draw(graphics2d, rectangle2d);
+
+            graphics2d.dispose();
+            Image chartImage = Image.getInstance(template);
+            parrafo1.add(chartImage);
+
+            graphics2d2.dispose();
+            Image chartImage3 = Image.getInstance(template2);
+            parrafo2.add(chartImage3);
+
+            document.add(parrafo1)
+            document.add(parrafo2)
+//            document.add(parrafo2)
+//            document.add(parrafo2)
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        PdfPTable table = new PdfPTable(2); // 3 columns.
+        PdfPTable table2 = new PdfPTable(2); // 3 columns.
+
+        PdfPCell cell1 = new PdfPCell(new Paragraph("Clase"));
+        PdfPCell cell2 = new PdfPCell(new Paragraph("Valor"));
+//        PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
+
+//        PdfPTable nestedTable = new PdfPTable(1);
+//        nestedTable.setWidthPercentage(51);
+//        nestedTable.addCell(new Paragraph("Nested Cell 1"));
+
+//        cell3.addElement(nestedTable);
+//        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
+//        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+
+
+        cell1.setHorizontalAlignment(Element.ALIGN_CENTER)
+        cell2.setHorizontalAlignment(Element.ALIGN_CENTER)
+        cell1.setVerticalAlignment(Element.ALIGN_CENTER)
+        cell2.setVerticalAlignment(Element.ALIGN_CENTER)
+
+        cell1.setBackgroundColor(BaseColor.LIGHT_GRAY)
+        cell2.setBackgroundColor(BaseColor.LIGHT_GRAY)
+
+        table.addCell(cell1);
+        table.addCell(cell2);
+
+        3.times { p->
+
+            PdfPCell cell3 = new PdfPCell(new Paragraph("A"));
+            PdfPCell cell4 = new PdfPCell(new Paragraph("60"));
+
+            cell3.setHorizontalAlignment(Element.ALIGN_CENTER)
+            cell4.setHorizontalAlignment(Element.ALIGN_CENTER)
+            cell3.setVerticalAlignment(Element.ALIGN_CENTER)
+            cell4.setVerticalAlignment(Element.ALIGN_CENTER)
+
+            table2.addCell(cell3);
+            table2.addCell(cell4);
+        }
+
+        document.add(table);
+        document.add(table2);
+
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
     }
 
     def cuellosBotella () {

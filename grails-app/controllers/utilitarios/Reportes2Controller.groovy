@@ -185,6 +185,8 @@ class Reportes2Controller extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 
+        println("sql " + sql)
+
         def dictas = res.dcta__id.unique()
 
         Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
