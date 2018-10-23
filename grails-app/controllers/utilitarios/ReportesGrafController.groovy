@@ -377,4 +377,77 @@ class ReportesGrafController extends seguridad.Shield  {
         return[facultades: facultades, universidad: universidad]
     }
 
+    def competenciasGraf () {
+
+    }
+
+    def facultadSel_ajax () {
+
+        def universidad = Universidad.get(params.universidad)
+        def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
+
+        return[facultades: facultades, universidad: universidad]
+    }
+
+    def escuelas_ajax () {
+
+        def facultad = Facultad.get(params.facultad)
+        def escuelas = Escuela.findAllByFacultad(facultad, [sort: 'nombre', order: 'asc'])
+
+        return [escuelas: escuelas]
+    }
+
+
+    def competenciasData_ajax () {
+
+        println ("params com" + params)
+            def escuela = Escuela.get(params.escuela)
+            def periodo = Periodo.get(params.prdo)
+            def cn = dbConnectionService.getConnection()
+            def sql
+            def data = [:]
+            def la
+
+            sql = "select * from competencias(${escuela?.id}, ${periodo?.id})"
+//        println "sql: $sql"
+            def datos = cn.rows(sql.toString())
+
+//            println datos
+
+                datos.each {
+                    la = it.cmpt.substring(0,8) + "..."
+                    data.put((it.tipo + "_" + it.cmpt), ((it.estdpcnt + 1) + "_" + (it.profpcnt + 1)))
+                }
+
+//            println("data " + data)
+
+//            def txto = ""
+//            def tx = ""
+//            def te = ""
+//            def facl = datos.facl__id.unique()
+//            def facultades = datos.facldscr.unique()
+//            def tpen = datos.tpen__id.unique()
+////        println "facl: $facl"
+////        println "tpen: $tpen"
+//            for(i in tpen) {
+//                for(j in facl) {
+//                    te = "${datos.find{it.tpen__id == i}.tpendscr}"
+//                    tx = "${datos.find{it.facl__id == j && it.tpen__id == i}?.prom?:0}"
+//                    txto += txto? "_$tx" : tx
+//                }
+//                data[i] = [tpen: te, valor: txto]
+//                txto = ""
+//            }
+
+//        println "datos: ${data as JSON}"
+
+            /* se envía el mapa como objeto JSON */
+//            def respuesta = "${facultades.join('_')}||${data as JSON}"
+            def respuesta = "${data as JSON}"
+//            println respuesta
+//        render data as JSON
+            render respuesta
+
+
+    }
 }
