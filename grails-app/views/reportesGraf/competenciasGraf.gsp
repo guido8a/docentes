@@ -17,14 +17,14 @@
         border-style: solid;
         border-color: #606060;
         border-width: 1px;
+        width: 47%;
+        float: left;
         text-align: center;
-        width: 70%;
-        height: auto;
+        height: 500px;
         border-radius: 8px;
         margin: 10px;
-        margin-right: auto;
-        margin-left: auto;
     }
+
     .bajo {
         margin-bottom: 20px;
     }
@@ -95,15 +95,24 @@
 
 </div>
 
-<div style="width: 100%; text-align: center">
-    <div class="chart-container grafico" id="chart-area" hidden>
 
+    <div class="chart-container grafico" id="chart-area" hidden>
+        <h3 id="titulo"></h3>
         <div id="graf" align="center">
             <canvas id="clases" style="margin-top: 30px"></canvas>
         </div>
 
     </div>
-</div>
+
+    <div class="chart-container grafico" id="chart-area2" hidden>
+        <h3 id="titulo2"></h3>
+        <div id="graf2">
+            <canvas id="clases2" style="margin-top: 30px"></canvas>
+        </div>
+    </div>
+
+
+
 
 <script type="text/javascript">
 
@@ -144,7 +153,9 @@
     }
 
     var canvas = $("#clases");
+    var canvas2 = $("#clases2");
     var myChart;
+    var myChart2;
 
     $(".tipoEncuesta").click(function () {
         var id = this.id;
@@ -162,17 +173,26 @@
 
                 var json = $.parseJSON(mnsj);
 
+                $("#titulo").html("Competencias Generales");
+                $("#titulo2").html("Competencias Específicas");
+
                 $("#clases").remove();
+                $("#clases2").remove();
                 $("#chart-area").removeAttr('hidden');
+                $("#chart-area2").removeAttr('hidden');
                 $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
+                $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
 
                 canvas = $("#clases");
+                canvas2 = $("#clases2");
                 var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"];
                 var datos = [];
                 var facultades = "<ul>";
+                var facultades2 = "<ul>";
                 var leyendaG = [];
                 var leyendaE = [];
-                var leyenda = []
+                var leyenda = [];
+                var leyenda2 = [];
                 var vlor;
                 var indice = 0;
                 var ddGE = [];
@@ -181,8 +201,9 @@
                 var ddEP = [];
                 var parts;
                 var valores;
-                var ges = 0
-                var es = 0
+                var ges = 0;
+                var es = 0;
+
                 $.each(json, function (key, val) {
 //                    console.log("key:", key, "val:", val)
                     parts = key.split("_");
@@ -197,11 +218,11 @@
                         leyenda.push("Compt. " + parts[0] + " " + ges);
                     }else{
                         leyendaE.push(parts[1]);
-                        ddGE.push(valores[0]);
-                        ddGP.push(valores[1]);
+                        ddEE.push(valores[0]);
+                        ddEP.push(valores[1]);
                         es ++;
-                        facultades += "<li>Compt " +  parts[0] +  " " + es + " : " + parts[1] + "</li>";
-                        leyenda.push("Compt. " + parts[0] + " " + es);
+                        facultades2 += "<li>Compt " +  parts[0] +  " " + es + " : " + parts[1] + "</li>";
+                        leyenda2.push("Compt. " + parts[0] + " " + es);
                     }
 
                     indice++
@@ -270,9 +291,67 @@
 //                    }]
                 });
 
+                myChart2 = new Chart(canvas2, {
+                    type: 'bar',
+                    data: {
+                        labels: leyenda2,
+                        datasets: [
+                            {
+                                label: ["Alumnos"],
+//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
+                                backgroundColor: "rgba(55, 160, 225, 0.7)",
+//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
+                                borderWidth: 2,
+                                data: ddEE
+                            },
+                            {
+                                label: ["Profesores"],
+//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
+                                backgroundColor: "rgba(225, 58, 55, 0.7)",
+//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
+                                borderWidth:  2,
+                                data: ddEP
+                            }
+                        ]
+                    },
+                    options: {
+                        legend: { display: false,
+                            labels: {
+                                fontColor: 'rgb(20, 80, 100)',
+                                fontSize: 11
+                            }
+                        },
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                stacked: false
+                            }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },stacked: false }]
+                        }
+
+                    }
+//                    ,
+//                    plugins: [{
+//                        beforeInit: function(myChart) {
+//                            myChart.data.labels.forEach(function(e, i, a) {
+//                                if (/ /.test(e)) {
+//                                    a[i] = e.split(/ /);
+//                                }
+//                            });
+//                        }
+//                    }]
+                });
+
 
                 $("#divFacl").remove();
+                $("#divFacl2").remove();
                 $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
+                $('#chart-area2').append('<div id="divFacl2" style="margin-top: 30px; text-align: left">' + facultades2 + '</div>');
             }
         });
     });
