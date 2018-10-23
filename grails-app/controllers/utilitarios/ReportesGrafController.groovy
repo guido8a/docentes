@@ -9,7 +9,7 @@ import docentes.Universidad
 import grails.converters.JSON
 import groovy.json.JsonBuilder
 
-class ReportesGrafController extends seguridad.Shield  {
+class ReportesGrafController extends seguridad.Shield {
     def dbConnectionService
 
     def index() {
@@ -22,7 +22,7 @@ class ReportesGrafController extends seguridad.Shield  {
         def periodo = Periodo.get(params.periodo)
         def facultad
         def facultadId
-        if(params.facl.toInteger()) {
+        if (params.facl.toInteger()) {
             facultad = Facultad.get(params.facl).nombre
             facultadId = "${params.facl}"
         } else {
@@ -59,7 +59,7 @@ class ReportesGrafController extends seguridad.Shield  {
 //        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
     }
 
-    def dialogo_ajax () {
+    def dialogo_ajax() {
 
 //        println("entro " + params)
 
@@ -70,7 +70,7 @@ class ReportesGrafController extends seguridad.Shield  {
         def res
         def sql
 
-        if(params.facultad.toInteger()) {
+        if (params.facultad.toInteger()) {
             facultad = Facultad.get(params.facultad).nombre
             facultadId = "${params.facultad}"
         } else {
@@ -79,7 +79,7 @@ class ReportesGrafController extends seguridad.Shield  {
         }
 
 
-        if(params.tipo == '1'){
+        if (params.tipo == '1') {
             sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase " +
                     "from rpec, prof, escl, dcta, mate " +
                     "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
@@ -88,7 +88,7 @@ class ReportesGrafController extends seguridad.Shield  {
                     "tpen__id = 2 " +
                     "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase " +
                     "order by clase"
-        }else{
+        } else {
             sql = "select rpec.prof__id, dctaprll, matedscr, escldscr, " +
                     "prof.prof__id, profnmbr, profapll from rpec, " +
                     "prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
@@ -115,7 +115,7 @@ class ReportesGrafController extends seguridad.Shield  {
         def periodo = Periodo.get(params.periodo)
         def facultad
         def facultadId
-        if(params.facl.toInteger()) {
+        if (params.facl.toInteger()) {
             facultad = Facultad.get(params.facl).nombre
             facultadId = "${params.facl}"
         } else {
@@ -131,7 +131,7 @@ class ReportesGrafController extends seguridad.Shield  {
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
 //        println "sql: $sql"
-        data.promedio = cn.rows(sql.toString())[0]?.prom?:0 * 100
+        data.promedio = cn.rows(sql.toString())[0]?.prom ?: 0 * 100
 
         sql = "select count(prof.prof__id) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
@@ -143,7 +143,7 @@ class ReportesGrafController extends seguridad.Shield  {
                 "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
                 "tpen__id = 2"
 //        println "sql ptnv: $sql"
-        if(data.prof) {
+        if (data.prof) {
             data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
             data.ptnv = 0
@@ -153,7 +153,7 @@ class ReportesGrafController extends seguridad.Shield  {
                 "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
                 "tpen__id = 2"
 //        println "sql ccbb: $sql"
-        if(data.prof) {
+        if (data.prof) {
             data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
             data.ccbb = 0
@@ -163,7 +163,7 @@ class ReportesGrafController extends seguridad.Shield  {
                 "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
                 "tpen__id = 2"
 //        println "sql fcex: $sql"
-        if(data.prof) {
+        if (data.prof) {
             data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
             data.fcex = 0
@@ -174,18 +174,17 @@ class ReportesGrafController extends seguridad.Shield  {
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
 //        println "sql rcmn: $sql"
-        if(data.prof) {
+        if (data.prof) {
             data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
             data.rcmn = 0
         }
 
-
 //        println "data: $data"
 //        println "data: ${data as JSON}"
 
         /** valores para demostración **/
-        data = [facultad:"Todas las Facultades", promedio:84.8, prof:14, ptnv:17.1, ccbb:34.2, fcex:31.1, rcmn:42.8]
+        data = [facultad: "Todas las Facultades", promedio: 84.8, prof: 14, ptnv: 17.1, ccbb: 34.2, fcex: 31.1, rcmn: 42.8]
 
         render data as JSON
     }
@@ -217,11 +216,11 @@ class ReportesGrafController extends seguridad.Shield  {
         def tpen = datos.tpen__id.unique()
 //        println "facl: $facl"
 //        println "tpen: $tpen"
-        for(i in tpen) {
-            for(j in facl) {
-                te = "${datos.find{it.tpen__id == i}.tpendscr}"
-                tx = "${datos.find{it.facl__id == j && it.tpen__id == i}?.prom?:0}"
-                txto += txto? "_$tx" : tx
+        for (i in tpen) {
+            for (j in facl) {
+                te = "${datos.find { it.tpen__id == i }.tpendscr}"
+                tx = "${datos.find { it.facl__id == j && it.tpen__id == i }?.prom ?: 0}"
+                txto += txto ? "_$tx" : tx
             }
             data[i] = [tpen: te, valor: txto]
             txto = ""
@@ -269,19 +268,19 @@ class ReportesGrafController extends seguridad.Shield  {
 //        println "facl: $facl"
 //        println "tpen: $tpen"
 
-        for(j in facl) {
-            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
-            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
-            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
-            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
-            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
-            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
-            tx_1 += tx_1? "_$tx_ddsc" : tx_ddsc
-            tx_2 += tx_2? "_$tx_ddac" : tx_ddac
-            tx_3 += tx_3? "_$tx_ddhd" : tx_ddhd
-            tx_4 += tx_4? "_$tx_ddci" : tx_ddci
-            tx_5 += tx_5? "_$tx_dcni" : tx_dcni
-            tx_6 += tx_6? "_$tx_d_ea" : tx_d_ea
+        for (j in facl) {
+            tx_ddsc = "${datos.find { it.facl__id == j }?.ddsc ?: 0}"
+            tx_ddac = "${datos.find { it.facl__id == j }?.ddac ?: 0}"
+            tx_ddhd = "${datos.find { it.facl__id == j }?.ddhd ?: 0}"
+            tx_ddci = "${datos.find { it.facl__id == j }?.ddci ?: 0}"
+            tx_dcni = "${datos.find { it.facl__id == j }?.dcni ?: 0}"
+            tx_d_ea = "${datos.find { it.facl__id == j }?.d_ea ?: 0}"
+            tx_1 += tx_1 ? "_$tx_ddsc" : tx_ddsc
+            tx_2 += tx_2 ? "_$tx_ddac" : tx_ddac
+            tx_3 += tx_3 ? "_$tx_ddhd" : tx_ddhd
+            tx_4 += tx_4 ? "_$tx_ddci" : tx_ddci
+            tx_5 += tx_5 ? "_$tx_dcni" : tx_dcni
+            tx_6 += tx_6 ? "_$tx_d_ea" : tx_d_ea
         }
 
         data[1] = [vrbl: 'DSC', valor: tx_1]
@@ -309,13 +308,7 @@ class ReportesGrafController extends seguridad.Shield  {
         def sql
         def data = [:]
 
-        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
-                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
-                "facl.facl__id, facldscr " +
-                "from rpec, prof, escl, facl " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.prdo} " +
-                "group by facldscr, facl.facl__id order by facl.facl__id"
+        sql = "select row_number() over (order by tipo desc) nmro, tipo, cmpt, profpcnt, estdpcnt from competencias(41,1)"
 //        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
@@ -332,19 +325,19 @@ class ReportesGrafController extends seguridad.Shield  {
 //        println "facl: $facl"
 //        println "tpen: $tpen"
 
-        for(j in facl) {
-            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
-            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
-            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
-            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
-            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
-            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
-            tx_1 += tx_1? "_$tx_ddsc" : tx_ddsc
-            tx_2 += tx_2? "_$tx_ddac" : tx_ddac
-            tx_3 += tx_3? "_$tx_ddhd" : tx_ddhd
-            tx_4 += tx_4? "_$tx_ddci" : tx_ddci
-            tx_5 += tx_5? "_$tx_dcni" : tx_dcni
-            tx_6 += tx_6? "_$tx_d_ea" : tx_d_ea
+        for (j in facl) {
+            tx_ddsc = "${datos.find { it.facl__id == j }?.ddsc ?: 0}"
+            tx_ddac = "${datos.find { it.facl__id == j }?.ddac ?: 0}"
+            tx_ddhd = "${datos.find { it.facl__id == j }?.ddhd ?: 0}"
+            tx_ddci = "${datos.find { it.facl__id == j }?.ddci ?: 0}"
+            tx_dcni = "${datos.find { it.facl__id == j }?.dcni ?: 0}"
+            tx_d_ea = "${datos.find { it.facl__id == j }?.d_ea ?: 0}"
+            tx_1 += tx_1 ? "_$tx_ddsc" : tx_ddsc
+            tx_2 += tx_2 ? "_$tx_ddac" : tx_ddac
+            tx_3 += tx_3 ? "_$tx_ddhd" : tx_ddhd
+            tx_4 += tx_4 ? "_$tx_ddci" : tx_ddci
+            tx_5 += tx_5 ? "_$tx_dcni" : tx_dcni
+            tx_6 += tx_6 ? "_$tx_d_ea" : tx_d_ea
         }
 
         data[1] = [vrbl: 'DSC', valor: tx_1]
@@ -357,12 +350,14 @@ class ReportesGrafController extends seguridad.Shield  {
 //        println "datos: ${data as JSON}"
 
         /* se envía el mapa como objeto JSON */
+//        def respuesta = "${facultades.join('_')}||${data as JSON}"
+
+        def antes = '{"1":{"vrbl":"DSC","valor":"0.74_0.98"},"2":{"vrbl":"DAC","valor":"0.90_0.95"},"3":{"vrbl":"DHD","valor":"0.79_0.99"},"4":{"vrbl":"DCI","valor":"0.82_0.97"},"5":{"vrbl":"CNI","valor":"0.81_0.99"},"6":{"vrbl":"EA","valor":"0.84_0.98"}}'
         def respuesta = "${facultades.join('_')}||${data as JSON}"
-//        println respuesta
         render respuesta
     }
 
-    def periodo_ajax () {
+    def periodo_ajax() {
 
         def universidad = Universidad.get(params.universidad)
         def periodos = Periodo.findAllByUniversidad(universidad)
@@ -370,26 +365,26 @@ class ReportesGrafController extends seguridad.Shield  {
         return [periodos: periodos]
     }
 
-    def facultad_ajax () {
+    def facultad_ajax() {
         def universidad = Universidad.get(params.universidad)
         def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
 
-        return[facultades: facultades, universidad: universidad]
+        return [facultades: facultades, universidad: universidad]
     }
 
-    def competenciasGraf () {
+    def competenciasGraf() {
 
     }
 
-    def facultadSel_ajax () {
+    def facultadSel_ajax() {
 
         def universidad = Universidad.get(params.universidad)
         def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
 
-        return[facultades: facultades, universidad: universidad]
+        return [facultades: facultades, universidad: universidad]
     }
 
-    def escuelas_ajax () {
+    def escuelas_ajax() {
 
         def facultad = Facultad.get(params.facultad)
         def escuelas = Escuela.findAllByFacultad(facultad, [sort: 'nombre', order: 'asc'])
@@ -398,27 +393,29 @@ class ReportesGrafController extends seguridad.Shield  {
     }
 
 
-    def competenciasData_ajax () {
+    def competenciasData_ajax() {
 
-        println ("params com" + params)
-            def escuela = Escuela.get(params.escuela)
-            def periodo = Periodo.get(params.prdo)
-            def cn = dbConnectionService.getConnection()
-            def sql
-            def data = [:]
-            def la
+        println("params com" + params)
+        def escuela = Escuela.get(params.escuela)
+        def periodo = Periodo.get(params.prdo)
+        def cn = dbConnectionService.getConnection()
+        def sql
+        def data = [:]
+        def la
 
-            sql = "select * from competencias(${escuela?.id}, ${periodo?.id})"
+        sql = "select * from competencias(${escuela?.id}, ${periodo?.id})"
 //        println "sql: $sql"
-            def datos = cn.rows(sql.toString())
+        def datos = cn.rows(sql.toString())
 
-                datos.each {
-                    la = it.cmpt.substring(0,8) + "..."
-                    data.put((it.tipo + "_" + it.cmpt), ((it.estdpcnt + 1) + "_" + (it.profpcnt + 1)))
-                }
+        datos.each {
+            la = it.cmpt.substring(0, 8) + "..."
+            data.put((it.tipo + "_" + it.cmpt), ((it.estdpcnt + 1)/2 + "_" + (it.profpcnt + 1)/2))
+        }
 
-            def respuesta = "${data as JSON}"
+        println "--> $data"
 
-            render respuesta
+        def respuesta = "${data as JSON}"
+
+        render respuesta
     }
 }

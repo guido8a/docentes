@@ -41,29 +41,29 @@
 </div>
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
-    <div class="col-md-1"></div>
+    %{--<div class="col-md-1"></div>--}%
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
-        <div class="col-md-1">Universidad:</div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 row" style="text-align: right">
+            Universidad
+        </div>
+
+        <div class="col-sm-6">
             <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="form-control" style="width: 280px"
+                      class="form-control"
                       from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
         </div>
-        <div class="col-md-3">Seleccione el período de evaluaciones:</div>
-        <div class="col-md-1" id="divPeriodos">
-
-        </div>
+        <div class="col-md-1">Período:</div>
     </g:if>
     <g:else>
-        <div class="col-md-1">Universidad:</div>
-        <div class="col-sm-3">
+        <div class="col-sm-6">
+            Universidad
             <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
                       class="form-control" style="width: 280px"
                       from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
         </div>
 
-        <div class="col-md-3">Seleccione el período de evaluaciones:</div>
+        <div class="col-md-1">Periodo:</div>
         <div class="col-sm-1">
             <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                       class="form-control" style="width: 90px"
@@ -71,27 +71,37 @@
         </div>
     </g:else>
 
-    <div class="col-md-2">
-        <div class="btn btn-info tipoEncuesta" id="tpenBarras">
-            <i class="fa fa-bar-chart"></i> Diagrama de Barras
-        </div>
+    <div class="col-md-2" id="divPeriodos">
+
     </div>
+
 </div>
-
-
-<div class="row text-info" style="font-size: 11pt; margin-bottom: 20px; margin-left: 85px">
-
-    <div class="col-md-1" style="margin-top: 10px;">Facultad:</div>
-
-    <div class="col-md-4" id="divFacultad">
+<div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
+    <div class="col-md-1">Facultad</div>
+    <div class="col-md-5" id="divFacultad">
 
     </div>
 
-    <div class="col-md-1" style="margin-top: 10px;">Escuela:</div>
-
+    <div class="col-md-1">Carrera</div>
     <div class="col-md-5" id="divEscuela">
 
     </div>
+
+    %{--
+        <div class="col-md-2">
+            <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+                <i class="fa fa-bar-chart"></i> Diagrama de Barras
+            </div>
+        </div>
+    --}%
+</div>
+
+
+<div class="row text-info" style="text-align: center">
+
+        <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+            <i class="fa fa-bar-chart"></i> Diagrama de Barras
+        </div>
 
 </div>
 
@@ -214,15 +224,15 @@
                         ddGE.push(valores[0]);
                         ddGP.push(valores[1]);
                         ges ++;
-                        facultades += "<li>Compt " +  parts[0] +  " " + ges + " : " + parts[1] + "</li>";
-                        leyenda.push("Compt. " + parts[0] + " " + ges);
+                        facultades += "<li>" + parts[0] +  " " + ges + " : " + parts[1] + "</li>";
+                        leyenda.push(parts[0] + ges);
                     }else{
                         leyendaE.push(parts[1]);
                         ddEE.push(valores[0]);
                         ddEP.push(valores[1]);
                         es ++;
-                        facultades2 += "<li>Compt " +  parts[0] +  " " + es + " : " + parts[1] + "</li>";
-                        leyenda2.push("Compt. " + parts[0] + " " + es);
+                        facultades2 += "<li>" + parts[0] +  " " + es + " : " + parts[1] + "</li>";
+                        leyenda2.push(parts[0] + " " + es);
                     }
 
                     indice++
