@@ -409,7 +409,8 @@ class ReportesGrafController extends seguridad.Shield {
 
         datos.each {
             la = it.cmpt.substring(0, 8) + "..."
-            data.put((it.tipo + "_" + it.cmpt), ((it.estdpcnt + 1)/2 + "_" + (it.profpcnt + 1)/2))
+//            data.put((it.tipo + "_" + it.cmpt), ((it.estdpcnt + 1)/2 + "_" + (it.profpcnt + 1)/2))
+            data.put((it.tipo + "_" + it.cmpt), it.estdpcnt + "_" + it.profpcnt )
         }
 
         println "--> $data"
