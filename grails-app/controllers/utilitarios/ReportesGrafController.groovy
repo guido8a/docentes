@@ -395,7 +395,7 @@ class ReportesGrafController extends seguridad.Shield {
 
     def competenciasData_ajax() {
 
-        println("params com" + params)
+//        println("params com" + params)
         def escuela = Escuela.get(params.escuela)
         def periodo = Periodo.get(params.prdo)
         def cn = dbConnectionService.getConnection()
@@ -413,7 +413,7 @@ class ReportesGrafController extends seguridad.Shield {
             data.put((it.tipo + "_" + it.cmpt), it.estdpcnt + "_" + it.profpcnt )
         }
 
-        println "--> $data"
+//        println "--> $data"
 
         def respuesta = "${data as JSON}"
 
