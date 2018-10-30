@@ -450,18 +450,6 @@ class ReportesGrafController extends seguridad.Shield {
 
     static CategoryDataset createDataset(datos, tipo) {
 
-//        final String E = "E";
-//        final String G = "G";
-        final String g1 = "G1";
-        final String g2 = "G2";
-        final String g3 = "G3";
-        final String g4 = "G4";
-        final String g5 = "G5";
-        final String e1 = "E1";
-        final String e2 = "E2";
-        final String e3 = "E3";
-        final String e4 = "E4";
-        final String e5 = "E5";
         final String P = "Profesores";
         final String E = "Estudiantes";
 
@@ -469,6 +457,16 @@ class ReportesGrafController extends seguridad.Shield {
                 new DefaultCategoryDataset( );
 
         def parts1 = []
+        def parts2 = []
+
+        def tam = datos.size()
+        def ges = []
+        def ees = []
+
+        tam.times{
+            ges.add('G' + (it + 1))
+            ees.add('E' + (it + 1))
+        }
 
         datos.eachWithIndex { q, k ->
 
@@ -476,34 +474,18 @@ class ReportesGrafController extends seguridad.Shield {
 
             for (int i = datos.size() - 1; i > -1; i--) {
                 parts1[k] = q.value.split("_")
+                parts2[k] = q.key
+
+                if(tipo == '1'){
+                    dataset.addValue( parts1[k][0].toDouble() , E ,  ges[k]);
+                    dataset.addValue( parts1[k][1].toDouble() , P ,  ges[k]);
+                }else{
+                    dataset.addValue( parts1[k][0].toDouble() , E ,  ees[k]);
+                    dataset.addValue( parts1[k][1].toDouble() , P ,  ees[k]);
+                }
             }
 
         }
-
-        if(tipo == '1'){
-            dataset.addValue( parts1[0][0].toDouble() , E ,  g1);
-            dataset.addValue( parts1[0][1].toDouble() , P ,  g1);
-            dataset.addValue( parts1[1][0].toDouble() , E ,  g2);
-            dataset.addValue( parts1[1][1].toDouble() , P ,  g2);
-            dataset.addValue( parts1[2][0].toDouble() , E ,  g3);
-            dataset.addValue( parts1[2][1].toDouble() , P ,  g4);
-            dataset.addValue( parts1[3][0].toDouble() , E ,  g4);
-            dataset.addValue( parts1[3][1].toDouble() , P ,  g4);
-            dataset.addValue( parts1[4][0].toDouble() , E ,  g5);
-            dataset.addValue( parts1[4][1].toDouble() , P ,  g5);
-        }else{
-            dataset.addValue( parts1[0][0].toDouble() , E ,  e1);
-            dataset.addValue( parts1[0][1].toDouble() , P ,  e1);
-            dataset.addValue( parts1[1][0].toDouble() , E ,  e2);
-            dataset.addValue( parts1[1][1].toDouble() , P ,  e2);
-            dataset.addValue( parts1[2][0].toDouble() , E ,  e3);
-            dataset.addValue( parts1[2][1].toDouble() , P ,  e3);
-            dataset.addValue( parts1[3][0].toDouble() , E ,  e4);
-            dataset.addValue( parts1[3][1].toDouble() , P ,  e4);
-            dataset.addValue( parts1[4][0].toDouble() , E ,  e5);
-            dataset.addValue( parts1[4][1].toDouble() , P ,  e5);
-        }
-
         return dataset;
     }
 
@@ -535,6 +517,7 @@ class ReportesGrafController extends seguridad.Shield {
         def sql
         def data = [:]
         def la
+        def textos = []
 
         sql = "select * from competencias(${escuela?.id}, ${periodo?.id})"
 //        println "sql: $sql"
@@ -558,6 +541,7 @@ class ReportesGrafController extends seguridad.Shield {
                 cn.eachRow(sql.toString()) { d ->
                     if(d.tipo == 'G'){
                         data.put((d.cmpt), d.estdpcnt + "_" + d.profpcnt )
+                        textos.add(d.cmpt)
                     }
                 }
 //                println "data: $data"
@@ -569,6 +553,7 @@ class ReportesGrafController extends seguridad.Shield {
                 cn.eachRow(sql.toString()) { d ->
                     if(d.tipo == 'E'){
                         data.put((d.cmpt), d.estdpcnt + "_" + d.profpcnt )
+                        textos.add(d.cmpt)
                     }
                 }
 //                println "data: $data"
@@ -662,48 +647,12 @@ class ReportesGrafController extends seguridad.Shield {
         table.addCell(cell1);
         table.addCell(cell2);
 
-        PdfPCell cell3 = new PdfPCell(new Paragraph(tipo == '1' ? "G1" : 'E1'));
-        PdfPCell cell4 = new PdfPCell(new Paragraph(tipo == '1' ? "Desempeñarse de manera efectiva en equipos de trabajo" : 'Identificar, formular y resolver problemas de ingeniería'));
-        PdfPCell cell5 = new PdfPCell(new Paragraph(tipo == '1' ? "G2" : 'E2'));
-        PdfPCell cell6 = new PdfPCell(new Paragraph(tipo == '1' ? "Comunicarse con efectividad" : 'Concebir, diseñar y desarrollar proyectos de ingeniería'));
-        PdfPCell cell7 = new PdfPCell(new Paragraph(tipo == '1' ? "G3" : 'E3'));
-        PdfPCell cell8 = new PdfPCell(new Paragraph(tipo == '1' ? "Actuar con ética y valores morales" : 'Gestionar, planificar, ejecutar y controlar proyectos de ingeniería'));
-        PdfPCell cell9 = new PdfPCell(new Paragraph(tipo == '1' ? "G4" : 'E4'));
-        PdfPCell cell10 = new PdfPCell(new Paragraph(tipo == '1' ? "Aprender en forma continua y autónoma" : 'Utilizar de manera efectiva las técnicas y herramientas de aplicación en la ingeniería'));
-        PdfPCell cell11 = new PdfPCell(new Paragraph(tipo == '1' ? "G5" : 'E5'));
-        PdfPCell cell12 = new PdfPCell(new Paragraph(tipo == '1' ? "Actuar con espíritu emprendedor" : 'Contribuir a la generación de desarrollos tecnológicos y/o innovaciones tecnológicas'));
+        def tam = textos.size()
 
-        cell3.setHorizontalAlignment(Element.ALIGN_CENTER)
-        cell4.setHorizontalAlignment(Element.ALIGN_LEFT)
-        cell3.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell4.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell5.setHorizontalAlignment(Element.ALIGN_CENTER)
-        cell6.setHorizontalAlignment(Element.ALIGN_LEFT)
-        cell5.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell6.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell7.setHorizontalAlignment(Element.ALIGN_CENTER)
-        cell8.setHorizontalAlignment(Element.ALIGN_LEFT)
-        cell7.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell8.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell9.setHorizontalAlignment(Element.ALIGN_CENTER)
-        cell10.setHorizontalAlignment(Element.ALIGN_LEFT)
-        cell9.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell10.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell11.setHorizontalAlignment(Element.ALIGN_CENTER)
-        cell12.setHorizontalAlignment(Element.ALIGN_LEFT)
-        cell11.setVerticalAlignment(Element.ALIGN_CENTER)
-        cell12.setVerticalAlignment(Element.ALIGN_CENTER)
-
-        table2.addCell(cell3);
-        table2.addCell(cell4);
-        table2.addCell(cell5);
-        table2.addCell(cell6);
-        table2.addCell(cell7);
-        table2.addCell(cell8);
-        table2.addCell(cell9);
-        table2.addCell(cell10);
-        table2.addCell(cell11);
-        table2.addCell(cell12);
+        tam.times{
+            table2.addCell(crearCelda(tipo, 'G' + (it + 1), 'E' + (it + 1)))
+            table2.addCell(crearCeldaTexto(textos[it]))
+        }
 
         document.add(table);
         document.add(table2);
@@ -716,6 +665,17 @@ class ReportesGrafController extends seguridad.Shield {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
+    }
+
+    def crearCelda (tipo,g,e) {
+        PdfPCell cell = new PdfPCell(new Paragraph(tipo == '1' ? g : e));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER)
+        return cell
+    }
+
+    def crearCeldaTexto (txt) {
+        PdfPCell cell = new PdfPCell(new Paragraph(txt));
+        return cell
     }
 
 
