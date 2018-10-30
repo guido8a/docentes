@@ -41,7 +41,7 @@
 </div>
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
-    %{--<div class="col-md-1"></div>--}%
+%{--<div class="col-md-1"></div>--}%
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
         <div class="col-sm-3 row" style="text-align: right">
@@ -86,42 +86,39 @@
     <div class="col-md-5" id="divEscuela">
 
     </div>
-
-    %{--
-        <div class="col-md-2">
-            <div class="btn btn-info tipoEncuesta" id="tpenBarras">
-                <i class="fa fa-bar-chart"></i> Diagrama de Barras
-            </div>
-        </div>
-    --}%
 </div>
 
 
 <div class="row text-info" style="text-align: center">
 
-        <div class="btn btn-info tipoEncuesta" id="tpenBarras">
-            <i class="fa fa-bar-chart"></i> Diagrama de Barras
-        </div>
+    <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+        <i class="fa fa-bar-chart"></i> Diagrama de Barras
+    </div>
 
 </div>
 
 
-    <div class="chart-container grafico" id="chart-area" hidden>
-        <h3 id="titulo"></h3>
-        <div id="graf" align="center">
-            <canvas id="clases" style="margin-top: 30px"></canvas>
-        </div>
+<div class="chart-container grafico" id="chart-area" hidden>
+    <h3 id="titulo"></h3>
+    <div id="graf" align="center">
+        <canvas id="clases" style="margin-top: 30px"></canvas>
+    </div>
+
+    <a href="#" class="btn btn-info" id="imprimirGenerales"><i class="fa fa-line-chart"></i> Imprimir</a>
+
+</div>
+
+
+<div class="chart-container grafico" id="chart-area2" hidden>
+    <h3 id="titulo2"></h3>
+    <div id="graf2">
+        <canvas id="clases2" style="margin-top: 30px"></canvas>
+
 
     </div>
 
-    <div class="chart-container grafico" id="chart-area2" hidden>
-        <h3 id="titulo2"></h3>
-        <div id="graf2">
-            <canvas id="clases2" style="margin-top: 30px"></canvas>
-        </div>
-    </div>
-
-
+    <a href="#" class="btn btn-info" id="imprimirEspecificas"><i class="fa fa-line-chart"></i> Imprimir</a>
+</div>
 
 
 <script type="text/javascript">
@@ -360,10 +357,24 @@
 
                 $("#divFacl").remove();
                 $("#divFacl2").remove();
-                $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
-                $('#chart-area2').append('<div id="divFacl2" style="margin-top: 30px; text-align: left">' + facultades2 + '</div>');
+                $('#chart-area').append('<div id="divFacl" style="margin-top: 20px; text-align: left">' + facultades + '</div>');
+                $('#chart-area2').append('<div id="divFacl2" style="margin-top: 20px; text-align: left">' + facultades2 + '</div>');
             }
         });
+    });
+
+    $("#imprimirGenerales").click(function () {
+        var prdo = $("#periodoId").val();
+        var escuela = $("#escuelaId").val();
+        location.href = "${createLink(controller: 'reportesGraf', action: 'competenciasReporteGeneral')}?periodo=" + prdo +
+            "&escuela=" + escuela + "&tipo=" + 1;
+    });
+
+    $("#imprimirEspecificas").click(function () {
+        var prdo = $("#periodoId").val();
+        var escuela = $("#escuelaId").val();
+        location.href = "${createLink(controller: 'reportesGraf', action: 'competenciasReporteGeneral')}?periodo=" + prdo +
+            "&escuela=" + escuela + "&tipo=" + 2;
     });
 
 </script>
