@@ -521,6 +521,7 @@ class ProcesosController extends seguridad.Shield {
             sql2 = "select esclcdgo from escl where esclcdgo = '${cdgo}' and facl__id = ${facl}"
 
             repetido = cn2.rows(sql2.toString())[0]?.esclcdgo
+            println "sql: $sql2 \n-->$repetido"
 
             reg = cn.rows(sql.toString())[0]
             actual_id = reg?.escl__id
@@ -553,8 +554,10 @@ class ProcesosController extends seguridad.Shield {
 
         if(cdgo != 'Código' && escl != 'Escuela'){
             sql = "select mate__id, matecdgo, matedscr from mate " +
-                    "where matecdgo = '${cdgo}' and escl__id = ${escl}"
+                    "where matecdgo = '${cdgo.trim()}'"
+//                    "where matecdgo = '${cdgo.trim()}' and escl__id = ${escl}"
             reg = cn.rows(sql.toString())[0]
+            println "mate --> $sql \n ${reg} \nescl: $escl"
             actual_id = reg?.mate__id
             if (!actual_id) {
                 println "---> inserta materia: ${cdgo}"
