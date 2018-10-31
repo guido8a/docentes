@@ -14,7 +14,7 @@
                     Universidad
                 </label>
                 <div class="col-md-6">
-                    <g:select name="universidad" from="${docentes.Universidad.list().sort{it.nombre}}" optionKey="id" optionValue="nombre" class="form-control"/>
+                    <g:select name="universidad" from="${docentes.Universidad.findAllByNombreNotEqual("Todas").sort{it.nombre}}" optionKey="id" optionValue="nombre" class="form-control"/>
                 </div>
             </span>
         </div>
