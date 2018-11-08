@@ -77,7 +77,7 @@
         </div>
 
         <div style="width: 100%;height: 20px;float: left;margin-top: 30px;text-align: center">
-            <a href="#" id="ingresar" class="btn btn-primary" style="width: 120px; margin: auto">
+            <a href="#" id="ingresar" class="btn btn-primary btn-sm" style="width: 120px; margin: auto">
                 <i class="icon-off"></i>Ingresar</a>
         </div>
 
@@ -85,7 +85,13 @@
             Para mayor información puede consultar el
             <a href="${createLink(uri: '/quanto.pdf')}"><img
                     src="${resource(dir: 'images', file: 'pdf_pq.png')}"/>descriptivo del sistema</a>
-        </div>
+
+%{--
+                <a href="#" id="ingresar" class="badge badge-pill badge-primary" >
+                    Ingresar</a>
+--}%
+
+    </div>
 
 
         <p class="text-info pull-right" style="font-size: 10px; margin-top: 20px">
