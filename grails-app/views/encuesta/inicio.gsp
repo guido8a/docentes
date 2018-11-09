@@ -89,8 +89,8 @@
                     <fieldset>
                         <div style="margin-top: 10px;">
                             %{--<label class="col-md-6 col-xs-6">Cédula de Identidad:</label>--}%
-                            <div class="col-md-6 col-xs-6 negrilla control-label">Cédula de Identidad:</div>
-                            <div class=" col-md-6 col-xs-6">
+                            <div class="col-md-6 col-xs-6 negrilla control-label" style="text-align: right">Cédula de Docente o <br/>Código de Estudiante</div>
+                            <div class=" col-md-5 col-xs-5">
                                 <g:textField name="cdla" class="form-control required cedula" maxlength="15" size="20"/>
                             </div>
                             %{--<input class="col-md-6 col-xs-6 cedula" type="text" name="cdla" maxlength="15" size="20">--}%
