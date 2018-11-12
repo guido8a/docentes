@@ -28,6 +28,8 @@ class CompetenciaController extends Shield {
         params = params.clone()
         params.max = params.max ? Math.min(params.max.toInteger(), 100) : 10
         params.offset = params.offset ?: 0
+        params.sort = 'carrera'
+        params.order = 'asc'
         if(all) {
             params.remove("max")
             params.remove("offset")
