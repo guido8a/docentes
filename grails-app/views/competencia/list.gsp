@@ -39,8 +39,8 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Carrera</th>
-                    <th>Descripción</th>
+                    <th width="20%">Carrera</th>
+                    <th width="80%">Descripción</th>
                 </tr>
             </thead>
             <tbody>

@@ -59,6 +59,7 @@ class CompetenciaController extends Shield {
      * @return competenciaInstanceList: la lista de elementos filtrados, competenciaInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
+        params.max = 20
         def competenciaInstanceList = getList(params, false)
         def competenciaInstanceCount = getList(params, true).size()
         return [competenciaInstanceList: competenciaInstanceList, competenciaInstanceCount: competenciaInstanceCount]
