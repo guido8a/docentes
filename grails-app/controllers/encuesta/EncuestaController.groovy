@@ -303,7 +303,7 @@ class EncuestaController {
      * seleccina pregunta que toca e invoca la acción correspondiente al tipo
      */
     def ponePregunta(actual, total, encu, tpen) {
-        println "ponePregunta ----> $actual, $total, $encu, $tpen"
+//        println "ponePregunta ----> $actual, $total, $encu, $tpen"
         def pruebasInicio = new Date()
         def pruebasFin
         def cn = dbConnectionService.getConnection()
@@ -340,7 +340,7 @@ class EncuestaController {
         pruebasFin = new Date()
         println "tiempo ejecución ponePregunta: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
 
-        println "pregunta ${pregunta.id}, persona: ${session.tipoPersona}"
+//        println "pregunta ${pregunta.id}, persona: ${session.tipoPersona}"
 
         def tppr = tipoPregunta.split('_')[0]
         switch (tppr) {
@@ -363,8 +363,8 @@ class EncuestaController {
                                 materias: cmpt + [id: ninguna, dscr:'NINGUNA'], tppr: tppr])
                 break
             case 'Prit':
-//                println "-----------------> prit"
-                def prit = encuestaService.itemsPregunta(pregunta.codigo)
+//                println "-----------------> prit, ${pregunta.codigo}"
+                def prit = encuestaService.itemsPregunta(pregunta.id)
                 render (view: 'preguntaPrit',
                         model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp, resp: resp,
                                 prit: prit])
@@ -454,11 +454,11 @@ class EncuestaController {
         def cn = dbConnectionService.getConnection()
         def actual = params.actual.toInteger() - 1
         def tx = "select teti__id from encu where encu__id = ${params.encu__id}"
-        println "anterior sql: $tx"
+//        println "anterior sql: $tx"
         if((cn.rows(tx.toString())[0]?.teti__id == 4) && params.actual.toInteger() == 3) {
             tx = "select count(*) cnta from encu, dtec where encu.encu__id = ${params.encu__id} and " +
                     "dtec.encu__id = encu.encu__id and prte__id = 68 and prit__id <> 2"
-            println "... $tx"
+//            println "... $tx"
             if(cn.rows(tx.toString())[0]?.cnta == 0)
                 actual--
         }
@@ -484,7 +484,7 @@ class EncuestaController {
         def preg = cn.rows(tx.toString())[0]?.pregcdgo.trim()
 //        println "respuesta sql: $tx"
 
-        println "asig: ${params.materia}, resp: ${resp}"
+//        println "asig: ${params.materia}, resp: ${resp}"
         def asignatura = params.materia.toInteger() != resp
         def respuestas = asignatura? 1 : resp
 
@@ -641,7 +641,7 @@ class EncuestaController {
     def seleccionaPregunta(tpen, actual){
         def cn = dbConnectionService.getConnection()
         def txpreg = ""
-        txpreg = tpen == 1? "replace(upper(pregdscr), 'EL DOCENTE', 'USTED')" : "pregdscr"
+        txpreg = tpen == 1? "replace(pregdscr, 'El docente', 'Usted')" : "pregdscr"
 
         def tx = "select prte__id, prtenmro, prte.preg__id id, ${txpreg} dscr " +
                 "from preg, prte " +
@@ -655,7 +655,7 @@ class EncuestaController {
 
         def prte = cn.rows(tx.toString())[0]
 //        println "dscr: ${prte.dscr}"
-        prte.dscr = tpen == 1? prte.dscr.replaceAll('EL PROFESOR', 'USTED') : prte.dscr
+        prte.dscr = tpen == 1? prte.dscr.replaceAll('El profesor', 'Usted') : prte.dscr
 
 
         preg.add(prte.prtenmro)
@@ -688,7 +688,7 @@ class EncuestaController {
 
 //        println "+++++ resp: $resp"
         cn.close()
-//        println "+++++++ contestado: $contestado"
+//        println "+++++++ pregunta: $preg"
         return preg
     }
 
