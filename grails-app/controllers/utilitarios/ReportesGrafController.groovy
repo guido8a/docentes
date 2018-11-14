@@ -41,10 +41,11 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def clasificar() {
-//        println "clasificar $params"
+        println "clasificar $params"
         def cn = dbConnectionService.getConnection()
 
-        def periodo = Periodo.get(params.periodo)
+//        def periodo = Periodo.get(params.periodo)
+        def periodo = Periodo.get(params.prdo)
         def facultad
         def facultadId
         if (params.facl.toInteger()) {
@@ -80,8 +81,8 @@ class ReportesGrafController extends seguridad.Shield {
         subtitulo = "PROFESORES POR DESEMPEÑO"
 
         /* para demostración */
-        render "60_71_28_Todas las Facultades_43_159_RECOMENDACIONES"
-//        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
+//        render "60_71_28_Todas las Facultades_43_159_RECOMENDACIONES"
+        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
     }
 
     def dialogo_ajax() {
@@ -134,10 +135,10 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def estrategiaData() {
-//        println "estrategiaData $params"
+        println "estrategiaData $params"
         def cn = dbConnectionService.getConnection()
 
-        def periodo = Periodo.get(params.periodo)
+        def periodo = Periodo.get(params.prdo)
         def facultad
         def facultadId
         if (params.facl.toInteger()) {

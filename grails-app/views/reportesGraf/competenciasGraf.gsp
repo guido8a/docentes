@@ -98,7 +98,7 @@
 </div>
 
 
-<div class="chart-container grafico" id="chart-area" hidden style="height: 530px">
+<div class="chart-container grafico" id="chart-area" hidden style="height: 600px">
     <h3 id="titulo"></h3>
     <div id="graf" align="center">
         <canvas id="clases" style="margin-top: 30px"></canvas>
@@ -109,7 +109,7 @@
 </div>
 
 
-<div class="chart-container grafico" id="chart-area2" hidden style="height: 530px">
+<div class="chart-container grafico" id="chart-area2" hidden style="height: 600px">
     <h3 id="titulo2"></h3>
     <div id="graf2">
         <canvas id="clases2" style="margin-top: 30px"></canvas>

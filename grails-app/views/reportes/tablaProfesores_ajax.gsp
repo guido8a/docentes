@@ -70,11 +70,12 @@
                                     <i class="fa fa-male"></i>
                                 </a>
                             </g:else>
-                            <g:if test="${pantalla == '1'}">
-                                <a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" data-nom="${profesor?.apellido + " " + profesor?.nombre}" title="Enviar por correo al profesor">
-                                    <i class="fa fa-envelope"></i>
-                                </a>
-                            </g:if>
+                            %{--TODO habilidar una vez se haya asignado el correo al profesor--}%
+                            %{--<g:if test="${pantalla == '1'}">--}%
+                                %{--<a href="#" class="btn btn-success btnIM"  data-id="${profesor.id}" data-nom="${profesor?.apellido + " " + profesor?.nombre}" title="Enviar por correo al profesor">--}%
+                                    %{--<i class="fa fa-envelope"></i>--}%
+                                %{--</a>--}%
+                            %{--</g:if>--}%
                         </td>
                     </tr>
                 </g:each>

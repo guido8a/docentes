@@ -119,7 +119,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def profesNoEvaluados () {
-        println "profesNoEvaluados $params"
+//        println "profesNoEvaluados $params"
 
         def periodo = Periodo.get(params.periodo)
         def cn = dbConnectionService.getConnection()
@@ -222,7 +222,7 @@ class ReportesController extends seguridad.Shield {
 
     def profesEvaluados () {
 
-        println "profesEvaluados $params"
+//        println "profesEvaluados $params"
 
         def periodo = Periodo.get(params.periodo)
         def cn = dbConnectionService.getConnection()
@@ -254,7 +254,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def facultad_ajax () {
-        println "facultad_ajax params: $params"
+//        println "facultad_ajax params: $params"
         def escl = Escuela.findAllByFacultad(Facultad.get(params.facl), [sort: 'nombre'])
         [escuelas: escl]
     }
