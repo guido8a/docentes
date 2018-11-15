@@ -280,7 +280,14 @@
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true
-                                },stacked: false }]
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: '%',
+                                    fontColor: '#f90f25'
+                                },
+                                stacked: false
+                            }]
                         }
 
                     }
@@ -320,6 +327,7 @@
                         ]
                     },
                     options: {
+
                         legend: { display: false,
                             labels: {
                                 fontColor: 'rgb(20, 80, 100)',
@@ -336,7 +344,14 @@
                             yAxes: [{
                                 ticks: {
                                     beginAtZero: true
-                                },stacked: false }]
+                                },
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: '%',
+                                    fontColor: '#f90f25'
+                                },
+                                stacked: false
+                            }]
                         }
 
                     }

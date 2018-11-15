@@ -59,19 +59,17 @@
                 <g:textField name="cedula_name" maxlength="31" style="margin-right: 10px; width: 100%" value="${params.criterio}"
                              id="cedula" class="form-control"/>
             </div>
-
-            <div class="col-xs-3">
-                <b style="margin-left: 5px">Apellido: </b>
-                <g:textField name="apellido_name" style="margin-right: 10px; width: 100%" value="${params.criterio}"
-                             id="apellido" class="form-control"/>
-            </div>
-
             <div class="col-xs-3">
                 <b style="margin-left: 5px">Nombre: </b>
                 <g:textField name="nombre_name" style="margin-right: 10px; width: 100%" value="${params.criterio}"
                              id="nombre" class="form-control"/>
             </div>
 
+            <div class="col-xs-3">
+                <b style="margin-left: 5px">Apellido: </b>
+                <g:textField name="apellido_name" style="margin-right: 10px; width: 100%" value="${params.criterio}"
+                             id="apellido" class="form-control"/>
+            </div>
             <div class="btn-group col-xs-1" style="margin-left: -10px; margin-top: 20px; width: 110px;">
                 <a href="#" name="busqueda" class="btn btn-info" id="btnBusqueda" title="Buscar"
                    style="height: 34px; padding: 9px; width: 46px">

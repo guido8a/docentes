@@ -228,6 +228,10 @@ class ProfesorController extends Shield {
         if(params.id){
             profesor = Profesor.get(params.id)
         }
+
+        println("profesor " + profesor?.nombre  +  " " + profesor?.apellido)
+
+
         return [profesorInstance: profesor, universidad: universidad]
     }
 

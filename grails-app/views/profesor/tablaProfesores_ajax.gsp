@@ -11,8 +11,8 @@
         <g:each in="${profesores}" var="profesor">
             <tr data-id="${profesor?.id}" data-uni="${profesor?.escuela?.facultad?.universidad?.id}">
                 <td style="width: 10%">${profesor?.cedula}</td>
-                <td style="width: 34%">${profesor?.apellido}</td>
-                <td style="width: 33%">${profesor?.nombre}</td>
+                <td style="width: 34%">${profesor?.nombre}</td>
+                <td style="width: 33%">${profesor?.apellido}</td>
                 <td style="width: 11%">${profesor?.estado}</td>
                 <td style="width: 11%">${profesor?.evaluar}</td>
             </tr>
