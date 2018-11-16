@@ -47,7 +47,7 @@ class ReportesGrafController extends seguridad.Shield {
         def periodo = Periodo.get(params.prdo)
         def facultad
         def facultadId
-        if (params.facl.toInteger()) {
+        if (params.facl) {
             facultad = Facultad.get(params.facl).nombre
             facultadId = "${params.facl}"
         } else {
@@ -76,7 +76,7 @@ class ReportesGrafController extends seguridad.Shield {
 
         sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
-                "univ__id = ${params.univ} "
+                "univ__id = ${params.univ}"
 //        println "sql: $sql"
         rcmn = cn.rows(sql.toString())[0].cnta
 //        println "data: $data, rc: $rcmn, totl: $totl"

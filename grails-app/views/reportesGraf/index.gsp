@@ -47,68 +47,106 @@
 </div>
 
 
-<div class="row text-info" style="font-size: 11pt; margin-bottom: 21px">
+%{--<div class="row text-info" style="font-size: 11pt; margin-bottom: 21px">--}%
+
+%{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
+%{--<div class="col-md-1">Universidad:</div>--}%
+%{--<div class="col-sm-3">--}%
+%{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+%{--class="form-control" style="width: 280px"--}%
+%{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+%{--</div>--}%
+%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
+%{--<div class="col-sm-1" id="divPeriodos">--}%
+
+%{--</div>--}%
+
+%{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
+
+%{--<div class="col-md-2" id="divFacultad">--}%
+
+%{--</div>--}%
+%{--</g:if>--}%
+%{--<g:else>--}%
+%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
+%{--<div class="col-sm-1">--}%
+%{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
+%{--class="form-control" style="width: 90px"--}%
+%{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
+%{--</div>--}%
+
+%{--<div class="col-md-1" style="margin-top: 10px; margin-left: 10px">Facultad:</div>--}%
+
+%{--<div class="col-md-4">--}%
+%{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
+%{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
+%{--noSelection="${[0:'Todas ...']}"/>--}%
+%{--</div>--}%
+
+%{--</g:else>--}%
+%{--<div class="col-md-1">--}%
+%{--<div class="btn btn-info" id="graficar">--}%
+%{--<i class="fa fa-pie-chart"></i> Aceptar--}%
+%{--</div>--}%
+%{--</div>--}%
+%{--</div>--}%
+
+
+
+<div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
-        <div class="col-md-1">Universidad:</div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 row" style="text-align: right">
+            Universidad
+        </div>
+
+        <div class="col-sm-6">
             <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="form-control" style="width: 280px"
+                      class="form-control"
                       from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
         </div>
-        <div class="col-md-2">Seleccione el período de evaluaciones:</div>
-        <div class="col-sm-1" id="divPeriodos">
-
-        </div>
-
-        <div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>
-
-        <div class="col-md-2" id="divFacultad">
-
-        </div>
+        <div class="col-md-1">Período:</div>
     </g:if>
     <g:else>
-        <div class="col-md-2">Seleccione el período de evaluaciones:</div>
+        <div class="col-sm-6">
+            Universidad
+            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                      class="form-control" style="width: 280px"
+                      from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
+        </div>
+
+        <div class="col-md-1">Periodo:</div>
         <div class="col-sm-1">
             <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                       class="form-control" style="width: 90px"
                       from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
         </div>
-
-        <div class="col-md-1" style="margin-top: 10px; margin-left: 10px">Facultad:</div>
-
-        <div class="col-md-4">
-            <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
-                      optionKey="id" name="facultad_name" id="facultad" class="form-control"
-                      noSelection="${[0:'Todas ...']}"/>
-        </div>
-
     </g:else>
 
+    <div class="col-md-2" id="divPeriodos">
 
-    %{--<div class="col-md-2">Seleccione el periodo de evaluaciones:</div>--}%
+    </div>
 
-        %{--<div class="col-sm-1">--}%
-            %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-                      %{--class="form-control" style="width: 90px"--}%
-                      %{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
-        %{--</div>--}%
+</div>
+<div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
+    <div class="col-md-1">Facultad</div>
+    <div class="col-md-5" id="divFacultad">
 
+    </div>
 
-    %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
+    <div class="col-md-1">Carrera</div>
+    <div class="col-md-5" id="divEscuela">
 
-        %{--<div class="col-md-4">--}%
-            %{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-                      %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
-                      %{--noSelection="${[0:'Todas ...']}"/>--}%
-
-    %{--</div>--}%
-    <div class="col-md-1">
-        <div class="btn btn-info" id="graficar">
-            <i class="fa fa-pie-chart"></i> Aceptar
-        </div>
     </div>
 </div>
+
+<div class="row text-info" style="text-align: center">
+    <div class="btn btn-info" id="graficar">
+        <i class="fa fa-pie-chart"></i> Aceptar
+    </div>
+</div>
+
+
 
 <div class="chart-container grafico" id="chart-area" hidden>
     <h3 id="titulo"></h3>
@@ -165,6 +203,42 @@
 
 <script type="text/javascript">
 
+    %{--cargarPeriodo($("#universidadId").val());--}%
+    %{--cargarFacultad($("#universidadId").val());--}%
+
+
+    %{--$("#universidadId").change(function () {--}%
+    %{--var id = $("#universidadId option:selected").val();--}%
+    %{--cargarPeriodo(id);--}%
+    %{--cargarFacultad(id);--}%
+    %{--});--}%
+
+    %{--function cargarPeriodo(id) {--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',--}%
+    %{--data:{--}%
+    %{--universidad: id--}%
+    %{--},--}%
+    %{--success: function (msg){--}%
+    %{--$("#divPeriodos").html(msg)--}%
+    %{--}--}%
+    %{--});--}%
+    %{--}--}%
+
+    %{--function cargarFacultad (id) {--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url: '${createLink(controller: 'reportesGraf', action: 'facultadSel_ajax')}',--}%
+    %{--data:{--}%
+    %{--universidad: id--}%
+    %{--},--}%
+    %{--success: function (msg){--}%
+    %{--$("#divFacultad").html(msg)--}%
+    %{--}--}%
+    %{--});--}%
+    %{--}--}%
+
     cargarPeriodo($("#universidadId").val());
     cargarFacultad($("#universidadId").val());
 
@@ -191,7 +265,7 @@
     function cargarFacultad (id) {
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'facultad_ajax')}',
+            url: '${createLink(controller: 'reportesGraf', action: 'facultadSel_ajax')}',
             data:{
                 universidad: id
             },
@@ -212,13 +286,14 @@
         var prdo = $("#periodoId").val();
         var univ = $("#universidadId").val();
         var facl = $("#facultad").val();
+        var escu = $("#escuelaId option:selected").val();
 //        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
 
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'clasificar')}',
-            data: {facl: facl, prdo: prdo, univ: univ},
+            data: {facl: facl, prdo: prdo, univ: univ, escu: escu},
             success: function (msg) {
 
                 closeLoader();

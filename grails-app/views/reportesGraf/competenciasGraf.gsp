@@ -41,8 +41,6 @@
 </div>
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
-%{--<div class="col-md-1"></div>--}%
-
     <g:if test="${session.perfil.codigo == 'ADMG'}">
         <div class="col-sm-3 row" style="text-align: right">
             Universidad
