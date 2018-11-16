@@ -264,7 +264,7 @@
                         ]
                     },
                     options: {
-                        legend: { display: false,
+                        legend: { display: true,
                             labels: {
                                 fontColor: 'rgb(20, 80, 100)',
                                 fontSize: 11
@@ -284,7 +284,7 @@
                                 scaleLabel: {
                                     display: true,
                                     labelString: '%',
-                                    fontColor: '#f90f25'
+                                    fontColor: '#000000'
                                 },
                                 stacked: false
                             }]
@@ -328,7 +328,7 @@
                     },
                     options: {
 
-                        legend: { display: false,
+                        legend: { display: true,
                             labels: {
                                 fontColor: 'rgb(20, 80, 100)',
                                 fontSize: 11
@@ -348,7 +348,7 @@
                                 scaleLabel: {
                                     display: true,
                                     labelString: '%',
-                                    fontColor: '#f90f25'
+                                    fontColor: '#000000'
                                 },
                                 stacked: false
                             }]
