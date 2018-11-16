@@ -41,41 +41,8 @@
         <th>Ponderación para evaluación de Estudiantes</th>
         <th>Fecha de inicio Evaluaciones</th>
         <th>Fecha de cierre Evaluaciones</th>
-        %{--<g:sortableColumn property="periodo" title="Período Académico" />--}%
-
-        %{--<g:sortableColumn property="minimo" title="Índice de calidad Mínimo" />--}%
-
-        %{--<g:sortableColumn property="optimo" title="Índice de calidad Óptimo" />--}%
-
-        %{--<g:sortableColumn property="maximoDirectivos" title="Ponderación para evaluación de Directivos" />--}%
-
-        %{--<g:sortableColumn property="maximoPares" title="Ponderación para evaluación de Pares" />--}%
-
-        %{--<g:sortableColumn property="maximoAutoevaluacion" title="Ponderación para Autoevaluaciones" />--}%
-
-        %{--<g:sortableColumn property="maximoEstudiantes" title="Ponderación para evaluación de Estudiantes" />--}%
-        %{--<g:sortableColumn property="fechaInicio" title="Fecha de inicio Evaluaciones" />--}%
-        %{--<g:sortableColumn property="fechaCierre" title="Fecha de cierre Evaluaciones" />--}%
     </tr>
     </thead>
-
-
-
-    %{--<tbody>--}%
-    %{--<g:each in="${auxiliaresInstanceList}" status="i" var="auxiliaresInstance">--}%
-    %{--<tr data-id="${auxiliaresInstance.id}">--}%
-    %{--<td><strong>${auxiliaresInstance?.periodo?.nombre}</strong></td>--}%
-    %{--<td>${auxiliaresInstance?.minimo?.toInteger()}</td>--}%
-    %{--<td>${auxiliaresInstance?.optimo?.toInteger()}</td>--}%
-    %{--<td>${auxiliaresInstance?.maximoDirectivos}</td>--}%
-    %{--<td>${auxiliaresInstance?.maximoPares}</td>--}%
-    %{--<td>${auxiliaresInstance?.maximoAutoevaluacion}</td>--}%
-    %{--<td>${auxiliaresInstance?.maximoEstudiantes}</td>--}%
-    %{--<td>${auxiliaresInstance?.fechaInicio.format('yyyy-MM-dd')}</td>--}%
-    %{--<td>${auxiliaresInstance?.fechaCierre ? auxiliaresInstance?.fechaCierre.format('yyyy-MM-dd') : ''}</td>--}%
-    %{--</tr>--}%
-    %{--</g:each>--}%
-    %{--</tbody>--}%
 </table>
 
 <div class="row-fluid"  style="width: 100%;height: 450px;overflow-y: auto;float: right; margin-top: -15px">
@@ -179,159 +146,25 @@
             }
         });
     }
-    %{--function createEditRow(id) {--}%
-    %{--var title = id ? "Editar" : "Crear";--}%
-    %{--var data = id ? { id: id } : {};--}%
-    %{--$.ajax({--}%
-    %{--type    : "POST",--}%
-    %{--url     : "${createLink(action:'form_ajax')}",--}%
-    %{--data    : data,--}%
-    %{--success : function (msg) {--}%
-    %{--var b = bootbox.dialog({--}%
-    %{--id      : "dlgCreateEdit",--}%
-    %{--title   : title + " Auxiliares - Periodo: NN",--}%
-    %{--class   : 'long',--}%
-    %{--message : msg,--}%
-    %{--buttons : {--}%
-    %{--cancelar : {--}%
-    %{--label     : "Cancelar",--}%
-    %{--className : "btn-primary",--}%
-    %{--callback  : function () {--}%
-    %{--}--}%
-    %{--},--}%
-    %{--guardar  : {--}%
-    %{--id        : "btnSave",--}%
-    %{--label     : "<i class='fa fa-save'></i> Guardar",--}%
-    %{--className : "btn-success",--}%
-    %{--callback  : function () {--}%
-    %{--return submitForm();--}%
-    %{--} //callback--}%
-    %{--} //guardar--}%
-    %{--} //buttons--}%
-    %{--}); //dialog--}%
-    %{--setTimeout(function () {--}%
-    %{--b.find(".form-control").first().focus()--}%
-    %{--}, 500);--}%
-    %{--} //success--}%
-    %{--}); //ajax--}%
-    %{--} //createEdit--}%
 
     $(function () {
 
         $(".btnCrear").click(function() {
-        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}?universidad=" + $("#universidadId").val();
-        });
-
-        $("tbody tr").contextMenu({
-            items  : {
-                header   : {
-                    label  : "Acciones",
-                    header : true
+            $.ajax({
+               type: 'POST',
+                url: "${createLink(controller: 'auxiliares', action: 'revisarAuxiliares_ajax')}",
+                data:{
+                    universidad: $("#universidadId").val()
                 },
-                ver      : {
-                    label  : "Ver",
-                    icon   : "fa fa-search",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id + "?ver=" + 1
-                    }
-                },
-                fechas   : {
-                    label  : "Fechas",
-                    icon   : "fa fa-calendar",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        $.ajax({
-                            type: "POST",
-                            url: "${createLink(controller: 'auxiliares', action: 'fechas_ajax')}",
-                            data: {
-                                id: id
-                            },
-                            success: function (msg) {
-                                var b = bootbox.dialog({
-                                    id: "dlgEditarFechas",
-                                    title: "Editar Fechas",
-                                    message: msg,
-                                    class: "small",
-                                    buttons: {
-                                        cierre: {
-                                            label: "<i class='fa fa-exclamation-circle'></i> Sin fecha de Cierre",
-                                            className: "btn-warning",
-                                            callback: function () {
-                                                $("#fechaFin").val(null)
-                                                return false
-                                            }
-                                        },
-                                        cancelar: {
-                                            label: "Cancelar",
-                                            className: "btn-primary",
-                                            callback: function () {
-                                            }
-                                        },
-                                        guardar: {
-                                            id: "btnSave",
-                                            label: "<i class='fa fa-save'></i> Guardar",
-                                            className: "btn-success",
-                                            callback: function () {
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "${createLink(controller: 'auxiliares', action: 'guardarFecha_ajax')}",
-                                                    data:{
-                                                        id: id,
-                                                        fechaInicio: $("#fechaInicio").val(),
-                                                        fechaFin: $("#fechaFin").val()
-                                                    },
-                                                    success: function (msg) {
-                                                        if(msg == 'ok'){
-                                                            log("Fecha guardada correctamente","success");
-                                                            setTimeout(function () {
-                                                                location.reload(true);
-                                                            }, 800);
-                                                        }else{
-                                                            log("Error al guardar la fecha","error")
-                                                        }
-                                                    }
-                                                });
-//                                                        return submitForm(tipo);
-                                            } //callback
-                                        } //guardar
-                                    } //buttons
-                                }); //dialog
-                            } //success
-                        }); //ajax
-
-
-                    }
-                },
-                editar   : {
-                    label  : "Editar",
-                    icon   : "fa fa-pencil",
-                    action : function ($element) {
-                        var id = $element.data("id");
-//                                createEditRow(id);
-                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id
+                success: function (msg){
+                    if(msg == 'ok'){
+                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}?universidad=" + $("#universidadId").val() + "&tipo=" + 1;
+                    }else{
+                        log("Los parámetros de todos los períodos de la universidad seleccionada han sido ya creados","info")
                     }
                 }
-//                        ,
-//                        eliminar : {
-//                            label            : "Eliminar",
-//                            icon             : "fa fa-trash-o",
-//                            separator_before : true,
-//                            action           : function ($element) {
-//                                var id = $element.data("id");
-//                                deleteRow(id);
-//                            }
-//                        }
-            },
-            onShow : function ($element) {
-                $element.addClass("trHighlight");
-            },
-            onHide : function ($element) {
-                $(".trHighlight").removeClass("trHighlight");
-            }
+            });
         });
-
-
     });
 </script>
 

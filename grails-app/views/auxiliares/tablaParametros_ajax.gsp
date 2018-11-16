@@ -51,7 +51,7 @@
                     icon   : "fa fa-search",
                     action : function ($element) {
                         var id = $element.data("id");
-                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id + "?ver=" + 1
+                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id + "?ver=" + 1 + "?tipo=" + 1
                     }
                 },
                 fechas   : {
@@ -125,7 +125,9 @@
                     action : function ($element) {
                         var id = $element.data("id");
 //                                createEditRow(id);
-                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id
+                        %{--location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}/" + id--}%
+                        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}?id=" + id + "&tipo=" + 2
+
                     }
                 }
 //                        ,

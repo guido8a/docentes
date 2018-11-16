@@ -164,7 +164,22 @@ class AuxiliaresController extends Shield {
         }else{
             universidad = auxiliar.periodo.universidad
         }
-        return [auxiliar: auxiliar, ver: params.ver, universidad: universidad]
+
+        def periodosT = Periodo.findAllByUniversidad(universidad)
+        def auxiliares = Auxiliares.withCriteria {
+
+                       periodo{
+                           eq("universidad", universidad)
+                       }
+
+        }
+
+        def filtrados = periodosT.id - auxiliares.periodo.id
+        def periodos = Periodo.findAllByIdInList(filtrados)
+
+
+
+        return [auxiliar: auxiliar, ver: params.ver, universidad: universidad, tipo: params.tipo, periodos: periodos]
     }
 
     def grafico_ajax () {
@@ -276,6 +291,40 @@ class AuxiliaresController extends Shield {
         }
 
         return[auxiliaresInstanceList: auxiliares]
+    }
+
+    def comprobarParametros_ajax () {
+//        println("params " + params)
+
+        def periodo = Periodo.get(params.periodo)
+
+        def auxiliar = Auxiliares.findByPeriodo(periodo)
+
+        if(auxiliar){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
+
+    def revisarAuxiliares_ajax () {
+
+        def universidad = Universidad.get(params.universidad)
+        def periodosT = Periodo.findAllByUniversidad(universidad)
+        def auxiliares = Auxiliares.withCriteria {
+            periodo{
+                eq("universidad", universidad)
+            }
+        }
+
+        def filtrados = periodosT.id - auxiliares.periodo.id
+        def periodos = Periodo.findAllByIdInList(filtrados)
+
+        if(periodos){
+            render "ok"
+        }else{
+            render "no"
+        }
     }
 
 }

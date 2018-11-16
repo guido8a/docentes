@@ -5,7 +5,7 @@
   Time: 14:43
 --%>
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="utilitarios.Auxiliares" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     %{--<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>--}%
@@ -43,11 +43,11 @@
             </g:link>
 
             <g:if test="${ver != '1'}">
-                <a href="#" class="btn btn-success btnGuardar" >
+                <a href="#" class="btn btn-success btnGuardar ${tipo == '2' ? '' : 'hidden'}" >
                     <i class="fa fa-save"></i> Guardar
                 </a>
 
-                <a href="#" class="btn btn-info btnDefecto" >
+                <a href="#" class="btn btn-info btnDefecto ${tipo == '2' ? '' : 'hidden'}" >
                     <i class="fa fa-dashboard"></i> Valores por defecto
                 </a>
             </g:if>
@@ -99,7 +99,9 @@
                     </div>
                     <div class="col-md-1" style="margin-top: 10px"><h4><span class="label label-primary">Período: </span></h4></div>
                     <div class="col-md-3" style="margin-top: 10px;" id="divPeriodos">
-
+                        <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                        class="form-control" style="width: 150px"
+                        from="${periodos}"/>
                     </div>
                 </g:if>
             </div>
@@ -237,25 +239,52 @@
 
 <script type="text/javascript">
 
-    cargarPeriodo($("#universidadId").val());
+    revisarPeriodo($("#periodoId option:selected").val());
 
-    $("#universidadId").change(function () {
-        var id = $("#universidadId option:selected").val();
-        cargarPeriodo(id)
-    });
-
-    function cargarPeriodo(id) {
+    function revisarPeriodo (periodo) {
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',
+            url: "${createLink(controller: 'auxiliares', action: 'comprobarParametros_ajax')}",
             data:{
-                universidad: id
+                periodo: periodo
             },
-            success: function (msg){
-                $("#divPeriodos").html(msg)
+            success: function (msg) {
+                if(msg == 'ok'){
+                    $(".btnGuardar").removeClass('hidden');
+                    $(".btnDefecto").removeClass('hidden')
+                }else{
+                    $(".btnGuardar").addClass('hidden');
+                    $(".btnDefecto").addClass('hidden')
+                }
             }
         });
     }
+
+    $("#periodoId").change(function () {
+        revisarPeriodo($("#periodoId option:selected").val())
+    });
+
+
+    %{--cargarPeriodo($("#universidadId").val());--}%
+
+    %{--$("#universidadId").change(function () {--}%
+        %{--var id = $("#universidadId option:selected").val();--}%
+        %{--cargarPeriodo(id)--}%
+    %{--});--}%
+
+    %{--function cargarPeriodo(id) {--}%
+        %{--console.log("id " + id)--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',--}%
+            %{--data:{--}%
+                %{--universidad: id--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+                %{--$("#divPeriodos").html(msg)--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
 
     google.charts.load('current', {'packages':['corechart']});
 
@@ -548,7 +577,7 @@
                 if(parts[0] == 'ok'){
                     log(parts[1],"success");
                     setTimeout(function () {
-                        location.href='${createLink(controller: 'auxiliares', action: 'auxiliares')}/' + parts[2]
+                        location.href='${createLink(controller: 'auxiliares', action: 'auxiliares')}?id=' + parts[2] + "&tipo=" + '${tipo}'
                     }, 500);
                 }else{
                     log(parts[1],"error");
@@ -565,8 +594,8 @@
             url: '${createLink(controller: 'auxiliares', action: 'guardarValores_ajax')}',
             data:{
                 id: '${auxiliar?.id}',
-                minimo: 75,
-                optimo: 90,
+                minimo: 50,
+                optimo: 80,
                 moderado: 75,
                 exagerado: 50,
                 botella: 10,
@@ -582,7 +611,7 @@
                 if(parts[0] == 'ok'){
                     log(parts[1],"success");
                     setTimeout(function () {
-                        location.href='${createLink(controller: 'auxiliares', action: 'auxiliares')}/' + parts[2]
+                        location.href='${createLink(controller: 'auxiliares', action: 'auxiliares')}/' + parts[2] + "?tipo=" +  '${tipo}'
                     }, 500);
                 }else{
                     log(parts[1],"error");
