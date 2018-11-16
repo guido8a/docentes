@@ -108,9 +108,9 @@ class EncuestaController {
                     "estd__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where estd__id = ${session.informanteId} and dcta__id is not null and " +
                     "encuetdo = 'C' and prdo__id = ${session.prdo} ) order by profnmbr"
-            println "previa: $tx"
+//            println "previa: $tx"
             matr = cn.rows(tx.toString())
-            println "matr: $matr, logo: $logo, universidad: ${univ.nombre}"
+//            println "matr: $matr, logo: $logo, universidad: ${univ.nombre}"
             [matr: matr, logo: logo, universidad: univ.nombre, encufe: evaluadoFE]
         } else {
             [logo: logo, universidad: univ.nombre]
@@ -136,7 +136,7 @@ class EncuestaController {
                     "dcta.prof__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where prof__id = ${session.informanteId} and dcta__id is not null and " +
                     "encuetdo = 'C' and prdo__id = ${session.prdo} and teti__id = 1) order by profnmbr"
-            println "previa: $tx"
+//            println "previa: $tx"
             matr = cn.rows(tx.toString())
             [matr: matr, logo: logo, universidad: univ.nombre]
     }
