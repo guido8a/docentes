@@ -1123,17 +1123,17 @@ class ReportesController extends seguridad.Shield {
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("D-DSC: DESARROLLO DE SABERES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DSC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("D-DCI: DESARROLLO DE CAPACIDAD DE INVESTIGAR", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DCI: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("D-DAC: DESAROLLO DE ACTITUDES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DAC: DESAROLLO DE ACTITUDES Y VALORES", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("D-CNI: CUMPLIMIENTO DE LA NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("CNI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("D-DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("D-EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
 
         document.add(tablaD);
 
@@ -1211,7 +1211,6 @@ class ReportesController extends seguridad.Shield {
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
         Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
         parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-//        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + ((rpec?.promedio*100)) + "%", fontNormal)
         Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (percentform.format(rpec?.promedio)), fontNormal)
         document.add(parrafoUniversidad)
         document.add(parrafoProfesor)
@@ -1264,17 +1263,17 @@ class ReportesController extends seguridad.Shield {
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("D-DSC: DESARROLLO DE SABERES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DSC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("D-DCI: DESARROLLO DE CAPACIDAD DE INVESTIGAR", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DCI: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("D-DAC: DESAROLLO DE ACTITUDES CONSCIENTES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DAC: DESAROLLO DE ACTITUDES Y VALORES", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("D-CNI: CUMPLIMIENTO DE LA NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("CNI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("D-DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("D-EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
 
         document.add(tablaD);
 
