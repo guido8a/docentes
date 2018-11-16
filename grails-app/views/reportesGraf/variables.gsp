@@ -166,13 +166,31 @@
 //                console.log("facultades:", facultades)
                 var optionsBarra = {
                     leyend: { display: true},
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }}],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }}]
+                    }
                 }
 
                 var optionsPila = {
                     leyend: { display: true},
                     scales: {
-                        xAxes: [{ stacked: true }],
-                        yAxes: [{ stacked: true }]
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            stacked: true }],
+                        yAxes: [{
+                                ticks: {
+                                beginAtZero: true
+                            },
+                            stacked: true }]
                     }
                 }
 

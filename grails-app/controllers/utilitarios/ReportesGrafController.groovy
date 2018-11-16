@@ -44,7 +44,6 @@ class ReportesGrafController extends seguridad.Shield {
         println "clasificar $params"
         def cn = dbConnectionService.getConnection()
 
-//        def periodo = Periodo.get(params.periodo)
         def periodo = Periodo.get(params.prdo)
         def facultad
         def facultadId
@@ -64,17 +63,20 @@ class ReportesGrafController extends seguridad.Shield {
         def subtitulo = ''
         def pattern1 = "###.##%"
 
-        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
+                "where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                "univ__id = ${params.univ} " +
                 "group by clase order by clase"
-//        println "sql: $sql"
+        println "sql: $sql"
         cn.eachRow(sql.toString()) { d ->
             data[d.clase] = d.cnta
             totl += d.cnta
         }
 
-        sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2"
+        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
+                "univ__id = ${params.univ} "
 //        println "sql: $sql"
         rcmn = cn.rows(sql.toString())[0].cnta
 //        println "data: $data, rc: $rcmn, totl: $totl"
@@ -210,7 +212,7 @@ class ReportesGrafController extends seguridad.Shield {
 //        println "data: ${data as JSON}"
 
         /** valores para demostración **/
-        data = [facultad: "Todas las Facultades", promedio: 84.8, prof: 14, ptnv: 17.1, ccbb: 34.2, fcex: 31.1, rcmn: 42.8]
+//        data = [facultad: "Todas las Facultades", promedio: 84.8, prof: 14, ptnv: 17.1, ccbb: 34.2, fcex: 31.1, rcmn: 42.8]
 
         render data as JSON
     }
@@ -266,7 +268,7 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def variablesData() {
-//        println "variablesData $params"
+        println "variablesData $params"
         def cn = dbConnectionService.getConnection()
         def sql
         def data = [:]
@@ -276,9 +278,9 @@ class ReportesGrafController extends seguridad.Shield {
                 "facl.facl__id, facldscr " +
                 "from rpec, prof, escl, facl " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.prdo} " +
+                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} " +
                 "group by facldscr, facl.facl__id order by facl.facl__id"
-//        println "sql: $sql"
+        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
         def txto = ""

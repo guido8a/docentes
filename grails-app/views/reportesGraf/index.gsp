@@ -210,6 +210,7 @@
         openLoader("Graficando...");
 
         var prdo = $("#periodoId").val();
+        var univ = $("#universidadId").val();
         var facl = $("#facultad").val();
 //        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
@@ -217,7 +218,7 @@
 
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'clasificar')}',
-            data: {facl: facl, prdo: prdo},
+            data: {facl: facl, prdo: prdo, univ: univ},
             success: function (msg) {
 
                 closeLoader();
