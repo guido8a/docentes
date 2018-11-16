@@ -13,9 +13,9 @@
 <!-- botones -->
 <div class="btn-toolbar toolbar">
     <div class="btn-group" style="margin-right: 250px">
-        <g:link action="auxiliares" class="btn btn-info btnCrear">
+        <a href="#" class="btn btn-info btnCrear">
             <i class="fa fa-file-o"></i> Crear
-        </g:link>
+        </a>
     </div>
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
@@ -218,9 +218,9 @@
 
     $(function () {
 
-        %{--$(".btnCrear").click(function() {--}%
-        %{--location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}";--}%
-        %{--});--}%
+        $(".btnCrear").click(function() {
+        location.href="${createLink(controller: 'auxiliares', action: 'auxiliares')}?universidad=" + $("#universidadId").val();
+        });
 
         $("tbody tr").contextMenu({
             items  : {

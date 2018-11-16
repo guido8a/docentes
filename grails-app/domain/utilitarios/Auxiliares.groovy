@@ -56,5 +56,6 @@ class Auxiliares {
     static constraints = {
 //        curso(nullable: true, blank: true)
         fechaCierre(nullable: true)
+        fechaInicio(nullable: true)
     }
 }

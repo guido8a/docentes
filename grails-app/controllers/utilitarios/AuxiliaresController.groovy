@@ -156,9 +156,15 @@ class AuxiliaresController extends Shield {
     } //delete para eliminar via ajax
 
     def auxiliares () {
-//        println("params aux " + params)
+        println("params aux " + params)
         def auxiliar = Auxiliares.get(params.id)
-        return [auxiliar: auxiliar, ver: params.ver]
+        def universidad
+        if(params.universidad){
+            universidad = Universidad.get(params.universidad)
+        }else{
+            universidad = auxiliar.periodo.universidad
+        }
+        return [auxiliar: auxiliar, ver: params.ver, universidad: universidad]
     }
 
     def grafico_ajax () {
