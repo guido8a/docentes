@@ -21,9 +21,9 @@
     .bajo {
         margin-bottom: 20px;
     }
-        .centrado{
-            text-align: center;
-        }
+    .centrado{
+        text-align: center;
+    }
 
     </style>
 </head>
@@ -37,26 +37,26 @@
     <div class="col-md-1"></div>
 
 
-    %{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
-        %{--<div class="col-md-1">Universidad:</div>--}%
-        %{--<div class="col-sm-3">--}%
-            %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-                      %{--class="form-control" style="width: 280px"--}%
-                      %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-        %{--</div>--}%
-        %{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
-        %{--<div class="col-sm-1" id="divPeriodos">--}%
+%{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
+%{--<div class="col-md-1">Universidad:</div>--}%
+%{--<div class="col-sm-3">--}%
+%{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+%{--class="form-control" style="width: 280px"--}%
+%{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+%{--</div>--}%
+%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
+%{--<div class="col-sm-1" id="divPeriodos">--}%
 
-        %{--</div>--}%
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-        %{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
-        %{--<div class="col-sm-1">--}%
-            %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-                      %{--class="form-control" style="width: 90px"--}%
-                      %{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
-        %{--</div>--}%
-    %{--</g:else>--}%
+%{--</div>--}%
+%{--</g:if>--}%
+%{--<g:else>--}%
+%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
+%{--<div class="col-sm-1">--}%
+%{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
+%{--class="form-control" style="width: 90px"--}%
+%{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
+%{--</div>--}%
+%{--</g:else>--}%
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
         <div class="col-md-1">Universidad:</div>
@@ -89,7 +89,7 @@
         <div class="col-md-4">
             <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
                       optionKey="id" name="facultad_name" id="facultad" class="form-control"
-                      />
+            />
         </div>
 
     </g:else>
@@ -98,27 +98,27 @@
 <div class="col-md-4"></div>
 
 <div class="col-md-2">
-        <div class="btn btn-info tipoEncuesta" id="tpenBarras">
-            <i class="fa fa-bar-chart"></i> Diagrama de Barras
-        </div>
+    <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+        <i class="fa fa-bar-chart"></i> Diagrama de Barras
     </div>
-
-    <div class="col-md-1">
-        <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 1px">
-            <i class="fa fa-bar-chart"></i> Barras apiladas
-        </div>
-    </div>
-
-
-
-<div style="width: 100%; text-align: center">
-<div class="chart-container grafico" id="chart-area" hidden>
-
-   <div id="graf" align="center">
-        <canvas id="clases" style="margin-top: 30px"></canvas>
-    </div>
-
 </div>
+
+<div class="col-md-1">
+    <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 1px">
+        <i class="fa fa-bar-chart"></i> Barras apiladas
+    </div>
+</div>
+
+
+
+<div style="width: 100%; text-align: center; margin-top: 70px">
+    <div class="chart-container grafico" id="chart-area" hidden>
+
+        <div id="graf" align="center">
+            <canvas id="clases" style="margin-top: 30px"></canvas>
+        </div>
+
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -162,83 +162,90 @@
     var myChart;
 
     $(".tipoEncuesta").click(function () {
+
         var id = this.id
-//        console.log("id:", id)
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'tipoEncuestaData')}',
-            data: {prdo: prdo, facl: facl},
-            success: function (mnsj) {
-                var resp = mnsj.split('||')  /* se envia facultades y el JSON */
-                var facl = resp[0].split('_')
-                var json = $.parseJSON(resp[1])
+        var facl = $("#facultad option:selected").val();
+
+        if(facl){
+            $("#chart-area").removeClass('hidden');
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'reportesGraf', action: 'tipoEncuestaData')}',
+                data: {prdo: prdo, facl: facl},
+                success: function (mnsj) {
+                    var resp = mnsj.split('||')  /* se envia facultades y el JSON */
+                    var facl = resp[0].split('_')
+                    var json = $.parseJSON(resp[1])
 //                console.log("json:", json)
 
-                $("#clases").remove();
-                $("#chart-area").removeAttr('hidden')
-                $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
+                    $("#clases").remove();
+                    $("#chart-area").removeAttr('hidden')
+                    $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
 
-                canvas = $("#clases")
-                var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"]
-                var datos = []
-                var facultades = "<ul>"
-                var leyenda = []
-                var vlor
-                var indice = 0
-                $.each(json, function (key, val) {
+                    canvas = $("#clases")
+                    var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"]
+                    var datos = []
+                    var facultades = "<ul>"
+                    var leyenda = []
+                    var vlor
+                    var indice = 0
+                    $.each(json, function (key, val) {
 //                    console.log("key:", key, "val:", val)
-                    vlor = val.valor.split("_")
+                        vlor = val.valor.split("_");
 //                    console.log("valor:", vlor)
-                    datos.push({
-                        label: val.tpen,
-                        backgroundColor: colores[indice],
-                        borderWidth: 2,
-                        data: vlor
-                    })
-                    indice++
-                });
-                $.each(facl, function (key, val) {
+                        datos.push({
+                            label: val.tpen,
+                            backgroundColor: colores[indice],
+                            borderWidth: 2,
+                            data: vlor
+                        });
+                        indice++
+                    });
+                    $.each(facl, function (key, val) {
 //                    console.log("val:", val)
-                    facultades += "<li>Facult. " + key + ": " + val + "</li>"
-                    leyenda.push("Facult. " + key)
-                });
-                facultades += "</ul>"
+                        facultades += "<li>Escuel. " + (key + 1) + ": " + val + "</li>";
+                        leyenda.push("Escuel. " + (key + 1))
+                    });
+                    facultades += "</ul>";
 
 //                console.log("facultades:", facultades)
-                var optionsBarra = {
-                    leyend: { display: true},
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }}],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }}]
+                    var optionsBarra = {
+                        leyend: { display: true},
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }}],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }}]
+                        }
                     }
-                }
 
-                var optionsPila = {
-                    leyend: { display: true},
-                    scales: {
-                        xAxes: [{ stacked: true }],
-                        yAxes: [{ stacked: true }]
+                    var optionsPila = {
+                        leyend: { display: true},
+                        scales: {
+                            xAxes: [{ stacked: true }],
+                            yAxes: [{ stacked: true }]
+                        }
                     }
-                }
 
-                if(id === 'tpenBarras') {
-                    grafica('bar', leyenda, datos, optionsBarra, canvas)
-                } else {
-                    grafica('bar', leyenda, datos, optionsPila, canvas)
-                }
+                    if(id === 'tpenBarras') {
+                        grafica('bar', leyenda, datos, optionsBarra, canvas)
+                    } else {
+                        grafica('bar', leyenda, datos, optionsPila, canvas)
+                    }
 
-                $("#divFacl").remove();
-                $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
-            }
-        });
+                    $("#divFacl").remove();
+                    $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
+                }
+            });
+        }else{
+            $("#chart-area").addClass('hidden');
+            log("Seleccione una facultad","info")
+        }
     });
 
     function grafica(tipo, leyenda, datos, options, canvas) {
