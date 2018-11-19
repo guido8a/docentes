@@ -286,14 +286,14 @@
         var prdo = $("#periodoId").val();
         var univ = $("#universidadId").val();
         var facl = $("#facultad").val();
-        var escu = $("#escuelaId option:selected").val();
+        var escl = $("#escuelaId option:selected").val();
 //        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
 
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'clasificar')}',
-            data: {facl: facl, prdo: prdo, univ: univ, escu: escu},
+            data: {facl: facl, prdo: prdo, univ: univ, escl: escl},
             success: function (msg) {
 
                 closeLoader();
