@@ -158,24 +158,25 @@ class ReportesGrafController extends seguridad.Shield {
 
         sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof " +
                 "where prof.prof__id = rpec.prof__id and " +
-                "prof.escl__id = 4 and tpen__id = 2 and prdo__id = ${params.prdo}"
+                "prof.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
         println "evaluados: $sql"
-        evaluados = cn.rows(sql.toString())[0]?.cnta ?: 0 * 100
+        evaluados = (cn.rows(sql.toString())[0]?.cnta ?: 0) * 100
 
         sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
+                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
         println "promedio: $sql"
         data.promedio = (cn.rows(sql.toString())[0]?.prom ?: 0) * 100
 
-        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
+        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl " +
+                "where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
         println "prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
-                "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
+                "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
                 "tpen__id = 2"
         println "ptnv: $sql"
         if (data.prof) {
@@ -185,7 +186,7 @@ class ReportesGrafController extends seguridad.Shield {
         }
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
-                "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
+                "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
                 "tpen__id = 2"
         println "ccbb: $sql"
         if (data.prof) {
@@ -195,7 +196,7 @@ class ReportesGrafController extends seguridad.Shield {
         }
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
-                "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
+                "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
                 "tpen__id = 2"
         println "fcex: $sql"
         if (data.prof) {
@@ -206,7 +207,7 @@ class ReportesGrafController extends seguridad.Shield {
 
 
         sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
+                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
         println "rcmn: $sql"
         if (data.prof) {
@@ -395,7 +396,7 @@ class ReportesGrafController extends seguridad.Shield {
         /* se envía el mapa como objeto JSON */
 //        def respuesta = "${facultades.join('_')}||${data as JSON}"
 
-        def antes = '{"1":{"vrbl":"DSC","valor":"0.74_0.98"},"2":{"vrbl":"DAC","valor":"0.90_0.95"},"3":{"vrbl":"DHD","valor":"0.79_0.99"},"4":{"vrbl":"DCI","valor":"0.82_0.97"},"5":{"vrbl":"CNI","valor":"0.81_0.99"},"6":{"vrbl":"EA","valor":"0.84_0.98"}}'
+//        def antes = '{"1":{"vrbl":"DSC","valor":"0.74_0.98"},"2":{"vrbl":"DAC","valor":"0.90_0.95"},"3":{"vrbl":"DHD","valor":"0.79_0.99"},"4":{"vrbl":"DCI","valor":"0.82_0.97"},"5":{"vrbl":"CNI","valor":"0.81_0.99"},"6":{"vrbl":"EA","valor":"0.84_0.98"}}'
         def respuesta = "${facultades.join('_')}||${data as JSON}"
         render respuesta
     }

@@ -239,13 +239,13 @@
     $("#graficar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var escu = $("#escuelaId option:selected").val();
+        var escl = $("#escuelaId option:selected").val();
 //        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'estrategiaData')}',
-            data: {facl: facl, prdo: prdo, escu: escu},
+            data: {facl: facl, prdo: prdo, escl: escl},
             success: function (json) {
 //                console.log("json:", json)
 
@@ -318,13 +318,13 @@
     $("#grafPolar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var escu = $("#escuelaId option:selected").val();
+        var escl = $("#escuelaId option:selected").val();
 //        console.log("carrga gráfico");
         %{--location.href = "${createLink(controller: 'reportesGraf', action: 'clasificar')}?periodo=" + prdo + "&facultad=" + facl;--}%
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'estrategiaData')}',
-            data: {facl: facl, prdo: prdo, escu: escu},
+            data: {facl: facl, prdo: prdo, escl: escl},
             success: function (json) {
 //                console.log("json:", json)
 

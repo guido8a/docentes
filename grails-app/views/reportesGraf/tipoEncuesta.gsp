@@ -204,8 +204,8 @@
                     });
                     $.each(facl, function (key, val) {
 //                    console.log("val:", val)
-                        facultades += "<li>Carrera. " + (key + 1) + ": " + val + "</li>";
-                        leyenda.push("Carrera. " + (key + 1))
+                        facultades += "<li>Carrera " + (key + 1) + ": " + val + "</li>";
+                        leyenda.push("Carrera " + (key + 1))
                     });
                     facultades += "</ul>";
 
