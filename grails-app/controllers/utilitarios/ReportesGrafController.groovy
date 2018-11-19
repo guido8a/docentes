@@ -143,6 +143,7 @@ class ReportesGrafController extends seguridad.Shield {
         def periodo = Periodo.get(params.prdo)
         def facultad
         def facultadId
+        def evaluados
         if (params.facl.toInteger()) {
             facultad = Facultad.get(params.facl).nombre
             facultadId = "${params.facl}"
@@ -155,22 +156,28 @@ class ReportesGrafController extends seguridad.Shield {
         def data = [:]
         data.facultad = facultad
 
+        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof " +
+                "where prof.prof__id = rpec.prof__id and " +
+                "prof.escl__id = 4 and tpen__id = 2 and prdo__id = ${params.prdo}"
+        println "evaluados: $sql"
+        evaluados = cn.rows(sql.toString())[0]?.cnta ?: 0 * 100
+
         sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
-//        println "sql: $sql"
-        data.promedio = cn.rows(sql.toString())[0]?.prom ?: 0 * 100
+        println "promedio: $sql"
+        data.promedio = (cn.rows(sql.toString())[0]?.prom ?: 0) * 100
 
-        sql = "select count(prof.prof__id) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
-//        println "sql prof: $sql"
+        println "prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
                 "tpen__id = 2"
-//        println "sql ptnv: $sql"
+        println "ptnv: $sql"
         if (data.prof) {
             data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -180,7 +187,7 @@ class ReportesGrafController extends seguridad.Shield {
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
                 "tpen__id = 2"
-//        println "sql ccbb: $sql"
+        println "ccbb: $sql"
         if (data.prof) {
             data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -190,7 +197,7 @@ class ReportesGrafController extends seguridad.Shield {
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.facl__id::varchar ilike '${facultadId}' and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
                 "tpen__id = 2"
-//        println "sql fcex: $sql"
+        println "fcex: $sql"
         if (data.prof) {
             data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -201,7 +208,7 @@ class ReportesGrafController extends seguridad.Shield {
         sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
                 "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
-//        println "sql rcmn: $sql"
+        println "rcmn: $sql"
         if (data.prof) {
             data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -222,32 +229,40 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def tipoEncuestaData() {
-//        println "tipoEncuestaData $params"
+        println "tipoEncuestaData $params"
         def cn = dbConnectionService.getConnection()
         def sql
         def data = [:]
 
+/*
         sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr " +
                 "from rpec, prof, escl, facl, tpen " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
+*/
+        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, escl.escl__id, escldscr " +
+                "from rpec, prof, escl, tpen " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} and " +
+                "tpen.tpen__id = rpec.tpen__id " +
+                "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
 //        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
         def txto = ""
         def tx = ""
         def te = ""
-        def facl = datos.facl__id.unique()
-        def facultades = datos.facldscr.unique()
+        def facl = datos.escl__id.unique()
+        def facultades = datos.escldscr.unique()
         def tpen = datos.tpen__id.unique()
 //        println "facl: $facl"
 //        println "tpen: $tpen"
         for (i in tpen) {
             for (j in facl) {
                 te = "${datos.find { it.tpen__id == i }.tpendscr}"
-                tx = "${datos.find { it.facl__id == j && it.tpen__id == i }?.prom ?: 0}"
+                tx = "${datos.find { it.escl__id == j && it.tpen__id == i }?.prom ?: 0}"
                 txto += txto ? "_$tx" : tx
             }
             data[i] = [tpen: te, valor: txto]

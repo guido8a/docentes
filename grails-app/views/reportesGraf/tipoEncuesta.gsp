@@ -89,7 +89,7 @@
         <div class="col-md-4">
             <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
                       optionKey="id" name="facultad_name" id="facultad" class="form-control"
-                      noSelection="${[0:'Todas ...']}"/>
+                      />
         </div>
 
     </g:else>
@@ -165,10 +165,11 @@
         var id = this.id
 //        console.log("id:", id)
         var prdo = $("#periodoId").val();
+        var facl = $("#facultad").val();
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'tipoEncuestaData')}',
-            data: {prdo: prdo},
+            data: {prdo: prdo, facl: facl},
             success: function (mnsj) {
                 var resp = mnsj.split('||')  /* se envia facultades y el JSON */
                 var facl = resp[0].split('_')
@@ -208,6 +209,16 @@
 //                console.log("facultades:", facultades)
                 var optionsBarra = {
                     leyend: { display: true},
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }}],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }}]
+                    }
                 }
 
                 var optionsPila = {
