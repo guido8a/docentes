@@ -35,13 +35,28 @@
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
     <div class="col-md-1"></div>
-    %{--<div class="col-md-2">Seleccione el periodo de evaluaciones:</div>--}%
 
-    %{--<div class="col-sm-1"><g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-                                    %{--class="form-control" style="width: 90px"--}%
-                                    %{--from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
-    %{--</div>--}%
 
+    %{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
+        %{--<div class="col-md-1">Universidad:</div>--}%
+        %{--<div class="col-sm-3">--}%
+            %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+                      %{--class="form-control" style="width: 280px"--}%
+                      %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+        %{--</div>--}%
+        %{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
+        %{--<div class="col-sm-1" id="divPeriodos">--}%
+
+        %{--</div>--}%
+    %{--</g:if>--}%
+    %{--<g:else>--}%
+        %{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
+        %{--<div class="col-sm-1">--}%
+            %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
+                      %{--class="form-control" style="width: 90px"--}%
+                      %{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
+        %{--</div>--}%
+    %{--</g:else>--}%
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
         <div class="col-md-1">Universidad:</div>
@@ -50,39 +65,52 @@
                       class="form-control" style="width: 280px"
                       from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
         </div>
-        <div class="col-md-2">Seleccione el período de evaluaciones:</div>
+        <div class="col-md-1">Período:</div>
         <div class="col-sm-1" id="divPeriodos">
+
+        </div>
+
+        <div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>
+
+        <div class="col-md-3" id="divFacultad">
 
         </div>
     </g:if>
     <g:else>
-        <div class="col-md-2">Seleccione el período de evaluaciones:</div>
+        <div class="col-md-1">Período:</div>
         <div class="col-sm-1">
             <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
                       class="form-control" style="width: 90px"
                       from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
         </div>
+
+        <div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>
+
+        <div class="col-md-4">
+            <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
+                      optionKey="id" name="facultad_name" id="facultad" class="form-control"
+            />
+        </div>
+
     </g:else>
-
-
-
-    %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-    <div class="col-md-2">
-        <div class="btn btn-info tipoEncuesta" id="tpenBarras">
-            <i class="fa fa-bar-chart"></i> Diagrama de Barras
-        </div>
-    </div>
-
-    <div class="col-md-2">
-        <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 20px">
-            <i class="fa fa-bar-chart"></i> Barras apiladas
-        </div>
-    </div>
 
 </div>
 
-<div style="width: 100%; text-align: center">
+<div class="col-md-4"></div>
+
+<div class="col-md-2">
+    <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+        <i class="fa fa-bar-chart"></i> Diagrama de Barras
+    </div>
+</div>
+
+<div class="col-md-2">
+    <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 20px">
+        <i class="fa fa-bar-chart"></i> Barras apiladas
+    </div>
+</div>
+
+<div style="width: 100%; text-align: center; margin-top: 70px">
 <div class="chart-container grafico" id="chart-area" hidden>
 
    <div id="graf" align="center">
@@ -95,22 +123,37 @@
 <script type="text/javascript">
 
     cargarPeriodo($("#universidadId").val());
+    cargarFacultad($("#universidadId").val());
 
     $("#universidadId").change(function () {
         var id = $("#universidadId option:selected").val();
-        cargarPeriodo(id)
+        cargarPeriodo(id);
+        cargarFacultad(id);
     });
-
 
     function cargarPeriodo(id) {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',
             data:{
                 universidad: id
             },
             success: function (msg){
                 $("#divPeriodos").html(msg)
+            }
+        });
+    }
+
+
+    function cargarFacultad (id) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportesGraf', action: 'facultad_ajax')}',
+            data:{
+                universidad: id
+            },
+            success: function (msg){
+                $("#divFacultad").html(msg)
             }
         });
     }
