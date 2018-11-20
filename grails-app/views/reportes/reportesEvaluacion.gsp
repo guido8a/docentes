@@ -259,11 +259,11 @@
     $("#imprimirNoEvaluados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 1;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoEvaluados.pdf";
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
@@ -272,11 +272,11 @@
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
 
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             var url = "${createLink(controller: 'reportes', action: 'profesEvaluados')}?periodo=" + prdo + "Wfacl=" + facl;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Evaluados.pdf";
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
 
     });
@@ -285,33 +285,33 @@
     $("#imprimirNoAutoeva").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 3;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=NoAutoevaluados.pdf";
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirAutoeva").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 4;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=Autoevaluados.pdf";
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirEstudiante").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wfacl=" + facl + "Wtipo=" + 5;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
@@ -327,7 +327,7 @@
         var facl = $("#facultad").val();
         var facultad = $("#facultad").find("option:selected").text();
 
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
@@ -359,7 +359,7 @@
                 }
             });
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
@@ -369,7 +369,7 @@
         var facultad = $("#facultad").find("option:selected").text();
 
 
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'reportes', action: 'facultad_ajax')}',
@@ -403,11 +403,8 @@
                 }
             });
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
-
-
-
     });
 
     $("#imprimirPorAvariables").click(function () {

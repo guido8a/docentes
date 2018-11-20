@@ -340,16 +340,27 @@
     $("#imprimirCuellosBotella").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'cuellosBotella')}?periodo=" + prdo + "Wfacultad=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=cuellosBotella.pdf";
+        var escu = $("#escuelaId option:selected").val();
+        if(escu != null){
+            var url = "${createLink(controller: 'reportes', action: 'cuellosBotella')}?periodo=" + prdo + "Wfacultad=" + facl;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=cuellosBotella.pdf";
+        }else{
+            log("Seleccione una carrera","info")
+        }
+
     });
 
 
     $("#imprimirPotenciador").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'potenciadores')}?periodo=" + prdo + "Wfacultad=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=potenciadores.pdf";
+        var escu = $("#escuelaId option:selected").val();
+        if(escu != null){
+            var url = "${createLink(controller: 'reportes', action: 'potenciadores')}?periodo=" + prdo + "Wfacultad=" + facl;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=potenciadores.pdf";
+        }else{
+            log("Seleccione una carrera","info")
+        }
     });
 
     $("#imprimirClases").click(function () {
@@ -357,30 +368,50 @@
         var facl = $("#facultad").val();
         var escu = $("#escuelaId option:selected").val();
         var universidad = $("#universidadId option:selected").val();
-        var url = "${createLink(controller: 'reportes', action: 'reporteDesempeno')}?periodo=" + prdo + "Wfacultad=" + facl + "Wescuela=" + escu + "Wuniv=" + universidad;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=desempeno.pdf";
+
+        if(escu != null){
+            var url = "${createLink(controller: 'reportes', action: 'reporteDesempeno')}?periodo=" + prdo + "Wfacultad=" + facl + "Wescuela=" + escu + "Wuniv=" + universidad;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=desempeno.pdf";
+        }else{
+            log("Seleccione una carrera","info")
+        }
     });
 
     $("#imprimirRecomendados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var escu = $("#escuelaId option:selected").val();
-        var url = "${createLink(controller: 'reportes', action: 'recomendaciones')}?periodo=" + prdo + "Wfacultad=" + facl + "Wescuela=" + escu;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
+        if(escu != null){
+            var url = "${createLink(controller: 'reportes', action: 'recomendaciones')}?periodo=" + prdo + "Wfacultad=" + facl + "Wescuela=" + escu;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendados.pdf";
+        }else{
+            log("Seleccione una carrera","info")
+        }
     });
 
     $("#imprimirTipoEncuesta").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'reporteTipoEncuesta')}?periodo=" + prdo + "Wfacultad=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=tipoEncuesta.pdf";
+        var escu = $("#escuelaId option:selected").val();
+        if(escu != null){
+            var url = "${createLink(controller: 'reportes', action: 'reporteTipoEncuesta')}?periodo=" + prdo + "Wfacultad=" + facl;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=tipoEncuesta.pdf";
+        }else{
+            log("Seleccione una carrera","info")
+        }
+
     });
 
     $("#imprimirIndicadorVariables").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
-        var url = "${createLink(controller: 'reportes', action: 'reporteDesempenoVariables')}?periodo=" + prdo + "Wfacultad=" + facl;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=desempenoPorVariables.pdf";
+        var escu = $("#escuelaId option:selected").val();
+        if(escu != null){
+            var url = "${createLink(controller: 'reportes', action: 'reporteDesempenoVariables')}?periodo=" + prdo + "Wfacultad=" + facl;
+            location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=desempenoPorVariables.pdf";
+        }else{
+            log("Seleccione una carrera","info")
+        }
     });
 
 

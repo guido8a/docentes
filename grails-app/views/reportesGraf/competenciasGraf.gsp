@@ -164,131 +164,135 @@
         var id = this.id;
 //        console.log("id:", id)
         var prdo = $("#periodoId").val();
-        var esc = $("#escuelaId").val();
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'competenciasData_ajax')}',
-            data: {
-                prdo: prdo,
-                escuela: esc
-            },
-            success: function (mnsj) {
+        var esc = $("#escuelaId option:selected").val();
 
-                var json = $.parseJSON(mnsj);
+        if(esc != null){
+            $("#chart-area").removeClass('hidden');
+            $("#chart-area2").removeClass('hidden');
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'reportesGraf', action: 'competenciasData_ajax')}',
+                data: {
+                    prdo: prdo,
+                    escuela: esc
+                },
+                success: function (mnsj) {
 
-                $("#titulo").html("Competencias Generales");
-                $("#titulo2").html("Competencias Específicas");
+                    var json = $.parseJSON(mnsj);
 
-                $("#clases").remove();
-                $("#clases2").remove();
-                $("#chart-area").removeAttr('hidden');
-                $("#chart-area2").removeAttr('hidden');
-                $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
-                $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
+                    $("#titulo").html("Competencias Generales");
+                    $("#titulo2").html("Competencias Específicas");
 
-                canvas = $("#clases");
-                canvas2 = $("#clases2");
-                var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"];
-                var datos = [];
-                var facultades = "<ul>";
-                var facultades2 = "<ul>";
-                var leyendaG = [];
-                var leyendaE = [];
-                var leyenda = [];
-                var leyenda2 = [];
-                var vlor;
-                var indice = 0;
-                var ddGE = [];
-                var ddGP = [];
-                var ddEE = [];
-                var ddEP = [];
-                var parts;
-                var valores;
-                var ges = 0;
-                var es = 0;
+                    $("#clases").remove();
+                    $("#clases2").remove();
+                    $("#chart-area").removeAttr('hidden');
+                    $("#chart-area2").removeAttr('hidden');
+                    $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
+                    $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
 
-                $.each(json, function (key, val) {
+                    canvas = $("#clases");
+                    canvas2 = $("#clases2");
+                    var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9"];
+                    var datos = [];
+                    var facultades = "<ul>";
+                    var facultades2 = "<ul>";
+                    var leyendaG = [];
+                    var leyendaE = [];
+                    var leyenda = [];
+                    var leyenda2 = [];
+                    var vlor;
+                    var indice = 0;
+                    var ddGE = [];
+                    var ddGP = [];
+                    var ddEE = [];
+                    var ddEP = [];
+                    var parts;
+                    var valores;
+                    var ges = 0;
+                    var es = 0;
+
+                    $.each(json, function (key, val) {
 //                    console.log("key:", key, "val:", val)
-                    parts = key.split("_");
-                    valores = val.split("_");
+                        parts = key.split("_");
+                        valores = val.split("_");
 
-                    if(parts[0] == 'G'){
-                        leyendaG.push(parts[1]);
-                        ddGE.push(valores[0]);
-                        ddGP.push(valores[1]);
-                        ges ++;
-                        facultades += "<li>" + parts[0] +  " " + ges + " : " + parts[1] + "</li>";
-                        leyenda.push(parts[0] + ges);
-                    }else{
-                        leyendaE.push(parts[1]);
-                        ddEE.push(valores[0]);
-                        ddEP.push(valores[1]);
-                        es ++;
-                        facultades2 += "<li>" + parts[0] +  " " + es + " : " + parts[1] + "</li>";
-                        leyenda2.push(parts[0] + " " + es);
-                    }
+                        if(parts[0] == 'G'){
+                            leyendaG.push(parts[1]);
+                            ddGE.push(valores[0]);
+                            ddGP.push(valores[1]);
+                            ges ++;
+                            facultades += "<li>" + parts[0] +  " " + ges + " : " + parts[1] + "</li>";
+                            leyenda.push(parts[0] + ges);
+                        }else{
+                            leyendaE.push(parts[1]);
+                            ddEE.push(valores[0]);
+                            ddEP.push(valores[1]);
+                            es ++;
+                            facultades2 += "<li>" + parts[0] +  " " + es + " : " + parts[1] + "</li>";
+                            leyenda2.push(parts[0] + " " + es);
+                        }
 
-                    indice++
-                });
+                        indice++
+                    });
 
-                facultades += "</ul>";
+                    facultades += "</ul>";
 
 //                var optionsBarra = {
 //                    leyend: { display: true}
 //                };
 
 
-                myChart = new Chart(canvas, {
-                    type: 'bar',
-                    data: {
-                        labels: leyenda,
-                        datasets: [
-                            {
-                                label: ["Alumnos"],
+                    myChart = new Chart(canvas, {
+                        type: 'bar',
+                        data: {
+                            labels: leyenda,
+                            datasets: [
+                                {
+                                    label: ["Alumnos"],
 //                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
-                                backgroundColor: "rgba(55, 160, 225, 0.7)",
+                                    backgroundColor: "rgba(55, 160, 225, 0.7)",
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
-                                borderWidth: 2,
-                                data: ddGE
-                            },
-                            {
-                                label: ["Profesores"],
+                                    borderWidth: 2,
+                                    data: ddGE
+                                },
+                                {
+                                    label: ["Profesores"],
 //                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
-                                backgroundColor: "rgba(225, 58, 55, 0.7)",
+                                    backgroundColor: "rgba(225, 58, 55, 0.7)",
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
-                                borderWidth:  2,
-                                data: ddGP
-                            }
-                        ]
-                    },
-                    options: {
-                        legend: { display: true,
-                            labels: {
-                                fontColor: 'rgb(20, 80, 100)',
-                                fontSize: 11
-                            }
+                                    borderWidth:  2,
+                                    data: ddGP
+                                }
+                            ]
                         },
-                        scales: {
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                },
-                                stacked: false
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                },
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: '%',
-                                    fontColor: '#000000'
-                                },
-                                stacked: false
-                            }]
-                        }
+                        options: {
+                            legend: { display: true,
+                                labels: {
+                                    fontColor: 'rgb(20, 80, 100)',
+                                    fontSize: 11
+                                }
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    stacked: false
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: '%',
+                                        fontColor: '#000000'
+                                    },
+                                    stacked: false
+                                }]
+                            }
 
-                    }
+                        }
 //                    ,
 //                    plugins: [{
 //                        beforeInit: function(myChart) {
@@ -299,60 +303,60 @@
 //                            });
 //                        }
 //                    }]
-                });
+                    });
 
-                myChart2 = new Chart(canvas2, {
-                    type: 'bar',
-                    data: {
-                        labels: leyenda2,
-                        datasets: [
-                            {
-                                label: ["Alumnos"],
+                    myChart2 = new Chart(canvas2, {
+                        type: 'bar',
+                        data: {
+                            labels: leyenda2,
+                            datasets: [
+                                {
+                                    label: ["Alumnos"],
 //                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
-                                backgroundColor: "rgba(55, 160, 225, 0.7)",
+                                    backgroundColor: "rgba(55, 160, 225, 0.7)",
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
-                                borderWidth: 2,
-                                data: ddEE
-                            },
-                            {
-                                label: ["Profesores"],
+                                    borderWidth: 2,
+                                    data: ddEE
+                                },
+                                {
+                                    label: ["Profesores"],
 //                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
-                                backgroundColor: "rgba(225, 58, 55, 0.7)",
+                                    backgroundColor: "rgba(225, 58, 55, 0.7)",
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
-                                borderWidth:  2,
-                                data: ddEP
-                            }
-                        ]
-                    },
-                    options: {
-
-                        legend: { display: true,
-                            labels: {
-                                fontColor: 'rgb(20, 80, 100)',
-                                fontSize: 11
-                            }
+                                    borderWidth:  2,
+                                    data: ddEP
+                                }
+                            ]
                         },
-                        scales: {
-                            xAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                },
-                                stacked: false
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                },
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: '%',
-                                    fontColor: '#000000'
-                                },
-                                stacked: false
-                            }]
-                        }
+                        options: {
 
-                    }
+                            legend: { display: true,
+                                labels: {
+                                    fontColor: 'rgb(20, 80, 100)',
+                                    fontSize: 11
+                                }
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    stacked: false
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: '%',
+                                        fontColor: '#000000'
+                                    },
+                                    stacked: false
+                                }]
+                            }
+
+                        }
 //                    ,
 //                    plugins: [{
 //                        beforeInit: function(myChart) {
@@ -363,15 +367,20 @@
 //                            });
 //                        }
 //                    }]
-                });
+                    });
 
 
-                $("#divFacl").remove();
-                $("#divFacl2").remove();
-                $('#chart-area').append('<div id="divFacl" style="margin-top: 20px; text-align: left">' + facultades + '</div>');
-                $('#chart-area2').append('<div id="divFacl2" style="margin-top: 20px; text-align: left">' + facultades2 + '</div>');
-            }
-        });
+                    $("#divFacl").remove();
+                    $("#divFacl2").remove();
+                    $('#chart-area').append('<div id="divFacl" style="margin-top: 20px; text-align: left">' + facultades + '</div>');
+                    $('#chart-area2').append('<div id="divFacl2" style="margin-top: 20px; text-align: left">' + facultades2 + '</div>');
+                }
+            });
+        }else{
+            $("#chart-area").addClass('hidden');
+            $("#chart-area2").addClass('hidden');
+            log("Seleccione una carrera","info")
+        }
     });
 
     $("#imprimirGenerales").click(function () {

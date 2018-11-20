@@ -391,11 +391,12 @@
 
     $("#imprimirDesempeno").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 1;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 1;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
@@ -523,14 +524,14 @@
     });
 
     $("#imprimirPorAvariables").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var facultad = $("#facultad").find("option:selected").text();
-        if($("#facultad").val() != 0){
+
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
-                data: {facl: facl},
+                data: {facl: facultad},
                 success: function (msg) {
                     var b = bootbox.dialog({
                         id: "dlgVariables",
@@ -549,7 +550,7 @@
                                 className: "btn-success",
                                 callback: function () {
                                     var prdo = $("#periodoId").val();
-                                    var facl = $("#facultad").val();
+                                    var facl = $("#facultad option:selected").val();
                                     var tipo = $("#variableDesem").val();
                                     location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
                                 }
@@ -560,20 +561,18 @@
                 }
             });
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirTotales").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var facultad = $("#facultad").find("option:selected").text();
+        var facultad = $("#facultad option:selected").val();
 
-        if($("#facultad").val() != 0){
+        if($("#facultad").val() != null){
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
-                data: {facl: facl},
+                data: {facl: facultad},
                 success: function (msg) {
                     var b = bootbox.dialog({
                         id: "dlgVariablesTotales",
@@ -603,21 +602,20 @@
                 }
             });
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
 
 
     });
 
     $("#imprimirCatego").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        var facultad = $("#facultad").find("option:selected").text();
-        if($("#facultad").val() != 0){
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
-                data: {facl: facl},
+                data: {facl: facultad},
                 success: function (msg) {
                     var b = bootbox.dialog({
                         id: "dlgVariablesCate",
@@ -646,47 +644,51 @@
             });
         }
         else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirReco").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 2;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 2;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirBotella").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes2', action: 'botella')}?periodo=" + prdo + "&facultad=" + facl;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes2', action: 'botella')}?periodo=" + prdo + "&facultad=" + facultad;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirPotencia").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes2', action: 'potencia')}?periodo=" + prdo + "&facultad=" + facl;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes2', action: 'potencia')}?periodo=" + prdo + "&facultad=" + facultad;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirExito").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes2', action: 'exito')}?periodo=" + prdo + "&facultad=" + facl;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes2', action: 'exito')}?periodo=" + prdo + "&facultad=" + facultad;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
@@ -698,22 +700,23 @@
 
     $("#imprimirEncuesta").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facl + "&pantalla=" + 3;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 3;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirFactores").click(function () {
-        var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'reportes', action: 'escuelas_ajax')}',
-                data: {facl: facl},
+                data: {facl: facultad},
                 success: function (msg) {
                     var b = bootbox.dialog({
                         id: "dlgEscuelas",
@@ -742,17 +745,18 @@
             });
 
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 
     $("#imprimirEvaluacionesPro").click(function () {
         var prdo = $("#periodoId").val();
-        var facl = $("#facultad").val();
-        if($("#facultad").val() != 0){
-            location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facl;
+        var facultad = $("#facultad option:selected").val();
+
+        if($("#facultad").val() != null){
+            location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facultad;
         }else{
-            log("Seleccione una facultad","error")
+            log("Seleccione una facultad","info")
         }
     });
 

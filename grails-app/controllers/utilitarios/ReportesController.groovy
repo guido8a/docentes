@@ -783,7 +783,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'reporte_' + new Date().format("dd-MM-yyyy"))
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }

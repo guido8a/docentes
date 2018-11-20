@@ -158,95 +158,101 @@
         });
     }
 
-
     var canvas = $("#clases");
     var myChart;
 
     $(".tipoEncuesta").click(function () {
         var id = this.id
-//        console.log("id:", id)
         var prdo = $("#periodoId").val();
-        $.ajax({
-            type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'variablesData')}',
-            data: {prdo: prdo},
-            success: function (mnsj) {
-                var resp = mnsj.split('||')  /* se envia facultades y el JSON */
-                var facl = resp[0].split('_')
-                var json = $.parseJSON(resp[1])
+        var facultad = $("#facultad option:selected").val();
+
+        if(facultad != null){
+            $("#chart-area").removeClass('hidden');
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'reportesGraf', action: 'variablesData')}',
+                data: {prdo: prdo},
+                success: function (mnsj) {
+                    var resp = mnsj.split('||')  /* se envia facultades y el JSON */
+                    var facl = resp[0].split('_')
+                    var json = $.parseJSON(resp[1])
 //                console.log("json:", json)
 
-                $("#clases").remove();
-                $("#chart-area").removeAttr('hidden')
-                $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
+                    $("#clases").remove();
+                    $("#chart-area").removeAttr('hidden')
+                    $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
 
-                canvas = $("#clases")
-                var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#800000", "#808000"]
-                var datos = []
-                var facultades = "<ul>"
-                var leyenda = []
-                var vlor
-                var indice = 0
-                $.each(json, function (key, val) {
+                    canvas = $("#clases")
+                    var colores = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#800000", "#808000"]
+                    var datos = []
+                    var facultades = "<ul>"
+                    var leyenda = []
+                    var vlor
+                    var indice = 0
+                    $.each(json, function (key, val) {
 //                    console.log("key:", key, "val:", val)
-                    vlor = val.valor.split("_")
+                        vlor = val.valor.split("_")
 //                    console.log("valor:", vlor)
-                    datos.push({
-                        label: val.vrbl,
-                        backgroundColor: colores[indice],
-                        borderWidth: 2,
-                        data: vlor
-                    })
-                    indice++
-                });
-                $.each(facl, function (key, val) {
+                        datos.push({
+                            label: val.vrbl,
+                            backgroundColor: colores[indice],
+                            borderWidth: 2,
+                            data: vlor
+                        })
+                        indice++
+                    });
+                    $.each(facl, function (key, val) {
 //                    console.log("val:", val)
-                    facultades += "<li>Facult. " + key + ": " + val + "</li>"
-                    leyenda.push("Facult. " + key)
-                });
-                facultades += "</ul>"
+                        facultades += "<li>Facult. " + key + ": " + val + "</li>"
+                        leyenda.push("Facult. " + key)
+                    });
+                    facultades += "</ul>"
 
 //                console.log("facultades:", facultades)
-                var optionsBarra = {
-                    leyend: { display: true},
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }}],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }}]
-                    }
-                }
-
-                var optionsPila = {
-                    leyend: { display: true},
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            stacked: true }],
-                        yAxes: [{
+                    var optionsBarra = {
+                        leyend: { display: true},
+                        scales: {
+                            xAxes: [{
                                 ticks: {
-                                beginAtZero: true
-                            },
-                            stacked: true }]
+                                    beginAtZero: true
+                                }}],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }}]
+                        }
+                    };
+
+                    var optionsPila = {
+                        leyend: { display: true},
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                stacked: true }],
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                stacked: true }]
+                        }
+                    };
+
+                    if(id === 'tpenBarras') {
+                        grafica('bar', leyenda, datos, optionsBarra, canvas)
+                    } else {
+                        grafica('bar', leyenda, datos, optionsPila, canvas)
                     }
-                }
 
-                if(id === 'tpenBarras') {
-                    grafica('bar', leyenda, datos, optionsBarra, canvas)
-                } else {
-                    grafica('bar', leyenda, datos, optionsPila, canvas)
+                    $("#divFacl").remove();
+                    $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
                 }
-
-                $("#divFacl").remove();
-                $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
-            }
-        });
+            });
+        }else{
+            $("#chart-area").addClass('hidden');
+            log("Seleccione una facultad","info")
+        }
     });
 
     function grafica(tipo, leyenda, datos, options, canvas) {
