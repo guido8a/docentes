@@ -2204,7 +2204,7 @@ class ReportesController extends seguridad.Shield {
         def sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
                 "from rpec, prof, escl, dcta, mate " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "rpec.facl__id::varchar ilike '${facultadId}' and dcta.dcta__id = rpec.dcta__id and " +
+                "rpec.escl__id = ${params.escuela} and dcta.dcta__id = rpec.dcta__id and " +
                 "mate.mate__id = dcta.mate__id and clase is not null and rpec.prdo__id = ${periodo.id} and " +
                 "tpen__id = 2 " +
                 "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
@@ -2216,22 +2216,10 @@ class ReportesController extends seguridad.Shield {
 //                "univ__id = ${params.univ} and escl.escl__id = ${params.escuela} " +
 //                "group by clase order by clase"
 
-
-
-//        def sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
-//                "from rpec, prof, escl, dcta, mate " +
-//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and mate.mate__id = dcta.mate__id and " +
-//                "rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-//                "univ__id = ${params.univ} and escl.escl__id = ${params.escuela} " +
-//                "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
-//                "order by clase"
-
         println("sql " + sql )
 
 
         def res = cn.rows(sql.toString())
-
-        println("Res " + res)
 
         return[facultad: facultad, res: res, periodo: periodo]
     }
