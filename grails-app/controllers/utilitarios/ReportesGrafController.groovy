@@ -144,12 +144,8 @@ class ReportesGrafController extends seguridad.Shield {
         def facultad
         def facultadId
         def evaluados
-        if (params.facl.toInteger()) {
-            facultad = Facultad.get(params.facl).nombre
-            facultadId = "${params.facl}"
-        } else {
-            facultad = "Todas las Facultades"
-            facultadId = "%"
+        if (params.escl.toInteger()) {
+            facultad = "${Facultad.get(params.facl).nombre} - ${Escuela.get(params.escl).nombre}"
         }
 
         def sql
@@ -167,6 +163,7 @@ class ReportesGrafController extends seguridad.Shield {
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
         println "promedio: $sql"
         data.promedio = (cn.rows(sql.toString())[0]?.prom ?: 0) * 100
+        data.promedio = Math.round(data.promedio * 100)/100
 
         sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl " +
                 "where prof.prof__id = rpec.prof__id and " +
@@ -184,6 +181,7 @@ class ReportesGrafController extends seguridad.Shield {
         } else {
             data.ptnv = 0
         }
+        data.ptnv = Math.round(data.ptnv * 100)/100
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
@@ -194,6 +192,8 @@ class ReportesGrafController extends seguridad.Shield {
         } else {
             data.ccbb = 0
         }
+        data.ccbb = Math.round(data.ccbb * 100)/100
+
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
@@ -204,6 +204,7 @@ class ReportesGrafController extends seguridad.Shield {
         } else {
             data.fcex = 0
         }
+        data.fcex = Math.round(data.fcex * 100)/100
 
 
         sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
@@ -215,8 +216,9 @@ class ReportesGrafController extends seguridad.Shield {
         } else {
             data.rcmn = 0
         }
+        data.rcmn = Math.round(data.rcmn * 100)/100
 
-//        println "data: $data"
+        println "data: $data"
 //        println "data: ${data as JSON}"
 
         /** valores para demostración **/
