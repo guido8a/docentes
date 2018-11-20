@@ -309,7 +309,7 @@ class ReportesGrafController extends seguridad.Shield {
                 "group by facldscr, escldscr, facl.facl__id, escl.escl__id order by facl.facl__id"
 
 
-        println "sql: $sql"
+//        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
         def txto = ""

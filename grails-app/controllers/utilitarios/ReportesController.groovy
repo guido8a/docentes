@@ -1286,7 +1286,8 @@ class ReportesController extends seguridad.Shield {
     def variables_ajax () {
         def factores = Variables.findByCodigo('FE')
         def botella = Variables.findByCodigo('CCB')
-        def variables = Variables.list() - factores - botella
+        def competencia = Variables.findByCodigo('CP')
+        def variables = Variables.list() - factores - botella - competencia
 
         return [variables: variables]
     }

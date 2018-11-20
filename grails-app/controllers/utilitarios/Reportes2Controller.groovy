@@ -236,74 +236,15 @@ class Reportes2Controller extends seguridad.Shield {
                     }
 
                     document.add(tablaD);
-//                    document.close();
-
-//                    anterior = e.dcta__id
-
-//                }else{
-//
-//                    println("anterior"  + anterior)
-//                    println("dicta"  + e.dcta__id)
-//
-//                    if(anterior != e.dcta__id){
-//                        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido + " MATERIA: ", fontTitulo)
-//                        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-//
-//                        Paragraph materia = new Paragraph("MATERIA: " + Dictan.get(d)?.materia?.nombre + " - PARALELO: " + Dictan.get(d)?.paralelo, fontTitulo )
-//                        materia.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-//
-//                        Paragraph lineaTitulo = new Paragraph("Recomendaciones", fontTitulo )
-//                        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-//
-//                        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
-//
-//                        document.add(parrafoUniversidad)
-//                        document.add(parrafoFacultad)
-//                        document.add(parrafoProfesor)
-//                        document.add(materia)
-//                        document.add(lineaTitulo)
-//                        document.add(lineaVacia)
-//
-//
-//                        PdfPTable tablaD = new PdfPTable(2);
-//                        tablaD.setWidthPercentage(100);
-//                        tablaD.setWidths(arregloEnteros([90, 10]))
-//
-//                        addCellTabla(tablaD, new Paragraph("Descripción", fontTitulo2), prmsCrBorderAzul)
-//                        addCellTabla(tablaD, new Paragraph("Grado", fontTitulo2), prmsCrBorderAzul)
-//
-//                        res.eachWithIndex { p , j ->
-//                            addCellTabla(tablaD, new Paragraph(p.rcmndscr, fontThUsar), prmsTdNoBorder)
-//                            addCellTabla(tablaD, new Paragraph(p.ref, fontThUsar), prmsCrBorder)
-//                        }
-//
-//                        document.add(tablaD);
-////                        document.close();
-//
-//                        anterior = e.dcta__id
-//                    }
-//                }
-
                 primeraVez ++
-//            }
-
-
-//        }
 
         document.close();
-
-
-//        println("---> " + sql)
-//        println("---> " + res.dcta__id.unique())
-
-
-        /* ************************************************************* HEADER PLANILLA ***************************************************************************/
 
 
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'prueba')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'recomendaciones')
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }

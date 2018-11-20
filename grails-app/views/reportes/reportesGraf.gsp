@@ -214,7 +214,7 @@
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirRecomendados">
-                    <span class="text-success"><i class="fa fa-pie-chart"></i><strong> Docentes con recomendaciones: </strong>
+                    <span class="text-success"><i class="fa fa-line-chart"></i><strong> Docentes con recomendaciones: </strong>
                         Listado de docentes que han resultado con recomendaciones
                     </span>
                 </div>
@@ -241,7 +241,7 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirTipoEncuesta">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Clasificación general por tipo de evaluación: </strong>
-                        Gráfico comparativo general del promedio obtenido por tipo de evaluación
+                        Reporte comparativo general del promedio obtenido por tipo de evaluación
                     </span>
                 </div>
             </a>
@@ -249,7 +249,7 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirIndicadorVariables">
                     <span class="text-success"><i class="fa fa-line-chart"></i><strong> Indicador general por variables: </strong>
-                        Gráfico comparativo de los prmedios alcanzados en las distintas variables
+                        Reporte comparativo de los promedios alcanzados en las distintas variables
                     </span>
                 </div>
             </a>
