@@ -36,28 +36,6 @@
 
     <div class="col-md-1"></div>
 
-
-%{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
-%{--<div class="col-md-1">Universidad:</div>--}%
-%{--<div class="col-sm-3">--}%
-%{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-%{--class="form-control" style="width: 280px"--}%
-%{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-%{--</div>--}%
-%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
-%{--<div class="col-sm-1" id="divPeriodos">--}%
-
-%{--</div>--}%
-%{--</g:if>--}%
-%{--<g:else>--}%
-%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
-%{--<div class="col-sm-1">--}%
-%{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-%{--class="form-control" style="width: 90px"--}%
-%{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
-%{--</div>--}%
-%{--</g:else>--}%
-
     <g:if test="${session.perfil.codigo == 'ADMG'}">
         <div class="col-md-1">Universidad:</div>
         <div class="col-sm-3">
@@ -144,7 +122,6 @@
         });
     }
 
-
     function cargarFacultad (id) {
         $.ajax({
             type: 'POST',
@@ -222,7 +199,7 @@
                                     beginAtZero: true
                                 }}]
                         }
-                    }
+                    };
 
                     var optionsPila = {
                         leyend: { display: true},
@@ -230,7 +207,7 @@
                             xAxes: [{ stacked: true }],
                             yAxes: [{ stacked: true }]
                         }
-                    }
+                    };
 
                     if(id === 'tpenBarras') {
                         grafica('bar', leyenda, datos, optionsBarra, canvas)

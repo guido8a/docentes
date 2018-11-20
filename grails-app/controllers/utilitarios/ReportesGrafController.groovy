@@ -249,7 +249,7 @@ class ReportesGrafController extends seguridad.Shield {
                 "rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
-//        println "sql: $sql"
+        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
         def txto = ""
@@ -284,18 +284,29 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def variablesData() {
-        println "variablesData $params"
+//        println "variablesData $params"
         def cn = dbConnectionService.getConnection()
         def sql
         def data = [:]
 
+//        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
+//                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
+//                "facl.facl__id, facldscr " +
+//                "from rpec, prof, escl, facl " +
+//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+//                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} " +
+//                "group by facldscr, facl.facl__id order by facl.facl__id"
+
+
         sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
                 "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
-                "facl.facl__id, facldscr " +
+                "facl.facl__id, facldscr, escl.escl__id, escldscr " +
                 "from rpec, prof, escl, facl " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} " +
-                "group by facldscr, facl.facl__id order by facl.facl__id"
+                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} " +
+                "group by facldscr, escldscr, facl.facl__id, escl.escl__id order by facl.facl__id"
+
+
         println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
@@ -305,20 +316,26 @@ class ReportesGrafController extends seguridad.Shield {
         tx_1 = ""; tx_2 = ""; tx_3 = ""; tx_4 = ""; tx_5 = ""; tx_6 = "";
         def facl = datos.facl__id.unique()
         def facultades = datos.facldscr.unique()
-
-//        sql = "select vrblcdgo||': '||vrbldscr from vrbl order by vrblordn "
-//        def variables = cn.rows(sql.toString())
+        def escuelas = datos.escldscr.unique()
+        def escl = datos.escl__id.unique()
 
 //        println "facl: $facl"
 //        println "tpen: $tpen"
 
-        for (j in facl) {
-            tx_ddsc = "${datos.find { it.facl__id == j }?.ddsc ?: 0}"
-            tx_ddac = "${datos.find { it.facl__id == j }?.ddac ?: 0}"
-            tx_ddhd = "${datos.find { it.facl__id == j }?.ddhd ?: 0}"
-            tx_ddci = "${datos.find { it.facl__id == j }?.ddci ?: 0}"
-            tx_dcni = "${datos.find { it.facl__id == j }?.dcni ?: 0}"
-            tx_d_ea = "${datos.find { it.facl__id == j }?.d_ea ?: 0}"
+//        for (j in facl) {
+        for (j in escl) {
+//            tx_ddsc = "${datos.find { it.facl__id == j }?.ddsc ?: 0}"
+//            tx_ddac = "${datos.find { it.facl__id == j }?.ddac ?: 0}"
+//            tx_ddhd = "${datos.find { it.facl__id == j }?.ddhd ?: 0}"
+//            tx_ddci = "${datos.find { it.facl__id == j }?.ddci ?: 0}"
+//            tx_dcni = "${datos.find { it.facl__id == j }?.dcni ?: 0}"
+//            tx_d_ea = "${datos.find { it.facl__id == j }?.d_ea ?: 0}"
+            tx_ddsc = "${datos.find { it.escl__id == j }?.ddsc ?: 0}"
+            tx_ddac = "${datos.find { it.escl__id == j }?.ddac ?: 0}"
+            tx_ddhd = "${datos.find { it.escl__id == j }?.ddhd ?: 0}"
+            tx_ddci = "${datos.find { it.escl__id == j }?.ddci ?: 0}"
+            tx_dcni = "${datos.find { it.escl__id == j }?.dcni ?: 0}"
+            tx_d_ea = "${datos.find { it.escl__id == j }?.d_ea ?: 0}"
             tx_1 += tx_1 ? "_$tx_ddsc" : tx_ddsc
             tx_2 += tx_2 ? "_$tx_ddac" : tx_ddac
             tx_3 += tx_3 ? "_$tx_ddhd" : tx_ddhd
@@ -337,8 +354,9 @@ class ReportesGrafController extends seguridad.Shield {
 //        println "datos: ${data as JSON}"
 
         /* se envía el mapa como objeto JSON */
-        def respuesta = "${facultades.join('_')}||${data as JSON}"
-//        println respuesta
+//        def respuesta = "${facultades.join('_')}||${data as JSON}"
+        def respuesta = "${escuelas.join('_')}||${data as JSON}"
+//        println "respuesta variables " + respuesta
         render respuesta
     }
 
