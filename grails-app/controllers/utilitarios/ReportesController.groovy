@@ -2295,46 +2295,73 @@ class ReportesController extends seguridad.Shield {
         def ord
         def d = []
         def facultad = []
+        def data1 = [:]
+        def data2 = [:]
+        def data3 = [:]
+        def data4 = [:]
+        def data5 = [:]
+        def data6 = [:]
 
-        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
-                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
-                "facl.facl__id, facldscr " +
-                "from rpec, prof, escl, facl " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.periodo} " +
-                "group by facldscr, facl.facl__id order by facl.facl__id"
+//        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
+//                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
+//                "facl.facl__id, facldscr " +
+//                "from rpec, prof, escl, facl " +
+//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+//                "facl.facl__id = escl.facl__id and rpec.tpen__id = 8 and prdo__id = ${params.periodo} " +
+//                "group by facldscr, facl.facl__id order by facl.facl__id"
+
+
+        sql = "select avg(d_ea)::numeric(5,2) d_ea, avg(ddsc)::numeric(5,2) ddsc, avg(ddhd)::numeric(5,2) ddhd, avg(ddac)::numeric(5,2) ddac, avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, " +
+                "facldscr||' - '||escldscr nombre from rpec, facl, " +
+                "escl where facl.facl__id = rpec.facl__id and escl.escl__id = rpec.escl__id " +
+                "and tpen__id = 2 and prdo__id = ${params.periodo} group by facldscr, escldscr;"
+
+
 //        println "sql: $sql"
+
         def datos = cn.rows(sql.toString())
 
 //        println("datos " + datos)
 
-//        println("data " + data)
-
         def tx_ddsc, tx_ddac, tx_ddhd, tx_ddci, tx_dcni, tx_d_ea
         def tx_1, tx_2, tx_3, tx_4, tx_5, tx_6
-        def facl = datos.facl__id.unique()
+//        def facl = datos.facl__id.unique()
 
-        for(j in facl) {
-            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
-            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
-            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
-            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
-            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
-            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
+//        for(j in facl) {
+//            tx_ddsc = "${datos.find{it.facl__id == j}?.ddsc?:0}"
+//            tx_ddac = "${datos.find{it.facl__id == j}?.ddac?:0}"
+//            tx_ddhd = "${datos.find{it.facl__id == j}?.ddhd?:0}"
+//            tx_ddci = "${datos.find{it.facl__id == j}?.ddci?:0}"
+//            tx_dcni = "${datos.find{it.facl__id == j}?.dcni?:0}"
+//            tx_d_ea = "${datos.find{it.facl__id == j}?.d_ea?:0}"
+//
+//            data[1] = [vrbl: 'INTEGRACIÓN DE CONOCIMIENTOS', valor: tx_ddsc]
+//            data[2] = [vrbl: 'DESARROLLO DE ACTITUDES Y VALORES', valor: tx_ddac]
+//            data[3] = [vrbl: 'DESARROLLO DE HABILIDADES Y DESTREZAS', valor: tx_ddhd]
+//            data[4] = [vrbl: 'INVESTIGACIÓN FORMATIVA', valor: tx_ddci]
+//            data[5] = [vrbl: 'NORMATIVIDAD INSTITUCIONAL', valor: tx_dcni]
+//            data[6] = [vrbl: 'EVALUACIÓN DE APRENDIZAJE', valor: tx_d_ea]
 
-            data[1] = [vrbl: 'INTEGRACIÓN DE CONOCIMIENTOS', valor: tx_ddsc]
-            data[2] = [vrbl: 'DESARROLLO DE ACTITUDES Y VALORES', valor: tx_ddac]
-            data[3] = [vrbl: 'DESARROLLO DE HABILIDADES Y DESTREZAS', valor: tx_ddhd]
-            data[4] = [vrbl: 'INVESTIGACIÓN FORMATIVA', valor: tx_ddci]
-            data[5] = [vrbl: 'NORMATIVIDAD INSTITUCIONAL', valor: tx_dcni]
-            data[6] = [vrbl: 'EVALUACIÓN DE APRENDIZAJE', valor: tx_d_ea]
+//            ord = data.sort { a,b -> b.value.valor <=> a.value.valor }
+//
+//            d += ord
+//        }
 
-            ord = data.sort { a,b -> b.value.valor <=> a.value.valor }
-
-            d += ord
+        datos.each{
+            data1.put(it.nombre, it.ddsc)
+            data2.put(it.nombre, it.ddac)
+            data3.put(it.nombre, it.ddhd)
+            data4.put(it.nombre, it.ddci)
+            data5.put(it.nombre, it.dcni)
+            data6.put(it.nombre, it.d_ea)
         }
 
-        return [datos: datos, periodo: periodo, data: d, fac: facl]
+
+//        println("data1 " + data1)
+//        println("data2 " + data2)
+
+//        return [datos: datos, periodo: periodo, data: d, fac: facl]
+        return [periodo: periodo, data1: data1, data2: data2, data3: data3, data4: data4, data5: data5, data6: data6]
     }
 
     def reporteEnviarProfesores() {

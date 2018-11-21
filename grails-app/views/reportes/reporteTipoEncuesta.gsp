@@ -1,23 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 02/10/18
-  Time: 9:53
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/07/18
-  Time: 11:51
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 26/09/16
-  Time: 12:02
---%>
 
 <%@ page import="docentes.Facultad; docentes.Profesor" contentType="text/html;charset=UTF-8" %>
 <html>
