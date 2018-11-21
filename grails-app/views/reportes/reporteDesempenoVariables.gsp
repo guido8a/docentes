@@ -93,7 +93,7 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${"INTEGRACIÓN DE CONOCIMIENTOS"}"/></strong>
 </p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%; margin-top: -15px">
     <thead>
 
     <tr>
@@ -116,7 +116,7 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${"DESARROLLO DE ACTITUDES Y VALORES"}"/></strong>
 </p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%; margin-top: -15px">
     <thead>
 
     <tr>
@@ -139,7 +139,7 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${"DESARROLLO DE HABILIDADES Y DESTREZAS"}"/></strong>
 </p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%; margin-top: -15px">
     <thead>
 
     <tr>
@@ -162,7 +162,7 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${"INVESTIGACIÓN FORMATIVA"}"/></strong>
 </p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%; margin-top: -15px">
     <thead>
 
     <tr>
@@ -185,7 +185,7 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${"NORMATIVIDAD INSTITUCIONAL"}"/></strong>
 </p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%; margin-top: -15px">
     <thead>
 
     <tr>
@@ -208,7 +208,7 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${"EVALUACIÓN DEL APRENDIZAJE"}"/></strong>
 </p>
 
-<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+<table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%; margin-top: -15px">
     <thead>
 
     <tr>
