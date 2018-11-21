@@ -10,12 +10,19 @@
 
 <script type="text/javascript">
 
-    cargarTablaEscuelas($("#facultad option:selected").val());
+    $(function () {
+        $(document).ready(function () {
+            $("#facultad").change();
+        });
 
-    $("#facultad").change(function () {
-        var facultad = $("#facultad option:selected").val();
-        cargarTablaEscuelas(facultad);
+        $("#facultad").change(function () {
+            var facultad = $("#facultad option:selected").val();
+            cargarTablaEscuelas(facultad);
+            $(".grafFacultad").click();
+        });
     });
+
+    cargarTablaEscuelas($("#facultad option:selected").val());
 
     function cargarTablaEscuelas (facultad) {
         var universidad = ${universidad?.id}

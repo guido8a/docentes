@@ -76,13 +76,13 @@
 <div class="col-md-4"></div>
 
 <div class="col-md-2">
-    <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+    <div class="btn btn-info grafFacultad" id="barras">
         <i class="fa fa-bar-chart"></i> Diagrama de Barras
     </div>
 </div>
 
 <div class="col-md-1">
-    <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 1px">
+    <div class="btn btn-info grafFacultad" id="tpenPila" style="margin-left: 1px">
         <i class="fa fa-bar-chart"></i> Barras apiladas
     </div>
 </div>
@@ -103,11 +103,20 @@
     cargarPeriodo($("#universidadId").val());
     cargarFacultad($("#universidadId").val());
 
+    $(function () {
+        $(document).ready(function () {
+                var id = $("#universidadId option:selected").val();
+                cargarPeriodo(id);
+                cargarFacultad(id);
+        });
+    });
+
     $("#universidadId").change(function () {
         var id = $("#universidadId option:selected").val();
         cargarPeriodo(id);
         cargarFacultad(id);
     });
+
 
     function cargarPeriodo(id) {
         $.ajax({
@@ -138,13 +147,14 @@
     var canvas = $("#clases");
     var myChart;
 
-    $(".tipoEncuesta").click(function () {
+    $(".grafFacultad").click(function () {
 
         var id = this.id
         var prdo = $("#periodoId").val();
         var facl = $("#facultad option:selected").val();
+        console.log('prdo:', prdo, 'facl', facl)
 
-        if(facl){
+        if(facl) {
             $("#chart-area").removeClass('hidden');
             $.ajax({
                 type: 'POST',
@@ -209,17 +219,17 @@
                         }
                     };
 
-                    if(id === 'tpenBarras') {
-                        grafica('bar', leyenda, datos, optionsBarra, canvas)
-                    } else {
+                    if(id === 'tpenPila') {
                         grafica('bar', leyenda, datos, optionsPila, canvas)
+                    } else {
+                        grafica('bar', leyenda, datos, optionsBarra, canvas)
                     }
 
                     $("#divFacl").remove();
                     $('#chart-area').append('<div id="divFacl" style="margin-top: 30px; text-align: left">' + facultades + '</div>');
                 }
             });
-        }else{
+        } else {
             $("#chart-area").addClass('hidden');
             log("Seleccione una facultad","info")
         }

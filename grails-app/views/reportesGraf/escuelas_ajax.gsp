@@ -11,3 +11,18 @@
         <g:select from="${escuelas}" optionValue="nombre" optionKey="id"  name="escuela_name" id="escuelaId" class="form-control"/>
     </div>
 %{--</div>--}%
+
+<script type="text/javascript">
+
+    $(function () {
+        $(document).ready(function () {
+            $("#escuelaId").change();
+        });
+
+        $("#escuelaId").change(function () {
+            console.log('cambio...')
+            $(".graficar").click();
+        });
+    });
+
+</script>

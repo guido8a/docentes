@@ -75,7 +75,7 @@
     </div>
 
     <div class="col-md-2">
-        <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 20px">
+        <div class="btn btn-info graficar" id="tpenPila" style="margin-left: 20px">
             <i class="fa fa-bar-chart"></i> Barras apiladas
         </div>
     </div>
@@ -119,7 +119,7 @@
     var canvas = $("#clases");
     var myChart;
 
-    $(".tipoEncuesta").click(function () {
+    $(".graficar").click(function () {
         var id = this.id
 //        console.log("id:", id)
         var prdo = $("#periodoId").val();
@@ -187,6 +187,9 @@
             }
         });
     });
+
+
+
 
     function grafica(tipo, leyenda, datos, options, canvas) {
         var chartData = {

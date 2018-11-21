@@ -140,11 +140,11 @@
     </div>
 </div>
 
-<div class="btn btn-info" id="graficar">
+<div class="btn btn-info graficar">
     <i class="fa fa-pie-chart"></i> Polígono
 </div>
 <div class="btn btn-info" id="grafPolar" style="margin-left: 2px">
-    <i class="fa fa-pie-chart"></i> Polar
+    <i class="fa fa-pie-chart"></i> Gráfico Polar
 </div>
 
 
@@ -236,7 +236,7 @@
     var canvas = $("#clases");
     var myChart;
 
-    $("#graficar").click(function () {
+    $(".graficar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var escl = $("#escuelaId option:selected").val();

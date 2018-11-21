@@ -89,8 +89,8 @@
 
 <div class="row text-info" style="text-align: center">
 
-    <div class="btn btn-info tipoEncuesta" id="tpenBarras">
-        <i class="fa fa-bar-chart"></i> Diagrama de Barras
+    <div class="btn btn-info graficar" id="tpenBarras">
+        <i class="fa fa-bar-chart"></i> Actualizar el gráfico
     </div>
 
 </div>
@@ -160,7 +160,7 @@
     var myChart;
     var myChart2;
 
-    $(".tipoEncuesta").click(function () {
+    $(".graficar").click(function () {
         var id = this.id;
 //        console.log("id:", id)
         var prdo = $("#periodoId").val();

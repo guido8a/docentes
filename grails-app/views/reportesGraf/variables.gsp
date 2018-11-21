@@ -76,13 +76,13 @@
 <div class="col-md-4"></div>
 
 <div class="col-md-2">
-    <div class="btn btn-info tipoEncuesta" id="tpenBarras">
+    <div class="btn btn-info grafFacultad" id="tpenBarras">
         <i class="fa fa-bar-chart"></i> Diagrama de Barras
     </div>
 </div>
 
 <div class="col-md-2">
-    <div class="btn btn-info tipoEncuesta" id="tpenPila" style="margin-left: 20px">
+    <div class="btn btn-info grafFacultad" id="tpenPila" style="margin-left: 20px">
         <i class="fa fa-bar-chart"></i> Barras apiladas
     </div>
 </div>
@@ -99,8 +99,16 @@
 
 <script type="text/javascript">
 
-    cargarPeriodo($("#universidadId").val());
-    cargarFacultad($("#universidadId").val());
+//    cargarPeriodo($("#universidadId").val());
+//    cargarFacultad($("#universidadId").val());
+
+    $(function () {
+        $(document).ready(function () {
+                var id = $("#universidadId option:selected").val();
+                cargarPeriodo(id);
+                cargarFacultad(id);
+        });
+    });
 
     $("#universidadId").change(function () {
         var id = $("#universidadId option:selected").val();
@@ -138,7 +146,7 @@
     var canvas = $("#clases");
     var myChart;
 
-    $(".tipoEncuesta").click(function () {
+    $(".grafFacultad").click(function () {
         var id = this.id
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
@@ -216,10 +224,10 @@
                         }
                     };
 
-                    if(id === 'tpenBarras') {
-                        grafica('bar', leyenda, datos, optionsBarra, canvas)
-                    } else {
+                    if(id === 'tpenPila') {
                         grafica('bar', leyenda, datos, optionsPila, canvas)
+                    } else {
+                        grafica('bar', leyenda, datos, optionsBarra, canvas)
                     }
 
                     $("#divFacl").remove();

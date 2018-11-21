@@ -141,7 +141,7 @@
 </div>
 
 <div class="row text-info" style="text-align: center">
-    <div class="btn btn-info" id="graficar">
+    <div class="btn btn-info graficar">
         <i class="fa fa-pie-chart"></i> Aceptar
     </div>
 </div>
@@ -279,7 +279,7 @@
     var canvas = $("#clases");
     var myChart;
 
-    $("#graficar").click(function () {
+    $(".graficar").click(function () {
 
         openLoader("Graficando...");
 
