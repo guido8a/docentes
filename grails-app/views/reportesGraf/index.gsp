@@ -474,8 +474,8 @@
             });
         }else{
             closeLoader();
-            $("#chart-area").addClass('hidden')
-            $("#chart-area2").addClass('hidden')
+            $("#chart-area").addClass('hidden');
+            $("#chart-area2").addClass('hidden');
           log("Seleccione una carrera","info")
         }
 
@@ -485,16 +485,19 @@
     $("#imprimirRecomendados").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
+        var escl = $("#escuelaId option:selected").val();
+        var universidad = $("#universidadId option:selected").val();
         location.href = "${createLink(controller: 'reportes', action: 'recomendacionesGrafico')}?periodo=" + prdo +
-            "&facultad=" + facl + "&tipo=" + 1;
+            "&facultad=" + facl + "&tipo=" + 1 + "&escl=" + escl + "&univ=" + universidad;
     });
 
     $("#imprimirClases").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var universidad = $("#universidadId option:selected").val();
-        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo + "&universidad=" + universidad +
-            "&facultad=" + facl + "&tipo=" + 1;
+        var escl = $("#escuelaId option:selected").val();
+        location.href = "${createLink(controller: 'reportes', action: 'profesoresClases')}?periodo=" + prdo + "&univ=" + universidad +
+            "&facultad=" + facl + "&tipo=" + 1 + "&escl=" + escl;
     });
 
 

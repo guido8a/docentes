@@ -919,14 +919,9 @@ class ReportesController extends seguridad.Shield {
 
         DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
 
-//        datos.each{
-//
-//        }
-
-        dataSet.setValue(60, "Clase", "A");
-        dataSet.setValue(71, "Clase", "B");
-        dataSet.setValue(28, "Clase", "C");
-
+        datos.each{ l->
+            dataSet.setValue(l.value, "Clase", l.key)
+        }
         JFreeChart chart = ChartFactory.createBarChart(
                 "${titulo}", "Clase", "Valor",
                 dataSet, PlotOrientation.VERTICAL, false, true, false);
@@ -1790,8 +1785,8 @@ class ReportesController extends seguridad.Shield {
 
     def profesoresClases () {
 
-
         println "profesoresClases $params"
+
         def cn = dbConnectionService.getConnection()
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -1811,7 +1806,7 @@ class ReportesController extends seguridad.Shield {
             facultadId = "%"
         }
 
-        def universidad = Universidad.get(params.universidad)
+        def universidad = Universidad.get(params.univ)
 
         def sql
         def data = [:]
@@ -1820,19 +1815,20 @@ class ReportesController extends seguridad.Shield {
         def subtitulo = ''
         def pattern1 = "###.##%"
 
-
-
         switch(tipo){
             case '1':
-                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
+                        "where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                        "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
                         "group by clase order by clase"
 
 
 //                println "sql: $sql"
                 data = [:]
                 cn.eachRow(sql.toString()) { d ->
-                    data["Profeso-res ${d.clase}: ${d.cnta}"] = d.cnta
+//                    data["Profeso-res ${d.clase}: ${d.cnta}"] = d.cnta
+                    data.put(d.clase, d.cnta)
                 }
 //                println "data: $data"
                 subtitulo = "PROFESORES POR DESEMPEÑO"
@@ -1853,16 +1849,9 @@ class ReportesController extends seguridad.Shield {
         Paragraph linea = new Paragraph(" ", fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
 
-//        Paragraph titulo = new Paragraph(subtitulo, fontTtlo)
-//        titulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
-
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
         document.add(linea)
-//        document.add(linea)
-//        document.add(titulo)
-//        document.add(linea)
-
 
         def chart = crearBarChart(subtitulo,data)
         def chart2 = generatePieChart()
@@ -1900,8 +1889,6 @@ class ReportesController extends seguridad.Shield {
 
             document.add(parrafo1)
             document.add(parrafo2)
-//            document.add(parrafo2)
-//            document.add(parrafo2)
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1912,16 +1899,6 @@ class ReportesController extends seguridad.Shield {
 
         PdfPCell cell1 = new PdfPCell(new Paragraph("Clase"));
         PdfPCell cell2 = new PdfPCell(new Paragraph("Valor"));
-//        PdfPCell cell3 = new PdfPCell(new Paragraph("Cell 3"));
-
-//        PdfPTable nestedTable = new PdfPTable(1);
-//        nestedTable.setWidthPercentage(51);
-//        nestedTable.addCell(new Paragraph("Nested Cell 1"));
-
-//        cell3.addElement(nestedTable);
-//        cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
-//        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
-
 
         cell1.setHorizontalAlignment(Element.ALIGN_CENTER)
         cell2.setHorizontalAlignment(Element.ALIGN_CENTER)
@@ -1934,11 +1911,9 @@ class ReportesController extends seguridad.Shield {
         table.addCell(cell1);
         table.addCell(cell2);
 
-        3.times { p->
-
-            PdfPCell cell3 = new PdfPCell(new Paragraph("A"));
-            PdfPCell cell4 = new PdfPCell(new Paragraph("60"));
-
+        data.eachWithIndex{ o,h->
+            PdfPCell cell3 = new PdfPCell(new Paragraph(o.key + ""));
+            PdfPCell cell4 = new PdfPCell(new Paragraph(o.value + ""));
             cell3.setHorizontalAlignment(Element.ALIGN_CENTER)
             cell4.setHorizontalAlignment(Element.ALIGN_CENTER)
             cell3.setVerticalAlignment(Element.ALIGN_CENTER)
@@ -2089,8 +2064,10 @@ class ReportesController extends seguridad.Shield {
 
         def totl = 0
         def cuenta = 0
-        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2" +
+        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
+                "where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
                 "group by clase order by clase"
 
         cn.eachRow(sql2.toString()) { d ->
@@ -2102,24 +2079,26 @@ class ReportesController extends seguridad.Shield {
 
         switch(tipo){
             case '1':
-                sql = "select count(distinct (rpec.prof__id,dcta__id)) cnta from rpec, prof, escl " +
-                        "where prof.prof__id = rpec.prof__id and " +
-                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and " +
-                        "con_rcmn > 0 and tpen__id = 2"
+
+                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
+                        "univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
 
 
-                println "sql: $sql"
+//                println "sql: $sql"
 
                 data = [:]
                 cn.eachRow(sql.toString()) { d ->
-                    data["Recomendados: ${d.cnta}"] = d.cnta
+                    data["Con recomendaciones: ${d.cnta}"] = d.cnta
                     cuenta = d.cnta
                 }
 
-                data["No Recomendados: ${totl - cuenta}"] = (totl - cuenta)
+                data["Sin recomendaciones: ${totl - cuenta}"] = (totl - cuenta)
                 subtitulo = "Recomendaciones"
                 break;
         }
+
+//        println("data " + data)
 
         document.open();
 
@@ -2187,7 +2166,7 @@ class ReportesController extends seguridad.Shield {
 
     def reporteDesempeno () {
 
-        println("params --- " + params)
+//        println("params --- " + params)
 
         def cn = dbConnectionService.getConnection()
         def facultad
@@ -2217,7 +2196,7 @@ class ReportesController extends seguridad.Shield {
 //                "univ__id = ${params.univ} and escl.escl__id = ${params.escuela} " +
 //                "group by clase order by clase"
 
-        println("sql " + sql )
+//        println("sql " + sql )
 
 
         def res = cn.rows(sql.toString())
