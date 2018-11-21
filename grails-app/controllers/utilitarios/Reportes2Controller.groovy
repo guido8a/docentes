@@ -433,7 +433,7 @@ class Reportes2Controller extends seguridad.Shield {
 //        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
         def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by facl,prof,mate"
 
-//        println("---> " + sql)
+//        println "---> $sql"
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
