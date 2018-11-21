@@ -2228,36 +2228,44 @@ class ReportesController extends seguridad.Shield {
         def data3 = [:]
         def data4 = [:]
 
-        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr " +
+//        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr " +
+//                "from rpec, prof, escl, facl, tpen " +
+//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+//                "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.periodo} and " +
+//                "tpen.tpen__id = rpec.tpen__id " +
+//                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
+
+        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr, escl.escl__id, escldscr " +
                 "from rpec, prof, escl, facl, tpen " +
                 "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
                 "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.periodo} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
-                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
-        def datos = cn.rows(sql.toString())
+                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr, escl.escl__id, escldscr order by facl.facl__id, tpendscr, rpec.tpen__id"
 
-//        println("datos " + datos)
+//        println("sql " + sql)
+
+       def datos = cn.rows(sql.toString())
+
 
         datos.each {
 
-            def cod = TipoEncuesta.get(it.tpen__id).codigo
+            def cod = TipoEncuesta.get(it.tpen__id).codigo.trim()
 
             switch (cod) {
                 case 'AD':
-                    data1.put(it.prom,it.facl__id)
+                    data1.put((it.facl__id + "_" + it.escldscr),it.prom)
                     break
                 case 'DC':
-                    data2.put(it.prom,it.facl__id)
+                    data2.put((it.facl__id + "_" + it.escldscr),it.prom)
                     break
                 case 'DI':
-                    data3.put(it.prom,it.facl__id)
+                    data3.put((it.facl__id + "_" + it.escldscr),it.prom)
                     break
                 case 'PR':
-                    data4.put(it.prom,it.facl__id)
+                    data4.put((it.facl__id + "_" + it.escldscr),it.prom)
                     break
             }
         }
-
 
         def ord1 = data1.sort { a,b -> b.key <=> a.key }
         def ord2 = data2.sort { a,b -> b.key <=> a.key }

@@ -125,8 +125,8 @@
     <tbody>
     <g:each in="${datos1}" var="d1">
         <tr>
-            <td style="width: 30%">${docentes.Facultad.get(d1.value).nombre}</td>
-            <td style="width: 30%" >${d1.key}</td>
+            <td style="width: 30%">${docentes.Facultad.get(d1.key.split("_")[0]).nombre + " - " + d1.key.split("_")[1]}</td>
+            <td style="width: 30%; text-align: center" >${d1.value}</td>
         </tr>
     </g:each>
     </tbody>
@@ -148,8 +148,8 @@
     <tbody>
     <g:each in="${datos2}" var="d2">
         <tr>
-            <td style="width: 30%">${docentes.Facultad.get(d2.value).nombre}</td>
-            <td style="width: 30%; text-align: center" >${d2.key}</td>
+            <td style="width: 30%">${docentes.Facultad.get(d2.key.split("_")[0]).nombre  + " - " + d2.key.split("_")[1]}</td>
+            <td style="width: 30%; text-align: center" >${d2.value}</td>
         </tr>
     </g:each>
     </tbody>
@@ -171,8 +171,8 @@
     <tbody>
     <g:each in="${datos3}" var="d3">
         <tr>
-            <td style="width: 30%">${docentes.Facultad.get(d3.value).nombre}</td>
-            <td style="width: 30%" >${d3.key}</td>
+            <td style="width: 30%">${docentes.Facultad.get(d3.key.split("_")[0]).nombre  + " - " + d3.key.split("_")[1]}</td>
+            <td style="width: 30%" >${d3.value}</td>
         </tr>
     </g:each>
     </tbody>
@@ -194,8 +194,8 @@
     <tbody>
     <g:each in="${datos4}" var="d4">
         <tr>
-            <td style="width: 30%">${docentes.Facultad.get(d4.value).nombre}</td>
-            <td style="width: 30%" >${d4.key}</td>
+            <td style="width: 30%">${docentes.Facultad.get(d4.key.split("_")[0]).nombre  + " - " + d4.key.split("_")[1]}</td>
+            <td style="width: 30%" >${d4.value}</td>
         </tr>
     </g:each>
     </tbody>
