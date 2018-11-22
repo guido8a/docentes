@@ -99,26 +99,28 @@
 
 <script type="text/javascript">
 
-//    cargarPeriodo($("#universidadId").val());
-//    cargarFacultad($("#universidadId").val());
+//    cargarPeriodo($("#universidadId option:selected").val());
+//    cargarFacultad($("#universidadId option:selected").val());
+//
 
     $(function () {
         $(document).ready(function () {
                 var id = $("#universidadId option:selected").val();
                 cargarPeriodo(id);
-                cargarFacultad(id);
+                cargarFacultad(id,1);
         });
     });
 
     $("#universidadId").change(function () {
         var id = $("#universidadId option:selected").val();
         cargarPeriodo(id);
-        cargarFacultad(id);
+        cargarFacultad(id,1);
     });
 
     function cargarPeriodo(id) {
         $.ajax({
             type: 'POST',
+            async:false,
             url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',
             data:{
                 universidad: id
@@ -129,13 +131,14 @@
         });
     }
 
-
-    function cargarFacultad (id) {
+    function cargarFacultad (id, tipo) {
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'facultad_ajax')}',
+            async: false,
+            url: '${createLink(controller: 'reportesGraf', action: 'facultad2_ajax')}',
             data:{
-                universidad: id
+                universidad: id,
+                tipo: tipo
             },
             success: function (msg){
                 $("#divFacultad").html(msg)
@@ -147,14 +150,19 @@
     var myChart;
 
     $(".grafFacultad").click(function () {
-        var id = this.id
-        var prdo = $("#periodoId").val();
-        var facultad = $("#facultad option:selected").val();
+        var id = this.id;
+        cargarGraficoVariables(id, $("#facultad option:selected").val())
+    });
+
+    function cargarGraficoVariables(id, facultad){
+        var prdo = $("#periodoId option:selected").val();
+//        var facultad = $("#facultad option:selected").val();
 
         if(facultad != null){
             $("#chart-area").removeClass('hidden');
             $.ajax({
                 type: 'POST',
+                async: false,
                 url: '${createLink(controller: 'reportesGraf', action: 'variablesData')}',
                 data: {prdo: prdo, facl: facultad},
                 success: function (mnsj) {
@@ -238,7 +246,8 @@
             $("#chart-area").addClass('hidden');
             log("Seleccione una facultad","info")
         }
-    });
+    }
+
 
     function grafica(tipo, leyenda, datos, options, canvas) {
         var chartData = {

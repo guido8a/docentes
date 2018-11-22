@@ -10,17 +10,10 @@
 
 <script type="text/javascript">
 
-    $(function () {
-        $(document).ready(function () {
-            $("#facultad").change();
-        });
-
         $("#facultad").change(function () {
             var facultad = $("#facultad option:selected").val();
             cargarTablaEscuelas(facultad);
-            $(".grafFacultad").click();
         });
-    });
 
     cargarTablaEscuelas($("#facultad option:selected").val());
 

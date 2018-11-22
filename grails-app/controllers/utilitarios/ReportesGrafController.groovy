@@ -232,7 +232,7 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def tipoEncuestaData() {
-        println "tipoEncuestaData $params"
+//        println "tipoEncuestaData $params"
         def cn = dbConnectionService.getConnection()
         def sql
         def data = [:]
@@ -251,7 +251,7 @@ class ReportesGrafController extends seguridad.Shield {
                 "rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
         def txto = ""
@@ -276,7 +276,7 @@ class ReportesGrafController extends seguridad.Shield {
 
         /* se envía el mapa como objeto JSON */
         def respuesta = "${facultades.join('_')}||${data as JSON}"
-        println respuesta
+//        println respuesta
 //        render data as JSON
         render respuesta
     }
@@ -715,6 +715,13 @@ class ReportesGrafController extends seguridad.Shield {
     def crearCeldaTexto (txt) {
         PdfPCell cell = new PdfPCell(new Paragraph(txt));
         return cell
+    }
+
+    def facultad2_ajax() {
+        def universidad = Universidad.get(params.universidad)
+        def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
+
+        return [facultades: facultades, universidad: universidad, tipo: params.tipo]
     }
 
 
