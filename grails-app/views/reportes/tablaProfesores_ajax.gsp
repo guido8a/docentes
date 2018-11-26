@@ -125,14 +125,14 @@
         var idProfe = $(this).data('id');
         var perio = ${periodo?.id};
         var tipo = $(this).data('tipo');
-        location.href = "${createLink(controller: 'reportes', action: 'desempenoAlumnos')}?profe=" + idProfe + "&periodo=" + perio + "&tipo=" + tipo
+        location.href = "${createLink(controller: 'reportes', action: 'desempenoAlumnos')}?profe=" + idProfe + "&periodo=" + perio + "&tipo=" + tipo + "&escl=" + '${escuela?.id}'
     });
 
     $(".btnRecomendaciones").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href = "${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul
+        location.href = "${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&escl=" + '${escuela?.id}'
     });
 
     $(".btnEncuestaDC").click(function () {

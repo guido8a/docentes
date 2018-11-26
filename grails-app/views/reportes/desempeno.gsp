@@ -28,12 +28,15 @@
 
             <g:if test="${pantalla == '1'}">
                 Informe de Desempeño
+                <br>Escuela: ${nombre}
             </g:if>
             <g:elseif test="${pantalla == '2'}">
                 Recomendaciones
+                <br>Escuela: ${nombre}
             </g:elseif>
             <g:else>
                 Encuestas
+                <br>Escuela: ${nombre}
             </g:else>
 
 
@@ -104,7 +107,8 @@
                 apellidos: ape,
                 facultad: fac,
                 periodo: per,
-                pantalla: pantalla
+                pantalla: pantalla,
+                escuela: '${escuela}'
             },
             success: function (msg){
                 $("#divTablaProfesores").html(msg);

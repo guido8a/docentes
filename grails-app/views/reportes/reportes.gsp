@@ -372,9 +372,10 @@
     $("#imprimirDesempeno").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 1;
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 1 + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
@@ -509,38 +510,42 @@
         var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            $.ajax({
-                type: 'POST',
-                url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
-                data: {facl: facultad},
-                success: function (msg) {
-                    var b = bootbox.dialog({
-                        id: "dlgVariables",
-                        title: "Seleccionar de Variables de Desempeño",
+            if(escuela != null){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
+                    data: {facl: facultad},
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id: "dlgVariables",
+                            title: "Seleccionar de Variables de Desempeño",
 //                    class   : "long",
-                        message: msg,
-                        buttons: {
-                            cancelar: {
-                                label: "Cancelar",
-                                className: "btn-primary",
-                                callback: function () {
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label: "Cancelar",
+                                    className: "btn-primary",
+                                    callback: function () {
+                                    }
+                                },
+                                aceptar: {
+                                    label: "<i class='fa fa-print'></i> Imprimir",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        var prdo = $("#periodoId").val();
+                                        var facl = $("#facultad option:selected").val();
+                                        var tipo = $("#variableDesem").val();
+                                        location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo + "&escl=" + escuela;
+                                    }
                                 }
-                            },
-                            aceptar: {
-                                label: "<i class='fa fa-print'></i> Imprimir",
-                                className: "btn-success",
-                                callback: function () {
-                                    var prdo = $("#periodoId").val();
-                                    var facl = $("#facultad option:selected").val();
-                                    var tipo = $("#variableDesem").val();
-                                    location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo + "&escl=" + escuela;
-                                }
-                            }
 
-                        } //buttons
-                    }); //dialog
-                }
-            });
+                            } //buttons
+                        }); //dialog
+                    }
+                });
+            }else{
+                log("Seleccione una escuela","info")
+            }
         }else{
             log("Seleccione una facultad","info")
         }
@@ -631,9 +636,10 @@
     $("#imprimirReco").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 2;
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 2 + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
@@ -681,9 +687,10 @@
     $("#imprimirEncuesta").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 3;
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 3 + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }

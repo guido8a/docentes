@@ -556,9 +556,10 @@ class ReportesController extends seguridad.Shield {
 
 
     def reporteVariables() {
-        println "reporteVariables $params"
+//        println "reporteVariables $params"
 
         def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escl)
 
         def tipo = Variables.get(params.tipo)
 
@@ -587,8 +588,9 @@ class ReportesController extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + (Facultad.get(params.facl)?.nombre ?: ''), fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        /* todo: Parametrizar para obtener la variable de la base de datos y modificar el sql */
-//        Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: Desarrollo de Saberes Conscientes", fontTitulo)
+        Paragraph lineaTitulo1 = new Paragraph("ESCUELA: " + (escuela?.nombre ?: ''), fontTitulo)
+        lineaTitulo1.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Reporte desempeño profesores en: " + tipo?.descripcion, fontTitulo)
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -596,6 +598,7 @@ class ReportesController extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(lineaTitulo1)
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
@@ -675,55 +678,29 @@ class ReportesController extends seguridad.Shield {
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-        /* ************************************************************* HEADER PLANILLA ***************************************************************************/
-//        PdfPTable tablaD = new PdfPTable(7);
-        PdfPTable tablaD = new PdfPTable(6);
+//        PdfPTable tablaD = new PdfPTable(6);
+        PdfPTable tablaD = new PdfPTable(5);
         tablaD.setWidthPercentage(100);
-//        tablaD.setWidths(arregloEnteros([22, 15, 20, 15, 8, 15, 5]))
-        tablaD.setWidths(arregloEnteros([25, 15, 25, 15, 15, 5]))
-
-//        def baos1 = new ByteArrayOutputStream()
-//        def pdfw1 = PdfWriter.getInstance(document, baos1);
-//        PdfContentByte cb1 = pdfw1.getDirectContent();
-
-//        document.open()
+//        tablaD.setWidths(arregloEnteros([25, 15, 25, 15, 15, 5]))
+        tablaD.setWidths(arregloEnteros([30,  35, 15, 15, 5]))
 
         addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
+//        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Materia", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Curso - Paralelo", fontTitulo), prmsCrBorder)
-//        addCellTabla(tablaD, new Paragraph("Paralelo", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
 
         PdfPTable table = new PdfPTable(1);
         table.setTotalWidth(450);
 
-
-//        float x = 360;
-//        float y = 740;
-//        float side = 0;
-//        PdfShading axial = PdfShading.simpleAxial(pdfw,x,y,(x+side).toFloat(),y,BaseColor.ORANGE,BaseColor.BLUE)
-//        PdfShadingPattern shading = new PdfShadingPattern(axial);
-////        cb.setShadingFill(shading);
-////        cb.moveTo(x,y);
-////        cb.lineTo(x + side, y);
-////        cb.lineTo(x + (side / 2), (float)(y + (side * Math.sin(Math.PI / 3))));
-//        cb.closePathFillStroke();
-
-
-
-
         res.eachWithIndex { p , j ->
 
-
             addCellTabla(tablaD, new Paragraph(p.profesor, fontThUsar), prmsTdNoBorder)
-            addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
+//            addCellTabla(tablaD, new Paragraph(Escuela.findByCodigo(p.esclcdgo).nombre, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(p.matedscr, fontThUsar), prmsTdNoBorder)
             addCellTabla(tablaD, new Paragraph(p.crsodscr + " - " + p.dctaprll, fontThUsar), prmsTdNoBorder)
-//            addCellTabla(tablaD, new Paragraph(p.dctaprll + "", fontThUsar), prmsTdNoBorder)
 
-//            def valor = ((p.ddsc).toDouble()*100).toInteger()
             def valor
             switch(tipo?.codigo){
                 case 'CNI':
@@ -938,11 +915,13 @@ class ReportesController extends seguridad.Shield {
     def desempeno () {
         def facultad =  Facultad.get(params.facultad)
         def periodo = Periodo.get(params.periodo)
-        return [facultad: facultad, periodo: periodo, pantalla: params.pantalla]
+        def escuelaNombre = Escuela.get(params.escl)?.nombre
+        return [facultad: facultad, periodo: periodo, pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
     }
 
     def tablaProfesores_ajax () {
 //        println "tablaProfesores_ajax ---> $params"
+
         def res
 
         params.nombres = "%" + params.nombres + '%'
@@ -952,6 +931,7 @@ class ReportesController extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuelaProfesor = Escuela.get(params.escuela)
 
         if(params.cedula != '%'){
 //            println "cedula: ${params.cedula}"
@@ -961,9 +941,12 @@ class ReportesController extends seguridad.Shield {
                 eq("periodo", periodo)
 
                 profesor{
-                    escuela {
-                        eq("facultad",facultad)
-                    }
+
+                    eq("escuela", escuelaProfesor)
+
+//                    escuela {
+//                        eq("facultad",facultad)
+//                    }
 
                     and{
                         ilike("cedula", params.cedula)
@@ -979,9 +962,12 @@ class ReportesController extends seguridad.Shield {
                 eq("periodo",periodo)
 
                 profesor{
-                    escuela {
-                        eq("facultad",facultad)
-                    }
+
+                    eq("escuela", escuelaProfesor)
+
+//                    escuela {
+//                        eq("facultad",facultad)
+//                    }
 
                     and{
                         ilike("nombre", params.nombres)
@@ -1002,7 +988,7 @@ class ReportesController extends seguridad.Shield {
         def pantalla = params.pantalla
 
         return [profesores: res?.profesor?.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares,
-                promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, facultad: facultad]
+                promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, facultad: facultad, escuela: escuelaProfesor]
     }
 
     def desempenoAlumnos () {
@@ -1017,6 +1003,7 @@ class ReportesController extends seguridad.Shield {
 
         def profesor = Profesor.get(params.profe)
         def periodo = Periodo.get(params.periodo)
+        def escuelaP = Escuela.get(params.escl)
         def alumnos = TipoEncuesta.findByCodigo("DC")
         def auto = TipoEncuesta.findByCodigo("AD")
         def directivos = TipoEncuesta.findByCodigo("DI")
