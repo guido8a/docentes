@@ -5,9 +5,9 @@
   Time: 12:49
 --%>
 
-<div class="row-fluid" style="width: 99.7%;height: 300px;overflow-y: auto;float: right;">
+<div class="row-fluid" style="width: 99.7%;height: 450px;overflow-y: auto;float: right;">
     <div class="span12">
-        <div style="width: 1060px; height: 300px;">
+        <div style="width: 1060px; height: 450px;">
             <table class="table table-condensed table-bordered table-striped">
                 <tbody>
                 <g:each in="${profesores}" var="profesor" status="j">

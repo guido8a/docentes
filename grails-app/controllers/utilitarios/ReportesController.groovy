@@ -922,7 +922,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def tablaProfesores_ajax () {
-        println "tablaProfesores_ajax ---> $params"
+//        println "tablaProfesores_ajax ---> $params"
 
         def res
 
@@ -953,6 +953,9 @@ class ReportesController extends seguridad.Shield {
                         ilike("nombre", params.nombres)
                         ilike("apellido", params.apellidos)
                     }
+
+
+                    order("nombre","asc")
                 }
             }
         }else{
@@ -973,6 +976,8 @@ class ReportesController extends seguridad.Shield {
                         ilike("nombre", params.nombres)
                         ilike("apellido", params.apellidos)
                     }
+
+                    order("nombre","asc")
                 }
             }
         }
