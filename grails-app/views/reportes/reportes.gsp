@@ -58,164 +58,116 @@
         <p class="text-warning">Reportes Generales</p> </h2>
     </div>
 
-    %{--<div class="row text-info" style="font-size: 11pt">--}%
-    %{--<div class="col-md-1"></div>--}%
-    %{--<div class="col-md-2">Seleccione el periodo de evaluaciones:</div>--}%
 
-    %{--<div class="col-sm-1"><g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-    %{--class="form-control" style="width: 90px"--}%
-    %{--from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
+    %{--<div class="row text-info" style="font-size: 11pt;">--}%
+        %{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
+
+            %{--<div class="form-group col-md-3" style="margin-left: 100px">--}%
+                %{--<div class="col-md-1">Universidad:</div>--}%
+
+                %{--<div class="input-group">--}%
+                    %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+                              %{--class="form-control" style="width: 300px"--}%
+                              %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+
+            %{--<div class="form-group col-md-1" style="margin-left: 10px">--}%
+                %{--<div class="col-md-1">Período:</div>--}%
+
+                %{--<div class="input-group">--}%
+                    %{--<div class="col-md-2" id="divPeriodos">--}%
+
+                    %{--</div>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div class="form-group col-md-6" style="margin-left: 10px">--}%
+                %{--<div class="col-md-1">Facultad:</div>--}%
+
+                %{--<div class="input-group col-md-12">--}%
+                    %{--<div class="col-md-10" id="divFacultad">--}%
+
+                    %{--</div>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+        %{--</g:if>--}%
+        %{--<g:else>--}%
+            %{--<div class="form-group col-md-1" style="margin-left: 180px">--}%
+                %{--<div class="col-md-1">Período:</div>--}%
+
+                %{--<div class="input-group">--}%
+                    %{--<div class="col-md-2">--}%
+                        %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
+                                  %{--class="form-control" style="width: 90px"--}%
+                                  %{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+
+            %{--<div class="form-group col-md-6" style="margin-left: 10px">--}%
+                %{--<div class="col-md-1">Facultad:</div>--}%
+
+                %{--<div class="input-group col-md-12">--}%
+                    %{--<div class="col-md-10">--}%
+                        %{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
+                                  %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
+                                  %{--noSelection="${[0:'Todas ...']}"/>--}%
+                    %{--</div>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+        %{--</g:else>--}%
     %{--</div>--}%
 
-    %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-    %{--<div class="col-md-5">--}%
-    %{--<g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-    %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"/>--}%
-    %{--</div>--}%
-
-    %{--</div>--}%
 
 
 
-    <div class="row text-info" style="font-size: 11pt;">
+    <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
+
         <g:if test="${session.perfil.codigo == 'ADMG'}">
-
-            <div class="form-group col-md-3" style="margin-left: 100px">
-                <div class="col-md-1">Universidad:</div>
-
-                <div class="input-group">
-                    <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                              class="form-control" style="width: 300px"
-                              from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-                </div>
+            <div class="col-sm-3 row" style="text-align: right">
+                Universidad
             </div>
 
-            <div class="form-group col-md-1" style="margin-left: 10px">
-                <div class="col-md-1">Período:</div>
-
-                <div class="input-group">
-                    <div class="col-md-2" id="divPeriodos">
-
-                    </div>
-                </div>
+            <div class="col-sm-6">
+                <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                          class="form-control"
+                          from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
             </div>
-
-
-        %{--<div class="col-md-1">Universidad:</div>--}%
-        %{--<div class="col-sm-3">--}%
-        %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-        %{--class="form-control" style="width: 280px"--}%
-        %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-        %{--</div>--}%
-        %{--<div class="col-md-1">Período:</div>--}%
-        %{--<div class="col-sm-1" id="divPeriodos">--}%
-
-        %{--</div>--}%
-
-            <div class="form-group col-md-6" style="margin-left: 10px">
-                <div class="col-md-1">Facultad:</div>
-
-                <div class="input-group col-md-12">
-                    <div class="col-md-10" id="divFacultad">
-
-                    </div>
-                </div>
-            </div>
-
-        %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-        %{--<div class="col-md-4" id="divFacultad">--}%
-
-        %{--</div>--}%
+            <div class="col-md-1">Período:</div>
         </g:if>
         <g:else>
-            <div class="form-group col-md-1" style="margin-left: 180px">
-                <div class="col-md-1">Período:</div>
-
-                <div class="input-group">
-                    <div class="col-md-2">
-                        <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                  class="form-control" style="width: 90px"
-                                  from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
-                    </div>
-                </div>
+            <div class="col-sm-6">
+                Universidad
+                <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                          class="form-control" style="width: 280px"
+                          from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
             </div>
 
-            <div class="form-group col-md-6" style="margin-left: 10px">
-                <div class="col-md-1">Facultad:</div>
-
-                <div class="input-group col-md-12">
-                    <div class="col-md-10">
-                        <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
-                                  optionKey="id" name="facultad_name" id="facultad" class="form-control"
-                                  noSelection="${[0:'Todas ...']}"/>
-                    </div>
-                </div>
+            <div class="col-md-1">Periodo:</div>
+            <div class="col-sm-1">
+                <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                          class="form-control" style="width: 90px"
+                          from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
             </div>
         </g:else>
+
+        <div class="col-md-2" id="divPeriodos">
+
+        </div>
+
+    </div>
+    <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
+        <div class="col-md-1">Facultad</div>
+        <div class="col-md-5" id="divFacultad">
+
+        </div>
+
+        <div class="col-md-1">Carrera</div>
+        <div class="col-md-5" id="divEscuela">
+
+        </div>
     </div>
 
-    %{--<div class="body ui-corner-all"--}%
-    %{--style="width: 1020px;position: relative;margin: auto;margin-top: 10px;height: 280px; ">--}%
-
-    %{--<div class="ui-corner-all item fuera">--}%
-    %{--<div class="ui-corner-all item">--}%
-    %{--<div class="imagen" style="height: 100%; width: 200px;">--}%
-    %{--<img src="${resource(dir: 'images', file: 'evaluar.png')}" width="150px" height="auto"--}%
-    %{--style=" margin-top:0px"/>--}%
-    %{--</div>--}%
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="imprimirNoEvaluados">--}%
-    %{--<span class="text-success"><strong>Profesores que NO han sido evaluados por los alumnos</strong>--}%
-    %{--profesores que no cuentan con evaluaciones--}%
-    %{--</span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="imprimirEvaluados">--}%
-    %{--<span class="text-success"><strong>Profesores que YA han sido evaluados por los alumnos</strong> profesores que tienen al menos una evaluación--}%
-    %{--</span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="imprimirNoAutoeva">--}%
-    %{--<span class="text-success"><strong>Profesores que NO han realizado su autoevaluación</strong>--}%
-    %{--</span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="imprimirAutoeva">--}%
-    %{--<span class="text-success"><strong>Profesores que YA han realizado su autoevaluación</strong>--}%
-    %{--</span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="imprimirEstudiante">--}%
-    %{--<span class="text-success"><strong>Estudiantes que han realizado la evaluación</strong></span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="imprimirNoEstudiante">--}%
-    %{--<span class="text-success"><strong>Estudiantes que NO han realizado la evaluación</strong>--}%
-    %{--</span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-
-    %{--<a href="#" style="text-decoration: none">--}%
-    %{--<div class="texto" id="asignaturas">--}%
-    %{--<span class="text-success"><strong>Asignaturas que faltan por evaluar</strong>--}%
-    %{--</span>--}%
-    %{--</div>--}%
-    %{--</a>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</div>--}%
 </div>
 
 <div class="body ui-corner-all"
@@ -333,15 +285,6 @@
 
 </div>
 
-
-%{--<a href="${createLink(controller: 'reportes', action: 'reportedePrueba')}" class="btn btn-info" title="">--}%
-%{--<i class="fa fa-graduation-cap"></i> Profesor--}%
-%{--</a>--}%
-
-%{--<a href="${createLink(controller: 'reportes', action: 'grafica')}" class="btn btn-warning" title="">--}%
-%{--<i class="fa fa-map-marker"></i> Doble gráfica--}%
-%{--</a>--}%
-
 </div>
 
 
@@ -376,7 +319,7 @@
     function cargarFacultad (id) {
         $.ajax({
             type: 'POST',
-            url: '${createLink(controller: 'reportesGraf', action: 'facultad_ajax')}',
+            url: '${createLink(controller: 'reportesGraf', action: 'facultadSel_ajax')}',
             data:{
                 universidad: id
             },
@@ -385,6 +328,43 @@
             }
         });
     }
+
+
+    %{--cargarPeriodo($("#universidadId").val());--}%
+    %{--cargarFacultad($("#universidadId").val());--}%
+
+    %{--$("#universidadId").change(function () {--}%
+        %{--var id = $("#universidadId option:selected").val();--}%
+        %{--cargarPeriodo(id);--}%
+        %{--cargarFacultad(id);--}%
+    %{--});--}%
+
+    %{--function cargarPeriodo(id) {--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',--}%
+            %{--data:{--}%
+                %{--universidad: id--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+                %{--$("#divPeriodos").html(msg)--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
+
+
+    %{--function cargarFacultad (id) {--}%
+        %{--$.ajax({--}%
+            %{--type: 'POST',--}%
+            %{--url: '${createLink(controller: 'reportesGraf', action: 'facultad_ajax')}',--}%
+            %{--data:{--}%
+                %{--universidad: id--}%
+            %{--},--}%
+            %{--success: function (msg){--}%
+                %{--$("#divFacultad").html(msg)--}%
+            %{--}--}%
+        %{--});--}%
+    %{--}--}%
 
 
 

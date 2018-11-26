@@ -783,7 +783,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'reporte_' + new Date().format("dd-MM-yyyy"))
+        response.setHeader("Content-disposition", "attachment; filename=" + 'reporte_' + new Date().format("dd-MM-yyyy") + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
@@ -1137,7 +1137,7 @@ class ReportesController extends seguridad.Shield {
 
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1290,7 +1290,7 @@ class ReportesController extends seguridad.Shield {
 
     def reporteTotalesDesempeno () {
 
-        println "reporteTotalDes $params"
+//        println "reporteTotalDes $params"
 
         def tipo = Variables.get(params.tipo)
         def periodo = Periodo.get(params.periodo)
@@ -1462,7 +1462,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'totalesDesempeñoAcademico')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'totalesDesempeñoAcademico' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1640,7 +1640,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'ordenamientoPorVariables')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'ordenamientoPorVariables' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1930,7 +1930,7 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos' + ".pdf" )
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -2100,7 +2100,7 @@ class ReportesController extends seguridad.Shield {
                 break;
         }
 
-        println("data " + data)
+//        println("data " + data)
 
         document.open();
 
@@ -2172,14 +2172,14 @@ class ReportesController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray()
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'recomendaciones')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'recomendaciones' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def reporteDesempeno () {
 
-        println("params --- " + params)
+//        println("params --- " + params)
 
         def cn = dbConnectionService.getConnection()
         def facultad

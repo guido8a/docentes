@@ -700,7 +700,7 @@ class ReportesGrafController extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + tituloArchivo)
+        response.setHeader("Content-disposition", "attachment; filename=" + tituloArchivo + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 

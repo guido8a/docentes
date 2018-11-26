@@ -244,7 +244,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'recomendaciones')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'recomendaciones' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
@@ -373,7 +373,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'cuellosDeBotella')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'cuellosDeBotella' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
@@ -501,7 +501,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDePotenciacion')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDePotenciacion' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
@@ -628,7 +628,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDeExito')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDeExito' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -727,7 +727,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'clasificacion')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'clasificacion' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -926,7 +926,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaEvaluacionDesempeno')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaEvaluacionDesempeno' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1091,7 +1091,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaFactoresExito')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaFactoresExito' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
@@ -1207,7 +1207,7 @@ class Reportes2Controller extends seguridad.Shield {
         pdfw.close()
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'evaluacionesPorProfesor')
+        response.setHeader("Content-disposition", "attachment; filename=" + 'evaluacionesPorProfesor' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
