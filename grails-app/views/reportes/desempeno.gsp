@@ -27,16 +27,13 @@
         <h3 class="panel-title" style="height: 30px; text-align: center">
 
             <g:if test="${pantalla == '1'}">
-                Informe de Desempeño
-                <br>Escuela: ${nombre}
+                Informe de Desempeño - Escuela: ${nombre}
             </g:if>
             <g:elseif test="${pantalla == '2'}">
-                Recomendaciones
-                <br>Escuela: ${nombre}
+                Recomendaciones - Escuela: ${nombre}
             </g:elseif>
             <g:else>
-                Encuestas
-                <br>Escuela: ${nombre}
+                Encuestas - Escuela: ${nombre}
             </g:else>
 
 
