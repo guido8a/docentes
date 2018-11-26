@@ -506,6 +506,7 @@
     $("#imprimirPorAvariables").click(function () {
 
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
             $.ajax({
@@ -532,7 +533,7 @@
                                     var prdo = $("#periodoId").val();
                                     var facl = $("#facultad option:selected").val();
                                     var tipo = $("#variableDesem").val();
-                                    location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
+                                    location.href = "${createLink(controller: 'reportes', action: 'reporteVariables')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo + "&escl=" + escuela;
                                 }
                             }
 
@@ -547,6 +548,7 @@
 
     $("#imprimirTotales").click(function () {
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
             $.ajax({
@@ -573,10 +575,9 @@
                                     var prdo = $("#periodoId").val();
                                     var facl = $("#facultad").val();
                                     var tipo = $("#variableDesem").val();
-                                    location.href = "${createLink(controller: 'reportes', action: 'reporteTotalesDesempeno')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
+                                    location.href = "${createLink(controller: 'reportes', action: 'reporteTotalesDesempeno')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo + "&escl=" + escuela;
                                 }
                             }
-
                         } //buttons
                     }); //dialog
                 }
@@ -584,12 +585,11 @@
         }else{
             log("Seleccione una facultad","info")
         }
-
-
     });
 
     $("#imprimirCatego").click(function () {
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
             $.ajax({
@@ -615,7 +615,7 @@
                                     var prdo = $("#periodoId").val();
                                     var facl = $("#facultad").val();
                                     var tipo = $("#variableDesem").val();
-                                    location.href = "${createLink(controller: 'reportes', action: 'reporteOrdenamiento')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo;
+                                    location.href = "${createLink(controller: 'reportes', action: 'reporteOrdenamiento')}?periodo=" + prdo + "&facl=" + facl + "&tipo=" + tipo + "&escl=" + escuela;
                                 }
                             }
                         } //buttons

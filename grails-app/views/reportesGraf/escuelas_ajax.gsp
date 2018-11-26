@@ -20,7 +20,6 @@
         });
 
         $("#escuelaId").change(function () {
-            console.log('cambio...')
             $(".graficar").click();
         });
     });
