@@ -12,11 +12,11 @@
                 <tbody>
                 <g:each in="${profesores}" var="profesor" status="j">
                     <tr data-id="${profesor.id}">
-                        <td style="width: 5%">${profesor?.cedula}</td>
-                        <td style="width: 18%">${profesor?.nombre}</td>
-                        <td style="width: 17%">${profesor?.apellido}</td>
-                        <td style="width: 5%">${profesor?.titulo}</td>
-                        <td style="width: 20%; text-align: center">
+                        <td style="width: 9%">${profesor?.cedula}</td>
+                        <td style="width: 21%">${profesor?.nombre}</td>
+                        <td style="width: 21%">${profesor?.apellido}</td>
+                        <td style="width: 23%; font-size: 11px">${profesor?.titulo}</td>
+                        <td style="width: 26%; text-align: center">
                             <g:if test="${pantalla == '1'}">
                                 <button class="btn btn-info btnAlumnos" type="button"
                                     ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, alumnos, periodo)?.promedio > 0 ? '' : 'disabled'}

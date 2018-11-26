@@ -67,11 +67,11 @@
             <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
                 <thead>
                 <tr>
-                    <th style="width: 7%">Cédula</th>
-                    <th style="width: 17%">Nombres</th>
-                    <th style="width: 17%">Apellidos</th>
-                    <th style="width: 5%">Titulo</th>
-                    <th style="width: 20%;">Informes</th>
+                    <th style="width: 9%">Cédula</th>
+                    <th style="width: 21%">Nombres</th>
+                    <th style="width: 21%">Apellidos</th>
+                    <th style="width: 23%">Título</th>
+                    <th style="width: 26%;">Informes</th>
                 </tr>
                 </thead>
             </table>
