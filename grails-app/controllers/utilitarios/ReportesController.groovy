@@ -565,10 +565,12 @@ class ReportesController extends seguridad.Shield {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTt = new Font(Font.FontFamily.HELVETICA, 9, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
         Document document
         document = new Document(PageSize.A4.rotate());
+//        document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
         document.open();
@@ -682,12 +684,12 @@ class ReportesController extends seguridad.Shield {
         PdfPTable tablaD = new PdfPTable(5);
         tablaD.setWidthPercentage(100);
 //        tablaD.setWidths(arregloEnteros([25, 15, 25, 15, 15, 5]))
-        tablaD.setWidths(arregloEnteros([30,  35, 15, 15, 5]))
+        tablaD.setWidths(arregloEnteros([30,  40, 8, 14, 5]))
 
         addCellTabla(tablaD, new Paragraph("Profesor", fontTitulo), prmsCrBorder)
 //        addCellTabla(tablaD, new Paragraph("Escuela", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Materia", fontTitulo), prmsCrBorder)
-        addCellTabla(tablaD, new Paragraph("Curso - Paralelo", fontTitulo), prmsCrBorder)
+        addCellTabla(tablaD, new Paragraph("Curso - Par.", fontTt), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("Desempeño", fontTitulo), prmsCrBorder)
         addCellTabla(tablaD, new Paragraph("%", fontTitulo), prmsCrBorder)
 
@@ -920,7 +922,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def tablaProfesores_ajax () {
-//        println "tablaProfesores_ajax ---> $params"
+        println "tablaProfesores_ajax ---> $params"
 
         def res
 
@@ -943,11 +945,9 @@ class ReportesController extends seguridad.Shield {
                 profesor{
 
                     eq("escuela", escuelaProfesor)
-
 //                    escuela {
 //                        eq("facultad",facultad)
 //                    }
-
                     and{
                         ilike("cedula", params.cedula)
                         ilike("nombre", params.nombres)
