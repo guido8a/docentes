@@ -918,11 +918,16 @@ class ReportesController extends seguridad.Shield {
         def facultad =  Facultad.get(params.facultad)
         def periodo = Periodo.get(params.periodo)
         def escuelaNombre = Escuela.get(params.escl)?.nombre
+
+        if(session.perfil.codigo == 'ADMG') {
+//            println ".... univ: ${facultad.universidad.id}"
+            session.univ = facultad.universidad.id
+        }
         return [facultad: facultad, periodo: periodo, pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
     }
 
     def tablaProfesores_ajax () {
-//        println "tablaProfesores_ajax ---> $params"
+        println "tablaProfesores_ajax ---> $params"
 
         def res
 

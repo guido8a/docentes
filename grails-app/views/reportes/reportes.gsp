@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="docentes.Facultad" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
@@ -130,7 +130,7 @@
 
             <div class="col-sm-6">
                 <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                          class="form-control"
+                          class="form-control" value="${session.univ}"
                           from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
             </div>
             <div class="col-md-1">Período:</div>
@@ -375,7 +375,8 @@
         var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" + facultad + "&pantalla=" + 1 + "&escl=" + escuela;
+            location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" +
+                    facultad + "&pantalla=" + 1 + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
