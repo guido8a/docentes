@@ -401,6 +401,8 @@ class Reportes2Controller extends seguridad.Shield {
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
+        pdfw.setPageEvent(new MyFooter());
+
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
         document.addTitle("Reporte de Factores de Potenciación");
@@ -466,7 +468,13 @@ class Reportes2Controller extends seguridad.Shield {
                 tablaD.setWidthPercentage(100);
                 tablaD.setWidths(arregloEnteros([50,13,37 ]))
 
-                addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+
+                if(p?.nm_a == p?.nm_b){
+                    addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate + " * ", fontNormalBold), prmsIzBorder2)
+                }else{
+                    addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+                }
+
                 addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
                 addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
 
@@ -503,6 +511,24 @@ class Reportes2Controller extends seguridad.Shield {
         response.setHeader("Content-disposition", "attachment; filename=" + 'factoresDePotenciacion' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+    }
+
+    class MyFooter extends PdfPageEventHelper {
+        Font ffont = new Font(Font.FontFamily.UNDEFINED, 8, Font.ITALIC);
+
+        public void onEndPage(PdfWriter writer, Document document) {
+            PdfContentByte cb = writer.getDirectContent();
+            Phrase header = new Phrase("this is a header", ffont);
+            Phrase footer = new Phrase(" * Igual valoración de aspectos positivos y negativos ", ffont);
+//            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+//                    header,
+//                    (document.right() - document.left()) / 2 + document.leftMargin(),
+//                    document.top() + 10, 0);
+//            ColumnText.showTextAligned(cb,footer,(document.right() - document.left()) / 2 + document.leftMargin(),document.bottom() - 10, 0);
+//            ColumnText.showTextAligned(cb,8,footer,50,document.bottom() - 10, 0);
+
+            ColumnText.showTextAligned(cb,2,footer,220,15, 0);
+        }
     }
 
     def exito () {
