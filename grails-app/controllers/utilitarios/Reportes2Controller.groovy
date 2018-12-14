@@ -519,7 +519,7 @@ class Reportes2Controller extends seguridad.Shield {
         public void onEndPage(PdfWriter writer, Document document) {
             PdfContentByte cb = writer.getDirectContent();
             Phrase header = new Phrase("this is a header", ffont);
-            Phrase footer = new Phrase(" * Igual valoración de aspectos positivos y negativos ", ffont);
+            Phrase footer = new Phrase(" (*) Igual valoración de aspectos positivos y negativos ", ffont);
 //            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
 //                    header,
 //                    (document.right() - document.left()) / 2 + document.leftMargin(),
