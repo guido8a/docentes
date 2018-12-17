@@ -33,21 +33,35 @@
                       class="form-control" style="width: 280px"
                       from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
         </div>
-        <div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>
+        %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
 
-        <div class="col-md-5" id="divFacultad">
+        %{--<div class="col-md-5" id="divFacultad">--}%
 
-        </div>
+        %{--</div>--}%
     </g:if>
     <g:else>
-        <div class="col-md-1" style="margin-top: 10px; margin-left: 10px">Facultad:</div>
 
-        <div class="col-md-6">
-            <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
-                      optionKey="id" name="facultad_name" id="facultad" class="form-control"
-                      noSelection="${[0:'Todas ...']}"/>
+        <div class="col-md-1">Universidad:</div>
+
+        <div class="col-sm-3">
+            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                      class="form-control" from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
         </div>
+
+    %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 10px">Facultad:</div>--}%
+
+        %{--<div class="col-md-6">--}%
+            %{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
+                      %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
+                      %{--noSelection="${[0:'Todas ...']}"/>--}%
+        %{--</div>--}%
     </g:else>
+
+    <div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>
+
+    <div class="col-md-5" id="divFacultad">
+
+    </div>
 
 
 </div>

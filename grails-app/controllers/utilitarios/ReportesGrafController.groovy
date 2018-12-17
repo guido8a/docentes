@@ -137,7 +137,7 @@ class ReportesGrafController extends seguridad.Shield {
     }
 
     def estrategiaData() {
-        println "estrategiaData $params"
+//        println "estrategiaData $params"
         def cn = dbConnectionService.getConnection()
 
         def periodo = Periodo.get(params.prdo)
@@ -218,7 +218,7 @@ class ReportesGrafController extends seguridad.Shield {
         }
         data.rcmn = Math.round(data.rcmn * 100)/100
 
-        println "data: $data"
+//        println "data: $data"
 //        println "data: ${data as JSON}"
 
         /** valores para demostración **/

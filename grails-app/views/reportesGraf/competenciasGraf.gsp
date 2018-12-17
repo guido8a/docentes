@@ -54,19 +54,17 @@
         <div class="col-md-1">Período:</div>
     </g:if>
     <g:else>
-        <div class="col-sm-6">
+        <div class="col-sm-3 row" style="text-align: right">
             Universidad
+        </div>
+
+        <div class="col-sm-6">
             <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="form-control" style="width: 280px"
-                      from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
+                      class="form-control" from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
         </div>
 
         <div class="col-md-1">Periodo:</div>
-        <div class="col-sm-1">
-            <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                      class="form-control" style="width: 90px"
-                      from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
-        </div>
+
     </g:else>
 
     <div class="col-md-2" id="divPeriodos">
