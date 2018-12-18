@@ -209,7 +209,10 @@
                     var valores;
                     var ges = 0;
                     var es = 0;
-
+                    var valoresE1 = [];
+                    var valoresE2 = [];
+                    var valoresG1 = [];
+                    var valoresG2 = [];
                     $.each(json, function (key, val) {
 //                    console.log("key:", key, "val:", val)
                         parts = key.split("_");
@@ -218,8 +221,9 @@
                         if(parts[0] == 'G'){
                             leyendaG.push(parts[1]);
                             ddGE.push(valores[0]);
-//                            ddGE2.push(valores[0]);
                             ddGP.push(valores[1]);
+                            valoresG1.push(valores[2]);
+                            valoresG2.push(valores[3]);
                             ges ++;
                             facultades += "<li>" + parts[0] +  " " + ges + " : " + parts[1] + "</li>";
                             leyenda.push(parts[0] + ges);
@@ -227,6 +231,8 @@
                             leyendaE.push(parts[1]);
                             ddEE.push(valores[0]);
                             ddEP.push(valores[1]);
+                            valoresE1.push(valores[2]);
+                            valoresE2.push(valores[3]);
                             es ++;
                             facultades2 += "<li>" + parts[0] +  " " + es + " : " + parts[1] + "</li>";
                             leyenda2.push(parts[0] + " " + es);
@@ -237,39 +243,30 @@
 
                     facultades += "</ul>";
 
-//                var optionsBarra = {
-//                    leyend: { display: true}
-//                };
-
-
                     myChart = new Chart(canvas, {
                         type: 'bar',
                         data: {
                             labels: leyenda,
                             datasets: [
                                 {
-                                    label: ["Alumnos"],
-//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
+                                    label: ["Niveles bajos"],
                                     backgroundColor: "rgba(55, 160, 225, 0.7)",
-//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth: 2,
                                     stack: 'Stack 0',
 //                                    data: ddGE
-                                    data: [ '11','6']
+                                    data: valoresG1
                                 },
                                 {
-                                    label: ["Alumnos2"],
+                                    label: ["Niveles Altos"],
                                     backgroundColor: "rgba(155, 60, 25, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
 //                                    data: ddGE
-                                    data: [ '12','8']
+                                    data: valoresG2
                                 },
                                 {
                                     label: ["Profesores"],
-//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
                                     backgroundColor: "rgba(225, 58, 55, 0.7)",
-//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth:  2,
                                     stack: 'Stack 1',
                                     data: ddGP
@@ -322,19 +319,25 @@
                             labels: leyenda2,
                             datasets: [
                                 {
-                                    label: ["Alumnos"],
-//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
+                                    label: ["Niveles Bajos"],
                                     backgroundColor: "rgba(55, 160, 225, 0.7)",
-//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth: 2,
-                                    data: ddEE
+                                    stack: 'Stack 0',
+//                                    data: ddEE
+                                    data: valoresE1
+                                },
+                                {
+                                    label: ["Niveles Altos"],
+                                    backgroundColor: "rgba(155, 60, 25, 0.7)",
+                                    borderWidth: 2,
+                                    stack: 'Stack 0',
+                                    data: valoresE2
                                 },
                                 {
                                     label: ["Profesores"],
-//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
                                     backgroundColor: "rgba(225, 58, 55, 0.7)",
-//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth:  2,
+                                    stack: 'Stack 1',
                                     data: ddEP
                                 }
                             ]
@@ -363,7 +366,7 @@
                                         labelString: '%',
                                         fontColor: '#000000'
                                     },
-                                    stacked: false
+                                    stacked: true
                                 }]
                             }
 

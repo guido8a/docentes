@@ -468,16 +468,15 @@ class ReportesGrafController extends seguridad.Shield {
         def la
 
         sql = "select * from competencias(${escuela?.id}, ${periodo?.id})"
-//        println "sql: $sql"
+        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 
         datos.each {
             la = it.cmpt.substring(0, 8) + "..."
-//            data.put((it.tipo + "_" + it.cmpt), ((it.estdpcnt + 1)/2 + "_" + (it.profpcnt + 1)/2))
-            data.put((it.tipo + "_" + it.cmpt), it.estdpcnt + "_" + it.profpcnt )
+            data.put((it.tipo + "_" + it.cmpt), it.estdpc01 + "_" + it.profpcnt + "_" + it.estdpc01 + "_" + it.estdpc02)
         }
 
-//        println "--> $data"
+        println "--> $data"
 
         def respuesta = "${data as JSON}"
 
