@@ -254,16 +254,16 @@
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth: 2,
                                     stack: 'Stack 0',
-                                    data: ddGE
+//                                    data: ddGE
+                                    data: [ '11','6']
                                 },
                                 {
                                     label: ["Alumnos2"],
-//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
                                     backgroundColor: "rgba(155, 60, 25, 0.7)",
-//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth: 2,
                                     stack: 'Stack 0',
-                                    data: ddGE
+//                                    data: ddGE
+                                    data: [ '12','8']
                                 },
                                 {
                                     label: ["Profesores"],
@@ -299,7 +299,7 @@
                                         labelString: '%',
                                         fontColor: '#000000'
                                     },
-                                    stacked: false
+                                    stacked: true
                                 }]
                             }
 
