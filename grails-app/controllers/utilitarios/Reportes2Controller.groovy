@@ -405,7 +405,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.open();
         PdfContentByte cb = pdfw.getDirectContent();
-        document.addTitle("Reporte de Factores de Potenciación");
+        document.addTitle("Reporte de Potenciadores de Nivel");
         document.addSubject("Generado por el sistema");
         document.addKeywords("reporte, docentes, profesores");
         document.addAuthor("Docentes");
@@ -420,7 +420,7 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph("Factores de Potenciación", fontTitulo )
+        Paragraph lineaTitulo = new Paragraph("Potenciadores de Nivel", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
