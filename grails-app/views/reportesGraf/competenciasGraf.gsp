@@ -250,7 +250,7 @@
                             datasets: [
                                 {
                                     label: ["Niveles bajos"],
-                                    backgroundColor: "rgba(55, 160, 225, 0.7)",
+                                    backgroundColor: "rgba(55, 160, 235, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
 //                                    data: ddGE
@@ -258,7 +258,7 @@
                                 },
                                 {
                                     label: ["Niveles Altos"],
-                                    backgroundColor: "rgba(155, 60, 25, 0.7)",
+                                    backgroundColor: "rgba(120, 200, 215, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
 //                                    data: ddGE
@@ -320,7 +320,7 @@
                             datasets: [
                                 {
                                     label: ["Niveles Bajos"],
-                                    backgroundColor: "rgba(55, 160, 225, 0.7)",
+                                    backgroundColor: "rgba(55, 160, 235, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
 //                                    data: ddEE
@@ -328,7 +328,7 @@
                                 },
                                 {
                                     label: ["Niveles Altos"],
-                                    backgroundColor: "rgba(155, 60, 25, 0.7)",
+                                    backgroundColor: "rgba(120, 200, 215, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
                                     data: valoresE2
