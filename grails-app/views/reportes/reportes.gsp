@@ -59,68 +59,6 @@
     </div>
 
 
-    %{--<div class="row text-info" style="font-size: 11pt;">--}%
-        %{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
-
-            %{--<div class="form-group col-md-3" style="margin-left: 100px">--}%
-                %{--<div class="col-md-1">Universidad:</div>--}%
-
-                %{--<div class="input-group">--}%
-                    %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-                              %{--class="form-control" style="width: 300px"--}%
-                              %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-
-            %{--<div class="form-group col-md-1" style="margin-left: 10px">--}%
-                %{--<div class="col-md-1">Período:</div>--}%
-
-                %{--<div class="input-group">--}%
-                    %{--<div class="col-md-2" id="divPeriodos">--}%
-
-                    %{--</div>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-            %{--<div class="form-group col-md-6" style="margin-left: 10px">--}%
-                %{--<div class="col-md-1">Facultad:</div>--}%
-
-                %{--<div class="input-group col-md-12">--}%
-                    %{--<div class="col-md-10" id="divFacultad">--}%
-
-                    %{--</div>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-            %{--<div class="form-group col-md-1" style="margin-left: 180px">--}%
-                %{--<div class="col-md-1">Período:</div>--}%
-
-                %{--<div class="input-group">--}%
-                    %{--<div class="col-md-2">--}%
-                        %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-                                  %{--class="form-control" style="width: 90px"--}%
-                                  %{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
-                    %{--</div>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-
-            %{--<div class="form-group col-md-6" style="margin-left: 10px">--}%
-                %{--<div class="col-md-1">Facultad:</div>--}%
-
-                %{--<div class="input-group col-md-12">--}%
-                    %{--<div class="col-md-10">--}%
-                        %{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-                                  %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
-                                  %{--noSelection="${[0:'Todas ...']}"/>--}%
-                    %{--</div>--}%
-                %{--</div>--}%
-            %{--</div>--}%
-        %{--</g:else>--}%
-    %{--</div>--}%
-
-
-
-
     <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
         <g:if test="${session.perfil.codigo == 'ADMG'}">
@@ -204,8 +142,20 @@
             </a>
 
             <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirProfesoresXBotella">
+                    <span class="text-success"><i class="fa fa-flask"></i><strong> Profesores X Cuellos de Botella</strong></span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirPotencia">
-                    <span class="text-success"><i class="fa fa-flash"></i><strong>  Factores de Potenciación</strong></span>
+                    <span class="text-success"><i class="fa fa-flash"></i><strong> Factores de Potenciación</strong></span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirProfesoresXPotencia">
+                    <span class="text-success"><i class="fa fa-flash"></i><strong> Profesores X Factores de Potenciación</strong></span>
                 </div>
             </a>
 
@@ -327,44 +277,99 @@
         });
     }
 
+    $("#imprimirProfesoresXBotella").click(function () {
 
-    %{--cargarPeriodo($("#universidadId").val());--}%
-    %{--cargarFacultad($("#universidadId").val());--}%
+        var escuela = $("#escuelaId option:selected").val();
+        var prdo = $("#periodoId").val();
+        var facultad = $("#facultad option:selected").val();
 
-    %{--$("#universidadId").change(function () {--}%
-        %{--var id = $("#universidadId option:selected").val();--}%
-        %{--cargarPeriodo(id);--}%
-        %{--cargarFacultad(id);--}%
-    %{--});--}%
+        if($("#facultad").val() != null){
+            if(escuela != null){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'reportesGraf', action: 'causa_ajax')}',
+                    data: {facultad: facultad, periodo: prdo},
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id: "dlgCuello",
+                            title: "Seleccionar la Causa",
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label: "Cancelar",
+                                    className: "btn-primary",
+                                    callback: function () {
+                                    }
+                                },
+                                aceptar: {
+                                    label: "<i class='fa fa-print'></i> Imprimir",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        var prdo = $("#periodoId").val();
+                                        var facl = $("#facultad option:selected").val();
+                                        var causa = $("#causaNombre").val();
+                                        location.href = "${createLink(controller: 'reportes', action: 'reporteProfesoresXCuello')}?periodo=" + prdo + "&facultad=" + facl + "&causa=" + causa + "&escl=" + escuela;
+                                    }
+                                }
 
-    %{--function cargarPeriodo(id) {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',--}%
-            %{--data:{--}%
-                %{--universidad: id--}%
-            %{--},--}%
-            %{--success: function (msg){--}%
-                %{--$("#divPeriodos").html(msg)--}%
-            %{--}--}%
-        %{--});--}%
-    %{--}--}%
+                            } //buttons
+                        }); //dialog
+                    }
+                });
+            }else{
+                log("Seleccione una escuela","info")
+            }
+        }else{
+            log("Seleccione una facultad","info")
+        }
+    });
 
 
-    %{--function cargarFacultad (id) {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: '${createLink(controller: 'reportesGraf', action: 'facultad_ajax')}',--}%
-            %{--data:{--}%
-                %{--universidad: id--}%
-            %{--},--}%
-            %{--success: function (msg){--}%
-                %{--$("#divFacultad").html(msg)--}%
-            %{--}--}%
-        %{--});--}%
-    %{--}--}%
+    $("#imprimirProfesoresXPotencia").click(function () {
 
+        var escuela = $("#escuelaId option:selected").val();
+        var prdo = $("#periodoId").val();
+        var facultad = $("#facultad option:selected").val();
 
+        if($("#facultad").val() != null){
+            if(escuela != null){
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'reportesGraf', action: 'factores_ajax')}",
+                    data: {facultad: facultad, periodo: prdo},
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id: "dlgFactores",
+                            title: "Seleccionar el factor",
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label: "Cancelar",
+                                    className: "btn-primary",
+                                    callback: function () {
+                                    }
+                                },
+                                aceptar: {
+                                    label: "<i class='fa fa-print'></i> Imprimir",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        var prdo = $("#periodoId").val();
+                                        var facl = $("#facultad option:selected").val();
+                                        var factor = $("#factorNombre").val();
+                                        location.href = "${createLink(controller: 'reportes', action: 'reporteProfesoresXPotencia')}?periodo=" + prdo + "&facultad=" + facl + "&factor=" + factor + "&escl=" + escuela;
+                                    }
+                                }
+                            } //buttons
+                        }); //dialog
+                    }
+                });
+            }else{
+                log("Seleccione una escuela","info")
+            }
+        }else{
+            log("Seleccione una facultad","info")
+        }
+    });
 
 
     $("#imprimirDesempeno").click(function () {

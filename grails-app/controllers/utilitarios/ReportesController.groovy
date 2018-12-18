@@ -2243,7 +2243,7 @@ class ReportesController extends seguridad.Shield {
 
 //        println("sql " + sql)
 
-       def datos = cn.rows(sql.toString())
+        def datos = cn.rows(sql.toString())
 
 
         datos.each {
@@ -2496,7 +2496,183 @@ class ReportesController extends seguridad.Shield {
             render "no_El profesor seleccionado no tiene email"
         }
 
-
     }
+
+
+    def reporteProfesoresXCuello () {
+
+//        println("params " + params)
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad = Facultad.get(params.facultad)
+
+        def baos = new ByteArrayOutputStream()
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+
+        fontNormalBold.setColor(new BaseColor(70, 88, 107))
+        fontNormalBold3.setColor(BaseColor.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte de Profesores X Cuellos de Botella");
+        document.addSubject("Generado por el sistema");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.add(new Paragraph("Reporte", fontTitulo));
+
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo = new Paragraph("Profesores por Cuellos de Botella", fontTitulo )
+        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo2 = new Paragraph("Causa: " + params.causa, fontTitulo )
+        lineaTitulo2.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(lineaTitulo)
+        document.add(lineaTitulo2)
+        document.add(lineaVacia)
+
+        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' and causa = '${params.causa}' order by prof"
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: new BaseColor(95, 113, 132)]
+        def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsCentro = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        PdfPTable tablaD = new PdfPTable(4);
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([35,35,10,20]))
+
+        addCellTabla(tablaD, new Paragraph("Profesor", fontNormalBold), prmsCentro)
+        addCellTabla(tablaD, new Paragraph("Asignatura", fontNormalBold), prmsCentro)
+        addCellTabla(tablaD, new Paragraph("Paralelo", fontNormalBold), prmsCentro)
+        addCellTabla(tablaD, new Paragraph("Tipo", fontNormalBold), prmsCentro)
+
+        res.eachWithIndex { p , j ->
+            addCellTabla(tablaD, new Paragraph(p?.prof, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.mate, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.prll + " ", fontThUsar), prmsCrBorder)
+            addCellTabla(tablaD, new Paragraph(p?.tipo, fontThUsar), prmsIzBorder3)
+        }
+
+        document.add(tablaD)
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'profesoresXCuellosDeBotella' + ".pdf")
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+    def reporteProfesoresXPotencia () {
+        //        println("params " + params)
+
+        def periodo = Periodo.get(params.periodo)
+        def facultad = Facultad.get(params.facultad)
+
+        def baos = new ByteArrayOutputStream()
+        Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+
+        fontNormalBold.setColor(new BaseColor(70, 88, 107))
+        fontNormalBold3.setColor(BaseColor.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+
+        document.open();
+        PdfContentByte cb = pdfw.getDirectContent();
+        document.addTitle("Reporte de Profesores X Potenciadores");
+        document.addSubject("Generado por el sistema");
+        document.addKeywords("reporte, docentes, profesores");
+        document.addAuthor("Docentes");
+        document.addCreator("Tedein SA");
+
+        Paragraph preface = new Paragraph();
+        preface.add(new Paragraph("Reporte", fontTitulo));
+
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo = new Paragraph("Profesores por Factores de Potenciación", fontTitulo )
+        lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo2 = new Paragraph("Factor: " + params.factor, fontTitulo )
+        lineaTitulo2.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
+
+        document.add(parrafoUniversidad)
+        document.add(parrafoFacultad)
+        document.add(lineaTitulo)
+        document.add(lineaTitulo2)
+        document.add(lineaVacia)
+
+        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' and causa = '${params.factor}' order by prof"
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+
+        def prmsIzBorder = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, bg: new BaseColor(95, 113, 132)]
+        def prmsIzBorder2 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsCentro = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE,bg: BaseColor.LIGHT_GRAY]
+        def prmsIzBorder3 = [border: BaseColor.BLACK, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+        def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+
+        PdfPTable tablaD = new PdfPTable(4);
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([35,35,10,20]))
+
+        addCellTabla(tablaD, new Paragraph("Profesor", fontNormalBold), prmsCentro)
+        addCellTabla(tablaD, new Paragraph("Asignatura", fontNormalBold), prmsCentro)
+        addCellTabla(tablaD, new Paragraph("Paralelo", fontNormalBold), prmsCentro)
+        addCellTabla(tablaD, new Paragraph("Tipo", fontNormalBold), prmsCentro)
+
+        res.eachWithIndex { p , j ->
+            addCellTabla(tablaD, new Paragraph(p?.prof, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.mate, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaD, new Paragraph(p?.prll + " ", fontThUsar), prmsCrBorder)
+            addCellTabla(tablaD, new Paragraph(p?.tipo, fontThUsar), prmsIzBorder3)
+        }
+
+        document.add(tablaD)
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'profesoresXPotenciadores' + ".pdf")
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
 
 }
