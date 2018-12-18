@@ -578,7 +578,8 @@ class ReportesGrafController extends seguridad.Shield {
                 data = [:]
                 cn.eachRow(sql.toString()) { d ->
                     if(d.tipo == 'G'){
-                        data.put((d.cmpt), d.estdpcnt + "_" + d.profpcnt )
+//                        data.put((d.cmpt), d.estdpcnt + "_" + d.profpcnt )
+                        data.put((d.cmpt), d.estdpc01 + "_" + d.profpcnt + "_" + d.estdpc02 )
                         textos.add(d.cmpt)
                     }
                 }
@@ -590,7 +591,8 @@ class ReportesGrafController extends seguridad.Shield {
                 data = [:]
                 cn.eachRow(sql.toString()) { d ->
                     if(d.tipo == 'E'){
-                        data.put((d.cmpt), d.estdpcnt + "_" + d.profpcnt )
+//                        data.put((d.cmpt), d.estdpcnt + "_" + d.profpcnt )
+                        data.put((d.cmpt), d.estdpc01 + "_" + d.profpcnt + "_" + d.estdpc02 )
                         textos.add(d.cmpt)
                     }
                 }
