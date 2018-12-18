@@ -143,19 +143,19 @@
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirProfesoresXBotella">
-                    <span class="text-success"><i class="fa fa-flask"></i><strong> Profesores X Cuellos de Botella</strong></span>
+                    <span class="text-success"><i class="fa fa-flask"></i><strong> Profesores por Cuellos de Botella</strong></span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirPotencia">
-                    <span class="text-success"><i class="fa fa-flash"></i><strong> Factores de Potenciación</strong></span>
+                    <span class="text-success"><i class="fa fa-flash"></i><strong> Potenciadores de nivel</strong></span>
                 </div>
             </a>
 
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirProfesoresXPotencia">
-                    <span class="text-success"><i class="fa fa-flash"></i><strong> Profesores X Factores de Potenciación</strong></span>
+                    <span class="text-success"><i class="fa fa-flash"></i><strong> Profesores por Potenciadores de nivel</strong></span>
                 </div>
             </a>
 
