@@ -201,6 +201,7 @@
                     var vlor;
                     var indice = 0;
                     var ddGE = [];
+                    var ddGE2 = [];
                     var ddGP = [];
                     var ddEE = [];
                     var ddEP = [];
@@ -217,6 +218,7 @@
                         if(parts[0] == 'G'){
                             leyendaG.push(parts[1]);
                             ddGE.push(valores[0]);
+//                            ddGE2.push(valores[0]);
                             ddGP.push(valores[1]);
                             ges ++;
                             facultades += "<li>" + parts[0] +  " " + ges + " : " + parts[1] + "</li>";
@@ -251,6 +253,16 @@
                                     backgroundColor: "rgba(55, 160, 225, 0.7)",
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth: 2,
+                                    stack: 'Stack 0',
+                                    data: ddGE
+                                },
+                                {
+                                    label: ["Alumnos2"],
+//                                backgroundColor: ['#009608', '#ffa900', '#cc2902'],
+                                    backgroundColor: "rgba(155, 60, 25, 0.7)",
+//                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
+                                    borderWidth: 2,
+                                    stack: 'Stack 0',
                                     data: ddGE
                                 },
                                 {
@@ -259,6 +271,7 @@
                                     backgroundColor: "rgba(225, 58, 55, 0.7)",
 //                                borderColor: ['#40d648', '#ffe940', '#fc6942'],
                                     borderWidth:  2,
+                                    stack: 'Stack 1',
                                     data: ddGP
                                 }
                             ]
