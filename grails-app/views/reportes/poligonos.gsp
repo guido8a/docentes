@@ -48,23 +48,29 @@
             <i class="fa fa-chevron-left"></i> Reportes
         </g:link>
     </div>
-    <div class="col-md-1 negrilla control-label">Facultad: </div>
+
+    %{--<div class="col-md-1 negrilla control-label">Periodo: </div>--}%
+    <div class="col-md-2">
+    <b>Período:</b>
+    <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+              class="form-control"
+              from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
+    </div>
+
     <div class="col-md-3">
+        <b>Facultad:</b>
         <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
                   class="form-control" from="${facultad}"
                   value="" />
     </div>
-    <div class="col-md-1 negrilla control-label">Carrera: </div>
     <div class="col-md-3">
-        <g:select name="escuela" id="escuelaId" optionKey="id" optionValue="nombre"
-                  class="form-control" from="${escl}"
-                  value="" />
-    </div>
-    <div class="col-md-1 negrilla control-label">Periodo: </div>
-    <div class="col-md-1">
-        <g:select name="periodo" id="periodoId" optionKey="id" optionValue="nombre"
-                  class="form-control" from="${escl}"
-                  value="" />
+        <b>Carrera:</b>
+        <div id="divEscuela">
+
+        </div>
+        %{--<g:select name="escuela" id="escuelaId" optionKey="id" optionValue="nombre"--}%
+                  %{--class="form-control" from="${escl}"--}%
+                  %{--value="" />--}%
     </div>
 </div>
 
@@ -114,6 +120,27 @@
 
 
 <script type="text/javascript">
+
+    cargarEscuelas($("#facultadId option:selected").val());
+
+    $("#facultad").change(function () {
+        var facultad = $("#facultadId option:selected").val();
+        cargarEscuelas(facultad);
+    });
+
+    function cargarEscuelas (facultad) {
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'reportesGraf', action: 'escuelas_ajax')}',
+            data:{
+                facultad: facultad
+            },
+            success: function (msg){
+                $("#divEscuela").html(msg)
+            }
+        });
+    }
+
 
     buscar();
 
