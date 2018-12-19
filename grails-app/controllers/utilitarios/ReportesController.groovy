@@ -927,7 +927,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def tablaProfesores_ajax () {
-        println "tablaProfesores_ajax ---> $params"
+//        println "tablaProfesores_ajax ---> $params"
 
         def res
 
@@ -2505,6 +2505,7 @@ class ReportesController extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -2550,7 +2551,7 @@ class ReportesController extends seguridad.Shield {
         document.add(lineaTitulo2)
         document.add(lineaVacia)
 
-        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' and causa = '${params.causa}' order by prof"
+        def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' and causa = '${params.causa}' order by prof"
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -2592,6 +2593,7 @@ class ReportesController extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -2638,7 +2640,7 @@ class ReportesController extends seguridad.Shield {
         document.add(lineaTitulo2)
         document.add(lineaVacia)
 
-        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' and causa = '${params.factor}' order by prof"
+        def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' and causa = '${params.factor}' order by prof"
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());

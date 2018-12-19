@@ -253,6 +253,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 //        def profesor = Profesor.get(params.profe)
 
         def baos = new ByteArrayOutputStream()
@@ -303,7 +304,7 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(lineaVacia)
 
 //        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
-        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' order by prof"
+        def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' order by prof"
 
 
         def cn = dbConnectionService.getConnection()
@@ -383,7 +384,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
-
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -395,7 +396,6 @@ class Reportes2Controller extends seguridad.Shield {
 
         fontNormalBold.setColor(new BaseColor(70, 88, 107))
         fontNormalBold3.setColor(BaseColor.WHITE)
-
 
         Document document
         document = new Document(PageSize.A4);
@@ -432,7 +432,7 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(lineaVacia)
 
 //        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
-        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by facl,prof,mate"
+        def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by facl,prof,mate"
 
 //        println "---> $sql"
 
@@ -537,6 +537,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 
 
         def baos = new ByteArrayOutputStream()
@@ -583,9 +584,9 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
-        def sql =  "select * from f_exito(${facultad?.id},${periodo?.id}) ORDER BY facl, prof, mate"
+        def sql =  "select * from f_exito(${facultad?.id},${escuela?.id},${periodo?.id}) ORDER BY facl, prof, mate"
 
-        println("---> " + sql)
+//        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -1134,6 +1135,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -1184,7 +1186,7 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(lineaVacia)
 
 
-        def sql = "select * from evaluaciones(${facultad?.id},${periodo?.id});"
+        def sql = "select * from evaluaciones(${facultad?.id},${escuela?.id},${periodo?.id});"
 
 //        println("---> " + sql)
 

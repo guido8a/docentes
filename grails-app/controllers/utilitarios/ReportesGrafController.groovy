@@ -768,8 +768,9 @@ class ReportesGrafController extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 
-        def sql =  "select distinct causa from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' order by causa"
+        def sql =  "select distinct causa from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' order by causa"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 
@@ -779,8 +780,9 @@ class ReportesGrafController extends seguridad.Shield {
     def factores_ajax () {
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
+        def escuela = Escuela.get(params.escl)
 
-        def sql =  "select distinct causa from cuellos(${facultad?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by causa"
+        def sql =  "select distinct causa from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by causa"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 

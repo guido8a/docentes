@@ -107,10 +107,10 @@
 </div>
 
 <div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 280px; ">
+     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 330px; ">
 
-    <div class="ui-corner-all item fuera" style="height: 290px">
-        <div class="ui-corner-all item" style="height: 290px">
+    <div class="ui-corner-all item fuera" style="height: 330px">
+        <div class="ui-corner-all item" style="height: 330px">
             <div class="imagen" style="height: 100%; width: 200px;">
                 <img src="${resource(dir: 'images', file: 'evaluar-3.png')}" width="150px" height="auto"
                      style=" margin-top:20px"/>
@@ -288,7 +288,7 @@
                 $.ajax({
                     type: 'POST',
                     url: '${createLink(controller: 'reportesGraf', action: 'causa_ajax')}',
-                    data: {facultad: facultad, periodo: prdo},
+                    data: {facultad: facultad, periodo: prdo, escl: escuela},
                     success: function (msg) {
                         var b = bootbox.dialog({
                             id: "dlgCuello",
@@ -336,7 +336,7 @@
                 $.ajax({
                     type: 'POST',
                     url: "${createLink(controller: 'reportesGraf', action: 'factores_ajax')}",
-                    data: {facultad: facultad, periodo: prdo},
+                    data: {facultad: facultad, periodo: prdo, escl: escuela},
                     success: function (msg) {
                         var b = bootbox.dialog({
                             id: "dlgFactores",
@@ -652,9 +652,10 @@
     $("#imprimirBotella").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes2', action: 'botella')}?periodo=" + prdo + "&facultad=" + facultad;
+            location.href = "${createLink(controller: 'reportes2', action: 'botella')}?periodo=" + prdo + "&facultad=" + facultad + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
@@ -663,9 +664,10 @@
     $("#imprimirPotencia").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes2', action: 'potencia')}?periodo=" + prdo + "&facultad=" + facultad;
+            location.href = "${createLink(controller: 'reportes2', action: 'potencia')}?periodo=" + prdo + "&facultad=" + facultad + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
@@ -674,9 +676,10 @@
     $("#imprimirExito").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes2', action: 'exito')}?periodo=" + prdo + "&facultad=" + facultad;
+            location.href = "${createLink(controller: 'reportes2', action: 'exito')}?periodo=" + prdo + "&facultad=" + facultad + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
@@ -743,9 +746,10 @@
     $("#imprimirEvaluacionesPro").click(function () {
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
 
         if($("#facultad").val() != null){
-            location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facultad;
+            location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facultad + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }
