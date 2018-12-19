@@ -24,9 +24,12 @@ import groovy.json.JsonBuilder
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
+import org.jfree.chart.axis.SubCategoryAxis
 import org.jfree.chart.plot.CategoryPlot
 import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.renderer.category.BarRenderer
+import org.jfree.chart.renderer.category.GroupedStackedBarRenderer
+import org.jfree.data.KeyToGroupMap
 import org.jfree.data.category.CategoryDataset
 import org.jfree.data.category.DefaultCategoryDataset
 
@@ -468,7 +471,7 @@ class ReportesGrafController extends seguridad.Shield {
         def la
 
         sql = "select * from competencias(${escuela?.id}, ${periodo?.id})"
-        println "sql: $sql"
+//        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 
         datos.each {
@@ -476,7 +479,7 @@ class ReportesGrafController extends seguridad.Shield {
             data.put((it.tipo + "_" + it.cmpt), it.estdpc01 + "_" + it.profpcnt + "_" + it.estdpc01 + "_" + it.estdpc02)
         }
 
-        println "--> $data"
+//        println "--> $data"
 
         def respuesta = "${data as JSON}"
 
@@ -510,23 +513,44 @@ class ReportesGrafController extends seguridad.Shield {
 
 //            println("q " + q + " k " + k)
 
-            for (int i = datos.size() - 1; i > -1; i--) {
+//            for (int i = datos.size() - 1; i > -1; i--) {
                 parts1[k] = q.value.split("_")
                 parts2[k] = q.key
 
                 if(tipo == '1'){
+
+                    //1
                     dataset.addValue( parts1[k][0].toDouble() , E ,  ges[k]);
-                    dataset.addValue( parts1[k][1].toDouble() , P ,  ges[k]);
+
+                    //1
+                    dataset.addValue( parts1[k][2].toDouble() , P ,  ges[k]);
+
+                    //2
+//                    dataset.addValue( parts1[k][1].toDouble() , E ,  ges[k]);
+                    dataset.addValue( parts1[k][1].toDouble() , "Serie 2" ,  ges[k]);
+
+                    //2
+                    dataset.addValue( 0 , "Serie 21" ,  ges[k]);
+
+
                 }else{
+                    //1
                     dataset.addValue( parts1[k][0].toDouble() , E ,  ees[k]);
-                    dataset.addValue( parts1[k][1].toDouble() , P ,  ees[k]);
+
+                    //1
+                    dataset.addValue( parts1[k][2].toDouble() , P ,  ees[k]);
+
+                    //2
+                    dataset.addValue( parts1[k][1].toDouble() , "Serie 2" ,  ees[k]);
+
+                    //2
+                    dataset.addValue( 0 , "Serie 21" ,  ees[k]);
                 }
-            }
+//            }
 
         }
         return dataset;
     }
-
 
 
     public static JFreeChart crearBarChart(titulo, datos, tipo) {
@@ -540,6 +564,20 @@ class ReportesGrafController extends seguridad.Shield {
                 "${titulo}", "Competencia", "Valor",
                 createDataset(datos, tipo), PlotOrientation.VERTICAL, false, true, false);
 
+        GroupedStackedBarRenderer renderer = new GroupedStackedBarRenderer();
+        KeyToGroupMap map = new KeyToGroupMap("G1");
+
+        map.mapKeyToGroup("Estudiantes", "G1");
+        map.mapKeyToGroup("Profesores", "G1");
+
+        map.mapKeyToGroup("Serie 2", "G2");
+        map.mapKeyToGroup("Serie 21", "G2");
+
+        renderer.setSeriesToGroupMap(map);
+
+
+        CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        plot.setRenderer(renderer);
         return chart;
     }
 
@@ -645,6 +683,7 @@ class ReportesGrafController extends seguridad.Shield {
             //color
             CategoryPlot plot = chart.getCategoryPlot();
             BarRenderer renderer = (BarRenderer) plot.getRenderer();
+
             Color color = new Color(79, 129, 189);
             renderer.setSeriesPaint(0, color);
 
