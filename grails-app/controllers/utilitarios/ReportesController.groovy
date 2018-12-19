@@ -926,6 +926,27 @@ class ReportesController extends seguridad.Shield {
         return [facultad: facultad, periodo: periodo, pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
     }
 
+    def poligonos () {
+        def facultades = Facultad.findAllByUniversidad(session.usuario.universidad)
+        def escuelas   = Escuela.findAllByFacultad(facultades.first())
+        def periodo = Periodo.get(params.periodo)
+        def escuelaNombre = Escuela.get(params.escl)?.nombre
+
+        if(session.perfil.codigo == 'ADMG') {
+//            println ".... univ: ${facultad.universidad.id}"
+            session.univ = facultad.universidad.id
+        }
+        return [facultad: facultades, escl: escuelas, periodo: periodo,
+                pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
+    }
+
+    def graficoProf_ajax() {
+        println "++ $params"
+        def prof = ReporteEncuesta.findAllByPeriodo(Periodo.get(4)).profesor[0..2]
+        println "prof: ${prof.id}"
+        [prof: prof]
+    }
+
     def tablaProfesores_ajax () {
 //        println "tablaProfesores_ajax ---> $params"
 

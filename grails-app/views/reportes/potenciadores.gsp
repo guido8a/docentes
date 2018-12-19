@@ -1,24 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/07/18
-  Time: 12:19
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 30/07/18
-  Time: 11:51
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 26/09/16
-  Time: 12:02
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
