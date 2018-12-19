@@ -310,12 +310,12 @@ class ReportesController extends seguridad.Shield {
         def v6 = percentform1.format(valor6)
 
         String s = titulo;
-        String s3 = "D-DSC (${v1}) ";
-        String s4 = "D-DAC (${v2})";
-        String s5 = "D-DHD (${v3})";
-        String s6 = "D-DCI (${v4})";
-        String s7 = "D-CNI (${v5})";
-        String s8 = "D-EA (${v6})";
+        String s3 = "IC (${v1}) ";
+        String s4 = "DAC (${v2})";
+        String s5 = "DHA (${v3})";
+        String s6 = "IF (${v4})";
+        String s7 = "NI (${v5})";
+        String s8 = "EA (${v6})";
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         defaultcategorydataset.addValue(valor1, s, s3);
         defaultcategorydataset.addValue(valor2, s, s4);
@@ -1003,7 +1003,7 @@ class ReportesController extends seguridad.Shield {
 
     def desempenoAlumnos () {
 
-        println("params alum " + params)
+//        println("params alum " + params)
 
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -1117,15 +1117,15 @@ class ReportesController extends seguridad.Shield {
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("DSC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("IC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("DCI: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("IF: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
 
         addCellTabla(tablaD, new Paragraph("DAC: DESAROLLO DE ACTITUDES Y VALORES", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("CNI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("NI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("DHD: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("DHA: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
 
