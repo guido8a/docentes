@@ -82,10 +82,10 @@
 </div>
 
 <div class="btn btn-info graficar">
-    <i class="fa fa-pie-chart"></i> Polígono
+    <i class="fa fa-pie-chart"></i> Gráfico Polar
 </div>
 <div class="btn btn-info" id="grafPolar" style="margin-left: 2px">
-    <i class="fa fa-pie-chart"></i> Gráfico Polar
+    <i class="fa fa-pie-chart"></i> Polígono
 </div>
 
 
@@ -164,7 +164,7 @@
     var canvas = $("#clases");
     var myChart;
 
-    $(".graficar").click(function () {
+    $("#grafPolar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var escl = $("#escuelaId option:selected").val();
@@ -250,7 +250,7 @@
 
     });
 
-    $("#grafPolar").click(function () {
+    $(".graficar").click(function () {
         var prdo = $("#periodoId").val();
         var facl = $("#facultad").val();
         var escl = $("#escuelaId option:selected").val();
