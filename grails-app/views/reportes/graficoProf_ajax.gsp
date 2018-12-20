@@ -13,7 +13,7 @@
                                 <div id="graf">
                                     <canvas id="clases_${j}" style="margin-top: 30px"></canvas>
                                     <script type="text/javascript">
-                                        graficar($("#clases_${j}"));
+                                        graficar($("#clases_${j}"), "${ae}");
                                     </script>
                                 </div>
                             </div>

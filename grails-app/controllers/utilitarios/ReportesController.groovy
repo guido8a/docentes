@@ -941,10 +941,32 @@ class ReportesController extends seguridad.Shield {
     }
 
     def graficoProf_ajax() {
-        println "++ $params"
-        def prof = ReporteEncuesta.findAllByPeriodo(Periodo.get(4)).profesor[0..2]
+        println "graficoProf_ajax: $params"
+        def cn = dbConnectionService.getConnection()
+        def sql
+        sql = "select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, " +
+                "ddsc||'-'||ddac||'-'||ddhd||'-'||ddci||'-'||dcni||'-'||d_ea  dc " +
+                "from rpec, prof, mate, crso, dcta " +
+                "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.periodo} and tpen__id = 2 and " +
+                "dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and " +
+                "crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                "order by profapll, profnmbr"
+        println "sql: $sql"
+
+/*
+        select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso,
+        ddsc||'-'||ddac||'-'||ddhd||'-'||ddci||'-'||dcni||'-'||d_ea  dc
+        from rpec, prof, mate, crso, dcta
+        where rpec.escl__id = 3 and rpec.prdo__id = 4 and tpen__id = 2 and
+        dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and
+        crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id
+        order by profapll, profnmbr
+*/
+
+        def prof = cn.rows(sql.toString())
+
         println "prof: ${prof.id}"
-        [prof: prof]
+        [prof: prof, ae: "90_89_93_88_97_98"]
     }
 
     def tablaProfesores_ajax () {
