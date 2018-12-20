@@ -434,7 +434,7 @@ class Reportes2Controller extends seguridad.Shield {
 //        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
         def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by facl,prof,mate"
 
-//        println "---> $sql"
+        println "---> $sql"
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -450,6 +450,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         def varProf
         def varMate
+        def varPara
 
         res.eachWithIndex { p , j ->
 
@@ -463,7 +464,14 @@ class Reportes2Controller extends seguridad.Shield {
                 document.add(tablaC);
             }
 
+//            println("-----" + varMate + " ---- " + p.prll)
+
             if(p?.mate != varMate){
+
+                println("-----" + varMate + " ---- " + p.prll)
+
+
+
                 PdfPTable tablaD = new PdfPTable(3);
                 tablaD.setWidthPercentage(100);
                 tablaD.setWidths(arregloEnteros([50,13,37 ]))
@@ -474,6 +482,7 @@ class Reportes2Controller extends seguridad.Shield {
                 }else{
                     addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
                 }
+
 
                 addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
                 addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
@@ -489,6 +498,8 @@ class Reportes2Controller extends seguridad.Shield {
 
                 document.add(tablaF);
 
+                varMate = p.mate
+
             }
 
             PdfPTable tablaE = new PdfPTable(2);
@@ -500,7 +511,8 @@ class Reportes2Controller extends seguridad.Shield {
             document.add(tablaE);
 
             varProf = p.prof
-            varMate = p.mate
+
+            varPara = p.tipo
 
         }
 

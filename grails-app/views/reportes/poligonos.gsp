@@ -49,7 +49,6 @@
         </g:link>
     </div>
 
-    %{--<div class="col-md-1 negrilla control-label">Periodo: </div>--}%
     <div class="col-md-2">
     <b>Período:</b>
     <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
