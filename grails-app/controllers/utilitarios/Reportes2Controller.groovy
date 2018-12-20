@@ -432,9 +432,9 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(lineaVacia)
 
 //        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
-        def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by facl,prof,mate"
+        def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%POTENCIA%' order by facl,prof,mate,prll"
 
-        println "---> $sql"
+//        println "---> $sql"
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -464,41 +464,60 @@ class Reportes2Controller extends seguridad.Shield {
                 document.add(tablaC);
             }
 
-//            println("-----" + varMate + " ---- " + p.prll)
 
             if(p?.mate != varMate){
-
-                println("-----" + varMate + " ---- " + p.prll)
-
-
 
                 PdfPTable tablaD = new PdfPTable(3);
                 tablaD.setWidthPercentage(100);
                 tablaD.setWidths(arregloEnteros([50,13,37 ]))
 
+                    if(p?.nm_a == p?.nm_b){
+                        addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate + " * ", fontNormalBold), prmsIzBorder2)
+                    }else{
+                        addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+                    }
 
-                if(p?.nm_a == p?.nm_b){
-                    addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate + " * ", fontNormalBold), prmsIzBorder2)
-                }else{
-                    addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+
+                    addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
+                    addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
+
+                    document.add(tablaD);
+
+                    PdfPTable tablaF = new PdfPTable(2);
+                    tablaF.setWidthPercentage(100);
+                    tablaF.setWidths(arregloEnteros([85, 15]))
+
+                    addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
+                    addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold4), prmsCrBorder)
+
+                    document.add(tablaF);
+            }else{
+
+                if(p?.prll != varPara){
+                    PdfPTable tablaD = new PdfPTable(3);
+                    tablaD.setWidthPercentage(100);
+                    tablaD.setWidths(arregloEnteros([50,13,37 ]))
+
+                    if(p?.nm_a == p?.nm_b){
+                        addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate + " * ", fontNormalBold), prmsIzBorder2)
+                    }else{
+                        addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+                    }
+
+                    addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
+                    addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
+
+                    document.add(tablaD);
+
+                    PdfPTable tablaF = new PdfPTable(2);
+                    tablaF.setWidthPercentage(100);
+                    tablaF.setWidths(arregloEnteros([85, 15]))
+
+                    addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
+                    addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold4), prmsCrBorder)
+
+                    document.add(tablaF);
                 }
-
-
-                addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
-                addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
-
-                document.add(tablaD);
-
-                PdfPTable tablaF = new PdfPTable(2);
-                tablaF.setWidthPercentage(100);
-                tablaF.setWidths(arregloEnteros([85, 15]))
-
-                addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
-                addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold4), prmsCrBorder)
-
-                document.add(tablaF);
-
-                varMate = p.mate
 
             }
 
@@ -511,9 +530,8 @@ class Reportes2Controller extends seguridad.Shield {
             document.add(tablaE);
 
             varProf = p.prof
-
-            varPara = p.tipo
-
+            varMate = p.mate
+            varPara = p.prll
         }
 
         document.close();
