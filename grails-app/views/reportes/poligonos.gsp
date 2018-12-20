@@ -139,17 +139,17 @@
 
     $(document).ready(function() {
         buscar();
-    })
+    });
 
     function buscar () {
-//        openLoader("Buscando...");
+        openLoader("Buscando...");
         var cdla = $("#cedulaBusqueda").val();
         var nmbr = $("#nombresBusqueda").val();
         var apll = $("#apellidosBusqueda").val();
 //        var facl = $("#facultadId").val();
         var escl = $("#escuelaId option:selected").val();
         var prdo = $("#periodoId").val();
-        console.log('buscar ... ', escl);
+//        console.log('buscar ... ', escl);
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes', action: 'graficoProf_ajax')}",
@@ -164,9 +164,8 @@
             success: function (msg){
                 $("#divTablaProfesores").html(msg);
                 closeLoader();
-
             }
-        }) ;
+        });
     }
 
     $("#btnBuscar").click(function () {
@@ -189,7 +188,7 @@
         var myChart;
         var data1 = serie1.split("_");
         var data2 = serie2.split("_");
-        console.log("serie1", serie1, 'serie2:', serie2)
+//        console.log("serie1", serie1, 'serie2:', serie2)
         var chartData = {
             type: 'radar',
             data: {

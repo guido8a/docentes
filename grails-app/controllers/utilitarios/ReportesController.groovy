@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.PdfPCellEvent
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfTemplate
 import com.itextpdf.text.pdf.codec.Base64
+import docentes.Dictan
 import docentes.Escuela
 import docentes.Facultad
 import docentes.Periodo
@@ -316,6 +317,7 @@ class ReportesController extends seguridad.Shield {
         String s6 = "IF (${v4})";
         String s7 = "NI (${v5})";
         String s8 = "EA (${v6})";
+
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         defaultcategorydataset.addValue(valor1, s, s3);
         defaultcategorydataset.addValue(valor2, s, s4);
@@ -323,6 +325,47 @@ class ReportesController extends seguridad.Shield {
         defaultcategorydataset.addValue(valor4, s, s6);
         defaultcategorydataset.addValue(valor5, s, s7);
         defaultcategorydataset.addValue(valor6, s, s8);
+
+        return defaultcategorydataset;
+    }
+
+    private static CategoryDataset createDataset2(titulo, titulo2, valor1, valor2, valor3, valor4, valor5, valor6, valor7, valor8, valor9 , valor10, valor11, valor12)
+    {
+
+        def patternDecimal = "###.##%"
+        def percentform1 = new DecimalFormat(patternDecimal)
+
+        def v1 = percentform1.format(valor1)
+        def v2 = percentform1.format(valor2)
+        def v3 = percentform1.format(valor3)
+        def v4 = percentform1.format(valor4)
+        def v5 = percentform1.format(valor5)
+        def v6 = percentform1.format(valor6)
+
+        String s = titulo;
+        String s2 = titulo2;
+        String s3 = "IC (${v1}) ";
+        String s4 = "DAC (${v2})";
+        String s5 = "DHA (${v3})";
+        String s6 = "IF (${v4})";
+        String s7 = "NI (${v5})";
+        String s8 = "EA (${v6})";
+
+        DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
+        defaultcategorydataset.addValue(valor1, s, s3);
+        defaultcategorydataset.addValue(valor2, s, s4);
+        defaultcategorydataset.addValue(valor3, s, s5);
+        defaultcategorydataset.addValue(valor4, s, s6);
+        defaultcategorydataset.addValue(valor5, s, s7);
+        defaultcategorydataset.addValue(valor6, s, s8);
+
+        defaultcategorydataset.addValue(valor7, s2, s3);
+        defaultcategorydataset.addValue(valor8, s2, s4);
+        defaultcategorydataset.addValue(valor9, s2, s5);
+        defaultcategorydataset.addValue(valor10, s2, s6);
+        defaultcategorydataset.addValue(valor11, s2, s7);
+        defaultcategorydataset.addValue(valor12, s2, s8);
+
         return defaultcategorydataset;
     }
 
@@ -331,10 +374,10 @@ class ReportesController extends seguridad.Shield {
         SpiderWebPlot spiderwebplot = new SpiderWebPlot(categorydataset);
 //        spiderwebplot.setSeriesPaint(0, Color.GREEN);
 //        spiderwebplot.setSeriesPaint(0, new Color(61, 72, 84));
-        spiderwebplot.setSeriesPaint(0, new Color(13, 123, 220));
+        spiderwebplot.setSeriesPaint(0, new Color(13, 123, 220)); //color del texto del eje
         spiderwebplot.setSeriesOutlinePaint(Color.RED)
         spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(1.8f))
-//        spiderwebplot.setLabelPaint(new Color(13, 123, 220))  //color del texto del eje
+//        spiderwebplot.setLabelPaint(new Color(13, 123, 220))
         spiderwebplot.setLabelPaint(new Color(0, 43, 120))  //color del texto del eje
 //        spiderwebplot.setBackgroundPaint(Color.LIGHT_GRAY)
         spiderwebplot.setOutlinePaint(new Color(13, 123, 220))  //linea del gráfico
@@ -941,7 +984,7 @@ class ReportesController extends seguridad.Shield {
     }
 
     def graficoProf_ajax() {
-        println "graficoProf_ajax: $params"
+//        println "graficoProf_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql
         sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, rpec.dcta__id " +
@@ -954,6 +997,7 @@ class ReportesController extends seguridad.Shield {
 
         def prof = cn.rows(sql.toString())
         def profesor = []
+        def dicta = []
         def dc, ad
         def pp
 
@@ -971,17 +1015,18 @@ class ReportesController extends seguridad.Shield {
 //                    println "Alumnos ... $sql"
                     dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
                 } else {
-                    println "Docentes: ${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}\n$sql"
+//                    println "Docentes: ${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}\n$sql"
                     ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
                 }
             }
             pp["dc"] = dc
             pp["ad"] = ad
             profesor.add(pp)
+            dicta.add(p?.dcta__id)
         }
 
-        println "prof: ${profesor[0]}---${profesor[1]}"
-        [prof: profesor]
+//        println "prof: ${profesor[0]}---${profesor[1]}"
+        [prof: profesor, dicta: dicta]
     }
 
     def tablaProfesores_ajax () {
@@ -1195,6 +1240,142 @@ class ReportesController extends seguridad.Shield {
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
         response.setHeader("Content-disposition", "attachment; filename=" + 'desempenoAcademico_alumnos' + ".pdf")
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+
+    }
+
+    def reportePoligonos () {
+
+//        println("params rp " + params)
+
+        Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
+        Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
+        Font fontTitulo = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        def prmsTdNoBorder = [border: BaseColor.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
+
+        def profesor = Profesor.get(params.profe)
+        def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escl)
+        def dicta = Dictan.get(params.dicta)
+
+        def alumnos = TipoEncuesta.findByCodigo("DC")
+        def auto = TipoEncuesta.findByCodigo("AD")
+        def directivos = TipoEncuesta.findByCodigo("DI")
+        def pares = TipoEncuesta.findByCodigo("PR")
+        def totales = TipoEncuesta.findByCodigo("TT")
+        def baos = new ByteArrayOutputStream()
+        Document document = new Document(PageSize.A4);
+        def pdfw = PdfWriter.getInstance(document, baos);
+        def tipo = params.tipo
+        def subtitulo = ''
+        def rpec
+        def pattern1 = "###.##%"
+        def percentform = new DecimalFormat(pattern1)
+
+        document.open();
+
+        Paragraph parrafoUniversidad = new Paragraph(periodo?.universidad?.nombre?.toUpperCase() ?: '', fontTitulo)
+        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
+        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + profesor?.escuela?.facultad?.nombre, fontTitulo)
+        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+//        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (percentform.format(rpec?.promedio)), fontNormal)
+        document.add(parrafoUniversidad)
+        document.add(parrafoProfesor)
+        document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
+//        document.add(parrafoPromedio)
+
+
+        def sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id\n" +
+                "from rpec where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and prof__id = ${profesor?.id} and dcta__id = ${dicta?.id};"
+
+//        println("sql " + sql)
+
+        def sql1 = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id\n" +
+                "from rpec where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and prof__id = ${profesor?.id} and dcta__id = ${dicta?.id};"
+
+//        println("sql1 " + sql1)
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.firstRow(sql.toString());
+
+        def cn2 = dbConnectionService.getConnection()
+        def res2 = cn2.firstRow(sql1.toString());
+
+//        println("1 " + res)
+//        println("2 " + res2)
+
+
+        def chart3 = createChart( createDataset2("Titulo 1", "Titulo 2", res?.ddsc ?: 0, res?.ddac ?: 0, res?.ddhd ?: 0, res?.ddci ?: 0, res?.dcni ?: 0, res?.d_ea ?: 0, res2?.ddsc ?: 0, res2?.ddac ?: 0, res2?.ddhd ?: 0, res2?.ddci ?: 0, res2?.dcni ?: 0, res2?.d_ea ?: 0 ), subtitulo);
+        def ancho = 540
+        def alto = 540
+
+        try {
+
+            PdfContentByte contentByte = pdfw.getDirectContent();
+
+            Paragraph parrafo1 = new Paragraph();
+            Paragraph parrafo2 = new Paragraph();
+
+            PdfTemplate template = contentByte.createTemplate(ancho, alto);
+            PdfTemplate template2 = contentByte.createTemplate(ancho, alto);
+            Graphics2D graphics2d = template.createGraphics(ancho, alto, new DefaultFontMapper());
+            Graphics2D graphics2d2 = template2.createGraphics(ancho, alto, new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
+            Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto);
+
+            chart.draw(graphics2d, rectangle2d);
+
+            graphics2d.dispose();
+            Image chartImage = Image.getInstance(template);
+            parrafo1.add(chartImage);
+
+            chart3.draw(graphics2d2, rectangle2d2);
+            graphics2d2.dispose();
+            Image chartImage3 = Image.getInstance(template2);
+            parrafo2.add(chartImage3);
+
+            document.add(parrafo2)
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //pie
+        PdfPTable tablaD = new PdfPTable(3);
+
+        tablaD.setWidthPercentage(100);
+        tablaD.setWidths(arregloEnteros([49, 2, 49]))
+        addCellTabla(tablaD, new Paragraph("REFERENCIAS:", fontNormal), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("IC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("IF: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("DAC: DESAROLLO DE ACTITUDES Y VALORES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("NI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+
+        addCellTabla(tablaD, new Paragraph("DHA: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph("EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+
+        document.add(tablaD);
+
+        document.close();
+        pdfw.close()
+
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'poligonoDesempeno_' + profesor?.nombre + "_" + profesor?.apellido  + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
