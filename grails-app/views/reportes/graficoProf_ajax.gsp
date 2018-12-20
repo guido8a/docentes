@@ -4,21 +4,24 @@
             <table class="table table-condensed table-bordered table-striped">
                 <tbody>
                 <g:each in="${prof}" var="profesor" status="j">
-                    <tr data-id="${profesor.id}">
-                        <td style="width: 20%">${profesor?.nombre + " " + profesor?.apellido}</td>
-                        <td style="width: 20%">${profesor?.apellido}</td>
-                        <td style="width: 5%; font-size: 11px">prll</td>
-                        <td style="width: 55%; text-align: center">
+                    <g:if test="${j%2 == 0}">
+                        <tr data-id="${profesor.id}">
+                    </g:if>
+                        <g:set var="fila" value="${fila==1? 0 : 1}"></g:set>
+                        <td style="width: 15%">${profesor?.profesor + " " + profesor?.matedscr + " " + profesor?.curso + j}</td>
+                        <td style="width: 35%; text-align: center">
                             <div class="chart-container grafico" id="chart-area">
                                 <div id="graf">
-                                    <canvas id="clases_${j}" style="margin-top: 30px"></canvas>
+                                    <canvas id="clases_${j}" ></canvas>
                                     <script type="text/javascript">
-                                        graficar($("#clases_${j}"), "${ae}");
+                                        graficar($("#clases_${j}"), "${profesor.dc}", "${profesor.ad}");
                                     </script>
                                 </div>
                             </div>
                         </td>
-                    </tr>
+                    <g:if test="${j%2 == 1}">
+                        </tr>
+                    </g:if>
                 </g:each>
                 </tbody>
             </table>

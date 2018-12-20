@@ -944,29 +944,44 @@ class ReportesController extends seguridad.Shield {
         println "graficoProf_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def sql
-        sql = "select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, " +
-                "ddsc||'-'||ddac||'-'||ddhd||'-'||ddci||'-'||dcni||'-'||d_ea  dc " +
+        sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, rpec.dcta__id " +
                 "from rpec, prof, mate, crso, dcta " +
-                "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.periodo} and tpen__id = 2 and " +
+                "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id = 2 and " +
                 "dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and " +
                 "crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
                 "order by profapll, profnmbr"
-        println "sql: $sql"
-
-/*
-        select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso,
-        ddsc||'-'||ddac||'-'||ddhd||'-'||ddci||'-'||dcni||'-'||d_ea  dc
-        from rpec, prof, mate, crso, dcta
-        where rpec.escl__id = 3 and rpec.prdo__id = 4 and tpen__id = 2 and
-        dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and
-        crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id
-        order by profapll, profnmbr
-*/
+//        println "sql: $sql"
 
         def prof = cn.rows(sql.toString())
+        def profesor = []
+        def dc, ad
+        def pp
 
-        println "prof: ${prof.id}"
-        [prof: prof, ae: "90_89_93_88_97_98"]
+        prof.each { p ->
+            pp = p
+            sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id " +
+                    "from rpec " +
+                    "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id in(1,2) and " +
+                    "prof__id = ${p.id} and dcta__id = ${p.dcta__id}"
+//            println "sql2: $sql"
+            dc = "0_0_0_0_0_0"
+            ad = "0_0_0_0_0_0"
+            cn.eachRow(sql.toString()) { d ->
+                if(d.tpen__id == 2) {
+//                    println "Alumnos ... $sql"
+                    dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+                } else {
+                    println "Docentes: ${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}\n$sql"
+                    ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+                }
+            }
+            pp["dc"] = dc
+            pp["ad"] = ad
+            profesor.add(pp)
+        }
+
+        println "prof: ${profesor[0]}---${profesor[1]}"
+        [prof: profesor]
     }
 
     def tablaProfesores_ajax () {

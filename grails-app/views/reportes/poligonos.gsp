@@ -18,7 +18,7 @@
         width: 100%;
         float: left;
         text-align: center;
-        height: 320px;
+        height: 180px;
     }
     .bajo {
         margin-bottom: 20px;
@@ -97,10 +97,10 @@
             <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
                 <thead >
                 <tr style="text-align: center">
-                    <th style="width: 20%">Profesor</th>
-                    <th style="width: 20%">Materia</th>
-                    <th style="width: 5%">Par.</th>
-                    <th style="width: 55%; text-align: center">Gráfico de desempeño</th>
+                    <th style="width: 15%">Profesor</th>
+                    <th style="width: 35%; text-align: center">Desempeño Alumnos (rojo) y Autoevaluación</th>
+                    <th style="width: 15%">Profesor</th>
+                    <th style="width: 35%; text-align: center">Desempeño Alumnos (rojo) y Autoevaluación</th>
                 </tr>
                 </thead>
             </table>
@@ -138,27 +138,29 @@
     }
 
 
-    buscar();
+    $(document).ready(function() {
+        buscar();
+    })
 
     function buscar () {
 //        openLoader("Buscando...");
-        var ced = $("#cedulaBusqueda").val();
-        var nom = $("#nombresBusqueda").val();
-        var ape = $("#apellidosBusqueda").val();
-        var fac = $("#facultadId").val();
-        var escuela = $("#esculeaId").val();
-        var per = $("#periodoId").val();
-        console.log('buscar ... ');
+        var cdla = $("#cedulaBusqueda").val();
+        var nmbr = $("#nombresBusqueda").val();
+        var apll = $("#apellidosBusqueda").val();
+//        var facl = $("#facultadId").val();
+        var escl = $("#escuelaId option:selected").val();
+        var prdo = $("#periodoId").val();
+        console.log('buscar ... ', escl);
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes', action: 'graficoProf_ajax')}",
             data:{
-                cedula: ced,
-                nombres: nom,
-                apellidos: ape,
-                facultad: fac,
-                periodo: per,
-                escuela: escuela
+                cedula: cdla,
+                nombres: nmbr,
+                apellidos: apll,
+//                facultad: facl,
+                prdo: prdo,
+                escl: escl
             },
             success: function (msg){
                 $("#divTablaProfesores").html(msg);
@@ -183,11 +185,12 @@
 
     //    graficar()
 
-    function graficar(area, serie1) {
+    function graficar(area, serie1, serie2) {
         var canvas = area;
         var myChart;
         var data1 = serie1.split("_");
-        console.log("serie1", serie1)
+        var data2 = serie2.split("_");
+        console.log("serie1", serie1, 'serie2:', serie2)
         var chartData = {
             type: 'radar',
             data: {
@@ -200,7 +203,7 @@
                         borderColor: "rgba(60,120,198,1)",
                         pointBorderColor: "#fff",
                         pointBackgroundColor: "rgba(179,181,198,1)",
-                        data: [78.77,55.61,91.69,86.62,96.82, 90]
+                        data: data2
                     },
                     {
                         label: ["Heteroevaluación"],
@@ -211,13 +214,23 @@
                         pointBorderColor: "#fff",
 //                        data: [68.77,75.61,90.69,96.62,86.82, 95]
                         data: data1
-                    }
+                    },
+                    {   label: ["Mínimo"],
+                        backgroundColor: "rgba(255,240,240,0.2)",
+                        borderColor: "rgba(200,40,40, 0.3)",
+                        borderWidth: 2,
+                        data: [40,40,40,40,40,40]},
+                    {   label: ["Óptimo"],
+                        backgroundColor: "rgba(240,240,255,0.2)",
+                        borderColor: "rgba(0,0,200, 0.2)",
+                        borderWidth: 2,
+                        data: [80,80,80,80,80,80]}
                 ]
 
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     labels: {
                         fontColor: 'rgb(20, 80, 100)',
                         fontSize: 14
