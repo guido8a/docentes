@@ -43,29 +43,28 @@
 <body>
 
 <div class="btn-toolbar toolbar">
-    <div class="btn-group">
+    <div class="btn-group col-md-1">
         <g:link controller="reportes" action="reportes" class="btn btn-primary" title="Regresar a lista de informes">
             <i class="fa fa-chevron-left"></i> Reportes
         </g:link>
     </div>
 
+    <div class="col-md-1" style="text-align: right">Período:</div>
     <div class="col-md-2">
-    <b>Período:</b>
     <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
               class="form-control"
               from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
     </div>
 
+    <div class="col-md-1">Facultad:</div>
     <div class="col-md-3">
-        <b>Facultad:</b>
         <g:select name="facultad" id="facultadId" optionKey="id" optionValue="nombre"
                   class="form-control" from="${facultad}"
                   value="" />
     </div>
-    <div class="col-md-3">
-        <b>Carrera:</b>
+    <div class="col-md-1">Carrera:</div>
+    <div class="col-md-2" style="width: 280px">
         <div id="divEscuela">
-
         </div>
     </div>
 </div>
