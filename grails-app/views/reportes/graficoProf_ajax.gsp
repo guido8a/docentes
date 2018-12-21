@@ -18,7 +18,7 @@
                         </span>
                     </td>
                     <td style="width: 35%; text-align: center">
-                        <div class="chart-container grafico" id="chart-area">
+                        <div class="chart-container grafico gf" id="chart-area">
                             <div id="graf">
                                 <canvas id="clases_${j}" ></canvas>
                                 <script type="text/javascript">
@@ -39,6 +39,45 @@
 
 <script type="text/javascript">
 
+
+    $(".gf").click(function (){
+
+        var id = $(".btnGrafico").data('id');
+        var dicta = $(".btnGrafico").data('dicta');
+        var periodo = $("#periodoId option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
+
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'reportes', action: 'grafico_ajax')}",
+            data: {
+                profesor: id,
+                dicta: dicta,
+                periodo: periodo,
+                escuela: escuela
+            },
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id: "dlgGrafico",
+                    title: "Gráfico Desempeño",
+                    message: msg,
+                    class: "long",
+                    buttons: {
+                        cancelar: {
+                            label: "Cancelar",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    });
+
     $(".btnGrafico").click(function () {
 
         var id = $(this).data('id');
@@ -52,4 +91,4 @@
 </script>
 
 
-
+s

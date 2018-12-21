@@ -345,12 +345,12 @@ class ReportesController extends seguridad.Shield {
 
         String s = titulo;
         String s2 = titulo2;
-        String s3 = "IC (${v1}) ";
-        String s4 = "DAC (${v2})";
-        String s5 = "DHA (${v3})";
-        String s6 = "IF (${v4})";
-        String s7 = "NI (${v5})";
-        String s8 = "EA (${v6})";
+        String s3 = "IC(${valor1}-${valor7}) ";
+        String s4 = "DAC(${valor2}-${valor8})";
+        String s5 = "DHA(${valor3}-${valor9})";
+        String s6 = "IF(${valor4}-${valor10})";
+        String s7 = "NI(${valor5}-${valor11})";
+        String s8 = "EA(${valor6}-${valor12})";
 
         DefaultCategoryDataset defaultcategorydataset = new DefaultCategoryDataset();
         defaultcategorydataset.addValue(valor1, s, s3);
@@ -384,6 +384,8 @@ class ReportesController extends seguridad.Shield {
         spiderwebplot.setOutlinePaint(new Color(13, 123, 220))  //linea del gráfico
 //        spiderwebplot.setAxisLinePaint(Color.RED)
         spiderwebplot.setAxisLinePaint(new Color(64,64,64))  //línea del eje
+
+        spiderwebplot.setLabelFont(new java.awt.Font("Serif", Font.NORMAL, 8))
 
         JFreeChart jfreechart = new JFreeChart(titulo, TextTitle.DEFAULT_FONT, spiderwebplot, false);
 //        LegendTitle legendtitle = new LegendTitle(spiderwebplot);
@@ -1012,7 +1014,7 @@ class ReportesController extends seguridad.Shield {
 //            println "sql2: $sql"
             dc = "0_0_0_0_0_0"
             cn.eachRow(sql.toString()) { d ->
-                    dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+                dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
             }
             sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea " +
                     "from rpec " +
@@ -1020,7 +1022,7 @@ class ReportesController extends seguridad.Shield {
                     "prof__id = ${p.id} limit 1"
             ad = "0_0_0_0_0_0"
             cn.eachRow(sql.toString()) { d ->
-                    ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+                ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
             }
             pp["dc"] = dc
             pp["ad"] = ad
@@ -1034,7 +1036,7 @@ class ReportesController extends seguridad.Shield {
         def minMax = cn.rows(sql.toString())
         println "min.... $minMax"
 
-//        println "prof: ${profesor[0]}---${profesor[1]}"
+        println "prof: ${profesor[0]}---${profesor[1]}"
         [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm]
     }
 
@@ -1256,7 +1258,7 @@ class ReportesController extends seguridad.Shield {
 
     def reportePoligonos () {
 
-//        println("params rp " + params)
+        println("params rp " + params)
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
@@ -1299,14 +1301,22 @@ class ReportesController extends seguridad.Shield {
         document.add(parrafoEscuela)
 //        document.add(parrafoPromedio)
 
+//        def sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id\n" +
+//                "from rpec where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and prof__id = ${profesor?.id} and dcta__id = ${dicta?.id};"
 
-        def sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id\n" +
-                "from rpec where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and prof__id = ${profesor?.id} and dcta__id = ${dicta?.id};"
+        def  sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea " +
+                "from rpec " +
+                "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and " +
+                "prof__id = ${profesor?.id} limit 1"
 
 //        println("sql " + sql)
 
-        def sql1 = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id\n" +
-                "from rpec where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and prof__id = ${profesor?.id} and dcta__id = ${dicta?.id};"
+//        def sql1 = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id\n" +
+//                "from rpec where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and prof__id = ${profesor?.id} and dcta__id = ${dicta?.id};"
+        def sql1 = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id " +
+                "from rpec " +
+                "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and " +
+                "prof__id = ${profesor?.id} and dcta__id = ${dicta?.id}"
 
 //        println("sql1 " + sql1)
 
@@ -1316,8 +1326,8 @@ class ReportesController extends seguridad.Shield {
         def cn2 = dbConnectionService.getConnection()
         def res2 = cn2.firstRow(sql1.toString());
 
-//        println("1 " + res)
-//        println("2 " + res2)
+        println("1 " + res)
+        println("2 " + res2)
 
 
         def chart3 = createChart( createDataset2("Titulo 1", "Titulo 2", res?.ddsc ?: 0, res?.ddac ?: 0, res?.ddhd ?: 0, res?.ddci ?: 0, res?.dcni ?: 0, res?.d_ea ?: 0, res2?.ddsc ?: 0, res2?.ddac ?: 0, res2?.ddhd ?: 0, res2?.ddci ?: 0, res2?.dcni ?: 0, res2?.d_ea ?: 0 ), subtitulo);
@@ -1337,6 +1347,7 @@ class ReportesController extends seguridad.Shield {
             Graphics2D graphics2d2 = template2.createGraphics(ancho, alto, new DefaultFontMapper());
             Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, ancho, alto);
             Rectangle2D rectangle2d2 = new Rectangle2D.Double(0, 0, ancho, alto);
+
 
             chart.draw(graphics2d, rectangle2d);
 
@@ -2923,6 +2934,62 @@ class ReportesController extends seguridad.Shield {
         response.setHeader("Content-disposition", "attachment; filename=" + 'profesoresXPotenciadores' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
+    }
+
+    def grafico_ajax () {
+
+//        println("params g " + params)
+
+        def profesorP = Profesor.get(params.profesor)
+        def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escuela)
+        def dicta = Dictan.get(params.dicta)
+
+        def cn = dbConnectionService.getConnection()
+        def prsn = Persona.get(session.usuario.id)
+        def sql
+
+        def profesor = []
+        def dc, ad
+        def pp
+
+        pp = profesorP
+
+        sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id " +
+                "from rpec " +
+                "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and " +
+                "prof__id = ${profesorP?.id} and dcta__id = ${dicta?.id}"
+
+            dc = "0_0_0_0_0_0"
+            cn.eachRow(sql.toString()) { d ->
+                dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+            }
+
+        sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea " +
+                "from rpec " +
+                "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and " +
+                "prof__id = ${profesorP?.id} limit 1"
+            ad = "0_0_0_0_0_0"
+            cn.eachRow(sql.toString()) { d ->
+                ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+            }
+
+//            println("dc " + dc)
+
+//            pp["dc"] = dc
+//            pp["ad"] = ad
+            profesor.add(dc)
+            profesor.add(ad)
+
+        sql = "select estdmini, estdoptm from auxl, prdo where univ__id = ${prsn.universidad.id} and " +
+                "prdo.prdo__id = auxl.prdo__id"
+//        println "sql: $sql"
+        def minMax = cn.rows(sql.toString())
+//        println "min.... $minMax"
+
+//        println "prof: ${profesor[0]}---${profesor[1]}"
+        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm]
+
     }
 
 

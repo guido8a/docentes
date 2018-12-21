@@ -179,8 +179,6 @@
     });
 
 
-
-
     //    graficar()
 
     function graficar(area, serie1, serie2, vlmn, vlop, etqt) {
@@ -192,7 +190,7 @@
         var op = parseInt(vlop)
         var minimo = [vl, vl, vl, vl, vl, vl]
         var optimo = [op, op, op, op, op, op]
-        console.log("mn", minimo, 'op:', optimo)
+//        console.log("mn", minimo, 'op:', optimo)
         var chartData = {
             type: 'radar',
             data: {
