@@ -15,14 +15,14 @@
 </div>
 
 
-<div style="width: 50%; height: 50%; margin-left: 250px">
-    <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
-        <thead >
-        <tr style="text-align: center">
-            <th style="width: 25%">Símbolo</th>
-            <th style="width: 75%; text-align: center">Referencia</th>
-        </tr>
-        </thead>
+<div style="width:70%; height: 70%; margin-left: 200px">
+    <table class="table table-condensed table-bordered table-striped" style="margin-top: 40px">
+        %{--<thead >--}%
+        %{--<tr style="text-align: center">--}%
+            %{--<th style="width: 25%">Símbolo</th>--}%
+            %{--<th style="width: 75%; text-align: center">Referencia</th>--}%
+        %{--</tr>--}%
+        %{--</thead>--}%
         <tbody>
         <tr>
             <td>
@@ -31,8 +31,6 @@
             <td>
                 INTEGRACIÓN DE CONOCIMIENTOS
             </td>
-        </tr>
-        <tr>
             <td>
                 DAC
             </td>
@@ -40,6 +38,9 @@
                 DESAROLLO DE ACTITUDES Y VALORES
             </td>
         </tr>
+        %{--<tr>--}%
+
+        %{--</tr>--}%
         <tr>
             <td>
                 DHA
@@ -47,15 +48,16 @@
             <td>
                 DESARROLLO DE HABILIDADES Y DESTREZAS
             </td>
+        <td>
+            IF
+        </td>
+        <td>
+            NVESTIGACIÓN FORMATIVA
+        </td>
         </tr>
-        <tr>
-            <td>
-                IF
-            </td>
-            <td>
-                NVESTIGACIÓN FORMATIVA
-            </td>
-        </tr>
+        %{--<tr>--}%
+
+        %{--</tr>--}%
         <tr>
             <td>
                 NI
@@ -63,15 +65,16 @@
             <td>
                 NORMATIVIDAD INSTITUCIONAL
             </td>
+        <td>
+            EA
+        </td>
+        <td>
+            EVALUACIÓN DEL APRENDIZAJE
+        </td>
         </tr>
-        <tr>
-            <td>
-                EA
-            </td>
-            <td>
-                EVALUACIÓN DEL APRENDIZAJE
-            </td>
-        </tr>
+        %{--<tr>--}%
+ %{----}%
+        %{--</tr>--}%
 
         </tbody>
     </table>
