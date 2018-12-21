@@ -68,9 +68,8 @@
                     display: etqt,
                     labels: {
                         fontColor: 'rgb(20, 80, 100)',
-                        fontSize: 14
+                        fontSize: 14,
                     },
-                    fontSize: 14
                 },
                 scale: {
                     ticks: {
@@ -78,6 +77,10 @@
                         min: 0,
                         max: 100,
                         stepSize: 10
+                    },
+                    pointLabels: {
+                        fontColor: 'rgb(20, 80, 160)',
+                        fontSize: 14
                     }
                 }
 
