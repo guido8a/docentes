@@ -18,7 +18,7 @@
                         </span>
                     </td>
                     <td style="width: 35%; text-align: center">
-                        <div class="chart-container grafico gf" id="chart-area">
+                        <div class="chart-container grafico gf" id="chart-area"  data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
                             <div id="graf">
                                 <canvas id="clases_${j}" ></canvas>
                                 <script type="text/javascript">
@@ -42,8 +42,8 @@
 
     $(".gf").click(function (){
 
-        var id = $(".btnGrafico").data('id');
-        var dicta = $(".btnGrafico").data('dicta');
+        var id = $(this).data('id');
+        var dicta = $(this).data('dicta');
         var periodo = $("#periodoId option:selected").val();
         var escuela = $("#escuelaId option:selected").val();
 
