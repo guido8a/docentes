@@ -20,20 +20,9 @@
         text-align: center;
         height: 180px;
     }
-    .bajo {
-        margin-bottom: 20px;
-    }
-    .centrado{
-        text-align: center;
-    }
-
-    .legend {
-        width: 50%;
-        position: absolute;
-        top: 100px;
-        right: 20px;
-        font-variant: small-caps;
-        font-size: 14px;
+    .largeWidth {
+        margin: 0 auto;
+        width: 100%;
     }
 
     </style>

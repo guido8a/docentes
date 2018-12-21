@@ -2948,6 +2948,7 @@ class ReportesController extends seguridad.Shield {
         def periodo = Periodo.get(params.periodo)
         def escuela = Escuela.get(params.escuela)
         def dicta = Dictan.get(params.dicta)
+        def vrbl = Variables.findAllBySiglaIsNotNull([sort: 'orden'])
 
         def cn = dbConnectionService.getConnection()
         def prsn = Persona.get(session.usuario.id)
@@ -2992,7 +2993,7 @@ class ReportesController extends seguridad.Shield {
 //        println "min.... $minMax"
 
 //        println "prof: ${profesor[0]}---${profesor[1]}"
-        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm]
+        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm, vrbl: vrbl]
 
     }
 

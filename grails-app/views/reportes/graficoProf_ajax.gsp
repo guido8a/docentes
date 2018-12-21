@@ -5,11 +5,14 @@
             <table class="table table-condensed table-bordered table-striped">
                 <tbody>
                 <g:each in="${prof}" var="profesor" status="j">
+                    <g:set var="prof" value="${'<strong>' + profesor?.profesor + '</strong><br>Asignatura: ' +
+                            profesor?.matedscr + '<br>Curso: ' + profesor?.curso}"></g:set>
                     <g:if test="${j%2 == 0}">
                         <tr data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
                     </g:if>
                     <g:set var="fila" value="${fila==1? 0 : 1}"/>
-                    <td style="width: 15%"><strong>${profesor?.profesor}</strong><br>Asignatura: ${profesor?.matedscr}<br>Curso: ${profesor?.curso}<br>
+                    %{--<td style="width: 15%"><strong>${profesor?.profesor}</strong><br>Asignatura: ${profesor?.matedscr}<br>Curso: ${profesor?.curso}<br>--}%
+                    <td style="width: 15%">${raw(prof)}<br>
                         <span style="border-width: medium; border-color:#3C78C6 !important; border-bottom: solid"> Autoevaluación</span>
                         <span style="border-width: medium; border-color:#FF6384 !important; border-bottom: solid"> Heteroevaluación</span>
                         <span style="margin-top: 10px; margin-left: 20px !important">
@@ -22,7 +25,10 @@
                         </span>
                     </td>
                     <td style="width: 35%; text-align: center">
-                        <div class="chart-container grafico gf" id="chart-area"  data-nombre="${profesor?.profesor}" data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
+                        %{--<div class="chart-container grafico gf" id="chart-area"  data-nombre="${profesor?.profesor + ' - ' + profesor?.matedscr + ' Curso: ' + profesor?.curso}"--}%
+                        <div class="chart-container grafico gf" id="chart-area"  data-nombre="${'<strong>' + profesor?.profesor + '</strong> - Asignatura: ' +
+                            profesor?.matedscr + ' - Curso: ' + profesor?.curso}"
+                             data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
                             <div id="graf">
                                 <canvas id="clases_${j}" ></canvas>
                                 <script type="text/javascript">
@@ -72,10 +78,10 @@
             success: function (msg) {
                 var b = bootbox.dialog({
                     id: "dlgGrafico",
-                    title: "Gráfico de Desempeño Académico: " + nombre, /* poner profesor */
+                    title: nombre,
                     message: msg,
+//                    class: "large",
                     class: "long",
-//                    height: "500px !Important",
                 buttons: {
                         cancelar: {
                             label: "Cancelar",
@@ -84,7 +90,7 @@
                             }
                         }
                     } //buttons
-                }) //dialog
+                }).addClass("largeWidth"); //dialog
                 setTimeout(function () {
                     b.find(".form-control").first().focus()
                 }, 500);

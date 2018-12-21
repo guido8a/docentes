@@ -5,7 +5,7 @@
   Time: 10:11
 --%>
 
-<div class="chart-container grafico" id="chart-area" style="height: 530px">
+<div class="chart-container grafico" id="chart-area" style="height: 510px; margin-bottom: 20px">
     <div id="graf">
         <canvas id="nuevoGrafico" ></canvas>
         <script type="text/javascript">
@@ -15,67 +15,16 @@
 </div>
 
 
-<div style="width:70%; height: 70%; margin-left: 200px">
-    <table class="table table-condensed table-bordered table-striped" style="margin-top: 40px">
-        %{--<thead >--}%
-        %{--<tr style="text-align: center">--}%
-            %{--<th style="width: 25%">Símbolo</th>--}%
-            %{--<th style="width: 75%; text-align: center">Referencia</th>--}%
-        %{--</tr>--}%
-        %{--</thead>--}%
-        <tbody>
-        <tr>
-            <td>
-                IC
-            </td>
-            <td>
-                INTEGRACIÓN DE CONOCIMIENTOS
-            </td>
-            <td>
-                DAC
-            </td>
-            <td>
-                DESAROLLO DE ACTITUDES Y VALORES
-            </td>
-        </tr>
-        %{--<tr>--}%
-
-        %{--</tr>--}%
-        <tr>
-            <td>
-                DHA
-            </td>
-            <td>
-                DESARROLLO DE HABILIDADES Y DESTREZAS
-            </td>
-        <td>
-            IF
-        </td>
-        <td>
-            NVESTIGACIÓN FORMATIVA
-        </td>
-        </tr>
-        %{--<tr>--}%
-
-        %{--</tr>--}%
-        <tr>
-            <td>
-                NI
-            </td>
-            <td>
-                NORMATIVIDAD INSTITUCIONAL
-            </td>
-        <td>
-            EA
-        </td>
-        <td>
-            EVALUACIÓN DEL APRENDIZAJE
-        </td>
-        </tr>
-        %{--<tr>--}%
- %{----}%
-        %{--</tr>--}%
-
+%{--<div style="width:70%; margin: auto">--}%
+<div style="position: absolute; left: 10px; top: 33%; width: 250px;">
+    <table class="table table-condensed table-bordered table-striped">
+    <tbody>
+        <g:each in="${vrbl}" var="va" status="j">
+            <tr>
+            <td>${va.sigla}</td>
+            <td>${va.descripcion}</td>
+            </tr>
+        </g:each>
         </tbody>
     </table>
 </div>
@@ -151,7 +100,7 @@
                 }
 
             }
-        }
+        };
 
         myChart = new Chart(canvas, chartData, 1);
     }
