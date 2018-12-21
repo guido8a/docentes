@@ -14,6 +14,69 @@
     </div>
 </div>
 
+
+<div style="width: 50%; height: 50%; margin-left: 250px">
+    <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
+        <thead >
+        <tr style="text-align: center">
+            <th style="width: 25%">Símbolo</th>
+            <th style="width: 75%; text-align: center">Referencia</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                IC
+            </td>
+            <td>
+                INTEGRACIÓN DE CONOCIMIENTOS
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DAC
+            </td>
+            <td>
+                DESAROLLO DE ACTITUDES Y VALORES
+            </td>
+        </tr>
+        <tr>
+            <td>
+                DHA
+            </td>
+            <td>
+                DESARROLLO DE HABILIDADES Y DESTREZAS
+            </td>
+        </tr>
+        <tr>
+            <td>
+                IF
+            </td>
+            <td>
+                NVESTIGACIÓN FORMATIVA
+            </td>
+        </tr>
+        <tr>
+            <td>
+                NI
+            </td>
+            <td>
+                NORMATIVIDAD INSTITUCIONAL
+            </td>
+        </tr>
+        <tr>
+            <td>
+                EA
+            </td>
+            <td>
+                EVALUACIÓN DEL APRENDIZAJE
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
 <script type="text/javascript">
 
     function graficar(area, serie1, serie2, vlmn, vlop, etqt) {
