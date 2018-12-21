@@ -1032,12 +1032,14 @@ class ReportesController extends seguridad.Shield {
 
         sql = "select estdmini, estdoptm from auxl, prdo where univ__id = ${prsn.universidad.id} and " +
                 "prdo.prdo__id = auxl.prdo__id"
-        println "sql: $sql"
+//        println "sql: $sql"
         def minMax = cn.rows(sql.toString())
         println "min.... $minMax"
 
-        println "prof: ${profesor[0]}---${profesor[1]}"
-        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm]
+//        println "prof: ${profesor[0]}---${profesor[1]}"
+
+        def periodo = Periodo.get(params.prdo)
+        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm, periodo: periodo]
     }
 
     def tablaProfesores_ajax () {
