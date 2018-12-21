@@ -22,7 +22,7 @@
                         </span>
                     </td>
                     <td style="width: 35%; text-align: center">
-                        <div class="chart-container grafico gf" id="chart-area"  data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
+                        <div class="chart-container grafico gf" id="chart-area"  data-nombre="${profesor?.profesor}" data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
                             <div id="graf">
                                 <canvas id="clases_${j}" ></canvas>
                                 <script type="text/javascript">
@@ -55,6 +55,7 @@
     $(".gf").click(function (){
 
         var id = $(this).data('id');
+        var nombre = $(this).data('nombre');
         var dicta = $(this).data('dicta');
         var periodo = $("#periodoId option:selected").val();
         var escuela = $("#escuelaId option:selected").val();
@@ -71,7 +72,7 @@
             success: function (msg) {
                 var b = bootbox.dialog({
                     id: "dlgGrafico",
-                    title: "Gráfico de Desempeño Académico", /* poner profesor */
+                    title: "Gráfico de Desempeño Académico: " + nombre, /* poner profesor */
                     message: msg,
                     class: "long",
 //                    height: "500px !Important",
