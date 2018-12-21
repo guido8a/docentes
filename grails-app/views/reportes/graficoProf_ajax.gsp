@@ -18,7 +18,7 @@
                             </a>
                             <button class="btn btn-warning btn-sm btnRecomendaciones" type="button" style="margin-top: 10px" data-id="${profesor.id}" data-dicta="${profesor.dcta__id}" title="Imprimir Recomendaciones"
                                 ${docentes.ReporteEncuesta.findByProfesorAndPeriodoAndRecomendacionGreaterThan(docentes.Profesor.get(profesor?.id),periodo, 0) ? '' : 'disabled'}>
-                                <i class="fa fa-star" title="Recomendaciones"></i>Reco.</button>
+                                <i class="fa fa-star" title="Recomendaciones"></i> Reco.</button>
                         </span>
                     </td>
                     <td style="width: 35%; text-align: center">

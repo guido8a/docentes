@@ -1272,6 +1272,9 @@ class ReportesController extends seguridad.Shield {
         def escuela = Escuela.get(params.escl)
         def dicta = Dictan.get(params.dicta)
 
+        def t1 = profesor.nombre.split(" ")
+        def t2 = profesor.apellido.split(" ")
+
         def alumnos = TipoEncuesta.findByCodigo("DC")
         def auto = TipoEncuesta.findByCodigo("AD")
         def directivos = TipoEncuesta.findByCodigo("DI")
@@ -1397,10 +1400,9 @@ class ReportesController extends seguridad.Shield {
 
         byte[] b = baos.toByteArray();
         response.setContentType("application/pdf")
-        response.setHeader("Content-disposition", "attachment; filename=" + 'poligonoDesempeno_' + profesor?.nombre + "_" + profesor?.apellido  + ".pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + 'desempeno_' + t1[0] + "_" + t1[1] + "_" + t2[0] + "_" + t2[1] + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
 
