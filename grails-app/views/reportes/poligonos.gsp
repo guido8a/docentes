@@ -231,6 +231,10 @@
                         min: 0,
                         max: 100,
                         stepSize: 20
+                    },
+                    pointLabels: {
+                        fontColor: 'rgb(20, 80, 160)',
+                        fontSize: 12
                     }
                 }
 
