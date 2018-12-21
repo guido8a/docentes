@@ -5,14 +5,14 @@
                 <tbody>
                 <g:each in="${prof}" var="profesor" status="j">
                     <g:if test="${j%2 == 0}">
-                        <tr data-id="${profesor.id}" data-dicta="${dicta[j]}">
+                        <tr data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
                     </g:if>
                     <g:set var="fila" value="${fila==1? 0 : 1}"/>
                     <td style="width: 15%"><strong>${profesor?.profesor}</strong><br>Asignatura: ${profesor?.matedscr}<br>Curso: ${profesor?.curso}<br>
                         <span style="border-width: medium; border-color:#3C78C6 !important; border-bottom: solid"> Autoevaluación</span>
                         <span style="border-width: medium; border-color:#FF6384 !important; border-bottom: solid"> Heteroevaluación</span>
                         <span style="margin-top: 10px !important">
-                            <a href="#" class="btn btn-primary btn-sm btnGrafico" data-id="${profesor.id}" data-dicta="${dicta[j]}" title="ver gráfico" style="margin-top: 10px">
+                            <a href="#" class="btn btn-primary btn-sm btnGrafico" data-id="${profesor.id}" data-dicta="${profesor.dcta__id}" title="ver gráfico" style="margin-top: 10px">
                                 <i class="fa fa-print"></i> Ver Gráfico
                             </a>
                         </span>
@@ -22,7 +22,7 @@
                             <div id="graf">
                                 <canvas id="clases_${j}" ></canvas>
                                 <script type="text/javascript">
-                                    graficar($("#clases_${j}"), "${profesor.dc}", "${profesor.ad}");
+                                    graficar($("#clases_${j}"), "${profesor.dc}", "${profesor.ad}", ${minimo}, ${optimo}, false);
                                 </script>
                             </div>
                         </div>

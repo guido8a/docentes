@@ -23,6 +23,7 @@ import org.jfree.chart.plot.PlotOrientation
 import org.jfree.chart.renderer.category.BarRenderer
 import org.jfree.chart.title.Title
 import org.jfree.data.category.DefaultCategoryDataset
+import seguridad.Persona
 
 import java.awt.BasicStroke
 import java.awt.Color
@@ -986,6 +987,7 @@ class ReportesController extends seguridad.Shield {
     def graficoProf_ajax() {
 //        println "graficoProf_ajax: $params"
         def cn = dbConnectionService.getConnection()
+        def prsn = Persona.get(session.usuario.id)
         def sql
         sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, rpec.dcta__id " +
                 "from rpec, prof, mate, crso, dcta " +
@@ -997,7 +999,7 @@ class ReportesController extends seguridad.Shield {
 
         def prof = cn.rows(sql.toString())
         def profesor = []
-        def dicta = []
+//        def dicta = []
         def dc, ad
         def pp
 
@@ -1005,28 +1007,35 @@ class ReportesController extends seguridad.Shield {
             pp = p
             sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id " +
                     "from rpec " +
-                    "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id in(1,2) and " +
+                    "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id = 2 and " +
                     "prof__id = ${p.id} and dcta__id = ${p.dcta__id}"
 //            println "sql2: $sql"
             dc = "0_0_0_0_0_0"
+            cn.eachRow(sql.toString()) { d ->
+                    dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+            }
+            sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea " +
+                    "from rpec " +
+                    "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id = 1 and " +
+                    "prof__id = ${p.id} limit 1"
             ad = "0_0_0_0_0_0"
             cn.eachRow(sql.toString()) { d ->
-                if(d.tpen__id == 2) {
-//                    println "Alumnos ... $sql"
-                    dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
-                } else {
-//                    println "Docentes: ${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}\n$sql"
                     ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
-                }
             }
             pp["dc"] = dc
             pp["ad"] = ad
             profesor.add(pp)
-            dicta.add(p?.dcta__id)
+//            dicta.add(p?.dcta__id)
         }
 
+        sql = "select estdmini, estdoptm from auxl, prdo where univ__id = ${prsn.universidad.id} and " +
+                "prdo.prdo__id = auxl.prdo__id"
+        println "sql: $sql"
+        def minMax = cn.rows(sql.toString())
+        println "min.... $minMax"
+
 //        println "prof: ${profesor[0]}---${profesor[1]}"
-        [prof: profesor, dicta: dicta]
+        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm]
     }
 
     def tablaProfesores_ajax () {

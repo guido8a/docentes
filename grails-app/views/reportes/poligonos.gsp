@@ -183,12 +183,16 @@
 
     //    graficar()
 
-    function graficar(area, serie1, serie2) {
+    function graficar(area, serie1, serie2, vlmn, vlop, etqt) {
         var canvas = area;
         var myChart;
         var data1 = serie1.split("_");
         var data2 = serie2.split("_");
-//        console.log("serie1", serie1, 'serie2:', serie2)
+        var vl = parseInt(vlmn)
+        var op = parseInt(vlop)
+        var minimo = [vl, vl, vl, vl, vl, vl]
+        var optimo = [op, op, op, op, op, op]
+        console.log("mn", minimo, 'op:', optimo)
         var chartData = {
             type: 'radar',
             data: {
@@ -217,18 +221,18 @@
                         backgroundColor: "rgba(255,240,240,0.2)",
                         borderColor: "rgba(200,40,40, 0.3)",
                         borderWidth: 2,
-                        data: [40,40,40,40,40,40]},
+                        data: minimo},
                     {   label: ["Óptimo"],
                         backgroundColor: "rgba(240,240,255,0.2)",
                         borderColor: "rgba(0,0,200, 0.2)",
                         borderWidth: 2,
-                        data: [80,80,80,80,80,80]}
+                        data: optimo}
                 ]
 
             },
             options: {
                 legend: {
-                    display: false,
+                    display: etqt,
                     labels: {
                         fontColor: 'rgb(20, 80, 100)',
                         fontSize: 14
