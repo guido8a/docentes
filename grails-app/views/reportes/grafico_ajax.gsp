@@ -5,11 +5,11 @@
   Time: 10:11
 --%>
 
-<div class="chart-container grafico" id="chart-area">
+<div class="chart-container grafico" id="chart-area" style="height: 530px">
     <div id="graf">
         <canvas id="nuevoGrafico" ></canvas>
         <script type="text/javascript">
-            graficar($("#nuevoGrafico"), "${prof[0]}", "${prof[1]}", ${minimo}, ${optimo}, false);
+            graficar($("#nuevoGrafico"), "${prof[0]}", "${prof[1]}", ${minimo}, ${optimo}, true);
         </script>
     </div>
 </div>
@@ -69,14 +69,15 @@
                     labels: {
                         fontColor: 'rgb(20, 80, 100)',
                         fontSize: 14
-                    }
+                    },
+                    fontSize: 14
                 },
                 scale: {
                     ticks: {
                         beginAtZero: true,
                         min: 0,
                         max: 100,
-                        stepSize: 20
+                        stepSize: 10
                     }
                 }
 

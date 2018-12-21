@@ -59,10 +59,11 @@
             success: function (msg) {
                 var b = bootbox.dialog({
                     id: "dlgGrafico",
-                    title: "Gráfico Desempeño",
+                    title: "Gráfico de Desempeño Académico", /* poner profesor */
                     message: msg,
                     class: "long",
-                    buttons: {
+//                    height: "500px !Important",
+                buttons: {
                         cancelar: {
                             label: "Cancelar",
                             className: "btn-primary",
@@ -70,7 +71,7 @@
                             }
                         }
                     } //buttons
-                }); //dialog
+                }) //dialog
                 setTimeout(function () {
                     b.find(".form-control").first().focus()
                 }, 500);
