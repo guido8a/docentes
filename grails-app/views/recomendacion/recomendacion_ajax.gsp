@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-md-3 negrilla control-label">Recomendaciones: </div>
     <div class="col-md-8">
-        <g:select from="${docentes.Recomendacion.list()}" name="recomendacionS_name" id="recomendacionId"
+        <g:select from="${docentes.Recomendacion.list().sort{it.descripcion}}" name="recomendacionS_name" id="recomendacionId"
                   optionKey="id" optionValue="descripcion"  class="form-control selectpicker" data-divider="true" value="${rcpr?.recomendacion?.id}" />
     </div>
 </div>

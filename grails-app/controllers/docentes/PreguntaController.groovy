@@ -515,4 +515,22 @@ class PreguntaController extends Shield {
         return[indicadores:indicadores, preguntaInstance: pregunta]
     }
 
+    def orden () {
+
+    }
+
+    def tablaOrden_ajax () {
+        def tipoEncuesta = TipoEncuesta.get(params.tipoEncuesta)
+        def preguntas = Prte.findAllByTipoEncuesta(tipoEncuesta).sort { it.numero }
+
+        return [preguntas: preguntas]
+    }
+
+    def guardarOrden_ajax () {
+        println("params " + params)
+
+        def pregunta = Prte.get(params.id)
+
+    }
+
 }

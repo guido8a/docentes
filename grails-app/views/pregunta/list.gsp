@@ -16,6 +16,7 @@
                 <g:link controller="pregunta" action="pregunta" class="btn btn-info">
                     <i class="fa fa-file"></i> Nueva Pregunta
                 </g:link>
+                <g:link controller="pregunta" action="orden" class="btn btn-warning"><i class="fa fa-retweet"></i> Orden</g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
