@@ -84,7 +84,7 @@
                     class: "long",
                 buttons: {
                         cancelar: {
-                            label: "Cancelar",
+                            label: "Cerrar",
                             className: "btn-primary",
                             callback: function () {
                             }

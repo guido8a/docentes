@@ -116,7 +116,8 @@ class RecomendacionController extends Shield {
             texto = "Recomedación creada correctamente"
         }
 
-        recomendacion.descripcion = params.descripcion.toUpperCase();
+//        recomendacion.descripcion = params.descripcion.toUpperCase();
+        recomendacion.descripcion = params.descripcion
 
         try{
             recomendacion.save(flush: true)

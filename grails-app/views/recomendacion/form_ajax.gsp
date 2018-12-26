@@ -14,7 +14,8 @@
                     Descripción
                 </label>
                 <div class="col-md-10">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" style="resize: none" class="allCaps form-control required" value="${recomendacionInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" style="resize: none"
+                                class="form-control required" value="${recomendacionInstance?.descripcion}"/>
                 </div>
                 
             </span>
