@@ -269,9 +269,9 @@ class ProfesorController extends Shield {
 
         escuela = Escuela.get(params.escuela)
         profesor.escuela = escuela
-        profesor.nombre = params.nombre.toUpperCase()
-        profesor.apellido = params.apellido.toUpperCase()
-        profesor.titulo = params.titulo.toUpperCase()
+        profesor.nombre = params.nombre
+        profesor.apellido = params.apellido
+        profesor.titulo = params.titulo
         profesor.cedula = params.cedula
         profesor.sexo = params.sexo.toString()
         profesor.evaluar = params.evalua

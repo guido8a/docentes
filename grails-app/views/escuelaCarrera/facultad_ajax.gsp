@@ -6,7 +6,7 @@
 --%>
 
 <g:select from="${facultades}" optionValue="nombre"
-          optionKey="id" name="facultadF_name" id="facultadF" class="form-control" value="${escuelaCarrera?.escuela?.facultad?.id}"/>
+          optionKey="id" name="facultadF_name" id="facultadF" class="form-control required" value="${escuelaCarrera?.escuela?.facultad?.id}"/>
 
 <script type="text/javascript">
 

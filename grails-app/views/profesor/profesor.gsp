@@ -67,28 +67,24 @@
 
     <div class="row">
         <div class="col-md-2" style="margin-left: 80px">
-            %{--<div class="col-md-3 negrilla control-label">Cédula: </div>--}%
             <div class="col-md-12">
                 <label>Cédula</label>
                 <g:textField name="cedula_name" id="cedulaProfesor" value="${profesorInstance ? profesorInstance?.cedula : ''}" class="form-control number required" maxlength="15"/>
             </div>
         </div>
         <div class="col-md-2">
-            %{--<div class="col-md-3 negrilla control-label">Título: </div>--}%
             <div class="col-md-12">
                 <label>Título</label>
-                <g:textField name="titulo_name" id="tituloProfesor" value="${profesorInstance ? profesorInstance?.titulo : ''}" class="allCaps form-control" maxlength="125"/>
+                <g:textField name="titulo_name" id="tituloProfesor" value="${profesorInstance ? profesorInstance?.titulo : ''}" class="form-control" maxlength="125"/>
             </div>
         </div>
         <div class="col-md-3">
-            %{--<div class="col-md-3 negrilla control-label">Email: </div>--}%
             <div class="col-md-12">
                 <label>Email</label>
                 <g:textField name="mail_name" id="mailProfesor" value="${profesorInstance ? profesorInstance?.mail : ''}" class="email mail form-control" maxlength="62"/>
             </div>
         </div>
         <div class="col-md-2">
-            %{--<div class="col-md-3 negrilla control-label">Sexo: </div>--}%
             <div class="col-md-12">
                 <label>Sexo</label>
                 <g:if test="${profesorInstance}">
@@ -100,7 +96,6 @@
             </div>
         </div>
         <div class="col-md-2">
-            %{--<div class="col-md-1 negrilla control-label">Evalua: </div>--}%
             <div class="col-md-12">
                 <label>Evalua</label>
                 <g:if test="${profesorInstance}">

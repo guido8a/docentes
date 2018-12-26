@@ -40,7 +40,7 @@
                     Nombre
                 </label>
                 <div class="col-md-10">
-                    <g:textField name="nombre" maxlength="127" required="" class="allCaps form-control required" value="${escuelaInstance?.nombre}"/>
+                    <g:textField name="nombre" maxlength="127" required="" class="form-control required" value="${escuelaInstance?.nombre}"/>
                 </div>
                 
             </span>

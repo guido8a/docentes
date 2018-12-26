@@ -62,7 +62,7 @@
             <div class="col-xs-3">
                 <b style="margin-left: 5px">Cédula: </b>
                 <g:textField name="cedula_name" maxlength="31" style="margin-right: 10px; width: 100%" value="${params.criterio}"
-                             id="cedula" class="form-control"/>
+                             id="cedula" class="form-control number"/>
             </div>
 
             <div class="col-xs-3">

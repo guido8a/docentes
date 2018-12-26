@@ -140,7 +140,7 @@ class EscuelaController extends Shield {
             }
         }
         escuelaInstance.properties = params
-        escuelaInstance.nombre = params.nombre.toUpperCase()
+        escuelaInstance.nombre = params.nombre
         if(!escuelaInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Escuela: " + renderErrors(bean: escuelaInstance)
             return

@@ -26,7 +26,7 @@
                     Descripción
                 </label>
                 <div class="col-md-10">
-                    <g:textField name="descripcion" maxlength="63" required="" class="allCaps form-control required" value="${variablesInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="63" required="" class="form-control required" value="${variablesInstance?.descripcion}"/>
                 </div>
                 
             </span>

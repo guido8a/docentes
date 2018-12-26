@@ -187,7 +187,7 @@ class FacultadController extends Shield {
             }
         }
         facultadInstance.properties = params
-        facultadInstance.nombre = params.nombre.toUpperCase()
+        facultadInstance.nombre = params.nombre
         if(!facultadInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Facultad: " + renderErrors(bean: facultadInstance)
             return

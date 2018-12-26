@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-1 negrilla control-label">Código: </div>
         <div class="col-md-2">
-            <g:textField name="codigo_name" id="codigoMateria" class="form-control number" maxlength="16"/>
+            <g:textField name="codigo_name" id="codigoMateria" class="form-control" maxlength="16"/>
         </div>
         <div class="col-md-1 negrilla control-label">Materia: </div>
         <div class="col-md-4">

@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-info btnCrear">
-                    <i class="fa fa-file-o"></i> Nueva
+                    <i class="fa fa-file-o"></i> Nueva Recomendación
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">

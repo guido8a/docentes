@@ -118,7 +118,7 @@ class VariablesController extends Shield {
         }
 
         variables.codigo = params.codigo.toUpperCase()
-        variables.descripcion = params.descripcion.toUpperCase()
+        variables.descripcion = params.descripcion
 
         try{
             variables.save(flush:true)

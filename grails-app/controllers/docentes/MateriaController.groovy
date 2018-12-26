@@ -126,7 +126,7 @@ class MateriaController extends Shield {
             }
         }
         materiaInstance.properties = params
-        materiaInstance.nombre = params.nombre.toUpperCase()
+        materiaInstance.nombre = params.nombre
         if(!materiaInstance.save(flush: true)) {
             render "ERROR*Ha ocurrido un error al guardar Materia: " + renderErrors(bean: materiaInstance)
             return
