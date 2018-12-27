@@ -82,12 +82,12 @@
     <div class="col-md-1 negrilla control-label">Código: </div>
     <div class="col-md-2">
         <g:textField name="codigo_name" id="codigoPregunta" value="${preguntaInstance?.codigo}"
-                     class="allCaps form-control required" maxlength="8" readonly="${preguntaInstance?.estado == 'R'}"/>
+                     class="allCaps form-control required" required="" maxlength="8" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
     <div class="col-md-1 negrilla control-label">Respuestas: </div>
     <div class="col-md-1">
         <g:textField name="numero_name" id="numeroRespuestas" value="${preguntaInstance?.numeroRespuestas}"
-                     class="form-control required number" readonly="${preguntaInstance?.estado == 'R'}"/>
+                     class="form-control required number" required="" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
     <div class="col-md-1 negrilla control-label">Tipo de Valoración: </div>
     <div class="col-md-2">
@@ -365,32 +365,50 @@
         var estrategia = $("#estrategiaPregunta").val();
         var pregunta = $("#descripcionPregunta").val();
         var indicador = $("#indicadorId").val();
-        $.ajax({
-            type: 'POST',
-            url:'${createLink(controller: 'pregunta', action: 'guardarPregunta_ajax')}',
-            data:{
-                id: '${preguntaInstance?.id}',
-                variable: variable,
-                valoracion: tipoRespuesta,
-                codigo: codigo,
-                numero: numero,
-                estrategia: estrategia,
-                pregunta: pregunta,
-                indicador: indicador
 
-            },
-            success: function (msg) {
-                var parts = msg.split("_");
-                if(parts[0] == 'ok'){
-                    log("Información guardada correctamente","success");
-                    setTimeout(function () {
-                        location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + parts[1]
-                    }, 800);
+
+        if(codigo){
+            if(numero){
+                if(pregunta){
+                    $.ajax({
+                        type: 'POST',
+                        url:'${createLink(controller: 'pregunta', action: 'guardarPregunta_ajax')}',
+                        data:{
+                            id: '${preguntaInstance?.id}',
+                            variable: variable,
+                            valoracion: tipoRespuesta,
+                            codigo: codigo,
+                            numero: numero,
+                            estrategia: estrategia,
+                            pregunta: pregunta,
+                            indicador: indicador
+
+                        },
+                        success: function (msg) {
+                            var parts = msg.split("_");
+                            if(parts[0] == 'ok'){
+                                log("Información guardada correctamente","success");
+                                setTimeout(function () {
+                                    location.href='${createLink(controller: 'pregunta', action: 'pregunta')}/' + parts[1]
+                                }, 800);
+                            }else{
+                                log("Error al guardar la información","error")
+                            }
+                        }
+                    });
                 }else{
-                    log("Error al guardar la información","error")
+                    log("Ingrese un texto en la pregunta!","error")
                 }
+
+            }else{
+                log("Ingrese un número de respuestas!","error")
             }
-        });
+        }else{
+            log("Ingrese un código","error")
+        }
+
+
+
     });
 
 

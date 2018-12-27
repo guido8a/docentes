@@ -282,7 +282,12 @@ class PreguntaController extends Shield {
         def pregunta
         def tipoRespuesta = TipoRespuesta.get(params.valoracion)
         def variable = Variables.get(params.variable)
-        def indicador = Indicador.get(params.indicador)
+        def indicador = null
+
+        if(params.indicador){
+            indicador = Indicador.get(params.indicador)
+        }
+
         if(params.id){
             pregunta = Pregunta.get(params.id)
         }else{
@@ -449,17 +454,17 @@ class PreguntaController extends Shield {
 
         }
 //
-      if(errores == ''){
-          try {
-              itemPregunta.save(flush: true)
-              render "ok_" + texto
-          }catch (e){
-              render "no_" + texto
-              println("error al guardar el item "  +  itemPregunta.errors )
-          }
-      }else{
+        if(errores == ''){
+            try {
+                itemPregunta.save(flush: true)
+                render "ok_" + texto
+            }catch (e){
+                render "no_" + texto
+                println("error al guardar el item "  +  itemPregunta.errors )
+            }
+        }else{
             render "no_" + texto
-      }
+        }
 
 
     }
@@ -539,6 +544,23 @@ class PreguntaController extends Shield {
             println("error al cambiar el orden de la pregunta" + e + "_ " + pregunta.errors)
             render "no"
         }
+
+    }
+
+    def borrarPrte_ajax () {
+        println("params " + params)
+
+        def pregunta = Prte.get(params.id)
+
+        try{
+            pregunta.delete(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al borrar el registro prte" + e + "_ " + pregunta.errors)
+            render "no"
+        }
+
+
 
     }
 

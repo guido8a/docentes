@@ -35,9 +35,10 @@
     <thead>
     <tr style="width: 100%">
         <th style="width: 8%">Código</th>
-        <th style="width: 68%">Descripción</th>
+        <th style="width: 64%">Descripción</th>
         <th style="width: 9%">Orden Actual</th>
-        <th style="width: 13%">Orden Nuevo</th>
+        <th style="width: 12%">Orden Nuevo</th>
+        <th style="width: 4%; text-align: center"><i class="fa fa-trash-o"></i></th>
         <th style="width: 2%"></th>
     </tr>
     </thead>
