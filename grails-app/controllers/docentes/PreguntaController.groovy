@@ -559,9 +559,40 @@ class PreguntaController extends Shield {
             println("error al borrar el registro prte" + e + "_ " + pregunta.errors)
             render "no"
         }
+    }
 
+    def pregunta_ajax () {
+        def preguntasFiltradas = null
 
+        if(Pregunta.list().size() > 0){
+            preguntasFiltradas = Pregunta.list() - Prte.list().pregunta
+            preguntasFiltradas.sort{it.codigo}
+        }
 
+        return [preguntasF: preguntasFiltradas]
+    }
+
+    def agregarPregunta_ajax () {
+//        println("params " + params)
+
+        def tipoEncuesta = TipoEncuesta.get(params.encuesta)
+        def pregunta = Pregunta.get(params.pregunta)
+
+        def todas = Prte.findAllByTipoEncuesta(tipoEncuesta).sort{it.numero}
+
+        def pr = new Prte()
+
+        pr.pregunta = pregunta
+        pr.tipoEncuesta = tipoEncuesta
+        pr.numero = todas.last().numero + 1
+
+        try{
+        pr.save(flush: true)
+        render "ok"
+        }catch (e){
+        println("error al agregar la pregunta al prte " + e + "_" + pr.errors)
+        render "no"
+        }
     }
 
 }

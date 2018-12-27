@@ -51,6 +51,7 @@
                             log("Registro eliminado correctamente","success");
                             setTimeout(function () {
                                 cargarTablaPreguntas($("#tipoEncuesta option:selected").val());
+                                cargarPreg();
                             }, 500);
                         }else{
                             log("Error al eliminar el registro","error");

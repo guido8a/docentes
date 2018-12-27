@@ -6,6 +6,7 @@
 --%>
 
 
+
 <%@ page import="docentes.Pregunta" %>
 <!DOCTYPE html>
 <html>
@@ -24,10 +25,27 @@
             <i class="fa fa-chevron-left"></i> Regresar
         </g:link>
     </div>
-     <div class="col-md-2"></div>
-    <div class="col-md-1"><label>Tipo de Encuesta:</label></div>
+    %{--<div class="col-md-2"></div>--}%
+
+    %{--<div class="col-md-1"><label>Tipo de Encuesta:</label></div>--}%
     <div class="col-md-4">
+        <label>Tipo de Encuesta:</label>
         <g:select class="form-control" from="${docentes.TipoEncuesta.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" name="tipoEncuesta_name" id="tipoEncuesta"/>
+    </div>
+
+    %{--<div class="col-md-1"><label>Pregunta:</label></div>--}%
+
+    <div class="col-md-5">
+        <label>Pregunta:</label>
+        %{--<g:select from="${preguntasF}" optionKey="id" optionValue="descripcion" name="preguntaF_name" id="preguntaF" class="form-control selectpicker" data-divider="true"/>--}%
+        <div id="divPreg">
+
+        </div>
+
+    </div>
+
+    <div class="col-md-1" style="margin-top: 20px">
+        <a href="#" class="btn btn-info" id="btnAgregarPregunta"><i class="fa fa-plus"></i> Agregar </a>
     </div>
 </div>
 
@@ -50,13 +68,50 @@
 
 <script type="text/javascript">
 
+    cargarPreg();
+
+    function cargarPreg () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'pregunta', action: 'pregunta_ajax')}",
+            data:{
+
+            },
+            success: function (msg) {
+                $("#divPreg").html(msg)
+            }
+        })
+    }
+
+    $("#btnAgregarPregunta").click(function () {
+        var pregunta = $("#preguntaF option:selected").val();
+        var encuesta = $("#tipoEncuesta option:selected").val();
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'pregunta', action: 'agregarPregunta_ajax')}",
+            data:{
+                pregunta: pregunta,
+                encuesta: encuesta
+            },
+            success: function (msg) {
+                if(msg == 'ok'){
+                    log("Pregunta asignada correctamente","success");
+                    setTimeout(function () {
+                        cargarTablaPreguntas($("#tipoEncuesta option:selected").val());
+                        cargarPreg();
+                    }, 800);
+                }else{
+                    log("Error al asignar la pregunta","error");
+                }
+            }
+        });
+    });
 
     $("#tipoEncuesta").change(function () {
         cargarTablaPreguntas($("#tipoEncuesta option:selected").val());
     });
 
     cargarTablaPreguntas($("#tipoEncuesta option:selected").val());
-
 
     function cargarTablaPreguntas(tipo){
         $.ajax({
