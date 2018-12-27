@@ -295,7 +295,7 @@ class PreguntaController extends Shield {
             pregunta.estado = 'N'
         }
 
-        pregunta.codigo = params.codigo
+        pregunta.codigo = params.codigo.toUpperCase()
         pregunta.descripcion = params.pregunta
         pregunta.estrategia = params.estrategia
         pregunta.tipoRespuesta = tipoRespuesta
