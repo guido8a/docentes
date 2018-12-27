@@ -48,7 +48,7 @@
                     log("Orden cambiado correctamente","success");
                     setTimeout(function () {
                         cargarTablaPreguntas($("#tipoEncuesta option:selected").val());
-                    }, 1000);
+                    }, 500);
                 }else{
                     log("Error al cambiar el orden","error");
                 }
