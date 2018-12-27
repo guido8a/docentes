@@ -527,9 +527,18 @@ class PreguntaController extends Shield {
     }
 
     def guardarOrden_ajax () {
-        println("params " + params)
+//        println("params " + params)
 
         def pregunta = Prte.get(params.id)
+        pregunta.numero = params.numero.toInteger()
+
+        try{
+            pregunta.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al cambiar el orden de la pregunta" + e + "_ " + pregunta.errors)
+            render "no"
+        }
 
     }
 
