@@ -2777,7 +2777,7 @@ class ReportesController extends seguridad.Shield {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
-        Font fontTitulo2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
         Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
@@ -2869,7 +2869,7 @@ class ReportesController extends seguridad.Shield {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
-        Font fontTitulo2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontTitulo10 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
         Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
