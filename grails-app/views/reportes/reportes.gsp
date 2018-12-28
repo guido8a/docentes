@@ -107,10 +107,10 @@
 </div>
 
 <div class="body ui-corner-all"
-     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 330px; ">
+     style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 360px; ">
 
-    <div class="ui-corner-all item fuera" style="height: 330px">
-        <div class="ui-corner-all item" style="height: 330px">
+    <div class="ui-corner-all item fuera" style="height: 360px">
+        <div class="ui-corner-all item" style="height: 360px">
             <div class="imagen" style="height: 100%; width: 200px;">
                 <img src="${resource(dir: 'images', file: 'evaluar-3.png')}" width="150px" height="auto"
                      style=" margin-top:20px"/>
@@ -162,6 +162,12 @@
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirExito">
                     <span class="text-success"><i class="fa fa-sun-o"></i><strong> Factores de Éxito</strong></span>
+                </div>
+            </a>
+
+            <a href="#" style="text-decoration: none">
+                <div class="texto" id="imprimirSubareas">
+                    <span class="text-success"><i class="fa fa-align-justify"></i><strong> Desempeño por Subáreas</strong></span>
                 </div>
             </a>
 
@@ -750,6 +756,52 @@
 
         if($("#facultad").val() != null){
             location.href = "${createLink(controller: 'reportes2', action: 'evaluacionesProfe')}?periodo=" + prdo + "&facultad=" + facultad + "&escl=" + escuela;
+        }else{
+            log("Seleccione una facultad","info")
+        }
+    });
+
+    $("#imprimirSubareas").click(function () {
+
+        var facultad = $("#facultad option:selected").val();
+        var escuela = $("#escuelaId option:selected").val();
+
+        if($("#facultad").val() != null){
+            if(escuela != null){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'reportes', action: 'variables_ajax')}',
+                    data: {facl: facultad},
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id: "dlgVariablesS",
+                            title: "Seleccionar de Variables de Desempeño",
+//                    class   : "long",
+                            message: msg,
+                            buttons: {
+                                cancelar: {
+                                    label: "Cancelar",
+                                    className: "btn-primary",
+                                    callback: function () {
+                                    }
+                                },
+                                aceptar: {
+                                    label: "<i class='fa fa-print'></i> Imprimir",
+                                    className: "btn-success",
+                                    callback: function () {
+                                        var prdo = $("#periodoId").val();
+                                        var tipo = $("#variableDesem").val();
+                                        location.href = "${createLink(controller: 'reportes', action: 'reporteSubareas')}?periodo=" + prdo + "&facultad=" + facultad + "&tipo=" + tipo + "&escl=" + escuela;
+                                    }
+                                }
+
+                            } //buttons
+                        }); //dialog
+                    }
+                });
+            }else{
+                log("Seleccione una escuela","info")
+            }
         }else{
             log("Seleccione una facultad","info")
         }
