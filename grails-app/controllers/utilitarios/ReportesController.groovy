@@ -2777,6 +2777,7 @@ class ReportesController extends seguridad.Shield {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
         Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
@@ -2846,7 +2847,10 @@ class ReportesController extends seguridad.Shield {
             addCellTabla(tablaD, new Paragraph(p?.tipo, fontThUsar), prmsIzBorder3)
         }
 
+        Paragraph textoFinal = new Paragraph("Cuello Exagerado: respuestas seleccionadas = Siempre", fontTitulo2)
+
         document.add(tablaD)
+        document.add(textoFinal)
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -2865,6 +2869,7 @@ class ReportesController extends seguridad.Shield {
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        Font fontTitulo2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontTitulo10 = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
         Font fontNormalBold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
@@ -2935,7 +2940,10 @@ class ReportesController extends seguridad.Shield {
             addCellTabla(tablaD, new Paragraph(p?.tipo, fontThUsar), prmsIzBorder3)
         }
 
+        Paragraph textoFinal = new Paragraph("Cuello Moderado: respuestas seleccionadas = Frecuentemente", fontTitulo2)
+
         document.add(tablaD)
+        document.add(textoFinal)
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
