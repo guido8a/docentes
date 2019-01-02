@@ -3111,7 +3111,7 @@ class ReportesController extends seguridad.Shield {
                 tablaF.setWidthPercentage(100);
                 tablaF.setWidths(arregloEnteros([85, 15]))
 
-                addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
+                addCellTabla(tablaF, new Paragraph("Subárea", fontNormalBold4), prmsCrBorder)
                 addCellTabla(tablaF, new Paragraph("Porcentaje", fontNormalBold4), prmsCrBorder)
 
                 document.add(tablaF);
