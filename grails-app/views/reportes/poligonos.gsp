@@ -77,7 +77,10 @@
                     <g:textField name="apellidos" id="apellidosBusqueda" class="form-control"/>
                 </div>
                 <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar">
-                    <i class="fa fa-search-plus"></i> Buscar
+                    <i class="fa fa-search-plus"></i>
+                </a>
+                <a href="#" id="btnLimpiar" class="btn btn-warning" title="Limpiar Búsqueda">
+                    <i class="fa fa-eraser"></i>
                 </a>
             </div>
 
@@ -127,6 +130,13 @@
 
 
     $(document).ready(function() {
+        buscar();
+    });
+
+    $("#btnLimpiar").click(function () {
+        var cdla = $("#cedulaBusqueda").val('');
+        var nmbr = $("#nombresBusqueda").val('');
+        var apll = $("#apellidosBusqueda").val('');
         buscar();
     });
 

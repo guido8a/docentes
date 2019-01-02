@@ -1001,12 +1001,13 @@ class ReportesController extends seguridad.Shield {
                 "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id = 2 and " +
                 "dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and " +
                 "crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id " +
+                "and prof.profnmbr ilike '%${params.nombres}%' and prof.profapll ilike '%${params.apellidos}%' and prof.profcdla ilike '${params.cedula}%' " +
                 "order by profapll, profnmbr"
 //        println "sql: $sql"
 
         def prof = cn.rows(sql.toString())
+
         def profesor = []
-//        def dicta = []
         def dc, ad
         def pp
 
@@ -1039,8 +1040,7 @@ class ReportesController extends seguridad.Shield {
                 "prdo.prdo__id = auxl.prdo__id"
 //        println "sql: $sql"
         def minMax = cn.rows(sql.toString())
-        println "min.... $minMax"
-
+//        println "min.... $minMax"
 //        println "prof: ${profesor[0]}---${profesor[1]}"
 
         def periodo = Periodo.get(params.prdo)
