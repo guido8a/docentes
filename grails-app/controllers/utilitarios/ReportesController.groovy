@@ -2942,8 +2942,8 @@ class ReportesController extends seguridad.Shield {
             addCellTabla(tablaD, new Paragraph(p?.tipo, fontThUsar), prmsIzBorder3)
         }
 
-        Paragraph textoFinal = new Paragraph("Potenciador Moderado: respuestas seleccionadas = Siempre", fontTitulo2)
-        Paragraph textoFinal2 = new Paragraph("Potenciador Exagerado: respuestas seleccionadas = Frecuentemente", fontTitulo2)
+        Paragraph textoFinal = new Paragraph("Potenciador Moderado: respuestas seleccionadas = Frecuentemente", fontTitulo2)
+        Paragraph textoFinal2 = new Paragraph("Potenciador Exagerado: respuestas seleccionadas = Siempre", fontTitulo2)
 
         document.add(tablaD)
         document.add(textoFinal)
