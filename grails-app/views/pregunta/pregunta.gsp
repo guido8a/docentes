@@ -105,10 +105,10 @@
 </div>
 
 <div class="row">
-    <div class="col-md-1 negrilla control-label">Estrategia: </div>
+    <div class="col-md-1 negrilla control-label text-info">Estrategia o subárea: </div>
     <div class="col-md-11">
         <g:textField name="estrategia_name" id="estrategiaPregunta" value="${preguntaInstance?.estrategia}"
-                     class="form-control" maxlength="127" readonly="${preguntaInstance?.estado == 'R'}"/>
+                     class="form-control text-info" maxlength="127" readonly="${preguntaInstance?.estado == 'R'}"/>
     </div>
 </div>
 <div class="row">

@@ -37,10 +37,12 @@
                     <g:sortableColumn property="codigo" title="Código" />
                     
                     <g:sortableColumn property="descripcion" title="Descripción" />
-                    
+
+                    <g:sortableColumn property="estrategia" title="Estrategia o Subárea" />
+
                     <g:sortableColumn property="estado" title="Estado" />
                     
-                    <g:sortableColumn property="numeroRespuestas" title="Número Respuestas" />
+                    <g:sortableColumn property="numeroRespuestas" title="Núm. Resp." />
                     
                     <th>Tipo Respuesta</th>
                     
@@ -53,7 +55,8 @@
                         <td>${fieldValue(bean: preguntaInstance, field: "codigo")}</td>
                         
                         <td>${fieldValue(bean: preguntaInstance, field: "descripcion")}</td>
-                        
+                        <td>${fieldValue(bean: preguntaInstance, field: "estrategia")}</td>
+
                         <td>${fieldValue(bean: preguntaInstance, field: "estado")}</td>
                         
                         <td>${fieldValue(bean: preguntaInstance, field: "numeroRespuestas")}</td>
