@@ -40,9 +40,9 @@
 
     <div class="col-md-1" style="text-align: right">Período:</div>
     <div class="col-md-2">
-    <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-              class="form-control"
-              from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
+        <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
+                  class="form-control"
+                  from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
     </div>
 
     <div class="col-md-1">Facultad:</div>
@@ -134,10 +134,9 @@
     });
 
     $("#btnLimpiar").click(function () {
-        var cdla = $("#cedulaBusqueda").val('');
-        var nmbr = $("#nombresBusqueda").val('');
-        var apll = $("#apellidosBusqueda").val('');
-        buscar();
+        $("#cedulaBusqueda").val('');
+        $("#nombresBusqueda").val('');
+        $("#apellidosBusqueda").val('');
     });
 
     function buscar () {
