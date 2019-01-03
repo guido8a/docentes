@@ -3060,11 +3060,11 @@ class ReportesController extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph lineaSubtitulo = new Paragraph("ÁREA: " + variable.descripcion, fontNormalBold )
+        lineaSubtitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Desempeño por Subáreas", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-
-        Paragraph lineaSubtitulo = new Paragraph("ÁREA: " + variable.descripcion, fontTitulo )
-        lineaSubtitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
 
@@ -3100,7 +3100,7 @@ class ReportesController extends seguridad.Shield {
             if(p?.prof != varProf){
                 PdfPTable tablaC = new PdfPTable(2);
                 tablaC.setWidthPercentage(100);
-                tablaC.setWidths(arregloEnteros([63, 37]))
+                tablaC.setWidths(arregloEnteros([70, 30]))
 
                 addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold3), prmsIzBorder)
                 addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold3), prmsIzBorder)
@@ -3111,9 +3111,9 @@ class ReportesController extends seguridad.Shield {
 
 
             if(p?.mate != varMate){
-                PdfPTable tablaD = new PdfPTable(3);
+                PdfPTable tablaD = new PdfPTable(2);
                 tablaD.setWidthPercentage(100);
-                tablaD.setWidths(arregloEnteros([50,13,37 ]))
+                tablaD.setWidths(arregloEnteros([70,30 ]))
 
                 addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
                 addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
@@ -3123,7 +3123,7 @@ class ReportesController extends seguridad.Shield {
 
                 PdfPTable tablaF = new PdfPTable(2);
                 tablaF.setWidthPercentage(100);
-                tablaF.setWidths(arregloEnteros([85, 15]))
+                tablaF.setWidths(arregloEnteros([87, 13]))
 
                 addCellTabla(tablaF, new Paragraph("Subárea", fontNormalBold4), prmsCrBorder)
                 addCellTabla(tablaF, new Paragraph("% de Insatisfacción", fontNormalBold4), prmsCrBorder)
@@ -3137,7 +3137,7 @@ class ReportesController extends seguridad.Shield {
 
             PdfPTable tablaE = new PdfPTable(2);
             tablaE.setWidthPercentage(100);
-            tablaE.setWidths(arregloEnteros([85, 15]))
+            tablaE.setWidths(arregloEnteros([87, 13]))
 
             Paragraph causa = new Paragraph()
             causa.setAlignment(Element.ALIGN_LEFT)
