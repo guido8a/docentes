@@ -6,7 +6,7 @@
 --%>
 
 <div class="row">
-    <div class="col-md-2 negrilla control-label">Variables: </div>
+    <div class="col-md-2 negrilla control-label">Áreas: </div>
     <div class="col-md-10">
         <g:select from="${variables}" optionValue="descripcion" optionKey="id"  name="variable" id="variableDesem" class="form-control"/>
     </div>

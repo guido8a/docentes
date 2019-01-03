@@ -117,7 +117,7 @@
             </div>
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirPorAvariables">
-                    <span class="text-success"><i class="fa fa-graduation-cap"></i><strong> Desempeño académico</strong> de los profesores por variables
+                    <span class="text-success"><i class="fa fa-graduation-cap"></i><strong> Desempeño académico</strong> de los profesores por Áreas
                     </span>
                 </div>
             </a>
@@ -528,7 +528,7 @@
                     success: function (msg) {
                         var b = bootbox.dialog({
                             id: "dlgVariables",
-                            title: "Seleccionar de Variables de Desempeño",
+                            title: "Seleccionar el Área de Desempeño",
 //                    class   : "long",
                             message: msg,
                             buttons: {
@@ -614,7 +614,7 @@
                 success: function (msg) {
                     var b = bootbox.dialog({
                         id: "dlgVariablesCate",
-                        title: "Seleccionar de Variables de Desempeño",
+                        title: "Seleccionar el Área de Desempeño",
                         message: msg,
                         buttons: {
                             cancelar: {
@@ -775,7 +775,7 @@
                     success: function (msg) {
                         var b = bootbox.dialog({
                             id: "dlgVariablesS",
-                            title: "Seleccionar de Variables de Desempeño",
+                            title: "Seleccionar el Área de Desempeño",
 //                    class   : "long",
                             message: msg,
                             buttons: {
