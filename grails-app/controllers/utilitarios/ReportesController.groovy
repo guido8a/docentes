@@ -1238,17 +1238,17 @@ class ReportesController extends seguridad.Shield {
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("IC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DSC')?.sigla ?: '') + ": " + (Variables.findByCodigo('DSC')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("IF: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DCI')?.sigla ?: '') + ": " + (Variables.findByCodigo('DCI')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("DAC: DESAROLLO DE ACTITUDES Y VALORES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DAC')?.sigla ?: '') + ": " + (Variables.findByCodigo('DAC')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("NI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('CNI')?.sigla ?: '') + ": " + (Variables.findByCodigo('CNI')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("DHA: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DHD')?.sigla ?: '') + ": " + (Variables.findByCodigo('DHD')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('EA')?.sigla ?: '') + ": " + (Variables.findByCodigo('EA')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
 
         document.add(tablaD);
 
