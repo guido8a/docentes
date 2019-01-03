@@ -3017,7 +3017,7 @@ class ReportesController extends seguridad.Shield {
 
     def reporteSubareas () {
 
-        println("params " + params)
+//        println("params " + params)
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
@@ -3060,11 +3060,15 @@ class ReportesController extends seguridad.Shield {
         Paragraph lineaTitulo = new Paragraph("Desempeño por Subáreas", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph lineaSubtitulo = new Paragraph("ÁREA: " + variable.descripcion, fontTitulo )
+        lineaSubtitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
         document.add(lineaTitulo)
+        document.add(lineaSubtitulo)
         document.add(lineaVacia)
 
 //        def sql =  "select * from f_exito(${facultad?.id},${escuela?.id},${periodo?.id}) ORDER BY facl, prof, mate"
@@ -3098,7 +3102,10 @@ class ReportesController extends seguridad.Shield {
                 addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold3), prmsIzBorder)
                 addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold3), prmsIzBorder)
                 document.add(tablaC);
+
+                varMate = null
             }
+
 
             if(p?.mate != varMate){
                 PdfPTable tablaD = new PdfPTable(3);
@@ -3116,17 +3123,20 @@ class ReportesController extends seguridad.Shield {
                 tablaF.setWidths(arregloEnteros([85, 15]))
 
                 addCellTabla(tablaF, new Paragraph("Subárea", fontNormalBold4), prmsCrBorder)
-                addCellTabla(tablaF, new Paragraph("Porcentaje", fontNormalBold4), prmsCrBorder)
+                addCellTabla(tablaF, new Paragraph("% de Insatisfacción", fontNormalBold4), prmsCrBorder)
 
                 document.add(tablaF);
 
             }
 
+
+
+
             PdfPTable tablaE = new PdfPTable(2);
             tablaE.setWidthPercentage(100);
             tablaE.setWidths(arregloEnteros([85, 15]))
 
-            addCellTabla(tablaE, new Paragraph(p?.causa, fontThUsar), prmsIzBorder3)
+            addCellTabla(tablaE, new Paragraph(p?.causa + " ( " + p?.preg + " )", fontThUsar), prmsIzBorder3)
             addCellTabla(tablaE, new Paragraph(numero(p?.pcnt,0), fontThUsar), prmsCrBorder)
             document.add(tablaE);
 
