@@ -1386,17 +1386,17 @@ class ReportesController extends seguridad.Shield {
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontTitulo), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("IC: INTEGRACIÓN DE CONOCIMIENTOS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DSC')?.sigla ?: '') + ": " + (Variables.findByCodigo('DSC')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("IF: INVESTIGACIÓN FORMATIVA", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DCI')?.sigla ?: '') + ": " + (Variables.findByCodigo('DCI')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("DAC: DESAROLLO DE ACTITUDES Y VALORES", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DAC')?.sigla ?: '') + ": " + (Variables.findByCodigo('DAC')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("NI: NORMATIVIDAD INSTITUCIONAL", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('CNI')?.sigla ?: '') + ": " + (Variables.findByCodigo('CNI')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
 
-        addCellTabla(tablaD, new Paragraph("DHA: DESARROLLO DE HABILIDADES Y DESTREZAS", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('DHD')?.sigla ?: '') + ": " + (Variables.findByCodigo('DHD')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
         addCellTabla(tablaD, new Paragraph("", fontNormal8), prmsTdNoBorder)
-        addCellTabla(tablaD, new Paragraph("EA: EVALUACIÓN DEL APRENDIZAJE", fontNormal8), prmsTdNoBorder)
+        addCellTabla(tablaD, new Paragraph((Variables.findByCodigo('EA')?.sigla ?: '') + ": " + (Variables.findByCodigo('EA')?.descripcion ?: ''), fontNormal8), prmsTdNoBorder)
 
         document.add(tablaD);
 
@@ -2982,26 +2982,26 @@ class ReportesController extends seguridad.Shield {
                 "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and " +
                 "prof__id = ${profesorP?.id} and dcta__id = ${dicta?.id}"
 
-            dc = "0_0_0_0_0_0"
-            cn.eachRow(sql.toString()) { d ->
-                dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
-            }
+        dc = "0_0_0_0_0_0"
+        cn.eachRow(sql.toString()) { d ->
+            dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+        }
 
         sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea " +
                 "from rpec " +
                 "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and " +
                 "prof__id = ${profesorP?.id} limit 1"
-            ad = "0_0_0_0_0_0"
-            cn.eachRow(sql.toString()) { d ->
-                ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
-            }
+        ad = "0_0_0_0_0_0"
+        cn.eachRow(sql.toString()) { d ->
+            ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+        }
 
 //            println("dc " + dc)
 
 //            pp["dc"] = dc
 //            pp["ad"] = ad
-            profesor.add(dc)
-            profesor.add(ad)
+        profesor.add(dc)
+        profesor.add(ad)
 
         sql = "select estdmini, estdoptm from auxl, prdo where univ__id = ${prsn.universidad.id} and " +
                 "prdo.prdo__id = auxl.prdo__id"
@@ -3031,6 +3031,9 @@ class ReportesController extends seguridad.Shield {
         Font fontNormalBold2 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold3 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
         Font fontNormalBold4 = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLDITALIC);
+
+        Font times10bold = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+        Font times10normal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
 
         fontNormalBold.setColor(new BaseColor(70, 88, 107))
         fontNormalBold3.setColor(BaseColor.WHITE)
@@ -3136,7 +3139,13 @@ class ReportesController extends seguridad.Shield {
             tablaE.setWidthPercentage(100);
             tablaE.setWidths(arregloEnteros([85, 15]))
 
-            addCellTabla(tablaE, new Paragraph(p?.causa + " ( " + p?.preg + " )", fontThUsar), prmsIzBorder3)
+            Paragraph causa = new Paragraph()
+            causa.setAlignment(Element.ALIGN_LEFT)
+            causa.add(new Paragraph(p?.causa,times10normal))
+            causa.add(new Chunk(" (Pregunta: ", times10bold))
+            causa.add(new Chunk(p?.preg + ")", times10normal))
+
+            addCellTabla(tablaE, causa, prmsIzBorder3)
             addCellTabla(tablaE, new Paragraph(numero(p?.pcnt,0), fontThUsar), prmsCrBorder)
             document.add(tablaE);
 
