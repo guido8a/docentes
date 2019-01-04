@@ -28,14 +28,14 @@
     %{--<div class="col-md-2"></div>--}%
 
     %{--<div class="col-md-1"><label>Tipo de Encuesta:</label></div>--}%
-    <div class="col-md-4">
+    <div class="col-md-3" style="margin-left: 20px">
         <label>Tipo de Encuesta:</label>
         <g:select class="form-control" from="${docentes.TipoEncuesta.list().sort{it.descripcion}}" optionKey="id" optionValue="descripcion" name="tipoEncuesta_name" id="tipoEncuesta"/>
     </div>
 
     %{--<div class="col-md-1"><label>Pregunta:</label></div>--}%
 
-    <div class="col-md-5">
+    <div class="col-md-6">
         <label>Pregunta:</label>
         %{--<g:select from="${preguntasF}" optionKey="id" optionValue="descripcion" name="preguntaF_name" id="preguntaF" class="form-control selectpicker" data-divider="true"/>--}%
         <div id="divPreg">
