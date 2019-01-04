@@ -652,6 +652,8 @@ class ReportesGrafController extends seguridad.Shield {
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
         Paragraph linea = new Paragraph(" ", fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
 
@@ -660,6 +662,7 @@ class ReportesGrafController extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(linea)
 //        document.add(titulo)
 

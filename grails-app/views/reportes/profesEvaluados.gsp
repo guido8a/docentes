@@ -107,7 +107,7 @@
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${facultad?.nombre}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"FACULTAD: " + facultad?.nombre}"/></strong>
 </p>
 
 <g:set var="escuela"/>
@@ -118,7 +118,7 @@
 
     <g:if test="${e?.escl != escuela}">
         <p class="alineado">
-            <strong style="font-size: 14pt"><util:renderHTML html="${e?.escl}"/></strong>
+            <strong style="font-size: 14pt"><util:renderHTML html="${"ESCUELA: " + e?.escl}"/></strong>
         </p>
 
         <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">

@@ -59,28 +59,6 @@
     </h2>
     </div>
 
-    %{--<div class="row text-info" style="font-size: 11pt">--}%
-    %{--<div class="col-md-1"></div>--}%
-    %{--<div class="col-md-2">Seleccione el periodo de evaluaciones:</div>--}%
-
-    %{--<div class="col-sm-1"><g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-    %{--class="form-control" style="width: 90px"--}%
-    %{--from="${docentes.Periodo.list([sort: 'nombre', order: 'asc'])}"/>--}%
-    %{--</div>--}%
-
-    %{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-    %{--<div class="col-md-5">--}%
-    %{--<g:select from="${docentes.Facultad.list([sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-    %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
-    %{--noSelection="${[0:'Todas ...']}"/>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-
-
-
-
     <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
         <g:if test="${session.perfil.codigo == 'ADMG'}">
@@ -125,71 +103,6 @@
 
         </div>
     </div>
-
-
-
-
-
-    %{--<div class="row text-info" style="font-size: 11pt;">--}%
-    %{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
-
-    %{--<div class="form-group col-md-3" style="margin-left: 100px">--}%
-    %{--<div class="col-md-1">Universidad:</div>--}%
-
-    %{--<div class="input-group">--}%
-    %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-    %{--class="form-control" style="width: 300px"--}%
-    %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-    %{--<div class="form-group col-md-1" style="margin-left: 10px">--}%
-    %{--<div class="col-md-1">Período:</div>--}%
-
-    %{--<div class="input-group">--}%
-    %{--<div class="col-md-2" id="divPeriodos">--}%
-
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-    %{----}%
-
-    %{--<div class="form-group col-md-6" style="margin-left: 10px">--}%
-    %{--<div class="col-md-1">Facultad:</div>--}%
-
-    %{--<div class="input-group col-md-12">--}%
-    %{--<div class="col-md-10" id="divFacultad">--}%
-
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-    %{--<div class="form-group col-md-1" style="margin-left: 180px">--}%
-    %{--<div class="col-md-1">Período:</div>--}%
-
-    %{--<div class="input-group">--}%
-    %{--<div class="col-md-2">--}%
-    %{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-    %{--class="form-control" style="width: 90px"--}%
-    %{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
-    %{--<div class="form-group col-md-6" style="margin-left: 10px">--}%
-    %{--<div class="col-md-1">Facultad:</div>--}%
-
-    %{--<div class="input-group col-md-12">--}%
-    %{--<div class="col-md-10">--}%
-    %{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-    %{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
-    %{--noSelection="${[0:'Todas ...']}"/>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</g:else>--}%
-    %{--</div>--}%
 </div>
 
 <div class="body ui-corner-all"
@@ -258,8 +171,6 @@
 
 
 <script type="text/javascript">
-
-
 
     cargarPeriodo($("#universidadId").val());
     cargarFacultad($("#universidadId").val());
@@ -340,7 +251,7 @@
         var facl = $("#facultad").val();
         var escu = $("#escuelaId option:selected").val();
         if(escu != null){
-            var url = "${createLink(controller: 'reportes', action: 'cuellosBotella')}?periodo=" + prdo + "Wfacultad=" + facl;
+            var url = "${createLink(controller: 'reportes', action: 'cuellosBotella')}?periodo=" + prdo + "Wfacultad=" + facl + "Wescl=" + escu;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=cuellosBotella.pdf";
         }else{
             log("Seleccione una carrera","info")
@@ -354,7 +265,7 @@
         var facl = $("#facultad").val();
         var escu = $("#escuelaId option:selected").val();
         if(escu != null){
-            var url = "${createLink(controller: 'reportes', action: 'potenciadores')}?periodo=" + prdo + "Wfacultad=" + facl;
+            var url = "${createLink(controller: 'reportes', action: 'potenciadores')}?periodo=" + prdo + "Wfacultad=" + facl + "Wescl=" + escu;
             location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=potenciadores.pdf";
         }else{
             log("Seleccione una carrera","info")

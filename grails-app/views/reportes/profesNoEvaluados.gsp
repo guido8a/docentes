@@ -88,24 +88,24 @@
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${facultad?.nombre}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"FACULTAD: " + facultad?.nombre}"/></strong>
 </p>
 
 
 <g:each in="${escuelas}" var="e" status="j">
 
     <p class="alineado">
-        <strong style="font-size: 14pt"><util:renderHTML html="${e}"/></strong>
+        <strong style="font-size: 14pt"><util:renderHTML html="${"ESCUELA: " + e}"/></strong>
     </p>
 
     <table class="table table-condensed table-bordered table-striped table-hover ${escuelas.size() > (j+1)? 'roto' : ''}" style="width: 100%">
         <thead>
 
         <tr>
-            <th class="back" rowspan="2" style="width: 10%">Cédula</th>
-            <th class="back" rowspan="2" style="width: 33%">Nombres y Apellidos</th>
-            <th class="back" rowspan="2" style="width: 36%">Materia</th>
-            <th class="back" rowspan="2" style="width: 17%">Curso</th>
+            <th class="back" rowspan="2" style="width: 12%">Cédula</th>
+            <th class="back" rowspan="2" style="width: 36%">Nombres y Apellidos</th>
+            <th class="back" rowspan="2" style="width: 34%">Materia</th>
+            <th class="back" rowspan="2" style="width: 14%">Curso</th>
             <th class="back" rowspan="2" style="width: 4%">Par.</th>
         </tr>
 
@@ -114,10 +114,10 @@
         <g:each in="${res}" var="r">
             <g:if test="${e == r.escldscr}">
                 <tr>
-                    <td style="width: 10%">${r[1]}</td>
-                    <td style="width: 33%">${r[2]}</td>
-                    <td style="width: 36%">${r[3]}</td>
-                    <td style="width: 17%; font-size: 9pt">${r[4]}</td>
+                    <td style="width: 12%">${r[1]}</td>
+                    <td style="width: 36%">${r[2]}</td>
+                    <td style="width: 34%">${r[3]}</td>
+                    <td style="width: 14%; font-size: 9pt" class="alineado">${r[4]}</td>
                     <td style="width: 4%" class="alineado">${r[5]}</td>
                 </tr>
             </g:if>

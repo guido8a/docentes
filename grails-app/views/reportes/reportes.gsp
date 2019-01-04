@@ -178,13 +178,6 @@
                 </div>
             </a>
 
-            %{--<a href="#" style="text-decoration: none">--}%
-            %{--<div class="texto" id="imprimirClasificacion">--}%
-            %{--<span class="text-success"><i class="fa fa-signal"></i><strong> Clasificación del desempeño académico</strong> de los profesores--}%
-            %{--</span>--}%
-            %{--</div>--}%
-            %{--</a>--}%
-
             <a href="#" style="text-decoration: none">
                 <div class="texto" id="imprimirCatego">
                     <span class="text-success"><i class="fa fa-bars"></i><strong> Ordenamiento por variables </strong> de profesores
@@ -194,10 +187,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 
 <div class="body ui-corner-all"
      style="width: 1020px;position: relative;margin: auto;margin-top: 0px;height: 150px; ">
@@ -712,40 +701,15 @@
     $("#imprimirFactores").click(function () {
         var facultad = $("#facultad option:selected").val();
 
-        if($("#facultad").val() != null){
-            $.ajax({
-                type: 'POST',
-                url: '${createLink(controller: 'reportes', action: 'escuelas_ajax')}',
-                data: {facl: facultad},
-                success: function (msg) {
-                    var b = bootbox.dialog({
-                        id: "dlgEscuelas",
-                        title: "Seleccionar la Escuela",
-                        message: msg,
-                        buttons: {
-                            cancelar: {
-                                label: "Cancelar",
-                                className: "btn-primary",
-                                callback: function () {
-                                }
-                            },
-                            aceptar: {
-                                label: "<i class='fa fa-print'></i> Imprimir",
-                                className: "btn-success",
-                                callback: function () {
-                                    var prdo = $("#periodoId").val();
-                                    var facl = $("#facultad").val();
-                                    var escl = $("#escuelaId").val();
-                                    location.href = "${createLink(controller: 'reportes2', action: 'factores')}?periodo=" + prdo + "&facultad=" + facl + "&escuela=" + escl;
-                                }
-                            }
-                        } //buttons
-                    }); //dialog
-                }
-            });
+        if($("#escuelaId").val() != null){
 
+
+            var prdo = $("#periodoId").val();
+            var facl = $("#facultad").val();
+            var escl = $("#escuelaId").val();
+            location.href = "${createLink(controller: 'reportes2', action: 'factores')}?periodo=" + prdo + "&facultad=" + facl + "&escuela=" + escl;
         }else{
-            log("Seleccione una facultad","info")
+            log("Seleccione una escuela","info")
         }
     });
 

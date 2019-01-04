@@ -76,16 +76,16 @@
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre ?: ''}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre?.toUpperCase() ?: ''}"/></strong>
 </p>
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${"Desempeño por Variables"}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"DESEMPEÑO POR VARIABLES"}"/></strong>
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${"Período: ${periodo?.nombre}" ?: ''}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"PERÍODO: ${periodo?.nombre}" ?: ''}"/></strong>
 </p>
 
 

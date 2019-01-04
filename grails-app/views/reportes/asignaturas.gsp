@@ -80,11 +80,15 @@
     <strong style="font-size: 14pt"><util:renderHTML html="${titulo}"/></strong>
 </p>
 
+<p class="alineado">
+    <strong style="font-size: 14pt"><util:renderHTML html="${"FACULTAD: " + facultad?.nombre}"/></strong>
+</p>
+
 
 <g:each in="${escuelas}" var="e" status="j">
 
     <p class="alineado">
-        <strong style="font-size: 14pt"><util:renderHTML html="${e}"/></strong>
+        <strong style="font-size: 14pt"><util:renderHTML html="${"ESCUELA: " + e}"/></strong>
     </p>
 
     <table class="table table-condensed table-bordered table-striped table-hover ${escuelas.size() > (j+1)? 'roto' : ''}" style="width: 100%">

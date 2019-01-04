@@ -46,53 +46,6 @@
     </g:if>
 </div>
 
-
-%{--<div class="row text-info" style="font-size: 11pt; margin-bottom: 21px">--}%
-
-%{--<g:if test="${session.perfil.codigo == 'ADMG'}">--}%
-%{--<div class="col-md-1">Universidad:</div>--}%
-%{--<div class="col-sm-3">--}%
-%{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
-%{--class="form-control" style="width: 280px"--}%
-%{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
-%{--</div>--}%
-%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
-%{--<div class="col-sm-1" id="divPeriodos">--}%
-
-%{--</div>--}%
-
-%{--<div class="col-md-1" style="margin-top: 10px; margin-left: 20px">Facultad:</div>--}%
-
-%{--<div class="col-md-2" id="divFacultad">--}%
-
-%{--</div>--}%
-%{--</g:if>--}%
-%{--<g:else>--}%
-%{--<div class="col-md-2">Seleccione el período de evaluaciones:</div>--}%
-%{--<div class="col-sm-1">--}%
-%{--<g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"--}%
-%{--class="form-control" style="width: 90px"--}%
-%{--from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>--}%
-%{--</div>--}%
-
-%{--<div class="col-md-1" style="margin-top: 10px; margin-left: 10px">Facultad:</div>--}%
-
-%{--<div class="col-md-4">--}%
-%{--<g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"--}%
-%{--optionKey="id" name="facultad_name" id="facultad" class="form-control"--}%
-%{--noSelection="${[0:'Todas ...']}"/>--}%
-%{--</div>--}%
-
-%{--</g:else>--}%
-%{--<div class="col-md-1">--}%
-%{--<div class="btn btn-info" id="graficar">--}%
-%{--<i class="fa fa-pie-chart"></i> Aceptar--}%
-%{--</div>--}%
-%{--</div>--}%
-%{--</div>--}%
-
-
-
 <div class="row text-info" style="font-size: 11pt; margin-bottom: 20px">
 
     <g:if test="${session.perfil.codigo == 'ADMG'}">
@@ -474,7 +427,7 @@
             closeLoader();
             $("#chart-area").addClass('hidden');
             $("#chart-area2").addClass('hidden');
-          log("Seleccione una carrera","info")
+            log("Seleccione una carrera","info")
         }
 
 

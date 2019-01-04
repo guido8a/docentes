@@ -116,8 +116,9 @@ class ReportesController extends seguridad.Shield {
 
         def res = cn.rows(sql.toString());
         def escuelas = res.escldscr.unique()
+        def facultad = Facultad.get(params.facl)
 
-        return [res: res, escuelas: escuelas, titulo: titulo, periodo: periodo]
+        return [res: res, escuelas: escuelas, titulo: titulo, periodo: periodo, facultad: facultad]
     }
 
     def profesNoEvaluados () {
@@ -1265,7 +1266,7 @@ class ReportesController extends seguridad.Shield {
 
     def reportePoligonos () {
 
-        println("params rp " + params)
+//        println("params rp " + params)
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
         Font fontNormal8 = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.NORMAL);
@@ -1336,8 +1337,8 @@ class ReportesController extends seguridad.Shield {
         def cn2 = dbConnectionService.getConnection()
         def res2 = cn2.firstRow(sql1.toString());
 
-        println("1 " + res)
-        println("2 " + res2)
+//        println("1 " + res)
+//        println("2 " + res2)
 
 
         def chart3 = createChart( createDataset2("Titulo 1", "Titulo 2", res?.ddsc ?: 0, res?.ddac ?: 0, res?.ddhd ?: 0, res?.ddci ?: 0, res?.dcni ?: 0, res?.d_ea ?: 0, res2?.ddsc ?: 0, res2?.ddac ?: 0, res2?.ddhd ?: 0, res2?.ddci ?: 0, res2?.dcni ?: 0, res2?.d_ea ?: 0 ), subtitulo);
@@ -1413,7 +1414,7 @@ class ReportesController extends seguridad.Shield {
 
     def desempenoAlumnosMail (prof, per) {
 
-        println("params alum " + params)
+//        println("params alum " + params)
 
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -1561,6 +1562,7 @@ class ReportesController extends seguridad.Shield {
 
         def tipo = Variables.get(params.tipo)
         def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -1589,14 +1591,22 @@ class ReportesController extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-        Paragraph lineaTitulo = new Paragraph(tipo?.descripcion + " Total General", fontTitulo )
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaTitulo = new Paragraph(tipo?.descripcion, fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
+        Paragraph lineaSubTitulo = new Paragraph("TOTAL GENERAL", fontTitulo )
+        lineaSubTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaVacia = new Paragraph(" ", fontTitulo)
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
+        document.add(lineaSubTitulo)
         document.add(lineaVacia)
 
         def val
@@ -1739,10 +1749,11 @@ class ReportesController extends seguridad.Shield {
 
     def reporteOrdenamiento () {
 
-        println "reporteOrdenamiento $params"
+//        println "reporteOrdenamiento $params"
 
         def tipo = Variables.get(params.tipo)
         def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -1769,6 +1780,9 @@ class ReportesController extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + Facultad.get(params.facl).nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Reporte: " + tipo?.descripcion, fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -1776,6 +1790,7 @@ class ReportesController extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
@@ -1921,7 +1936,7 @@ class ReportesController extends seguridad.Shield {
 
 
     def profesoresClases_old() {
-        println "profesoresClases $params"
+//        println "profesoresClases $params"
         def cn = dbConnectionService.getConnection()
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -2063,6 +2078,7 @@ class ReportesController extends seguridad.Shield {
         Font fontTtlo = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
 
         def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escl)
         def facultad
         def facultadId
         if(params.facultad.toInteger()) {
@@ -2113,11 +2129,14 @@ class ReportesController extends seguridad.Shield {
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
         Paragraph linea = new Paragraph(" ", fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(linea)
 
         def chart = crearBarChart(subtitulo,data)
@@ -2210,6 +2229,7 @@ class ReportesController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def facultad
         def facultadId
+        def escuela = Escuela.get(params.escl)
 
 
         if(params.facultad.toInteger()) {
@@ -2230,7 +2250,7 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res,periodo: periodo]
+        return[facultad: facultad, res: res,periodo: periodo, escuela: escuela]
     }
 
     def potenciadores () {
@@ -2240,6 +2260,7 @@ class ReportesController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def facultad
         def facultadId
+        def escuela = Escuela.get(params.escl)
 
 
         if(params.facultad.toInteger()) {
@@ -2260,7 +2281,7 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res, periodo: periodo]
+        return[facultad: facultad, res: res, periodo: periodo, escuela: escuela]
     }
 
     def recomendaciones () {
@@ -2270,6 +2291,7 @@ class ReportesController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def facultad
         def facultadId
+        def escuela = Escuela.get(params.escuela)
 
 
         if(params.facultad.toInteger()) {
@@ -2291,13 +2313,13 @@ class ReportesController extends seguridad.Shield {
 
 //        println("Res " + res)
 
-        return[facultad: facultad, res: res,periodo: periodo]
+        return[facultad: facultad, res: res,periodo: periodo, escuela: escuela]
 
     }
 
 
     def recomendacionesGrafico() {
-//        println "profesoresClases $params"
+        println "profesoresClases $params"
         def cn = dbConnectionService.getConnection()
 
         Font fontNormal = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -2308,6 +2330,7 @@ class ReportesController extends seguridad.Shield {
 
         def periodo = Periodo.get(params.periodo)
         def universidad = Universidad.get(params.univ)
+        def escuela = Escuela.get(params.escl)
         def facultad
         def facultadId
         if(params.facultad.toInteger()) {
@@ -2353,7 +2376,6 @@ class ReportesController extends seguridad.Shield {
                         "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
                         "univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
 
-
 //                println "sql: $sql"
 
                 data = [:]
@@ -2375,27 +2397,19 @@ class ReportesController extends seguridad.Shield {
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
         Paragraph linea = new Paragraph(" ", fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(linea)
-
-//        Paragraph parrafoUniversidad = new Paragraph("UNIVERSIDAD", fontTitulo)
-//        parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
-//        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad, fontTitulo)
-//        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
-//        Paragraph linea = new Paragraph(" ", fontTitulo)
-//        parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
 
         Paragraph titulo = new Paragraph(subtitulo, fontTtlo)
         titulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)
 
-//        document.add(parrafoUniversidad)
-//        document.add(parrafoFacultad)
-//        document.add(linea)
-//        document.add(linea)
         document.add(titulo)
         document.add(linea)
 
@@ -2422,9 +2436,7 @@ class ReportesController extends seguridad.Shield {
             chartImage.setAlignment(com.lowagie.text.Element.ALIGN_CENTER)        // centrado
 
             parrafo1.add(chartImage)
-
             document.add(parrafo1)
-
 
         } catch (Exception e) {
             e.printStackTrace()
@@ -2452,6 +2464,7 @@ class ReportesController extends seguridad.Shield {
         def facultad
         def facultadId
         def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escuela)
 
         if(params.facultad.toInteger()) {
             facultad = Facultad.get(params.facultad).nombre
@@ -2476,12 +2489,11 @@ class ReportesController extends seguridad.Shield {
 //                "univ__id = ${params.univ} and escl.escl__id = ${params.escuela} " +
 //                "group by clase order by clase"
 
-        println("sql " + sql )
-
+//        println("sql " + sql )
 
         def res = cn.rows(sql.toString())
 
-        return[facultad: facultad, res: res, periodo: periodo]
+        return[facultad: facultad, res: res, periodo: periodo, escuela: escuela]
     }
 
     def reporteTipoEncuesta () {
@@ -2806,6 +2818,9 @@ class ReportesController extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Profesores por Cuellos de Botella", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -2816,6 +2831,7 @@ class ReportesController extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
         document.add(lineaTitulo2)
         document.add(lineaVacia)
@@ -2901,6 +2917,9 @@ class ReportesController extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Profesores por Potenciadores de Nivel", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -2911,6 +2930,7 @@ class ReportesController extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
         document.add(lineaTitulo2)
         document.add(lineaVacia)
@@ -3136,15 +3156,12 @@ class ReportesController extends seguridad.Shield {
 
             }
 
-
-
-
             PdfPTable tablaE = new PdfPTable(2);
             tablaE.setWidthPercentage(100);
             tablaE.setWidths(arregloEnteros([87, 13]))
 
             Paragraph causa = new Paragraph()
-            causa.setAlignment(Element.ALIGN_LEFT)
+            causa.setAlignment(Element.ALIGN_JUSTIFIED)
             causa.add(new Paragraph(p?.causa,times10normal))
             causa.add(new Chunk(" (Pregunta: ", times10bold))
             causa.add(new Chunk(p?.preg + ")", times10normal))

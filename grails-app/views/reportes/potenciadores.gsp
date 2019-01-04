@@ -78,15 +78,19 @@
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre ?: ''}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre?.toUpperCase() ?: ''}"/></strong>
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${"Potenciadores"}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"POTENCIADORES DE NIVEL POR DOCENTE"}"/></strong>
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${facultad ?: ''}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"FACULTAD: " + (facultad ?: '')}"/></strong>
+</p>
+
+<p class="alineado">
+    <strong style="font-size: 14pt"><util:renderHTML html="${"ESCUELA: " + (escuela?.nombre ?: '')}"/></strong>
 </p>
 
 

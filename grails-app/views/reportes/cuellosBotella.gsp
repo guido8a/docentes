@@ -85,24 +85,26 @@
         page-break-after: always;
     }
 
-
     </style>
-
 </head>
 
 <body>
 
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre ?: ''}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${periodo?.universidad?.nombre?.toUpperCase() ?: ''}"/></strong>
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${"Cuellos de Botella"}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"CUELLOS DE BOTELLA POR DOCENTE"}"/></strong>
 </p>
 
 <p class="alineado">
-    <strong style="font-size: 14pt"><util:renderHTML html="${facultad ?: ''}"/></strong>
+    <strong style="font-size: 14pt"><util:renderHTML html="${"FACULTAD: " + (facultad ?: '')}"/></strong>
+</p>
+
+<p class="alineado">
+    <strong style="font-size: 14pt"><util:renderHTML html="${"ESCUELA: " + (escuela?.nombre ?: '')}"/></strong>
 </p>
 
 <g:if test="${facultad != ''}">

@@ -289,8 +289,8 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
-//        Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
-//        parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
         Paragraph lineaTitulo = new Paragraph("Cuellos de Botella", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
@@ -299,13 +299,11 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
-//        document.add(parrafoProfesor)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
-//        def sql =  "select * from cuellos(${facultad?.id},${periodo?.id}) ORDER BY prof"
         def sql =  "select * from cuellos(${facultad?.id},${escuela?.id},${periodo?.id}) where cllo = 'S' and tipo like '%CUELLO%' order by prof"
-
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
@@ -317,7 +315,6 @@ class Reportes2Controller extends seguridad.Shield {
         def prmsIzBorderAzul = [border: BaseColor.BLUE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-
 
         def varProf
         def varMate
@@ -332,6 +329,8 @@ class Reportes2Controller extends seguridad.Shield {
                 addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold3), prmsIzBorder)
                 addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold3), prmsIzBorder)
                 document.add(tablaC);
+
+                varMate = null
             }
 
             if(p?.mate != varMate){
@@ -420,6 +419,9 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Potenciadores de Nivel", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -427,7 +429,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
-//        document.add(parrafoProfesor)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
@@ -462,6 +464,8 @@ class Reportes2Controller extends seguridad.Shield {
                 addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold3), prmsIzBorder)
                 addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold3), prmsIzBorder)
                 document.add(tablaC);
+
+                varMate = null
             }
 
 
@@ -569,7 +573,6 @@ class Reportes2Controller extends seguridad.Shield {
         def facultad = Facultad.get(params.facultad)
         def escuela = Escuela.get(params.escl)
 
-
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         Font fontThUsar = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.NORMAL);
@@ -580,7 +583,6 @@ class Reportes2Controller extends seguridad.Shield {
 
         fontNormalBold.setColor(new BaseColor(70, 88, 107))
         fontNormalBold3.setColor(BaseColor.WHITE)
-
 
         Document document
         document = new Document(PageSize.A4);
@@ -603,6 +605,9 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph lineaTitulo = new Paragraph("Factores de Éxito", fontTitulo )
         lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -610,7 +615,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
-//        document.add(parrafoProfesor)
+        document.add(parrafoEscuela)
         document.add(lineaTitulo)
         document.add(lineaVacia)
 
@@ -629,7 +634,6 @@ class Reportes2Controller extends seguridad.Shield {
         def prmsNmBorder = [border: BaseColor.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
         def prmsCrBorder = [border: BaseColor.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-
         def varProf
         def varMate
 
@@ -643,6 +647,8 @@ class Reportes2Controller extends seguridad.Shield {
                 addCellTabla(tablaC, new Paragraph("Profesor: " + p?.prof, fontNormalBold3), prmsIzBorder)
                 addCellTabla(tablaC, new Paragraph("Curso: " + p?.crso, fontNormalBold3), prmsIzBorder)
                 document.add(tablaC);
+
+                varMate = null
             }
 
             if(p?.mate != varMate){
@@ -692,7 +698,7 @@ class Reportes2Controller extends seguridad.Shield {
 
     def clasificacion () {
 
-        println "reporteClasificacion $params"
+//        println "reporteClasificacion $params"
 
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
@@ -797,6 +803,7 @@ class Reportes2Controller extends seguridad.Shield {
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
         def profesor = Profesor.get(params.profe)
+        def escuela = Escuela.get(params.escl)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -832,6 +839,9 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.apellido + " " + profesor?.nombre, fontTitulo)
         parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -863,6 +873,7 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(parrafoProfesor)
         document.add(uso)
 
@@ -1047,7 +1058,6 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(parrafoTitulo)
         document.add(uso)
 
-        /*todo: facultad!*/
         def sql = "select encu__id from encu, matr, dcta, mate " +
                 "where encuetdo = 'C' and teti__id = 4 and " +
                 "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = dcta.mate__id and " +
@@ -1074,13 +1084,9 @@ class Reportes2Controller extends seguridad.Shield {
 
         res.each {p->
 
-//            Paragraph lineaTitulo = new Paragraph(titulo, fontTitulo )
-//            lineaTitulo.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-//
             Paragraph lineaEncuesta = new Paragraph("Encuesta N°: " + p?.encu__id, fontTitulo )
             lineaEncuesta.setAlignment(com.lowagie.text.Element.ALIGN_RIGHT);
-//
-//            document.add(lineaTitulo)
+
             document.add(lineaEncuesta)
             document.add(lineaVacia)
 
@@ -1157,8 +1163,6 @@ class Reportes2Controller extends seguridad.Shield {
 
     }
 
-
-
     def evaluacionesProfe () {
 
         //        println "reporteClasificacion $params"
@@ -1201,6 +1205,9 @@ class Reportes2Controller extends seguridad.Shield {
         Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + facultad.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA: " + escuela?.nombre, fontTitulo)
+        parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
+
         Paragraph parrafoEva = new Paragraph("EVALUACIONES AL PROFESOR", fontTitulo)
         parrafoEva.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 
@@ -1211,10 +1218,10 @@ class Reportes2Controller extends seguridad.Shield {
 
         document.add(parrafoUniversidad)
         document.add(parrafoFacultad)
+        document.add(parrafoEscuela)
         document.add(parrafoEva)
         document.add(uso)
         document.add(lineaVacia)
-
 
         def sql = "select * from evaluaciones(${facultad?.id},${escuela?.id},${periodo?.id});"
 
@@ -1249,14 +1256,12 @@ class Reportes2Controller extends seguridad.Shield {
         addCellTabla(tablaD, new Paragraph("Total", fontTitulo), prmsIzBorder4)
 
         res.each {p->
-
             addCellTabla(tablaD, new Paragraph(p?.prof, fontThUsar), prmsIzBorder3)
             addCellTabla(tablaD, new Paragraph(numero(p?.estd_ev,2), fontThUsar), prmsCrBorder)
             addCellTabla(tablaD, new Paragraph(numero(p?.auto_ev,2), fontThUsar), prmsCrBorder)
             addCellTabla(tablaD, new Paragraph(numero(p?.pars_ev,2), fontThUsar), prmsCrBorder)
             addCellTabla(tablaD, new Paragraph(numero(p?.dire_ev,2), fontThUsar), prmsCrBorder)
             addCellTabla(tablaD, new Paragraph(numero(p?.totl_ev,2), fontThUsar), prmsCrBorder)
-
         }
 
         document.add(tablaD)

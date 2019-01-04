@@ -350,7 +350,7 @@
                                 className: "btn-success",
                                 callback: function () {
                                     var escuela = $("#escuelaRprt").val();
-                                    var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela;
+                                    var url = "${createLink(controller: 'reportes', action: 'profesNoEvaluados')}?periodo=" + prdo + "Wtipo=" + 6 + "Wescl=" + escuela + "Wfacl=" + facl
                                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
                                 }
                             }
@@ -392,7 +392,7 @@
                                 className: "btn-success",
                                 callback: function () {
                                     var escuela = $("#escuelaRprt").val();
-                                    var url = "${createLink(controller: 'reportes', action: 'asignaturas')}?periodo=" + prdo + "Wtipo=" + 7 + "Wescl=" + escuela;
+                                    var url = "${createLink(controller: 'reportes', action: 'asignaturas')}?periodo=" + prdo + "Wtipo=" + 7 + "Wescl=" + escuela + "Wfacl=" + facl;
                                     location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=EstudiantesNoEvaluacion.pdf";
 //                                return false
                                 }

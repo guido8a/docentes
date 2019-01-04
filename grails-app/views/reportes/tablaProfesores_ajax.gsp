@@ -139,28 +139,28 @@
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 2
+        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 2 + "&escl=" + '${escuela?.id}'
     });
 
     $(".btnEncuestaDI").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 3
+        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 3 + "&escl=" + '${escuela?.id}'
     });
 
     $(".btnEncuestaPR").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 5
+        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 5 + "&escl=" + '${escuela?.id}'
     });
 
     $(".btnEncuestaAD").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 1
+        location.href = "${createLink(controller: 'reportes2', action: 'encuesta')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&tipo=" + 1 + "&escl=" + '${escuela?.id}'
     });
 
     $("#btnMail").click(function () {
