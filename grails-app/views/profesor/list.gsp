@@ -110,6 +110,15 @@
 
 <script type="text/javascript">
 
+    $("input").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            var ced = $("#cedula").val();
+            var nom = $("#nombre").val();
+            var ape = $("#apellido").val();
+            cargarTablaProfesores(ced,nom,ape,$("#universidadId option:selected").val());
+        }
+    });
+
     $("#btnProfesorNuevo").click(function () {
         var uni = $("#universidadId option:selected").val();
         location.href="${createLink(controller: 'profesor', action: 'profesor')}?universidad="  + uni

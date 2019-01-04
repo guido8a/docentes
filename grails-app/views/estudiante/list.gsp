@@ -110,6 +110,17 @@
 
 <script type="text/javascript">
 
+    $("input").keyup(function (ev) {
+        if (ev.keyCode == 13) {
+            var ced = $("#cedula").val();
+            var nom = $("#nombre").val();
+            var ape = $("#apellido").val();
+            var un = $("#universidadId option:selected").val();
+
+            cargarTablaEstudiantes(ced, nom, ape,un);
+        }
+    });
+
     <g:if test="${session.perfil.codigo != 'ADMG'}">
     $(".uni").attr("disabled", true);
     </g:if>
