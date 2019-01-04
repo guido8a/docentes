@@ -20,7 +20,7 @@
             </div>
             <div class="btn-group pull-right col-md-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
+                    <input type="text" class="form-control busq" placeholder="Buscar" value="${params.search}">
                     <span class="input-group-btn">
                         <g:link action="list" class="btn btn-default btn-search" type="button">
                             <i class="fa fa-search"></i>&nbsp;
@@ -71,6 +71,16 @@
         <elm:pagination total="${preguntaInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
+
+
+
+        $("input").keyup(function (ev) {
+            if (ev.keyCode == 13) {
+               location.href="${createLink(controller: 'pregunta', action: 'list')}?search=" + $(".busq").val();
+            }
+        });
+
+
             var id = null;
             function submitForm() {
                 var $form = $("#frmPregunta");
