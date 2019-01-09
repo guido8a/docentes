@@ -62,7 +62,7 @@ class PreguntaController extends Shield {
      * @return preguntaInstanceList: la lista de elementos filtrados, preguntaInstanceCount: la cantidad total de elementos (sin máximo)
      */
     def list() {
-        println("params " + params)
+//        println("params " + params)
 
         params.max = 15
         def preguntaInstanceList = getList(params, false)

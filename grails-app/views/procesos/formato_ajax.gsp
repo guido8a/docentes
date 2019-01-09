@@ -208,22 +208,24 @@
         <td class="cabecera">Código Materia</td>
         <td class="cabecera">Curso</td>
         <td class="cabecera">Paralelo</td>
-        <td class="cabecera">Nombre Profesor</td>
+        <td class="cabecera">N° Identificación</td>
     </tr>
     <tr>
         <td>Texto</td>
         <td>Texto: código</td>
         <td>Texto</td>
         <td>Numérico</td>
-        <td>Texto: char(31)</td>
+        <td>Numérico</td>
     </tr>
     <tr style="height: 10px"></tr>
     <tr>
+        <td class="cabecera">Nombre Profesor</td>
         <td class="cabecera">Apellido Profesor</td>
         <td class="cabecera">Sexo Profesor</td>
         <td class="cabecera">Título Profesor</td>
     </tr>
     <tr>
+        <td>Texto: char(31)</td>
         <td>Texto: char(31)</td>
         <td>Texto: char(1)</td>
         <td>Texto</td>
