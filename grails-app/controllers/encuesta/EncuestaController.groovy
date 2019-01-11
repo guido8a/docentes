@@ -82,6 +82,7 @@ class EncuestaController {
      * Si es estudiante muestra Iniciar Evaluación (ponePregunta FE) o tabla de materias para evaluar
      */
     def previa() {
+        println "previa: $params"
         if(session?.tipoEncuesta?.codigo in ['PR', 'DI', 'AD']){
             redirect action: 'previaDc'
             return
@@ -101,10 +102,10 @@ class EncuestaController {
 //            println "ya completo FE"
             def matr
             tx = "select matr.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
-                    "from matr, dcta, crso, mate, prof " +
+                    "from matr, dcta, crso, mtes, mate, pfes, prof " +
                     "where prdo__id = ${session.prdo} and dcta.dcta__id = matr.dcta__id and " +
-                    "crso.crso__id = dcta.crso__id and " +
-                    "mate.mate__id = dcta.mate__id and prof.prof__id = dcta.prof__id and " +
+                    "crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
+                    "mtes.mtes__id = dcta.mtes__id and mate.mate__id = mtes.mate__id and prof.prof__id = pfes.prof__id and " +
                     "estd__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where estd__id = ${session.informanteId} and dcta__id is not null and " +
                     "encuetdo = 'C' and prdo__id = ${session.prdo} ) order by profnmbr"
@@ -129,14 +130,14 @@ class EncuestaController {
 
         def matr
         tx = "select dcta.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
-                    "from dcta, crso, mate, prof " +
+                    "from dcta, crso, mtes, mate, pfes, prof " +
                     "where prdo__id = ${session.prdo} and " +
-                    "crso.crso__id = dcta.crso__id and " +
-                    "mate.mate__id = dcta.mate__id and prof.prof__id = dcta.prof__id and " +
-                    "dcta.prof__id = ${session.informanteId} and dcta.dcta__id not in " +
+                    "crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
+                    "mtes.mtes__id = dcta.mtes__id and mate.mate__id = mtes.mate__id and prof.prof__id = pfes.prof__id and " +
+                    "pfes.prof__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where prof__id = ${session.informanteId} and dcta__id is not null and " +
                     "encuetdo = 'C' and prdo__id = ${session.prdo} and teti__id = 1) order by profnmbr"
-//            println "previa: $tx"
+            println "previa: $tx"
             matr = cn.rows(tx.toString())
             [matr: matr, logo: logo, universidad: univ.nombre]
     }
@@ -262,7 +263,7 @@ class EncuestaController {
             try{
 //                println "inicia save"
                 encu.save(flush: true)
-//                println "creando ponePregunta.. ok"
+                println "creado encuesta.. ok"
                 creado = true
             } catch (e){
 //                println "****** $e"
@@ -270,7 +271,7 @@ class EncuestaController {
             }
             if(creado) {
                 encu.refresh()
-//                println "-->Continua con encu: ${encu.id}, actual: $actual"
+                println "-->Continua con encu: ${encu.id}, actual: $actual"
                 session.total = total
                 session.encuesta = encu
                 session.tipoEncuesta = tpen
@@ -338,7 +339,7 @@ class EncuestaController {
 //        println " respondido ${resp}"
 
         pruebasFin = new Date()
-        println "tiempo ejecución ponePregunta: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
+//        println "tiempo ejecución ponePregunta: ${TimeCategory.minus(pruebasFin, pruebasInicio)}"
 
 //        println "pregunta ${pregunta.id}, persona: ${session.tipoPersona}"
 
@@ -374,7 +375,8 @@ class EncuestaController {
                 if(encu?.profesor){
                     render (view: 'pregunta',
                             model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp,
-                                    resp: resp, profesor: encu?.profesor?.nombre + ' ' + encu.profesor.apellido, materia: encu.materiaDictada?.materia?.nombre])
+                                    resp: resp, profesor: encu?.profesor?.nombre + ' ' + encu.profesor.apellido,
+                                    materia: encu.materiaDictada?.materiaEscuela?.materia?.nombre])
                 } else {
                     render (view: 'pregunta',
                             model: [tpen: tpen, encu: encu.id, actual: actual, total: total, pregunta: pregunta, rp: rp,
@@ -393,7 +395,7 @@ class EncuestaController {
 
 
     boolean existeEstudiante(cdla) {
-//        println "existeEstudiante $cdla"
+        println "existeEstudiante $cdla"
         def cn = dbConnectionService.getConnection()
         def tx = "select estd.estd__id, estdnmbr||' '||estdapll estudiante, estd.univ__id, prdo.prdo__id " +
                 "from estd, matr, dcta, prdo " +
@@ -402,7 +404,7 @@ class EncuestaController {
         println "..0..sql: $tx"
         try {
             cn.eachRow(tx) { d ->
-//                println "retorna cnta: ${d.cnta}"
+                println "universidad: ${d.univ__id}"
                 session.informanteId = d.estd__id
                 session.informante = d.estudiante
                 session.univ = d.univ__id
@@ -423,12 +425,13 @@ class EncuestaController {
     boolean existeProfesor(cdla) {
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def tx = "select prof.prof__id, profnmbr||' '||profapll profesor, profeval, univ__id, prdo.prdo__id " +
-                "from prof, matr, dcta, prdo " +
-                "where profcdla = '${cdla}' and dcta.prof__id = prof.prof__id and dcta.dcta__id = matr.dcta__id and " +
-                "  prdo.prdo__id = dcta.prdo__id and " +
-                "  now() between prdofcin and coalesce(prdofcfn, now()) limit 1"
-        println "sql: $tx"
+        def tx = "select prof.prof__id, profnmbr||' '||profapll profesor, profeval, prof.univ__id, prdo.prdo__id " +
+                "from prof, pfes, matr, dcta, prdo " +
+                "where profcdla = '${cdla}' and pfes.prof__id = prof.prof__id and dcta.pfes__id = pfes.pfes__id and " +
+                "dcta.dcta__id = matr.dcta__id and " +
+                "prdo.prdo__id = dcta.prdo__id and " +
+                "now() between prdofcin and coalesce(prdofcfn, now()) limit 1"
+//        println "sql: $tx"
         try {
             cn.eachRow(tx) { d ->
                 session.informanteId = d.prof__id
@@ -742,21 +745,21 @@ class EncuestaController {
         def msg = ""
 
         if(session.par) { // si puede evaluar PARES
-            sql = "select dcta.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                    "from dcta, mate, prof, crso " +
+            sql = "select pfes.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
+                    "from dcta, mate, pfes, prof, crso " +
                     "where prdo__id = ${session.prdo} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
-                    "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                    "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
+                    "crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and prof.prof__id = pfes.prof__id and " +
+                    "mate.mate__id = dcta.mate__id and pfes.prof__id not in (" +
                     "select prof__id from encu where prof_par is not null and prdo__id = ${session.prdo} and " +
 //                    "dcta__id <> dcta.dcta__id and encuetdo = 'C' ) and " +
                     "encuetdo = 'C' ) and " +
                     "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
         } else { // puede evaluar como DIRECTIVO
-            sql = "select dcta.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                    "from dcta, mate, prof, crso " +
+            sql = "select pfes.prof__id id, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
+                    "from dcta, mate, pfes, prof, crso " +
                     "where prdo__id = ${session.prdo} and (profnmbr ilike '%${params.buscar}%' or profapll ilike '%${params.buscar}%') and " +
-                    "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                    "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
+                    "crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and prof.prof__id = pfes.prof__id and " +
+                    "mate.mate__id = dcta.mate__id and pfes.prof__id not in (" +
                     "select prof__id from encu where profdrtv is not null and prdo__id = ${session.prdo} and encuetdo = 'C') and " +
                     "prof.prof__id <> ${session.informanteId} and dcta.dcta__id in (select distinct dcta__id from matr)"
         }

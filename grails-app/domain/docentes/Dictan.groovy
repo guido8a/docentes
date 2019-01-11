@@ -2,8 +2,8 @@ package docentes
 
 class Dictan {
 
-    Materia materia
-    Profesor profesor
+    MateriaEscuela materiaEscuela
+    ProfesorEscuela profesorEscuela
     Curso curso
     Periodo periodo
     int paralelo
@@ -17,8 +17,8 @@ class Dictan {
 
         columns {
             id column: 'dcta__id'
-            materia column: 'mate__id'
-            profesor column: 'prof__id'
+            materiaEscuela column: 'mtes__id'
+            profesorEscuela column: 'pfes__id'
             curso column: 'crso__id'
             periodo column: 'prdo__id'
             paralelo column: 'dctaprll'

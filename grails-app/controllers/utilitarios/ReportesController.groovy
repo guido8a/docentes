@@ -102,9 +102,9 @@ class ReportesController extends seguridad.Shield {
         def titulo
 
         sql = "select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, escldscr " +
-                "from prof, mate, crso, escl, dcta " +
-                "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                "mate.mate__id = dcta.mate__id and prof.prof__id not in ( " +
+                "from prof, pfes, mate, crso, escl, dcta " +
+                "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and pfes.prof__id = prof.prof__id and " +
+                "dcta.pfes__id = pfes.pfes__id and mate.mate__id = dcta.mate__id and prof.prof__id not in ( " +
                 "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}' and teti__id = 2 and " +
                 "dcta__id = dcta.dcta__id) and " +
                 "escl.escl__id = mate.escl__id and escl.escl__id = ${params.escl} " +
@@ -135,10 +135,10 @@ class ReportesController extends seguridad.Shield {
                 titulo = "Profesores que NO han sido evaluados por los alumnos"
 
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, prof, crso, escl, matr " +
-                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                        "mate.mate__id = dcta.mate__id and matr.dcta__id = dcta.dcta__id and " +
-                        "prof.prof__id not in ( " +
+                        "from dcta, mate, pfes, prof, crso, escl, matr " +
+                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
+                        "mate.mate__id = dcta.mate__id and matr.dcta__id = dcta.dcta__id and prof.prof__id = pfes.prof__id and " +
+                        "pfes.prof__id not in ( " +
                         "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
                         "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
                         "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
@@ -162,10 +162,10 @@ class ReportesController extends seguridad.Shield {
                 titulo = "Profesores que NO han realizado su autoevaluación"
 
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, prof, crso, escl, matr " +
+                        "from dcta, mate, pfes, prof, crso, escl, matr " +
                         "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
-                        "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and " +
-                        "dcta.dcta__id = matr.dcta__id and " +
+                        "pf.pfes__id = dcta.pfes__id and mate.mate__id = dcta.mate__id and " +
+                        "dcta.dcta__id = matr.dcta__id and prof.prof__id = pfes.prof__id and " +
                         "dcta.dcta__id not in (select distinct dcta__id from encu " +
                         "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
                         "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
@@ -176,9 +176,9 @@ class ReportesController extends seguridad.Shield {
                 titulo = "Profesores que han realizado su autoevaluación"
 
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, prof, crso, escl " +
+                        "from dcta, mate, pfes, prof, crso, escl " +
                         "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
-                        "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and " +
+                        "pfes.pfes__id = dcta.pfes__id and prof.prof__id = pfes.prof__id and mate.mate__id = dcta.mate__id and " +
                         "dcta.dcta__id in (select distinct dcta__id from encu " +
                         "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
                         "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +

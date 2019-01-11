@@ -208,7 +208,7 @@
         <td class="cabecera">Código Materia</td>
         <td class="cabecera">Curso</td>
         <td class="cabecera">Paralelo</td>
-        <td class="cabecera">N° Identificación</td>
+        <td class="cabecera">N° Identificación Prof.</td>
     </tr>
     <tr>
         <td>Texto</td>

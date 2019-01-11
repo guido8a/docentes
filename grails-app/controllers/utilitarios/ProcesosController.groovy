@@ -422,10 +422,10 @@ class ProcesosController extends seguridad.Shield {
 //                println "procesa escuelas"
                 def escl__id = datosEscl(escl.toUpperCase(), facl__id, null)   // crea escuela
 //                println "procesa materias"
-                def mate__id = datosMate(matecdgo, mate, escl__id)   // crea escuela
+                def mate__id = datosMate(matecdgo, mate, univ, escl__id)   // crea escuela
 //                println "procesa profesores"
-                def prof__id = datosProf(profcdla, profnmbr, profapll, profsexo, proftitl, escl__id)   // crea porf
-                def estd__id = datosEstd(estdcdgo, estdnmbr, estdapll)   // crea estd
+                def prof__id = datosProf(profcdla, profnmbr, profapll, profsexo, proftitl, univ, escl__id)   // crea porf
+                def estd__id = datosEstd(estdcdgo, estdnmbr, estdapll, univ)   // crea estd
                 def crso__id = datosCrso(crso)   // crea estd
 //                def dcta__id = datosDcta(prof__id, mate__id, crso__id, prdo__id, prll)   // todo: params.prdo
                 def dcta__id = datosDcta(prof__id, mate__id, crso__id, prdo, prll)   // todo: params.prdo
@@ -546,63 +546,80 @@ class ProcesosController extends seguridad.Shield {
         return actual_id
     }
 
-    def datosMate(cdgo, dscr, escl) {
+    def datosMate(cdgo, dscr, univ, escl) {
+        println "datosMate: univ: $univ, escl: $escl"
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def reg
+        def mate_id = 0
         def actual_id = 0
 
         if(cdgo != 'Código' && escl != 'Escuela'){
-            sql = "select mate__id, matecdgo, matedscr from mate " +
-                    "where matecdgo = '${cdgo.trim()}'"
-//                    "where matecdgo = '${cdgo.trim()}' and escl__id = ${escl}"
+            sql = "select mtes__id, matecdgo, matedscr from mate, mtes " +
+//                    "where matecdgo = '${cdgo.trim()}'"
+                    "where mate.mate__id = mtes.mate__id and matecdgo = '${cdgo.trim()}' and univ__id = ${univ}"
             reg = cn.rows(sql.toString())[0]
             println "mate --> $sql \n ${reg} \nescl: $escl"
-            actual_id = reg?.mate__id
+            actual_id = reg?.mtes__id
             if (!actual_id) {
                 println "---> inserta materia: ${cdgo}"
-                sql = "insert into mate(mate__id, escl__id, matecdgo, matedscr) " +
-                        "values (default, ${escl}, '${cdgo}', '${dscr}')"
+                sql = "insert into mate(mate__id, univ__id, matecdgo, matedscr) " +
+                        "values (default, ${univ}, '${cdgo}', '${dscr}')"
+                mate_id = cn.executeInsert(sql.toString())[0][0]
+
+                /** inserta materiasEscuela **/
+                println "---> inserta materiaEscuela: ${mate_id}"
+                sql = "insert into mtes(mtes__id, mate__id, escl__id) " +
+                        "values (default, ${mate_id}, ${escl})"
                 actual_id = cn.executeInsert(sql.toString())[0][0]
             } else if (reg.matedscr != dscr) {
+                /** no se debería actualizar el nombre d ela materia **/
                 sql = "update mate set matedscr = '${dscr}' where mate__id = ${actual_id}"
                 cn.execute(sql.toString())
             }
         }
-
+        println"---> mtes__id: ${actual_id}"
         return actual_id
     }
 
-    def datosProf(cdla, nmbr, apll, sexo, titl, escl) {
+    def datosProf(cdla, nmbr, apll, sexo, titl, univ, escl) {
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def reg
         def cnta = 0
+        def prof_id = 0
         def actual_id = 0
 
         if(cdla != 'Cédula' && nmbr != 'NOMBRES' && apll !='APELLIDOS' && sexo !='SEXO' && titl != 'TÍTULO'){
-            sql = "select prof__id, profnmbr, profapll, proftitl from prof " +
-                    "where profcdla = '${cdla}'"
+            sql = "select pfes__id, profnmbr, profapll, proftitl from pfes, prof " +
+                    "where prof.prof__id = pfes.prof__id and profcdla = '${cdla}' and univ__id = ${univ}"
 //        println "sql: $sql"
             reg = cn.rows(sql.toString())[0]
-            actual_id = reg?.prof__id
+            actual_id = reg?.pfes__id
             if (!actual_id) {
                 println "---> inserta profesor: ${nmbr}"
-                sql = "insert into prof(prof__id, escl__id, profcdla, profnmbr, profapll, " +
+                sql = "insert into prof(prof__id, univ__id, profcdla, profnmbr, profapll, " +
                         "profsexo, proftitl, profetdo, profeval) " +
-                        "values (default, ${escl}, '${cdla}', '${nmbr}', '${apll}', " +
+                        "values (default, ${univ}, '${cdla}', '${nmbr}', '${apll}', " +
                         "'${sexo}', '${titl ?: ''}', 'N', 'N')"
+                prof_id = cn.executeInsert(sql.toString())[0][0]
+                /** inserta profesorEscuela **/
+                println "---> inserta profEscuela: ${prof_id}"
+                sql = "insert into pfes(pfes__id, prof__id, escl__id) " +
+                        "values (default, ${prof_id}, ${escl})"
                 actual_id = cn.executeInsert(sql.toString())[0][0]
+
             } else if (reg.profnmbr != nmbr || reg.profapll != apll) {
                 sql = "update prof set profnmbr = '${nmbr}', profapll = '${apll}' where prof__id = ${actual_id}"
                 cn.execute(sql.toString())
                 println "corrige: ${cdla} de ${reg.profnmbr} ${reg.profapll} a ${nmbr} ${apll}"
             }
         }
+        println"---> pfes__id: ${actual_id}"
         return actual_id
     }
 
-    def datosEstd(cdgo, nmbr, apll) {
+    def datosEstd(cdgo, nmbr, apll, univ) {
         def cn = dbConnectionService.getConnection()
         def sql = ""
         def reg
@@ -617,8 +634,8 @@ class ProcesosController extends seguridad.Shield {
             actual_id = reg?.estd__id
             if (!actual_id) {
                 println "---> inserta estd: ${nmbr}"
-                sql = "insert into estd(estd__id, estdcdla, estdnmbr, estdapll) " +
-                        "values (default, '${cdgo}', '${nmbr}', '${apll}')"
+                sql = "insert into estd(estd__id, univ__id, estdcdla, estdnmbr, estdapll) " +
+                        "values (default, ${univ}, '${cdgo}', '${nmbr}', '${apll}')"
                 actual_id = cn.executeInsert(sql.toString())[0][0]
             } else if (reg.estdnmbr != nmbr || reg.estdapll != apll) {
                 sql = "update estd set estdnmbr = '${nmbr}', estdapll = '${apll}' where estd__id = ${actual_id}"
@@ -683,14 +700,14 @@ class ProcesosController extends seguridad.Shield {
         def actual_id = 0
 
         if(prll != 'PARALELO'){
-            sql = "select dcta__id, dctaprll from dcta where prof__id = ${prof} and mate__id = ${mate} and " +
+            sql = "select dcta__id, dctaprll from dcta where pfes__id = ${prof} and mtes__id = ${mate} and " +
                     "crso__id = ${crso} and prdo__id = ${prdo} and dctaprll = ${prll}"
 //        println "sql: $sql"
             reg = cn.rows(sql.toString())[0]
             actual_id = reg?.dcta__id
             if (!actual_id) {
                 println "---> inserta dcta: ${prll}"
-                sql = "insert into dcta(dcta__id, prof__id, mate__id, crso__id, prdo__id, dctaprll) " +
+                sql = "insert into dcta(dcta__id, pfes__id, mtes__id, crso__id, prdo__id, dctaprll) " +
                         "values (default, ${prof}, ${mate}, ${crso}, ${prdo}, ${prll} )"
                 actual_id = cn.executeInsert(sql.toString())[0][0]
             }
@@ -748,10 +765,10 @@ class ProcesosController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def retorna = ""
-        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, estd, matr, dcta, prof, escl, facl " +
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, estd, matr, dcta, pfes, escl, facl " +
                 "where encu.prdo__id = ${params.periodo} and estd.estd__id = encu.estd__id and " +
                 "matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id and encu.teti__id = 4 and " +
-                "encuetdo = 'C' and prof.prof__id = dcta.prof__id and escl.escl__id = prof.escl__id and " +
+                "encuetdo = 'C' and pfes.pfes__id = dcta.pfes__id and escl.escl__id = pfes.escl__id and " +
                 "facl.facl__id = escl.facl__id " +
                 "group by facl.facl__id, facldscr order by facldscr"
 

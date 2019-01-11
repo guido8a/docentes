@@ -7,8 +7,8 @@ class UrlMappings {
             }
         }
 
-        "/"(controller: "inicio", action: "index")
-//        "/"(controller: "encuesta", action: "inicio")
+//        "/"(controller: "inicio", action: "index")
+        "/"(controller: "encuesta", action: "inicio")
         "500"(view:'/error')
 	}
 }

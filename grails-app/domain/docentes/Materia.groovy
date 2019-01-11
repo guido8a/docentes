@@ -2,7 +2,8 @@ package docentes
 
 class Materia {
 
-    Escuela escuela
+//    Escuela escuela
+    Universidad universidad
     String codigo
     String nombre
 
@@ -14,7 +15,7 @@ class Materia {
 
         columns {
             id column: 'mate__id'
-            escuela column: 'escl__id'
+            universidad column: 'univ__id'
             codigo column: 'matecdgo'
             nombre column: 'matedscr'
         }

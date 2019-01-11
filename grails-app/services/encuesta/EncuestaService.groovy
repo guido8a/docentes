@@ -43,9 +43,9 @@ class EncuestaService {
      */
     def materias(estd, prdo) {
         def cn = dbConnectionService.getConnection()
-        def tx = "select matedscr, matr.dcta__id from matr, dcta, mate " +
+        def tx = "select matedscr, matr.dcta__id from matr, dcta, mtes, mate " +
                 "where prdo__id = ${prdo} and estd__id = '${estd}' and " +
-                "dcta.dcta__id = matr.dcta__id and mate.mate__id = dcta.mate__id"
+                "dcta.dcta__id = matr.dcta__id and mtes.mtes__id = dcta.mtes__id and mate.mate__id = mtes.mate__id"
         def rg = []
 //        println " a ejecutar: lstaMaterias:!!!  ${tx}"
         cn.eachRow(tx) { d ->
@@ -180,14 +180,14 @@ class EncuestaService {
             where = "where carr__id = 0"
         } else {
             if(tppr == 'E') {
-                tx = "select carr__id from escr, dcta, matr, prof where matr.estd__id = ${prsn} and " +
-                        "dcta.dcta__id = matr.dcta__id and prof.prof__id = dcta.prof__id and prdo__id = ${prdo} and " +
-                        "escr.escl__id = prof.escl__id"
+                tx = "select carr__id from escr, dcta, matr, pfes where matr.estd__id = ${prsn} and " +
+                        "dcta.dcta__id = matr.dcta__id and pfes.pfes__id = dcta.pfes__id and prdo__id = ${prdo} and " +
+                        "escr.escl__id = pfes.escl__id"
                 where = "where carr__id = ${cn.rows(tx.toString())[0]?.carr__id}"
                 println "carr estd --> $tx, $where"
             } else {
-                tx = "select carr__id from escr, dcta, prof where dcta.prof__id = ${prsn} and " +
-                        "prdo__id = ${prdo} and prof.prof__id = dcta.prof__id and escr.escl__id = prof.escl__id"
+                tx = "select carr__id from escr, dcta, pfes where pfes.prof__id = ${prsn} and " +
+                        "prdo__id = ${prdo} and pfes.pfes__id = dcta.pfes__id and escr.escl__id = pfes.escl__id"
                 println "carr prof --> $tx"
                 where = "where carr__id = ${cn.rows(tx.toString())[0]?.carr__id}"
             }
@@ -214,8 +214,8 @@ class EncuestaService {
         def cn = dbConnectionService.getConnection()
         def rt = false
         def auto = 0
-        def tx = "select count(distinct dcta.dcta__id) cnta from dcta, matr where prdo__id = ${prdo} and " +
-                "prof__id = ${prof} and matr.dcta__id = dcta.dcta__id"
+        def tx = "select count(distinct dcta.dcta__id) cnta from dcta, matr, pfes where prdo__id = ${prdo} and " +
+                "prof__id = ${prof} and pfes.pfes__id = dcta.pfes__id and matr.dcta__id = dcta.dcta__id"
 
         def dcta = cn.rows(tx.toString())[0].cnta
         println "dicta $dcta materias"
@@ -230,6 +230,7 @@ class EncuestaService {
         catch (e) {
             println e.getMessage()
         }
+        println "ok .... autoevaluacion"
         cn.close()
         rt
     }
@@ -254,9 +255,9 @@ class EncuestaService {
     def completaPares(prdo, id) {
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def sql = "select count(*) cnta from dcta, mate, prof, crso" +
+        def sql = "select count(*) cnta from dcta, mate, pfes, prof, crso" +
                     "where prdo__id = ${prdo} and crso.crso__id = dcta.crso__id and " +
-                    "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
+                    "pfes.pfes__id = dcta.pfes__id and mate.mate__id = dcta.mate__id and pfes.prof__id not in (" +
                     "select prof__id from encu where prof_par is not null and prdo__id = ${prdo} and " +
                     "encuetdo = 'C' ) and prof.prof__id <> ${id} and dcta.dcta__id in " +
                     "(select distinct dcta__id from matr)"
@@ -272,10 +273,10 @@ class EncuestaService {
     def completaDire(prdo, id) {
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def sql = "select count(*) cnta from dcta, mate, prof, crso " +
+        def sql = "select count(*) cnta from dcta, mate, pfes, crso " +
                     "where prdo__id = ${prdo} and " +
-                    "crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                    "mate.mate__id = dcta.mate__id and dcta.prof__id not in (" +
+                    "crso.crso__id = dcta.crso__id and pfes.prof__id = dcta.pfes__id and " +
+                    "mate.mate__id = dcta.mate__id and pfes.prof__id not in (" +
                     "select prof__id from encu where profdrtv is not null and prdo__id = ${prdo} and encuetdo = 'C') and " +
                     "prof.prof__id <> ${id} and dcta.dcta__id in (select distinct dcta__id from matr)"
         println "sql Dire: $sql"
