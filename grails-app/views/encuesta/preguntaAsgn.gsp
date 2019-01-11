@@ -118,7 +118,8 @@
 
 <script type="text/javascript">
     var url = "${resource(dir:'images', file:'spinner32.gif')}";
-    var spinner = $("<div class='btn col-md-4 col-xs-4' style='height: auto; border-color: #495a6b'><img  src='" + url + "'/><span> Cargando...</span></div>");
+//    var spinner = $("<div class='btn col-md-4 col-xs-4' style='height: auto; border-color: #495a6b'><img  src='" + url + "'/><span> Cargando...</span></div>");
+    var spinner = $("<div class='btn col-md-4 col-xs-4' style='height: 40px; border-color: #495a6b'><img  src='" + url + "'/><span> Cargando...</span></div>");
 
     $(function () {
 

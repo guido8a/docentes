@@ -9,7 +9,7 @@
     <table class="table-bordered table-condensed table-hover" width="1120px">
         <tbody>
         <g:each in="${profesores}" var="profesor">
-            <tr data-id="${profesor?.id}" data-uni="${profesor?.escuela?.facultad?.universidad?.id}">
+            <tr data-id="${profesor?.id}" data-uni="${profesor?.universidad?.id}">
                 <td style="width: 10%">${profesor?.cedula}</td>
                 <td style="width: 34%">${profesor?.nombre}</td>
                 <td style="width: 33%">${profesor?.apellido}</td>

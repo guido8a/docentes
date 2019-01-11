@@ -430,11 +430,11 @@ class ProfesorController extends Shield {
 
         def profesores = Profesor.withCriteria {
 
-            escuela {
-                facultad{
+//            escuela {
+//                facultad{
                     eq("universidad",universidad)
-                }
-            }
+//                }
+//            }
 
             and{
                 ilike("apellido", "%" + params.apellido + "%")
