@@ -253,14 +253,17 @@ class EncuestaService {
     }
 
     def completaPares(prdo, id) {
+//        println "completaPares...."
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def sql = "select count(*) cnta from dcta, mate, pfes, prof, crso" +
+        def sql = "select count(*) cnta from dcta, mate, mtes, pfes, prof, crso " +
                     "where prdo__id = ${prdo} and crso.crso__id = dcta.crso__id and " +
-                    "pfes.pfes__id = dcta.pfes__id and mate.mate__id = dcta.mate__id and pfes.prof__id not in (" +
+                    "pfes.pfes__id = dcta.pfes__id and mtes.mtes__id = dcta.mtes__id and " +
+                    "mate.mate__id = mtes.mate__id and pfes.prof__id not in (" +
                     "select prof__id from encu where prof_par is not null and prdo__id = ${prdo} and " +
                     "encuetdo = 'C' ) and prof.prof__id <> ${id} and dcta.dcta__id in " +
                     "(select distinct dcta__id from matr)"
+//        println "sql: $sql"
         try {
             rt = (cn.rows(sql.toString())[0].cnta > 0)
         }
@@ -271,14 +274,15 @@ class EncuestaService {
     }
 
     def completaDire(prdo, id) {
+        println "completaDire...."
         def cn = dbConnectionService.getConnection()
         def rt = false
-        def sql = "select count(*) cnta from dcta, mate, pfes, crso " +
+        def sql = "select count(*) cnta from dcta, mtes, mate, pfes, crso " +
                     "where prdo__id = ${prdo} and " +
                     "crso.crso__id = dcta.crso__id and pfes.prof__id = dcta.pfes__id and " +
-                    "mate.mate__id = dcta.mate__id and pfes.prof__id not in (" +
+                    "mtes.mtes__id = dcta.mtes__id and mate.mate__id = mtes.mate__id and pfes.prof__id not in (" +
                     "select prof__id from encu where profdrtv is not null and prdo__id = ${prdo} and encuetdo = 'C') and " +
-                    "prof.prof__id <> ${id} and dcta.dcta__id in (select distinct dcta__id from matr)"
+                    "pfes.prof__id <> ${id} and dcta.dcta__id in (select distinct dcta__id from matr)"
         println "sql Dire: $sql"
         try {
             rt = (cn.rows(sql.toString())[0].cnta > 0)

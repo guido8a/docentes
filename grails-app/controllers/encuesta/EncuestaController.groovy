@@ -109,7 +109,7 @@ class EncuestaController {
                     "estd__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where estd__id = ${session.informanteId} and dcta__id is not null and " +
                     "encuetdo = 'C' and prdo__id = ${session.prdo} ) order by profnmbr"
-//            println "previa: $tx"
+            println "previa: $tx"
             matr = cn.rows(tx.toString())
 //            println "matr: $matr, logo: $logo, universidad: ${univ.nombre}"
             [matr: matr, logo: logo, universidad: univ.nombre, encufe: evaluadoFE]
@@ -129,7 +129,7 @@ class EncuestaController {
         session.encuesta = 0
 
         def matr
-        tx = "select dcta.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
+ /*       tx = "select dcta.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
                     "from dcta, crso, mtes, mate, pfes, prof " +
                     "where prdo__id = ${session.prdo} and " +
                     "crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
@@ -137,9 +137,18 @@ class EncuestaController {
                     "pfes.prof__id = ${session.informanteId} and dcta.dcta__id not in " +
                     "(select dcta__id from encu where prof__id = ${session.informanteId} and dcta__id is not null and " +
                     "encuetdo = 'C' and prdo__id = ${session.prdo} and teti__id = 1) order by profnmbr"
-            println "previa: $tx"
-            matr = cn.rows(tx.toString())
-            [matr: matr, logo: logo, universidad: univ.nombre]
+ */
+        tx = "select dcta.dcta__id, matedscr, profnmbr||' ' ||profapll profesor, crsodscr, dctaprll, prof.prof__id " +
+                    "from dcta, crso, mtes, mate, pfes, prof " +
+                    "where prdo__id = ${session.prdo} and " +
+                    "crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
+                    "mtes.mtes__id = dcta.mtes__id and mate.mate__id = mtes.mate__id and prof.prof__id = pfes.prof__id and " +
+                    "pfes.prof__id = ${session.informanteId} and pfes.prof__id not in " +
+                    "(select prof__id from encu where prof__id = ${session.informanteId} and dcta__id is not null and " +
+                    "encuetdo = 'C' and prdo__id = ${session.prdo} and teti__id = 1) order by profnmbr limit 1"
+//        println "previa: $tx"
+        matr = cn.rows(tx.toString())
+        [matr: matr, logo: logo, universidad: univ.nombre]
     }
 
     /**

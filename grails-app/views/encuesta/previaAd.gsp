@@ -101,9 +101,16 @@
         </table>
     </g:if>
     <g:else>
+%{--
         <g:link action="encuestaFE" class="btn btn-info col-md-6 col-xs-6 center-block" style="float: inherit; margin: auto">
             <i class="fa fa-pencil"></i> Iniciar Evaluación
         </g:link>
+--}%
+        <div style="text-align: center;">
+            <a href="${g.createLink(action: 'inicio')}" class="btn btn-primary" title="Salir de Evaluaciones">
+                <img src="${resource(dir:'images',file:'echo1.png')}">
+                Usted ha realizado todas las evaluaciones. ¡Muchas gracias!</a>
+        </div>
     </g:else>
 
     <hr style="border-color: #0A246A; size: 2px"/>
