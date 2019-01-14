@@ -747,9 +747,9 @@ class ProcesosController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def retorna = ""
-        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, prof, escl, facl " +
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, pfes, escl, facl " +
                 "where encu.prdo__id = ${params.periodo} and " +
-                "prof.prof__id = encu.prof__id and escl.escl__id = prof.escl__id and " +
+                "pfes.pfes__id = encu.prof__id and escl.escl__id = pfes.escl__id and " +
                 "facl.facl__id = escl.facl__id and encu.teti__id = 2 group by facl.facl__id, facldscr order by facldscr"
 
         println "sql: $sql"
