@@ -145,12 +145,11 @@ class Reportes2Controller extends seguridad.Shield {
 
     def recomendaciones () {
 
-
 //        println "reporteRecomendaciones $params"
         def periodo = Periodo.get(params.periodo)
         def profesor = Profesor.get(params.profe)
         def escuelaP = Escuela.get(params.escl)
-
+        def facultadP = Facultad.get(params.facu)
 
         def baos = new ByteArrayOutputStream()
         Font fontTitulo = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -880,7 +879,7 @@ class Reportes2Controller extends seguridad.Shield {
         def sql
 
         if(ban == 1){
-            sql =  "select encu__id, profapll||' '||profnmbr prof, matedscr, crsodscr, dctaprll from encu, prof, dcta, mate, crso where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo} and dcta.dcta__id = encu.dcta__id and  mate.mate__id = dcta.mate__id and crso.crso__id = dcta.crso__id;"
+            sql =  "select encu__id, profapll||' '||profnmbr prof, matedscr, crsodscr, dctaprll from encu, prof, dcta, mate, mtes, crso where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo} and dcta.dcta__id = encu.dcta__id and mtes.mate__id = mate.mate__id and dcta.mtes__id = mtes.mtes__id and crso.crso__id = dcta.crso__id;"
         }else{
             sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
         }
@@ -1058,9 +1057,13 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(parrafoTitulo)
         document.add(uso)
 
-        def sql = "select encu__id from encu, matr, dcta, mate " +
+//        def sql = "select encu__id from encu, matr, dcta, mate " +
+//                "where encuetdo = 'C' and teti__id = 4 and " +
+//                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = dcta.mate__id and " +
+//                "escl__id = ${params.escuela} group by encu__id"
+        def sql = "select encu__id from encu, matr, dcta, mate, mtes " +
                 "where encuetdo = 'C' and teti__id = 4 and " +
-                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = dcta.mate__id and " +
+                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and " +
                 "escl__id = ${params.escuela} group by encu__id"
 
 //        println("---> " + sql)

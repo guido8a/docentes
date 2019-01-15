@@ -66,20 +66,28 @@ class ReportesGrafController extends seguridad.Shield {
         def subtitulo = ''
         def pattern1 = "###.##%"
 
-        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
+//        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
+//                "where prof.prof__id = rpec.prof__id and " +
+//                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+//                "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
+//                "group by clase order by clase"
+        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl, pfes " +
                 "where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-                "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
+                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
                 "group by clase order by clase"
-        println "sql: $sql"
+//        println "sql: $sql"
         cn.eachRow(sql.toString()) { d ->
             data[d.clase] = d.cnta
             totl += d.cnta
         }
 
-        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
-                "univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
+//        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+//                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
+//                "univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
+        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = pfes.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
+                "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
 //        println "sql: $sql"
         rcmn = cn.rows(sql.toString())[0].cnta
 //        println "data: $data, rc: $rcmn, totl: $totl"
@@ -155,30 +163,47 @@ class ReportesGrafController extends seguridad.Shield {
         def data = [:]
         data.facultad = facultad
 
-        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof " +
-                "where prof.prof__id = rpec.prof__id and " +
-                "prof.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
-        println "evaluados: $sql"
+//        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof " +
+//                "where prof.prof__id = rpec.prof__id and " +
+//                "prof.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
+
+        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof, pfes " +
+                "where prof.prof__id = rpec.prof__id and pfes.prof__id = prof.prof__id and " +
+                "pfes.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
+
+//        println "evaluados: $sql"
+
         evaluados = (cn.rows(sql.toString())[0]?.cnta ?: 0) * 100
 
-        sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
+//        sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+//                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
+//                "tpen__id = 2 and prdo__id = ${params.prdo}"
+
+        sql = "select avg(promedio) prom from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
+                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.escl__id = ${params.escl} and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
-        println "promedio: $sql"
+
+//        println "promedio: $sql"
+
         data.promedio = (cn.rows(sql.toString())[0]?.prom ?: 0) * 100
         data.promedio = Math.round(data.promedio * 100)/100
 
-        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl " +
+//        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl " +
+//                "where prof.prof__id = rpec.prof__id and " +
+//                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
+//                "prdo__id = ${params.prdo} and tpen__id = 2 "
+
+        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl, pfes " +
                 "where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
+                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.escl__id = ${params.escl} and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
-        println "prof: $sql"
+//        println "prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
 
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnptnv > 0 and " +
                 "tpen__id = 2"
-        println "ptnv: $sql"
+//        println "ptnv: $sql"
         if (data.prof) {
             data.ptnv = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -189,7 +214,7 @@ class ReportesGrafController extends seguridad.Shield {
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnccbb > 0 and " +
                 "tpen__id = 2"
-        println "ccbb: $sql"
+//        println "ccbb: $sql"
         if (data.prof) {
             data.ccbb = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -197,11 +222,11 @@ class ReportesGrafController extends seguridad.Shield {
         }
         data.ccbb = Math.round(data.ccbb * 100)/100
 
-
         sql = "select count(*) cnta from tndn, rpec where tndn.prof__id = rpec.prof__id and " +
                 "rpec.escl__id = ${params.escl} and tndn.prdo__id = ${params.prdo} and tndnfcex > 0 and " +
                 "tpen__id = 2"
-        println "fcex: $sql"
+//        println "fcex: $sql"
+
         if (data.prof) {
             data.fcex = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -209,11 +234,16 @@ class ReportesGrafController extends seguridad.Shield {
         }
         data.fcex = Math.round(data.fcex * 100)/100
 
+//        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+//                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
+//                "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
 
-        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
+        sql = "select count(*) cnta from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
+                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.escl__id = ${params.escl} and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
-        println "rcmn: $sql"
+
+//        println "rcmn: $sql"
+
         if (data.prof) {
             data.rcmn = cn.rows(sql.toString())[0].cnta / data.prof * 100
         } else {
@@ -240,20 +270,20 @@ class ReportesGrafController extends seguridad.Shield {
         def sql
         def data = [:]
 
-/*
-        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr " +
-                "from rpec, prof, escl, facl, tpen " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-                "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and " +
-                "tpen.tpen__id = rpec.tpen__id " +
-                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr order by facl.facl__id, tpendscr, rpec.tpen__id"
-*/
+//        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, escl.escl__id, escldscr " +
+//                "from rpec, prof, escl, tpen " +
+//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+//                "rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} and " +
+//                "tpen.tpen__id = rpec.tpen__id " +
+//                "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
+
         sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, escl.escl__id, escldscr " +
-                "from rpec, prof, escl, tpen " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "from rpec, prof, escl, tpen, pfes " +
+                "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and " +
                 "rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
+
 //        println "sql: $sql"
         def datos = cn.rows(sql.toString())
 //        println datos
@@ -296,21 +326,19 @@ class ReportesGrafController extends seguridad.Shield {
 
 //        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
 //                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
-//                "facl.facl__id, facldscr " +
+//                "facl.facl__id, facldscr, escl.escl__id, escldscr " +
 //                "from rpec, prof, escl, facl " +
 //                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-//                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} " +
-//                "group by facldscr, facl.facl__id order by facl.facl__id"
-
+//                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} " +
+//                "group by facldscr, escldscr, facl.facl__id, escl.escl__id order by facl.facl__id"
 
         sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
                 "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
                 "facl.facl__id, facldscr, escl.escl__id, escldscr " +
-                "from rpec, prof, escl, facl " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
+                "from rpec, prof, escl, facl, pfes " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = pfes.escl__id and pfes.prof__id = prof.prof__id and " +
                 "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} " +
                 "group by facldscr, escldscr, facl.facl__id, escl.escl__id order by facl.facl__id"
-
 
 //        println "sql: $sql"
         def datos = cn.rows(sql.toString())

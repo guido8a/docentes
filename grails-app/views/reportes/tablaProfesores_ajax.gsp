@@ -20,7 +20,7 @@
                             <g:if test="${pantalla == '1'}">
                                 <button class="btn btn-info btnAlumnos" type="button"
                                     ${docentes.ReporteEncuesta.findByProfesorAndTipoEncuestaAndPeriodo(profesor, alumnos, periodo)?.promedio > 0 ? '' : 'disabled'}
-                                        data-id="${profesor.id}" data-tipo="1" title="Evaluación Alumnos">
+                                        data-id="${profesor.id}" data-esc="${escuela?.id}" data-fac="${facultad?.id}" data-tipo="1" title="Evaluación Alumnos">
                                     <i class="fa fa-bell-o"></i>
                                 </button>
                                 <button class="btn btn-info btnAlumnos" type="button"
@@ -125,14 +125,14 @@
         var idProfe = $(this).data('id');
         var perio = ${periodo?.id};
         var tipo = $(this).data('tipo');
-        location.href = "${createLink(controller: 'reportes', action: 'desempenoAlumnos')}?profe=" + idProfe + "&periodo=" + perio + "&tipo=" + tipo + "&escl=" + '${escuela?.id}'
+        location.href = "${createLink(controller: 'reportes', action: 'desempenoAlumnos')}?profe=" + idProfe + "&periodo=" + perio + "&tipo=" + tipo + "&escl=" + '${escuela?.id}' + "&facu=" + '${facultad?.id}'
     });
 
     $(".btnRecomendaciones").click(function () {
         var idProfe = $(this).data('id');
         var periodo = ${periodo?.id};
         var facul = ${facultad?.id};
-        location.href = "${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&escl=" + '${escuela?.id}'
+        location.href = "${createLink(controller: 'reportes2', action: 'recomendaciones')}?profe=" + idProfe + "&periodo=" + periodo + "&facultad=" + facul + "&escl=" + '${escuela?.id}' + "&facu=" + '${facultad?.id}'
     });
 
     $(".btnEncuestaDC").click(function () {
