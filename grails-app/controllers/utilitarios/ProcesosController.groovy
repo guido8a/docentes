@@ -521,7 +521,7 @@ class ProcesosController extends seguridad.Shield {
             sql2 = "select esclcdgo from escl where esclcdgo = '${cdgo}' and facl__id = ${facl}"
 
             repetido = cn2.rows(sql2.toString())[0]?.esclcdgo
-            println "sql: $sql2 \n-->$repetido"
+//            println "sql: $sql2 \n-->$repetido"
 
             reg = cn.rows(sql.toString())[0]
             actual_id = reg?.escl__id
@@ -557,7 +557,8 @@ class ProcesosController extends seguridad.Shield {
         if(cdgo != 'Código' && escl != 'Escuela'){
             sql = "select mtes__id, matecdgo, matedscr from mate, mtes " +
 //                    "where matecdgo = '${cdgo.trim()}'"
-                    "where mate.mate__id = mtes.mate__id and matecdgo = '${cdgo.trim()}' and univ__id = ${univ}"
+                    "where mate.mate__id = mtes.mate__id and matecdgo = '${cdgo.trim()}' and escl__id = ${escl} and " +
+                    "univ__id = ${univ}"
             reg = cn.rows(sql.toString())[0]
             println "mate --> $sql \n ${reg} \nescl: $escl"
             actual_id = reg?.mtes__id
@@ -568,7 +569,7 @@ class ProcesosController extends seguridad.Shield {
                 mate_id = cn.executeInsert(sql.toString())[0][0]
 
                 /** inserta materiasEscuela **/
-                println "---> inserta materiaEscuela: ${mate_id}"
+                println "---> inserta materiaEscuela: ${mate_id}, escl: $escl"
                 sql = "insert into mtes(mtes__id, mate__id, escl__id) " +
                         "values (default, ${mate_id}, ${escl})"
                 actual_id = cn.executeInsert(sql.toString())[0][0]
@@ -592,7 +593,8 @@ class ProcesosController extends seguridad.Shield {
 
         if(cdla != 'Cédula' && nmbr != 'NOMBRES' && apll !='APELLIDOS' && sexo !='SEXO' && titl != 'TÍTULO'){
             sql = "select pfes__id, profnmbr, profapll, proftitl from pfes, prof " +
-                    "where prof.prof__id = pfes.prof__id and profcdla = '${cdla}' and univ__id = ${univ}"
+                    "where prof.prof__id = pfes.prof__id and profcdla = '${cdla}' and " +
+                    "escl__id = ${escl} and univ__id = ${univ}"
 //        println "sql: $sql"
             reg = cn.rows(sql.toString())[0]
             actual_id = reg?.pfes__id
