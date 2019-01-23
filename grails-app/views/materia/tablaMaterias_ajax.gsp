@@ -5,23 +5,47 @@
   Time: 12:51
 --%>
 
-<div class="row-fluid"  style="width: 99.7%;height: 400px;overflow-y: auto;float: right;">
-    <div class="span12">
-        <div style="width: 1120px; height: 400px;">
-            <table class="table table-condensed table-bordered table-striped">
-                <tbody>
-                <g:each in="${materias}" var="materia">
-                    <tr data-id="${materia.id}">
-                        <td style="width: 15%">${materia?.codigo}</td>
-                        <td style="width: 50%">${materia?.nombre}</td>
-                        <td style="width: 30%">${materia?.escuela?.nombre}</td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
+<g:if test="${materias}">
+    <div class="row-fluid"  style="width: 99.7%;height: 400px;overflow-y: auto;float: right;">
+        <div class="span12">
+            <div style="width: 1120px; height: 400px;">
+                <table class="table table-condensed table-bordered table-striped">
+                    <tbody>
+                    <g:each in="${materias}" var="materia">
+                        <tr data-id="${materia.id}">
+                            <td style="width: 25%">${materia?.codigo}</td>
+                            <td style="width: 75%">${materia?.nombre}</td>
+                        </tr>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+    <div class="panel panel-info col-md-12" style="margin-top: 10px" >
+        <div class="panel-heading">
+            * Máxima cantidad de registros en pantalla 20
+        </div>
+    </div>
+</g:if>
+<g:else>
+    <div class="row-fluid"  style="width: 99.7%;height: 200px;overflow-y: auto;float: right;">
+        <div class="span12">
+            <div style="width: 100%; height: 100px;">
+                <table class="table table-condensed table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width: 100%"><div class="text-info text-center not-found"><i class="fa-2x pull-center text-shadow fa fa-close"> No existen registros.</i></div></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</g:else>
+
+
+
 
 <script type="text/javascript">
 
@@ -40,7 +64,8 @@
                         type    : "POST",
                         url     : "${createLink(action:'show_ajax')}",
                         data    : {
-                            id : id
+                            id : id,
+                            escuela: '${escuela?.id}'
                         },
                         success : function (msg) {
                             bootbox.dialog({

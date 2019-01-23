@@ -7,6 +7,7 @@ class DetalleEncuesta {
     ItemPregunta itemPregunta
     RespuestaPregunta respuestaPregunta
     Dictan dictan
+    Competencia competencia
 
     static mapping = {
         table 'dtec'
@@ -21,10 +22,11 @@ class DetalleEncuesta {
             itemPregunta column: 'prit__id'
             respuestaPregunta column: 'rppg__id'
             dictan column: 'dcta__id'
-
+            competencia column: 'cmpt__id'
         }
     }
 
     static constraints = {
+        competencia(nullable: true, blank: true)
     }
 }

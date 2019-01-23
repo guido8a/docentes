@@ -14,7 +14,7 @@ class Profesor {
     String observacion
     String evaluar
 //    Escuela escuela
-    Universidad universidad
+//    Universidad universidad
     String mail
 
 
@@ -26,7 +26,7 @@ class Profesor {
 
         columns {
             id column: 'prof__id'
-            universidad column: 'univ__id'
+//            universidad column: 'univ__id'
             cedula column: 'profcdla'
             nombre column: 'profnmbr'
             apellido column: 'profapll'

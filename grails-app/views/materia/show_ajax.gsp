@@ -6,14 +6,14 @@
 </g:if>
 <g:else>
 
-    <g:if test="${materiaInstance?.escuela}">
+    <g:if test="${escuela}">
         <div class="row">
             <div class="col-md-2 text-info">
                 Escuela
             </div>
 
             <div class="col-md-6">
-                ${materiaInstance?.escuela?.nombre?.encodeAsHTML()}
+                ${escuela?.nombre?.encodeAsHTML()}
             </div>
 
         </div>

@@ -4,6 +4,7 @@ class Matriculado {
 
     Dictan materiaDictada
     Estudiante estudiante
+    Curso curso
 
     static mapping = {
         table 'matr'
@@ -15,6 +16,7 @@ class Matriculado {
             id column: 'matr__id'
             materiaDictada column: 'dcta__id'
             estudiante column: 'estd__id'
+            curso column: 'crso__id'
         }
     }
 

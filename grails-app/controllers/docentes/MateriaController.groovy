@@ -71,13 +71,16 @@ class MateriaController extends Shield {
      * @render ERROR*[mensaje] cuando no se encontró el elemento
      */
     def show_ajax() {
+        println("params " + params)
+        def escuela
         if(params.id) {
+            escuela = Escuela.get(params.escuela)
             def materiaInstance = Materia.get(params.id)
             if(!materiaInstance) {
                 render "ERROR*No se encontró Materia."
                 return
             }
-            return [materiaInstance: materiaInstance]
+            return [materiaInstance: materiaInstance, escuela: escuela]
         } else {
             render "ERROR*No se encontró Materia."
         }
@@ -92,8 +95,6 @@ class MateriaController extends Shield {
 
         println("params form"  + params)
 
-        if(params.escuela){
-            def escuela = Escuela.get(params.id)
 
             def materiaInstance = new Materia()
             if(params.id) {
@@ -104,11 +105,7 @@ class MateriaController extends Shield {
                 }
             }
             materiaInstance.properties = params
-            return [materiaInstance: materiaInstance, escuela: escuela]
-        }else{
-
-        }
-
+            return [materiaInstance: materiaInstance]
 
     } //form para cargar con ajax en un dialog
 
@@ -198,13 +195,22 @@ class MateriaController extends Shield {
     }
 
     def tablaMaterias_ajax () {
-        def escuela
-        def materias
-        if(params.id){
-            escuela = Escuela.get(params.id)
-            materias = Materia.findAllByEscuela(escuela, [sort: 'nombre'])
-        }else{
-            materias = null
+
+//        println("params " + params)
+
+        def universidad = Universidad.get(params.universidad)
+
+        def materias = Materia.withCriteria {
+
+            eq("universidad",universidad)
+
+            and{
+                ilike("codigo", "%" + params.codigo + "%")
+                ilike("nombre", "%" + params.nombre + "%")
+            }
+
+            order("nombre","asc")
+            maxResults(20)
         }
 
         return [materias: materias]
@@ -256,20 +262,52 @@ class MateriaController extends Shield {
     }
 
     def tablaMateriasAsignadas_ajax () {
+
+//        println("params ma " + params)
+
         def estudiante = Estudiante.get(params.id)
         def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escuela)
 
         def matriculados = Matriculado.withCriteria {
 
             eq("estudiante",estudiante)
 
-            materiaDictada {
-                eq('periodo',periodo)
+            materiaDictada{
+                eq("periodo",periodo)
+//                eq("escuela",escuela)
             }
-
+            order("curso","asc")
         }
 
+
         return [materias: matriculados]
+    }
+
+
+    def tablaMateriasUni_ajax () {
+
+//        println("params " + params)
+
+        def universidad = Universidad.get(params.universidad)
+
+        def materias = Materia.withCriteria {
+
+            eq("universidad",universidad)
+
+            and{
+                ilike("codigo", "%" + params.codigo + "%")
+                ilike("nombre", "%" + params.nombre + "%")
+            }
+
+            order("nombre","asc")
+            maxResults(20)
+        }
+
+        return [materias: materias]
+    }
+
+    def materias (){
 
     }
 

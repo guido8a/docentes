@@ -20,8 +20,10 @@ class ReporteEncuesta {
     String causaCuello
     Double valorAjustado
     int recomendacion
-
+    Escuela escuela
+    Facultad facultad
     Universidad universidad
+    String tipo
 
 
     static mapping = {
@@ -51,6 +53,9 @@ class ReporteEncuesta {
             valorAjustado column: 'ajst'
             recomendacion column: 'con_rcmn'
             universidad column: 'univ__id'
+            escuela column: 'escl__id'
+            facultad column: 'facl__id'
+            tipo column: 'cb_tipo'
         }
     }
 

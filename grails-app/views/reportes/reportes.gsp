@@ -73,19 +73,19 @@
             </div>
             <div class="col-md-1">Período:</div>
         </g:if>
-    <g:else>
-        <div class="col-sm-3 row" style="text-align: right">
-            Universidad
-        </div>
+        <g:else>
+            <div class="col-sm-3 row" style="text-align: right">
+                Universidad
+            </div>
 
-        <div class="col-sm-6">
-            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="form-control" from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
-        </div>
+            <div class="col-sm-6">
+                <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
+                          class="form-control" from="${seguridad.Persona.get(session.usuario.id)?.universidad}"/>
+            </div>
 
-        <div class="col-md-1">Periodo:</div>
+            <div class="col-md-1">Periodo:</div>
 
-    </g:else>
+        </g:else>
 
         <div class="col-md-2" id="divPeriodos">
 
@@ -374,7 +374,7 @@
 
         if($("#facultad").val() != null){
             location.href = "${createLink(controller: 'reportes', action: 'desempeno')}?periodo=" + prdo + "&facultad=" +
-                    facultad + "&pantalla=" + 1 + "&escl=" + escuela;
+                facultad + "&pantalla=" + 1 + "&escl=" + escuela;
         }else{
             log("Seleccione una facultad","info")
         }

@@ -5,25 +5,47 @@
   Time: 11:17
 --%>
 
-<div class="" style="width: 99.7%;height: 450px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-condensed table-hover" width="1070px">
-        <tbody>
-        <g:each in="${estudiantes}" var="estudiante">
-            <tr data-id="${estudiante?.id}" data-uni="${universidad?.id}">
-                <td style="width: 20%">${estudiante?.cedula}</td>
-                <td style="width: 40%">${estudiante?.apellido}</td>
-                <td style="width: 40%">${estudiante?.nombre}</td>
-            </tr>
-        </g:each>
-        </tbody>
-    </table>
-</div>
-
-<div class="panel panel-info col-md-12" style="margin-top: 10px" >
-    <div class="panel-heading">
-            * Máxima cantidad de registros en pantalla 30
+<g:if test="${estudiantes}">
+    <div class="" style="width: 99.7%;height: 450px; overflow-y: auto;float: right; margin-top: -20px">
+        <table class="table-bordered table-condensed table-hover" width="100%">
+            <tbody>
+            <g:each in="${estudiantes}" var="estudiante">
+                <tr data-id="${estudiante?.id}" data-uni="${universidad?.id}">
+                    <td style="width: 20%">${estudiante?.cedula}</td>
+                    <td style="width: 40%">${estudiante?.apellido}</td>
+                    <td style="width: 40%">${estudiante?.nombre}</td>
+                </tr>
+            </g:each>
+            </tbody>
+        </table>
     </div>
-</div>
+
+    <g:if test="${estudiantes.size() > 20}">
+        <div class="panel panel-info col-md-12" style="margin-top: 10px" >
+            <div class="panel-heading">
+                * Máxima cantidad de registros en pantalla 20
+            </div>
+        </div>
+    </g:if>
+</g:if>
+<g:else>
+    <div class="row-fluid"  style="width: 99.7%;height: 200px;overflow-y: auto;float: right;">
+        <div class="span12">
+            <div style="width: 100%; height: 100px;">
+                <table class="table table-condensed table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width: 100%"><div class="text-info text-center not-found"><i class="fa-2x pull-center text-shadow fa fa-close"> No existen registros.</i></div></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</g:else>
+
+
+
 
 <script type="text/javascript">
 

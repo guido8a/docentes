@@ -10,50 +10,9 @@
 
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
-<!-- botones -->
-<div class="btn-toolbar toolbar">
-    <div class="btn-group" style="margin-right: 100px">
-        <a href="#" class="btn btn-info" id="btnProfesorNuevo">
-            <i class="fa fa-user"></i> Nuevo Profesor
-        </a>
-    </div>
-
-
-    <g:if test="${session.perfil.codigo == 'ADMG'}">
-        <div class="col-md-1"><b>Universidad:</b></div>
-        <div class="col-sm-3">
-            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="form-control" style="width: 300px"
-                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-        </div>
-    </g:if>
-    <g:else>
-        <div class="col-md-1"><b>Universidad:</b></div>
-        <div class="col-sm-3">
-            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="uni form-control" style="width: 300px"
-                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}" value="${seguridad.Persona.get(session.usuario.id)?.universidad?.id}"/>
-        </div>
-    </g:else>
-
-
-%{--<div class="btn-group pull-right col-md-3">--}%
-%{--<div class="input-group">--}%
-%{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
-%{--<span class="input-group-btn">--}%
-%{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
-%{--<i class="fa fa-search"></i>&nbsp;--}%
-%{--</g:link>--}%
-%{--</span>--}%
-%{--</div><!-- /input-group -->--}%
-%{--</div>--}%
-</div>
-
-
 <div class="row" style="margin-bottom: 10px;">
     <div class="row-fluid">
-        <div style="margin-left: 20px;">
-
+        <div style="margin-left: 10px;">
             <div class="col-xs-3">
                 <b style="margin-left: 5px">Cédula: </b>
                 <g:textField name="cedula_name" maxlength="31" style="margin-right: 10px; width: 100%" value="${params.criterio}"
@@ -70,14 +29,20 @@
                 <g:textField name="apellido_name" style="margin-right: 10px; width: 100%" value="${params.criterio}"
                              id="apellido" class="form-control"/>
             </div>
-            <div class="btn-group col-xs-1" style="margin-left: -10px; margin-top: 20px; width: 110px;">
-                <a href="#" name="busqueda" class="btn btn-info" id="btnBusqueda" title="Buscar"
+            <div class="btn-group col-md-1" style="margin-left: -10px; margin-top: 20px; width: 110px ">
+                <a href="#" name="busqueda" class="btn btn-success" id="btnBusqueda" title="Buscar"
                    style="height: 34px; padding: 9px; width: 46px">
                     <i class="fa fa-search"></i></a>
 
                 <a href="#" name="limpiarBus" class="btn btn-warning" id="btnLimpiarBusqueda"
                    title="Borrar criterios" style="height: 34px; padding: 9px; width: 34px">
                     <i class="fa fa-eraser"></i></a>
+            </div>
+
+            <div class="btn-group col-md-1" style="margin-left: -10px; margin-top: 20px; ">
+                <a href="#" class="btn btn-info" id="btnProfesorNuevo">
+                    <i class="fa fa-user"></i> Nuevo Profesor
+                </a>
             </div>
 
         </div>
@@ -124,9 +89,9 @@
         location.href="${createLink(controller: 'profesor', action: 'profesor')}?universidad="  + uni
     });
 
-    <g:if test="${session.perfil.codigo != 'ADMG'}">
-    $(".uni").attr("disabled", true);
-    </g:if>
+    %{--<g:if test="${session.perfil.codigo != 'ADMG'}">--}%
+    %{--$(".uni").attr("disabled", true);--}%
+    %{--</g:if>--}%
 
     $("#btnBusqueda").click(function () {
         var ced = $("#cedula").val();
@@ -144,9 +109,9 @@
 
     cargarTablaProfesores(null, null, null, $("#universidadId option:selected").val());
 
-    $("#universidadId").change(function () {
-        cargarTablaProfesores(null, null, null, $("#universidadId option:selected").val());
-    });
+    //    $("#universidadId").change(function () {
+    //        cargarTablaProfesores(null, null, null, $("#universidadId option:selected").val());
+    //    });
 
     function cargarTablaProfesores (ced,nom,ape,uni) {
         openLoader("Cargando....");

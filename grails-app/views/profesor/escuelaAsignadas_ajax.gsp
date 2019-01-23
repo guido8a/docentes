@@ -5,8 +5,11 @@
   Time: 11:19
 --%>
 
+%{--<g:select name="escuela_name" id="escuelaAsig" optionKey="id" optionValue="nombre"--}%
+          %{--class="form-control" from="${escuelas}" value="${profesor ? profesor?.escuela?.id : ''}"/>--}%
+
 <g:select name="escuela_name" id="escuelaAsig" optionKey="id" optionValue="nombre"
-          class="form-control" from="${escuelas}" value="${profesor ? profesor?.escuela?.id : ''}"/>
+          class="form-control" from="${escuelas}" value=""/>
 
 <script type="text/javascript">
 

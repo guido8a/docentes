@@ -126,14 +126,14 @@ class ProfesorController extends Shield {
         def profesorInstanceList
         def profesorInstanceCount
 
-        if(session.perfil.codigo == 'ADMG'){
+//        if(session.perfil.codigo == 'ADMG'){
             profesorInstanceList = getList(params, false)
             profesorInstanceCount = getList(params, true).size()
-        }else{
-            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
-            profesorInstanceList = getList2(params, false, universidad.id)
-            profesorInstanceCount = getList2(params, true, universidad.id).size()
-        }
+//        }else{
+//            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
+//            profesorInstanceList = getList2(params, false, universidad.id)
+//            profesorInstanceCount = getList2(params, true, universidad.id).size()
+//        }
 
         return [profesorInstanceList: profesorInstanceList, profesorInstanceCount: profesorInstanceCount]
     }
@@ -223,16 +223,12 @@ class ProfesorController extends Shield {
 
     def profesor () {
 //        println("params profe " + params)
-        def universidad = Universidad.get(params.universidad)
         def profesor
         if(params.id){
             profesor = Profesor.get(params.id)
         }
 
-        println("profesor " + profesor?.nombre  +  " " + profesor?.apellido)
-
-
-        return [profesorInstance: profesor, universidad: universidad]
+        return [profesorInstance: profesor]
     }
 
 
@@ -259,42 +255,75 @@ class ProfesorController extends Shield {
 //        println("params guardar profesor " + params)
         def profesor
         def escuela
+        def band = true
+        def existe = Profesor.findByCedula(params.cedula)
 
         if(params.id){
             profesor = Profesor.get(params.id)
+            if(params.cedula == profesor.cedula){
+                band = true
+            }else{
+                if(existe){
+                    band = false
+                }else{
+                    band = true
+                }
+            }
         }else{
             profesor = new Profesor()
             profesor.estado = 'N'
+            if(existe){
+                band = false
+            }
         }
 
-        escuela = Escuela.get(params.escuela)
-        profesor.escuela = escuela
-        profesor.nombre = params.nombre
-        profesor.apellido = params.apellido
-        profesor.titulo = params.titulo
-        profesor.cedula = params.cedula
-        profesor.sexo = params.sexo.toString()
-        profesor.evaluar = params.evalua
-        profesor.observacion = params.observacion
-        profesor.mail = params.mail.toLowerCase()
+        if(band){
+            escuela = Escuela.get(params.escuela)
+            profesor.nombre = params.nombre
+            profesor.apellido = params.apellido
+            profesor.titulo = params.titulo
+            profesor.cedula = params.cedula
+            profesor.sexo = params.sexo.toString()
+            profesor.evaluar = params.evalua
+            profesor.observacion = params.observacion
+            profesor.mail = params.mail.toLowerCase()
 
-        try {
-            profesor.save(flush: true)
-            render 'ok_'+ profesor?.id + "_" + escuela?.facultad?.universidad?.id
-        }catch (e){
-            render 'no'
-            println("error al guardar el profesor " + profesor.errors + "_ " + e)
+            try {
+                profesor.save(flush: true)
+                render 'ok_'+ "Información guardad correctamente_" + profesor?.id
+            }catch (e){
+                render 'no_' + "Error al guardar la información del profesor"
+                println("error al guardar el profesor " + profesor.errors + "_ " + e)
+            }
+        }else{
+            render "no_El número de cédula ingresado ya se encuentra asignado a un profesor"
         }
+
     }
 
     def tablaMaterias_ajax () {
-//        println("params tabla mat " + params)
+        println("params tabla mat " + params)
+
         def periodo = Periodo.get(params.periodo)
+        def universidad = Universidad.get(params.universidad)
         def profesor
         def materias
+
         if(params.idProfe){
             profesor = Profesor.get(params.idProfe)
-            materias = Dictan.findAllByPeriodoAndProfesor(periodo, profesor, [sort: 'materia.nombre',order: 'asc'])
+            materias = Dictan.withCriteria {
+                eq("periodo",periodo)
+                eq("profesor",profesor)
+                escuela{
+                    facultad{
+                        eq("universidad",universidad)
+                    }
+                }
+
+                materia{
+                    order("nombre","asc")
+                }
+            }
         }else{
             materias = null
         }
@@ -303,24 +332,22 @@ class ProfesorController extends Shield {
     }
 
     def materias_ajax () {
-//        def profesor = Profesor.get(params.id)
-//        def materias = Materia.findAllByEscuela(profesor.escuela, [sort: 'nombre', order: 'asc'])
 
         def escuela = Escuela.get(params.escuela)
-        def materias = Materia.findAllByEscuela(escuela, [sort: 'nombre', order: 'asc'])
-
-        return [materias: materias]
+        return [escuela: escuela]
     }
 
     def agregarMateria_ajax () {
-//        println("params agregar m " + params)
-        def profesor = Profesor.get(params.id)
+        println("params agregar m " + params)
+
+        def profesor = Profesor.get(params.profesor)
         def materia = Materia.get(params.materia)
         def curso = Curso.get(params.curso)
         def periodo = Periodo.get(params.periodo)
         def paralelo = params.paralelo.toInteger()
+        def escuela = Escuela.get(params.escuela)
 
-        def existente = Dictan.findAllByProfesorAndPeriodoAndCursoAndMateriaAndParalelo(profesor, periodo, curso, materia, paralelo)
+        def existente = Dictan.findAllByProfesorAndPeriodoAndCursoAndMateriaAndParaleloAndEscuela(profesor, periodo, curso, materia, paralelo, escuela)
 
         if(existente){
             render "no_No se puede asignar la materia, ya se encuentra asignada a este profesor!"
@@ -331,6 +358,7 @@ class ProfesorController extends Shield {
             dicta.curso = curso
             dicta.periodo = periodo
             dicta.paralelo = params.paralelo.toInteger()
+            dicta.escuela = escuela
 
             try {
                 dicta.save(flush:true)
@@ -340,7 +368,6 @@ class ProfesorController extends Shield {
                 println("error al guardar las materias del profesor " + dicta.errors)
             }
         }
-
     }
 
     def borrarMateria_ajax (){
@@ -430,12 +457,6 @@ class ProfesorController extends Shield {
 
         def profesores = Profesor.withCriteria {
 
-//            escuela {
-//                facultad{
-                    eq("universidad",universidad)
-//                }
-//            }
-
             and{
                 ilike("apellido", "%" + params.apellido + "%")
                 ilike("cedula", "" + params.cedula + "%")
@@ -443,7 +464,7 @@ class ProfesorController extends Shield {
             }
 
             order("apellido","asc")
-            maxResults(30)
+            maxResults(20)
         }
 
         return[profesores: profesores]
@@ -456,17 +477,17 @@ class ProfesorController extends Shield {
             profesor = Profesor.get(params.profesor)
         }
         def facultad = Facultad.get(params.facultad)
-        def escuelas = Escuela.findAllByFacultad(facultad)
+//        def escuelas = Escuela.findAllByFacultad(facultad)
+        def escuelas = ProfesorEscuela.findAllByProfesor(profesor).escuela
 
         return [escuelas: escuelas, profesor: profesor]
     }
 
     def registrar_ajax () {
 
-        println("params " + params)
+//        println("params " + params)
 
         def profesor = Profesor.get(params.id.toInteger())
-        def universidad = Universidad.get(params.universidad.toInteger())
         def texto = ''
 
         if(params.tipo == '1'){
@@ -479,12 +500,18 @@ class ProfesorController extends Shield {
 
         try{
             profesor.save(flush: true)
-            render "ok_" + profesor?.id + "_" + universidad?.id + "_" + texto
+            render "ok_" + profesor?.id + "_" + texto
         }catch (e){
             println("error al registrar profesor" + e)
             render "no"
         }
-
-
     }
- }
+
+    def periodo_ajax () {
+
+        def universidad = Universidad.get(params.universidad)
+        def periodos = Periodo.findAllByUniversidad(universidad).sort{it.nombre}
+
+        return [periodos: periodos]
+    }
+}

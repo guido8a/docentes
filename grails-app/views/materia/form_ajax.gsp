@@ -8,19 +8,19 @@
     <g:form class="form-horizontal" name="frmMateria" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="${materiaInstance?.id}" />
 
-        <div class="form-group ${hasErrors(bean: materiaInstance, field: 'escuela', 'error')} ">
-            <span class="grupo">
-                <label for="escuela" class="col-md-2 control-label text-info">
-                    Escuela
-                </label>
-                <div class="col-md-10">
+        %{--<div class="form-group ${hasErrors(bean: materiaInstance, field: 'escuela', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label class="col-md-2 control-label text-info">--}%
+                    %{--Escuela--}%
+                %{--</label>--}%
+                %{--<div class="col-md-10">--}%
                     %{--<g:select id="escuela" name="escuela.id" from="${docentes.Escuela.list()}" optionKey="id" required="" value="${materiaInstance?.escuela?.id}" class="many-to-one form-control"/>--}%
-                    <g:hiddenField name="escuela.id" value="${materiaInstance ? materiaInstance?.escuela?.id :  escuela?.id} "/>
-                    <g:textField name="escuelaTexto" value="${materiaInstance ? materiaInstance?.escuela?.nombre : escuela?.nombre}" class="many-to-one form-control" readonly=""/>
-                </div>
+                    %{--<g:hiddenField name="escuela.id" value="${escuela?.id} "/>--}%
+                    %{--<g:textField name="escuelaTexto" value="${escuela?.nombre}" class="many-to-one form-control" readonly=""/>--}%
+                %{--</div>--}%
 
-            </span>
-        </div>
+            %{--</span>--}%
+        %{--</div>--}%
 
 
 

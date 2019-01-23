@@ -10,54 +10,9 @@
 
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
-
-
-
-<!-- botones -->
-<div class="btn-toolbar toolbar">
-    <div class="btn-group">
-        <a href="#" class="btn btn-info btnCrear">
-            <i class="fa fa-user"></i> Nuevo estudiante
-        </a>
-    </div>
-    %{--<div class="btn-group pull-right col-md-3">--}%
-    %{--<div class="input-group">--}%
-    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
-    %{--<span class="input-group-btn">--}%
-    %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
-    %{--<i class="fa fa-search"></i>&nbsp;--}%
-    %{--</g:link>--}%
-    %{--</span>--}%
-    %{--</div><!-- /input-group -->--}%
-    %{--</div>--}%
-</div>
-
-
-<div class="row" style="margin-left: 190px;">
-    <g:if test="${session.perfil.codigo == 'ADMG'}">
-        <div class="col-md-1"><b>Universidad:</b></div>
-        <div class="col-sm-3">
-            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="form-control" style="width: 300px"
-                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-        </div>
-    </g:if>
-    <g:else>
-        <div class="col-md-1"><b>Universidad:</b></div>
-        <div class="col-sm-3">
-            <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                      class="uni form-control" style="width: 300px"
-                      from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}" value="${seguridad.Persona.get(session.usuario.id)?.universidad?.id}"/>
-        </div>
-    </g:else>
-</div>
-
-
-
-
 <div class="row" style="margin-bottom: 10px;">
     <div class="row-fluid">
-        <div style="margin-left: 20px;">
+        <div>
 
             <div class="col-xs-3">
                 <b style="margin-left: 5px">Cédula: </b>
@@ -78,7 +33,7 @@
             </div>
 
             <div class="btn-group col-xs-1" style="margin-left: -10px; margin-top: 20px; width: 110px;">
-                <a href="#" name="busqueda" class="btn btn-info" id="btnBusqueda" title="Buscar"
+                <a href="#" name="busqueda" class="btn btn-success" id="btnBusqueda" title="Buscar"
                    style="height: 34px; padding: 9px; width: 46px">
                     <i class="fa fa-search"></i></a>
 
@@ -87,13 +42,17 @@
                     <i class="fa fa-eraser"></i></a>
             </div>
 
-        </div>
+            <div class="btn-group col-md-1" style="margin-left: -10px; margin-top: 20px; ">
+                <a href="#" class="btn btn-info btnCrear">
+                    <i class="fa fa-user"></i> Nuevo estudiante
+                </a>
+            </div>
 
+        </div>
     </div>
 </div>
 
-
-<table class="table table-bordered table-hover table-condensed" style="width: 1070px">
+<table class="table table-bordered table-hover table-condensed" style="width: 100%">
     <thead>
     <tr>
         <th style="width: 20%">Cédula</th>
@@ -106,7 +65,6 @@
 <div id="divTablaEstudiantes">
 
 </div>
-
 
 <script type="text/javascript">
 
@@ -165,8 +123,6 @@
         });
     }
 
-
-
     var id = null;
     function submitForm() {
         var $form = $("#frmEstudiante");
@@ -179,14 +135,13 @@
                 data    : $form.serialize(),
                 success : function (msg) {
                     var parts = msg.split("*");
-//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                     if (parts[0] == "OK") {
-                        log("Estudiante guardado correctamente","success")
+                        log("Estudiante guardado correctamente","success");
                         setTimeout(function () {
                             location.reload(true);
                         }, 1000);
                     } else {
-                        log("Error al guardar el estudiante","error")
+                        log("Error al guardar el estudiante","error");
                         spinner.replaceWith($btn);
                         return false;
                     }
@@ -269,8 +224,7 @@
     $(function () {
 
         $(".btnCrear").click(function() {
-            var universidad = $("#universidadId option:selected").val();
-            location.href="${createLink(controller: 'estudiante', action: 'estudiante')}?universidad=" + universidad;
+            location.href="${createLink(controller: 'estudiante', action: 'estudiante')}";
 //                    return false;
         });
 

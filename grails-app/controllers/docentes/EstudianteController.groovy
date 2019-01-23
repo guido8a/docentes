@@ -42,10 +42,10 @@ class EstudianteController extends Shield {
             list = c.list(params) {
                 or {
                     /* TODO: cambiar aqui segun sea necesario */
-                    
-                    ilike("apellido", "%" + params.search + "%")  
-                    ilike("cedula", "%" + params.search + "%")  
-                    ilike("nombre", "%" + params.search + "%")  
+
+                    ilike("apellido", "%" + params.search + "%")
+                    ilike("cedula", "%" + params.search + "%")
+                    ilike("nombre", "%" + params.search + "%")
                 }
             }
         } else {
@@ -110,7 +110,7 @@ class EstudianteController extends Shield {
                 }
             }
 
-           list = e.estudiante.unique().asList(params)
+            list = e.estudiante.unique().asList(params)
         }
         if (!all && params.offset.toInteger() > 0 && list.size() == 0) {
             params.offset = params.offset.toInteger() - 1
@@ -232,53 +232,72 @@ class EstudianteController extends Shield {
     def estudiante () {
 
 //        println("estud " + params)
-
         def estudiante
-        if(params.id && params.id != 'null'){
+        if(params.id){
             estudiante = Estudiante.get(params.id)
         }
 
-        def universidad = Universidad.get(params.universidad)
-        def periodo = Periodo.findAllByUniversidad(universidad).sort{it.nombre}
-
-        return [estudianteInstance: estudiante, periodo: periodo, universidad: universidad]
+        return [estudianteInstance: estudiante]
     }
 
     def saveEstudiante_ajax () {
 
-//        println("save est " + params)
+        println("save est " + params)
+
+        def existe = Estudiante.findByCedula(params.cedula)
+        def band = true
 
         def estudiante
-        def universidad = Universidad.get(params.universidad)
-        if(params.id && params.id != 'null'){
+        if(params.id){
             estudiante = Estudiante.get(params.id)
+            if(params.cedula == estudiante.cedula){
+                band = true
+            }else{
+                if(existe){
+                    band = false
+                }else{
+                    band = true
+                }
+            }
         }else{
             estudiante = new Estudiante()
+            if(existe){
+                band = false
+            }
         }
 
-        estudiante.nombre = params.nombre.toUpperCase()
-        estudiante.apellido = params.apellido.toUpperCase()
-        estudiante.cedula = params.cedula
-        estudiante.universidad = universidad
+        if(band){
+            estudiante.nombre = params.nombre.toUpperCase()
+            estudiante.apellido = params.apellido.toUpperCase()
+            estudiante.cedula = params.cedula
 
-//        println("universidad " + universidad?.id)
+            try {
+                estudiante.save(flush: true)
+                render 'ok_'+ "Información guardada correctamente_" + estudiante?.id
+            }catch (e){
+                render 'no_Error al guardar el estudiante'
+                println("error al guardar el profesor " + estudiante.errors)
+            }
 
-        try {
-            estudiante.save(flush: true)
-            render 'ok_'+ estudiante?.id + "_" + universidad?.id
-        }catch (e){
-            render 'no'
-            println("error al guardar el profesor " + estudiante.errors)
+        }else{
+            render "no_El número de cédula ingresado ya se encuentra asignado a un alumno"
         }
     }
 
-
     def materias_ajax () {
-        def periodo = Periodo.get(params.periodo)
-        def dicta = Dictan.findAllByPeriodo(periodo, [sort: 'materia.nombre', order: 'asc'])
-        def estudiante = Estudiante.get(params.id)
 
-        return [dicta: dicta, periodo: periodo, estudiante:estudiante]
+        def estudiante = Estudiante.get(params.estudiante)
+        def escuela = Escuela.get(params.escuela)
+        def periodo = Periodo.get(params.periodo)
+
+        def materias = Dictan.withCriteria {
+            eq("escuela",escuela)
+            eq("periodo",periodo)
+        }
+
+        def profesores = materias.profesor
+
+        return [estudiante:estudiante, profesores: profesores.sort{it.apellido}, escuela: escuela]
     }
 
     def borrarMateriaMatriculada_ajax () {
@@ -299,10 +318,10 @@ class EstudianteController extends Shield {
         def dicta = Dictan.get(params.id)
 //        def mat = Matriculado.findAllByEstudianteAndMateriaDictada(estudiante, dicta)
         def mat  = Matriculado.withCriteria {
-                    eq("estudiante",estudiante)
-                    materiaDictada {
-                      eq("materia", dicta.materia)
-                    }
+            eq("estudiante",estudiante)
+            materiaDictada {
+                eq("materia", dicta.materia)
+            }
         }
 
         def nueva
@@ -329,63 +348,129 @@ class EstudianteController extends Shield {
         def estudiantes
         def universidad
 
-//        if(session.perfil.codigo == 'ADMG'){
+        universidad = Universidad.get(params.universidad)
 
+        estudiantes = Estudiante.withCriteria {
 
-            universidad = Universidad.get(params.universidad)
+            and{
+                ilike("apellido", "%" + params.apellido + "%")
+                ilike("cedula", "" + params.cedula + "%")
+                ilike("nombre", "%" + params.nombre + "%")
+            }
 
-//            if(!params.cedula && !params.nombre && !params.apellido){
-//                estudiantes = Estudiante.list([sort: 'apellido', order: 'asc', max: 30])
-//            }else{
-//
-                  estudiantes = Estudiante.withCriteria {
+            order("apellido","asc")
+            maxResults(20)
 
-                        eq("universidad", universidad)
-
-                    and{
-                        ilike("apellido", "%" + params.apellido + "%")
-                        ilike("cedula", "" + params.cedula + "%")
-                        ilike("nombre", "%" + params.nombre + "%")
-                    }
-
-                    order("apellido","asc")
-
-                    maxResults(30)
-
-                }
-//            }
-//
-//
-//        }else{
-//            universidad = Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)
-
-//            def sql
-//
-//            if(!params.cedula && !params.nombre && !params.apellido){
-//                sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
-//                        "  estdapll apellido from estd, matr, dcta, prdo\n" +
-//                        "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
-//                        "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' " +
-//                        "group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
-//
-//            }else{
-//                sql = "select estd.estd__id id, estdcdla cedula, estdnmbr nombre,\n" +
-//                        "  estdapll apellido from estd, matr, dcta, prdo\n" +
-//                        "where matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id\n" +
-//                        "      and prdo.prdo__id = dcta.prdo__id and univ__id = '${universidad?.id}' and estd.estdcdla ilike'${params.cedula}%'" +
-//                        " and estd.estdapll ilike '%${params.apellido}%' and estd.estdnmbr ilike '%${params.nombre}%' group by estd.estd__id, estdcdla, estdnmbr, estdapll limit 30;"
-//            }
-//
-//            def cn = dbConnectionService.getConnection()
-//            estudiantes = cn.rows(sql.toString());
-
-//        }
+        }
 
         return[estudiantes: estudiantes, universidad: universidad]
+    }
 
+    def periodo_ajax() {
+
+        def universidad = Universidad.get(params.universidad)
+        def periodos = Periodo.findAllByUniversidad(universidad)
+
+        return [periodos: periodos]
+    }
+
+    def facultad_ajax() {
+
+        def universidad = Universidad.get(params.universidad)
+        def facultades = Facultad.findAllByUniversidad(universidad, [sort: 'nombre', order: 'asc'])
+
+        return [facultades: facultades, universidad: universidad]
+    }
+
+    def escuelas_ajax() {
+
+        def facultad = Facultad.get(params.facultad)
+        def escuelas = Escuela.findAllByFacultad(facultad, [sort: 'nombre', order: 'asc'])
+
+        return [escuelas: escuelas]
+    }
+
+    def tablaMateriasDicta_ajax () {
+
+//        println("params tdicta " + params)
+
+        def universidadE = Universidad.get(params.universidad)
+        def escuelaE = Escuela.get(params.escuela)
+        def periodoE = Periodo.get(params.periodo)
+        def estudiante = Estudiante.get(params.estudiante)
+        def profesorDic
+
+        if(params.profesor != '-1'){
+            profesorDic = Profesor.get(params.profesor)
+        }
+
+        def materiasMatriculadas = Matriculado.withCriteria {
+
+            eq("estudiante",estudiante)
+            materiaDictada{
+                eq("periodo",periodoE)
+            }
+        }
+
+        def materias = Dictan.withCriteria {
+
+            eq("escuela",escuelaE)
+            eq("periodo",periodoE)
+
+            escuela{
+                facultad{
+                    eq("universidad",universidadE)
+                }
+            }
+
+            and{
+                materia{
+                    ilike("codigo", "%" + params.codigo + "%")
+                    ilike("nombre", "%" + params.materia + "%")
+                }
+
+                if(params.profesor != '-1'){
+                    eq("profesor",profesorDic)
+                }
+
+            }
+
+            order("materia","asc")
+        }
+
+        def filtradas = materias - materiasMatriculadas.materiaDictada
+
+        return [materias: filtradas]
     }
 
 
+    def saveAsignarMateria_ajax () {
+//        println("params " + params)
 
-    
+        def dicta = Dictan.get(params.dicta)
+        def curso = Curso.get(params.curso)
+        def estudiante = Estudiante.get(params.estudiante)
+        def matricula
+
+
+        if(params.id){
+            matricula = Matriculado.get(params.id)
+        }else{
+            matricula = new Matriculado()
+        }
+
+        matricula.estudiante = estudiante
+        matricula.curso = curso
+        matricula.materiaDictada = dicta
+
+        try{
+            matricula.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al agregar la materia al alumno " + e + "_ "+ matricula.errors)
+            render "no"
+        }
+    }
+
+
 }
