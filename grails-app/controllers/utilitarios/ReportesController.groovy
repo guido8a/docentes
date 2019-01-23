@@ -13,7 +13,6 @@ import docentes.Escuela
 import docentes.Facultad
 import docentes.Periodo
 import docentes.Profesor
-import docentes.ProfesorEscuela
 import docentes.ReporteEncuesta
 import docentes.TipoEncuesta
 import docentes.Universidad

@@ -745,13 +745,13 @@ class ProcesosController extends seguridad.Shield {
 
     /** Ejecuta función: desempeño **/
     def progreso() {
-//        println "$params"
+        println "$params"
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def retorna = ""
-        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, pfes, escl, facl " +
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, prof, escl, facl, dcta " +
                 "where encu.prdo__id = ${params.periodo} and " +
-                "pfes.pfes__id = encu.prof__id and escl.escl__id = pfes.escl__id and " +
+                "prof.prof__id = encu.prof__id and dcta.prof__id = prof.prof__id and escl.escl__id = dcta.escl__id and " +
                 "facl.facl__id = escl.facl__id and encu.teti__id = 2 group by facl.facl__id, facldscr order by facldscr"
 
         println "sql: $sql"
@@ -767,14 +767,15 @@ class ProcesosController extends seguridad.Shield {
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
         def retorna = ""
-        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, estd, matr, dcta, pfes, escl, facl " +
+        def sql = "select facl.facl__id, facldscr, count(*) cnta from encu, estd, matr, dcta, prof, escl, facl " +
                 "where encu.prdo__id = ${params.periodo} and estd.estd__id = encu.estd__id and " +
                 "matr.estd__id = estd.estd__id and dcta.dcta__id = matr.dcta__id and encu.teti__id = 4 and " +
-                "encuetdo = 'C' and pfes.pfes__id = dcta.pfes__id and escl.escl__id = pfes.escl__id and " +
+                "encuetdo = 'C' and prof.prof__id = dcta.prof__id and escl.escl__id = dcta.escl__id and " +
                 "facl.facl__id = escl.facl__id " +
                 "group by facl.facl__id, facldscr order by facldscr"
 
         println "sql: $sql"
+
 
         cn.eachRow(sql.toString()) { d ->
             render(d.facl__id + "_" + d.cnta + "_" + d.facldscr + "*")
