@@ -474,26 +474,26 @@ class Reportes2Controller extends seguridad.Shield {
                 tablaD.setWidthPercentage(100);
                 tablaD.setWidths(arregloEnteros([50,13,37 ]))
 
-                    if(p?.nm_a == p?.nm_b){
-                        addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate + " * ", fontNormalBold), prmsIzBorder2)
-                    }else{
-                        addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
-                    }
+                if(p?.nm_a == p?.nm_b){
+                    addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate + " * ", fontNormalBold), prmsIzBorder2)
+                }else{
+                    addCellTabla(tablaD, new Paragraph("Asignatura: " + p?.mate, fontNormalBold), prmsIzBorder2)
+                }
 
 
-                    addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
-                    addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
+                addCellTabla(tablaD, new Paragraph(" Paralelo: " + p?.prll, fontNormalBold), prmsIzBorder2)
+                addCellTabla(tablaD, new Paragraph(" Tipo: " + p?.tipo, fontNormalBold), prmsIzBorder2)
 
-                    document.add(tablaD);
+                document.add(tablaD);
 
-                    PdfPTable tablaF = new PdfPTable(2);
-                    tablaF.setWidthPercentage(100);
-                    tablaF.setWidths(arregloEnteros([85, 15]))
+                PdfPTable tablaF = new PdfPTable(2);
+                tablaF.setWidthPercentage(100);
+                tablaF.setWidths(arregloEnteros([85, 15]))
 
-                    addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
-                    addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold4), prmsCrBorder)
+                addCellTabla(tablaF, new Paragraph("Causa", fontNormalBold4), prmsCrBorder)
+                addCellTabla(tablaF, new Paragraph("Frecuencias", fontNormalBold4), prmsCrBorder)
 
-                    document.add(tablaF);
+                document.add(tablaF);
             }else{
 
                 if(p?.prll != varPara){
@@ -879,9 +879,14 @@ class Reportes2Controller extends seguridad.Shield {
         def sql
 
         if(ban == 1){
-            sql =  "select encu__id, profapll||' '||profnmbr prof, matedscr, crsodscr, dctaprll from encu, prof, dcta, mate, mtes, crso where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo} and dcta.dcta__id = encu.dcta__id and mtes.mate__id = mate.mate__id and dcta.mtes__id = mtes.mtes__id and crso.crso__id = dcta.crso__id;"
+            sql =  "select encu__id, profapll||' '||profnmbr prof, matedscr, crsodscr, " +
+                    "dctaprll from encu, prof, dcta, mate, crso where encuetdo = 'C' " +
+                    "and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo} " +
+                    "and dcta.dcta__id = encu.dcta__id and dcta.mate__id = mate.mate__id " +
+                    "and crso.crso__id = dcta.crso__id;"
         }else{
-            sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
+            sql = "select encu__id, profapll||' '||profnmbr prof from encu, prof where encuetdo = 'C' " +
+                    "and encu.prof__id = ${profesor?.id} and prof.prof__id = encu.prof__id and teti__id = ${params.tipo};"
         }
 
 //        println("---> " + sql)
@@ -1057,13 +1062,10 @@ class Reportes2Controller extends seguridad.Shield {
         document.add(parrafoTitulo)
         document.add(uso)
 
-//        def sql = "select encu__id from encu, matr, dcta, mate " +
-//                "where encuetdo = 'C' and teti__id = 4 and " +
-//                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = dcta.mate__id and " +
-//                "escl__id = ${params.escuela} group by encu__id"
-        def sql = "select encu__id from encu, matr, dcta, mate, mtes " +
+        def sql = "select encu__id from encu, matr, dcta, mate " +
                 "where encuetdo = 'C' and teti__id = 4 and " +
-                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id and mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and " +
+                "matr.estd__id = encu.estd__id and dcta.dcta__id = matr.dcta__id " +
+                "and mate.mate__id = dcta.mate__id and " +
                 "escl__id = ${params.escuela} group by encu__id"
 
 //        println("---> " + sql)
@@ -1159,7 +1161,6 @@ class Reportes2Controller extends seguridad.Shield {
         response.setHeader("Content-disposition", "attachment; filename=" + 'encuestaFactoresExito' + ".pdf")
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def cargarDatos (){

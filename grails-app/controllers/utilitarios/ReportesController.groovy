@@ -1130,14 +1130,14 @@ class ReportesController extends seguridad.Shield {
 
             profesor{
 
-                    and{
-                        ilike("cedula", params.cedula)
-                        ilike("nombre", params.nombres)
-                        ilike("apellido", params.apellidos)
-                    }
-
-                    order("nombre","asc")
+                and{
+                    ilike("cedula", params.cedula)
+                    ilike("nombre", params.nombres)
+                    ilike("apellido", params.apellidos)
                 }
+
+                order("nombre","asc")
+            }
         }
 
         def alumnos = TipoEncuesta.findByCodigo("DC")
@@ -1650,58 +1650,49 @@ class ReportesController extends seguridad.Shield {
 //                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
 //                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
 //                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
+
                 val = 'dcni'
 
                 break;
             case 'DAC':
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
+
                 val = 'ddac'
                 break;
             case 'DCI':
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
+
                 val = 'ddsc'
 
                 break;
             case 'DHD':
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
+
                 val = 'ddhd'
 
                 break;
             case 'DSC':
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
+
                 val = 'ddsc'
 
                 break;
             case 'EA':
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'TT' order by profapll, profnmbr"
+
                 val = 'd_ea'
                 break;
         }
@@ -1849,58 +1840,47 @@ class ReportesController extends seguridad.Shield {
 //                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
 //                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
 //                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by dcni DESC"
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen, pfes, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, dcni from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by dcni DESC"
+
                 val = 'dcni'
 
                 break;
             case 'DAC':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddac DESC"
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddac from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddac DESC"
                 val = 'ddac'
                 break;
             case 'DCI':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddci DESC"
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddci from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddci DESC"
                 val = 'ddsc'
 
                 break;
             case 'DHD':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddhd DESC"
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddhd from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddhd DESC"
                 val = 'ddhd'
 
                 break;
             case 'DSC':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddsc DESC"
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, ddsc from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by ddsc DESC"
                 val = 'ddsc'
 
                 break;
             case 'EA':
-                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen, pfes " +
-                        "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
+                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
+                        "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by d_ea DESC"
-//                sql = "select profnmbr||' '||profapll profesor, esclcdgo, d_ea from rpec, prof, escl, tpen " +
-//                        "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
-//                        "prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' order by d_ea DESC"
                 val = 'd_ea'
                 break;
         }
@@ -2183,11 +2163,11 @@ class ReportesController extends seguridad.Shield {
                 cn.eachRow(sql.toString()) { d ->
                     data.put(d.clase, d.cnta)
                     if(d?.clase == 'A'){
-                       av = d.cnta
+                        av = d.cnta
                     }
                     data.put(d.clase, d.cnta)
                     if(d?.clase == 'B'){
-                       bv = d.cnta
+                        bv = d.cnta
                     }
                     data.put(d.clase, d.cnta)
                     if(d?.clase == 'C'){
