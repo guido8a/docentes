@@ -62,15 +62,15 @@
                           from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
             </div>
             <div class="col-md-1" style="margin-top: 10px;">Período:</div>
-            <div class="col-md-1" style="margin-top: 10px;" id="divPeriodos">
+            <div class="col-md-2" style="margin-top: 10px;" id="divPeriodos">
 
             </div>
         </g:if>
         <g:else>
             <div class="col-md-1" style="margin-top: 10px;">Período:</div>
-            <div class="col-md-1" style="margin-top: 10px;">
+            <div class="col-md-2" style="margin-top: 10px;">
                 <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                          class="form-control" style="width: 90px"
+                          class="form-control" style="width: 160px"
                           from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
             </div>
         </g:else>
