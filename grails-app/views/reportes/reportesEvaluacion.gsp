@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-6" style="margin-left: 10px">
+            <div class="form-group col-md-5" style="margin-left: 80px">
                 <div class="col-md-1">Facultad:</div>
 
                 <div class="input-group col-md-12">
@@ -113,7 +113,7 @@
                 </div>
             </div>
 
-            <div class="form-group col-md-6" style="margin-left: 10px">
+            <div class="form-group col-md-5" style="margin-left: 80px">
                 <div class="col-md-1">Facultad:</div>
 
                 <div class="input-group col-md-12">

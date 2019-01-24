@@ -101,22 +101,13 @@ class ReportesController extends seguridad.Shield {
         def tipo = params.tipo
         def titulo
 
-//        sql = "select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, escldscr " +
-//                "from prof, pfes, mate, crso, escl, dcta " +
-//                "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and pfes.prof__id = prof.prof__id and " +
-//                "dcta.pfes__id = pfes.pfes__id and mate.mate__id = dcta.mate__id and prof.prof__id not in ( " +
-//                "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}' and teti__id = 2 and " +
-//                "dcta__id = dcta.dcta__id) and " +
-//                "escl.escl__id = mate.escl__id and escl.escl__id = ${params.escl} " +
-//                "order by escldscr, profapll, profnmbr"
-
         sql = "select matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, escldscr " +
-                "from prof, pfes, mate, crso, escl, dcta, mtes " +
-                "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and pfes.prof__id = prof.prof__id and " +
-                "dcta.pfes__id = pfes.pfes__id and mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and prof.prof__id not in ( " +
+                "from prof, mate, crso, escl, dcta " +
+                "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and dcta.prof__id = prof.prof__id and " +
+                "mate.mate__id = dcta.mate__id and prof.prof__id not in ( " +
                 "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}' and teti__id = 2 and " +
                 "dcta__id = dcta.dcta__id) and " +
-                "escl.escl__id = mtes.escl__id and escl.escl__id = ${params.escl} " +
+                "escl.escl__id = dcta.escl__id and escl.escl__id = ${params.escl} " +
                 "order by escldscr, profapll, profnmbr"
 
         titulo = "Asignaturas que Faltan por Evaluar los Estudiantes"
@@ -143,23 +134,13 @@ class ReportesController extends seguridad.Shield {
             case '1':
                 titulo = "Profesores que NO han sido evaluados por los alumnos"
 
-//                sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-//                        "from dcta, mate, pfes, prof, crso, escl, matr " +
-//                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
-//                        "mate.mate__id = dcta.mate__id and matr.dcta__id = dcta.dcta__id and prof.prof__id = pfes.prof__id and " +
-//                        "pfes.prof__id not in ( " +
-//                        "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
-//                        "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
-//                        "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
-//                        "order by escldscr, profapll, profnmbr"
-
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, pfes, prof, crso, escl, matr, mtes " +
-                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and pfes.pfes__id = dcta.pfes__id and " +
-                        "mate.mate__id = mtes.mate__id and dcta.mtes__id = mtes.mtes__id and matr.dcta__id = dcta.dcta__id and prof.prof__id = pfes.prof__id and " +
-                        "pfes.prof__id not in ( " +
-                        "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
-                        "escl.escl__id = pfes.escl__id and prof.prof__id = pfes.prof__id and facl__id = ${params.facl} " +
+                        "from dcta, mate, prof, crso, escl, matr " +
+                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
+                        "mate.mate__id = dcta.mate__id and matr.dcta__id = dcta.dcta__id and prof.prof__id = dcta.prof__id and " +
+                        "dcta.prof__id not in (select prof__id from encu " +
+                        "where prof__id is not null and prdo__id = '${params.periodo}') and " +
+                        "escl.escl__id = dcta.escl__id and facl__id = ${params.facl} " +
                         "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
                         "order by escldscr, profapll, profnmbr"
 
@@ -167,54 +148,32 @@ class ReportesController extends seguridad.Shield {
             case '2':
                 titulo = "Profesores que han sido evaluados por los alumnos"
 
-/*
-                sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, prof, crso, escl " +
-                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and prof.prof__id = dcta.prof__id and " +
-                        "mate.mate__id = dcta.mate__id and prof.prof__id in ( " +
-                        "select prof__id from encu where prof__id is not null and prdo__id = '${params.periodo}') and " +
-                        "escl.escl__id = prof.escl__id " +
-                        "order by escldscr, profapll, profnmbr"
-*/
                 sql = "select * from evaluados(${params.facl}, ${params.periodo}) where semi > 0 or pcnt > 0"
                 break;
             case '3':  // profesores que NO han realizado su autoevaluación
                 titulo = "Profesores que NO han realizado su autoevaluación"
 
-//                sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-//                        "from dcta, mate, pfes, prof, crso, escl, matr " +
-//                        "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
-//                        "pf.pfes__id = dcta.pfes__id and mate.mate__id = dcta.mate__id and " +
-//                        "dcta.dcta__id = matr.dcta__id and prof.prof__id = pfes.prof__id and " +
-//                        "dcta.dcta__id not in (select distinct dcta__id from encu " +
-//                        "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
-//                        "escl.escl__id = prof.escl__id and facl__id = ${params.facl} " +
-//                        "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
-//                        "order by escldscr, profapll, profnmbr"
-
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, pfes, prof, crso, escl, matr, mtes " +
+                        "from dcta, mate, prof, crso, escl, matr " +
                         "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
-                        "pfes.pfes__id = dcta.pfes__id and mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and " +
-                        "dcta.dcta__id = matr.dcta__id and prof.prof__id = pfes.prof__id and " +
+                        "mate.mate__id = dcta.mate__id and dcta.dcta__id = matr.dcta__id and prof.prof__id = dcta.prof__id and " +
                         "dcta.dcta__id not in (select distinct dcta__id from encu " +
                         "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
-                        "pfes.escl__id = escl.escl__id and facl__id = ${params.facl} " +
+                        "escl.escl__id = dcta.escl__id and facl__id = ${params.facl} " +
                         "group by escldscr, profcdla, profnmbr, profapll, matedscr, crsodscr, dctaprll " +
                         "order by escldscr, profapll, profnmbr"
-
 
                 break;
             case '4':  // profesores que YA han realizado su autoevaluación
                 titulo = "Profesores que han realizado su autoevaluación"
 
                 sql = "select escldscr, profcdla, profnmbr||' '||profapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, pfes, prof, crso, escl, mtes " +
+                        "from dcta, mate, prof, crso, escl " +
                         "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
-                        "pfes.pfes__id = dcta.pfes__id and prof.prof__id = pfes.prof__id and mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and " +
+                        "prof.prof__id = dcta.prof__id and mate.mate__id = dcta.mate__id and " +
                         "dcta.dcta__id in (select distinct dcta__id from encu " +
                         "where prdo__id = '${params.periodo}' and teti__id = 1 and dcta__id is not null order by 1) and " +
-                        "escl.escl__id = pfes.escl__id and facl__id = ${params.facl} " +
+                        "escl.escl__id = dcta.escl__id and facl__id = ${params.facl} " +
                         "order by escldscr, profapll, profnmbr"
                 break;
 
@@ -222,24 +181,24 @@ class ReportesController extends seguridad.Shield {
                 titulo = "Estudiantes que han realizado la evaluación"
 
                 sql = "select escldscr, estdcdla, estdnmbr||' '||estdapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, estd, crso, escl, matr, mtes " +
+                        "from dcta, mate, estd, crso, escl, matr " +
                         "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
                         "estd.estd__id = matr.estd__id and dcta.dcta__id = matr.dcta__id and " +
-                        "mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and estd.estd__id in ( " +
+                        "mate.mate__id = dcta.mate__id and estd.estd__id in ( " +
                         "select estd__id from encu where estd__id is not null and prdo__id = '${params.periodo}' and teti__id = 2) and " +
-                        "escl.escl__id = mtes.escl__id and facl__id = ${params.facl} " +
+                        "escl.escl__id = dcta.escl__id and facl__id = ${params.facl} " +
                         "order by escldscr, estdapll, estdnmbr"
                 break;
             case '6':
                 titulo = "Estudiantes que no han realizado la evaluación"
 
                 sql = "select escldscr, estdcdla, estdnmbr||' '||estdapll profesor, matedscr, crsodscr, dctaprll " +
-                        "from dcta, mate, estd, crso, escl, matr, mtes " +
+                        "from dcta, mate, estd, crso, escl, matr " +
                         "where dcta.prdo__id = '${params.periodo}' and crso.crso__id = dcta.crso__id and " +
                         "estd.estd__id = matr.estd__id and dcta.dcta__id = matr.dcta__id and " +
-                        "mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and estd.estd__id not in ( " +
+                        "mate.mate__id = dcta.mate__id and estd.estd__id not in ( " +
                         "select estd__id from encu where estd__id is not null and prdo__id = '${params.periodo}' and teti__id = 2) and " +
-                        "escl.escl__id = mtes.escl__id and escl.escl__id = ${params.escl} " +
+                        "escl.escl__id = dcta.escl__id and escl.escl__id = ${params.escl} " +
                         "order by escldscr, estdapll, estdnmbr"
                 break;
         }
@@ -2332,17 +2291,12 @@ class ReportesController extends seguridad.Shield {
             facultadId = "%"
         }
 
-//        def sql = "select rpec.prof__id, dctaprll, cb_causa, matedscr, prof.prof__id, profnmbr, profapll  " +
-//                "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-//                "and escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
-//                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
-//                "and cb_tipo = 'A' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
-
         def sql = "select rpec.prof__id, dctaprll, cb_causa, matedscr, prof.prof__id, profnmbr, profapll  " +
-                "from rpec, prof, escl, mate, pfes, mtes, dcta where prof.prof__id = rpec.prof__id " +
-                "and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' " +
-                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mtes.mate__id = mate.mate__id and dcta.mtes__id = mtes.mtes__id " +
+                "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
+                "and escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
+                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
                 "and cb_tipo = 'A' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
+
         def res = cn.rows(sql.toString())
 
 //        println("Res " + res)
@@ -2368,16 +2322,10 @@ class ReportesController extends seguridad.Shield {
             facultadId = "%"
         }
 
-//        def sql = "select rpec.prof__id, dctaprll, matedscr, cb_causa, prof.prof__id, profnmbr, profapll " +
-//                "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-//                "and escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
-//                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
-//                "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
-
         def sql = "select rpec.prof__id, dctaprll, matedscr, cb_causa, prof.prof__id, profnmbr, profapll " +
-                "from rpec, prof, escl, mate, mtes, pfes, dcta where prof.prof__id = rpec.prof__id " +
-                "and pfes.escl__id = escl.escl__id and prof.prof__id = pfes.prof__id and rpec.facl__id::varchar ilike '${facultadId}' " +
-                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mtes.mate__id = mate.mate__id and dcta.mtes__id = mtes.mtes__id " +
+                "from rpec, prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
+                "and escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
+                "and cb_matr is not null and dcta.dcta__id = rpec.dcta__id and mate.mate__id = dcta.mate__id " +
                 "and cb_tipo = 'B' group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, cb_causa";
 
         def res = cn.rows(sql.toString())
@@ -2405,19 +2353,12 @@ class ReportesController extends seguridad.Shield {
             facultadId = "%"
         }
 
-//        def sql = "select rpec.prof__id, dctaprll, matedscr, escldscr, " +
-//                "prof.prof__id, profnmbr, profapll from rpec, " +
-//                "prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
-//                "and escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
-//                "and con_rcmn > 0 and tpen__id = 2 and dcta.dcta__id = rpec.dcta__id " +
-//                "and mate.mate__id = dcta.mate__id group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, escldscr;"
-
         def sql = "select rpec.prof__id, dctaprll, matedscr, escldscr, " +
                 "prof.prof__id, profnmbr, profapll from rpec, " +
-                "prof, escl, mate, pfes, mtes, dcta where prof.prof__id = rpec.prof__id " +
-                "and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' " +
+                "prof, escl, mate, dcta where prof.prof__id = rpec.prof__id " +
+                "and escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' " +
                 "and con_rcmn > 0 and tpen__id = 2 and dcta.dcta__id = rpec.dcta__id " +
-                "and mtes.mate__id = mtes.mate__id and dcta.mtes__id = mtes.mtes__id group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, escldscr;"
+                "and mate.mate__id = dcta.mate__id group by rpec.prof__id, prof.prof__id, dctaprll, profnmbr, profapll, matedscr, escldscr;"
 
         def res = cn.rows(sql.toString())
 
@@ -2590,25 +2531,14 @@ class ReportesController extends seguridad.Shield {
             facultadId = "%"
         }
 
-//        def sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
-//                "from rpec, prof, escl, dcta, mate " +
-//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-//                "rpec.escl__id = ${params.escuela} and dcta.dcta__id = rpec.dcta__id and " +
-//                "mate.mate__id = dcta.mate__id and clase is not null and rpec.prdo__id = ${periodo.id} and " +
-//                "tpen__id = 2 " +
-//                "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
-//                "order by clase"
-
-
         def sql = "select escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
-                "from rpec, prof, escl, dcta, mate, pfes, mtes " +
-                "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and " +
+                "from rpec, prof, escl, dcta, mate " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and " +
                 "rpec.escl__id = ${params.escuela} and dcta.dcta__id = rpec.dcta__id and " +
-                "mate.mate__id = mtes.mate__id and mtes.mtes__id = dcta.mtes__id and clase is not null and rpec.prdo__id = ${periodo.id} and " +
+                "mate.mate__id = dcta.mate__id and clase is not null and rpec.prdo__id = ${periodo.id} and " +
                 "tpen__id = 2 " +
                 "group by escldscr, profnmbr, profapll, proftitl, dctaprll, matedscr, clase, prof.prof__id " +
                 "order by clase"
-
 
 //        println("sql " + sql )
 
@@ -2628,16 +2558,9 @@ class ReportesController extends seguridad.Shield {
         def data3 = [:]
         def data4 = [:]
 
-//        sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr, escl.escl__id, escldscr " +
-//                "from rpec, prof, escl, facl, tpen " +
-//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-//                "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.periodo} and " +
-//                "tpen.tpen__id = rpec.tpen__id " +
-//                "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr, escl.escl__id, escldscr order by facl.facl__id, tpendscr, rpec.tpen__id"
-
         sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, facl.facl__id, facldscr, escl.escl__id, escldscr " +
-                "from rpec, prof, escl, facl, tpen, pfes " +
-                "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and " +
+                "from rpec, prof, escl, facl, tpen " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and " +
                 "facl.facl__id = escl.facl__id and rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.periodo} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, facldscr, facl.facl__id, tpendscr, escl.escl__id, escldscr order by facl.facl__id, tpendscr, rpec.tpen__id"
