@@ -71,12 +71,12 @@ class ReportesGrafController extends seguridad.Shield {
 //                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
 //                "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
 //                "group by clase order by clase"
-        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl, pfes " +
+        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
                 "where prof.prof__id = rpec.prof__id and " +
-                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-                "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
+                "escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                "rpec.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
                 "group by clase order by clase"
-//        println "sql: $sql"
+        println "sql: $sql"
         cn.eachRow(sql.toString()) { d ->
             data[d.clase] = d.cnta
             totl += d.cnta
@@ -85,10 +85,10 @@ class ReportesGrafController extends seguridad.Shield {
 //        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
 //                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
 //                "univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
-        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
-                "escl.escl__id = pfes.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
-                "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
-//        println "sql: $sql"
+        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
+                "rpec.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
+        println "sql: $sql"
         rcmn = cn.rows(sql.toString())[0].cnta
 //        println "data: $data, rc: $rcmn, totl: $totl"
         subtitulo = "PROFESORES POR DESEMPEÑO"
@@ -167,9 +167,9 @@ class ReportesGrafController extends seguridad.Shield {
 //                "where prof.prof__id = rpec.prof__id and " +
 //                "prof.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
 
-        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof, pfes " +
-                "where prof.prof__id = rpec.prof__id and pfes.prof__id = prof.prof__id and " +
-                "pfes.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
+        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof " +
+                "where prof.prof__id = rpec.prof__id and " +
+                "rpec.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
 
 //        println "evaluados: $sql"
 
@@ -179,8 +179,8 @@ class ReportesGrafController extends seguridad.Shield {
 //                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
 //                "tpen__id = 2 and prdo__id = ${params.prdo}"
 
-        sql = "select avg(promedio) prom from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
-                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.escl__id = ${params.escl} and " +
+        sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "rpec.escl__id = ${params.escl} and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
 
 //        println "promedio: $sql"
@@ -193,9 +193,9 @@ class ReportesGrafController extends seguridad.Shield {
 //                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
 //                "prdo__id = ${params.prdo} and tpen__id = 2 "
 
-        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl, pfes " +
+        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl " +
                 "where prof.prof__id = rpec.prof__id and " +
-                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.escl__id = ${params.escl} and " +
+                "rpec.escl__id = ${params.escl} and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
 //        println "prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
@@ -238,8 +238,8 @@ class ReportesGrafController extends seguridad.Shield {
 //                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
 //                "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
 
-        sql = "select count(*) cnta from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
-                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.escl__id = ${params.escl} and " +
+        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                "rpec.escl__id = ${params.escl} and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
 
 //        println "rcmn: $sql"
@@ -278,8 +278,8 @@ class ReportesGrafController extends seguridad.Shield {
 //                "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
 
         sql = "select avg(promedio)::numeric(5,2) prom, rpec.tpen__id, tpendscr, escl.escl__id, escldscr " +
-                "from rpec, prof, escl, tpen, pfes " +
-                "where prof.prof__id = rpec.prof__id and pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and " +
+                "from rpec, prof, escl, tpen " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and " +
                 "rpec.tpen__id in (1,2,3,5) and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} and " +
                 "tpen.tpen__id = rpec.tpen__id " +
                 "group by rpec.tpen__id, escldscr, escl.escl__id, tpendscr order by escl.escl__id, tpendscr, rpec.tpen__id"
