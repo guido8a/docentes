@@ -203,7 +203,7 @@ class ReportesController extends seguridad.Shield {
                 break;
         }
 
-//        println "sql: $sql"
+        println "sql: $sql"
 
         def res = cn.rows(sql.toString());
         def escuelas = res.escldscr.unique()
@@ -3146,7 +3146,7 @@ class ReportesController extends seguridad.Shield {
 
         def sql = "select * from subareas(${facultad?.id},${escuela?.id},${periodo?.id},${variable?.id}) order by prof, mate, pcnt desc;"
 
-//        println("---> " + sql)
+        println("---> " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
