@@ -324,19 +324,11 @@ class ReportesGrafController extends seguridad.Shield {
         def sql
         def data = [:]
 
-//        sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
-//                "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
-//                "facl.facl__id, facldscr, escl.escl__id, escldscr " +
-//                "from rpec, prof, escl, facl " +
-//                "where prof.prof__id = rpec.prof__id and escl.escl__id = prof.escl__id and " +
-//                "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} " +
-//                "group by facldscr, escldscr, facl.facl__id, escl.escl__id order by facl.facl__id"
-
         sql = "select avg(ddsc)::numeric(5,2) ddsc, avg(ddac)::numeric(5,2) ddac, avg(ddhd)::numeric(5,2) ddhd, " +
                 "avg(ddci)::numeric(5,2) ddci, avg(dcni)::numeric(5,2) dcni, avg(d_ea)::numeric(5,2) d_ea, " +
                 "facl.facl__id, facldscr, escl.escl__id, escldscr " +
-                "from rpec, prof, escl, facl, pfes " +
-                "where prof.prof__id = rpec.prof__id and escl.escl__id = pfes.escl__id and pfes.prof__id = prof.prof__id and " +
+                "from rpec, prof, escl, facl " +
+                "where prof.prof__id = rpec.prof__id and escl.escl__id = rpec.escl__id and " +
                 "facl.facl__id = escl.facl__id and rpec.tpen__id = 2 and prdo__id = ${params.prdo} and escl.facl__id = ${params.facl} " +
                 "group by facldscr, escldscr, facl.facl__id, escl.escl__id order by facl.facl__id"
 

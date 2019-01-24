@@ -6,7 +6,7 @@
 --%>
 
 <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-          class="form-control" style="width: 160px"
+          class="form-control" style="width: 90px"
           from="${periodos}"/>
 
 
