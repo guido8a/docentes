@@ -274,6 +274,8 @@
 
     $("#imprimirProfesoresXBotella").click(function () {
 
+        openLoader("Cargando...")
+
         var escuela = $("#escuelaId option:selected").val();
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
@@ -285,6 +287,7 @@
                     url: '${createLink(controller: 'reportesGraf', action: 'causa_ajax')}',
                     data: {facultad: facultad, periodo: prdo, escl: escuela},
                     success: function (msg) {
+                        closeLoader();
                         var b = bootbox.dialog({
                             id: "dlgCuello",
                             title: "Seleccionar la Causa",
@@ -322,6 +325,8 @@
 
     $("#imprimirProfesoresXPotencia").click(function () {
 
+        openLoader("Cargando...")
+
         var escuela = $("#escuelaId option:selected").val();
         var prdo = $("#periodoId").val();
         var facultad = $("#facultad option:selected").val();
@@ -333,6 +338,7 @@
                     url: "${createLink(controller: 'reportesGraf', action: 'factores_ajax')}",
                     data: {facultad: facultad, periodo: prdo, escl: escuela},
                     success: function (msg) {
+                        closeLoader();
                         var b = bootbox.dialog({
                             id: "dlgFactores",
                             title: "Seleccionar el factor",

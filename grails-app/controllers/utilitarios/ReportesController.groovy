@@ -1112,28 +1112,23 @@ class ReportesController extends seguridad.Shield {
     }
 
     def tablaProfesores_ajax () {
-//        println "tablaProfesores_ajax ---> $params"
 
-        def res
+//        println "tablaProfesores_ajax ---> $params"
 
         params.nombres = "%" + params.nombres + '%'
         params.apellidos = "%" + params.apellidos + '%'
         params.cedula = params.cedula + '%'
 
-
         def periodo = Periodo.get(params.periodo)
         def facultad = Facultad.get(params.facultad)
         def escuelaProfesor = Escuela.get(params.escuela)
 
-        if(params.cedula != '%'){
+        def profesores = ReporteEncuesta.withCriteria {
 
+            eq("escuela", escuelaProfesor)
+            eq("periodo",periodo)
 
-
-            def profesores =  ProfesorEscuela.withCriteria {
-
-                eq("escuela", escuelaProfesor)
-
-                profesor{
+            profesor{
 
                     and{
                         ilike("cedula", params.cedula)
@@ -1143,72 +1138,7 @@ class ReportesController extends seguridad.Shield {
 
                     order("nombre","asc")
                 }
-
-            }
-
-            res = ReporteEncuesta.findAllByProfesorInList(profesores.profesor)
-
-
-//            println "cedula: ${params.cedula}"
-
-//            res = ReporteEncuesta.withCriteria {
-//
-//                eq("periodo", periodo)
-//
-//                profesor{
-//
-//                    eq("escuela", escuelaProfesor)
-//
-//                    and{
-//                        ilike("cedula", params.cedula)
-//                        ilike("nombre", params.nombres)
-//                        ilike("apellido", params.apellidos)
-//                    }
-//
-//
-//                    order("nombre","asc")
-//                }
-//            }
-        }else{
-
-
-
-            def profesores =  ProfesorEscuela.withCriteria {
-
-                eq("escuela", escuelaProfesor)
-
-                profesor{
-
-                    and{
-                        ilike("nombre", params.nombres)
-                        ilike("apellido", params.apellidos)
-                    }
-
-                    order("nombre","asc")
-                }
-
-            }
-
-            res = ReporteEncuesta.findAllByProfesorInList(profesores.profesor)
-
-//            res = ReporteEncuesta.withCriteria {
-//
-//                eq("periodo",periodo)
-//
-//                profesor{
-//
-//                    eq("escuela", escuelaProfesor)
-//
-//                    and{
-//                        ilike("nombre", params.nombres)
-//                        ilike("apellido", params.apellidos)
-//                    }
-//
-//                    order("nombre","asc")
-//                }
-//            }
         }
-
 
         def alumnos = TipoEncuesta.findByCodigo("DC")
         def auto = TipoEncuesta.findByCodigo("AD")
@@ -1219,7 +1149,7 @@ class ReportesController extends seguridad.Shield {
 
         def pantalla = params.pantalla
 
-        return [profesores: res?.profesor?.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares,
+        return [profesores: profesores?.profesor?.unique(), alumnos: alumnos, auto: auto, directivos: directivos, pares: pares,
                 promedio: promedio, periodo: periodo, total: total, pantalla: pantalla, facultad: facultad, escuela: escuelaProfesor]
     }
 

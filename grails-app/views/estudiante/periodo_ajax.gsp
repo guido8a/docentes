@@ -16,3 +16,11 @@
           class="form-control" style="width: 150px"
           from="${periodos}"/>
 
+<script type="text/javascript">
+
+    $("#periodoE").change(function () {
+        cargarMatriculados($("#periodoE option:selected").val(),$("#escuelaE option:selected").val());
+    });
+
+
+</script>
