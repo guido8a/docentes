@@ -786,16 +786,13 @@ class ProcesosController extends seguridad.Shield {
         println "$params"
         def partes = params.arreglo.split("_")
         def total = params.total.toInteger()
-//        def regla = (partes[1].toInteger()*100/total)
-        def regla = (params.parcial.toInteger() * 100 / total)
-//        println("regla " + regla)
-
-        sleep(1000)
+//        sleep(1000)
 
         def cn = dbConnectionService.getConnection()
+        def inicio = true
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
         def sql1 = "select * from tiene_rcmn(${partes[0]}, ${params.periodo})"
-//        println "sql: $sql"
+        def regla = (params.parcial.toInteger() * 100 / total)
 
         try {
             cn.execute(sql.toString())
