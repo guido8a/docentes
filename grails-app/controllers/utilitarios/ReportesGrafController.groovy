@@ -167,9 +167,8 @@ class ReportesGrafController extends seguridad.Shield {
 //                "where prof.prof__id = rpec.prof__id and " +
 //                "prof.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
 
-        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec, prof " +
-                "where prof.prof__id = rpec.prof__id and " +
-                "rpec.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
+        sql = "select count(distinct(rpec.prof__id, dcta__id)) cnta from rpec " +
+                "where rpec.escl__id = ${params.escl} and tpen__id = 2 and prdo__id = ${params.prdo}"
 
 //        println "evaluados: $sql"
 
@@ -179,8 +178,7 @@ class ReportesGrafController extends seguridad.Shield {
 //                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
 //                "tpen__id = 2 and prdo__id = ${params.prdo}"
 
-        sql = "select avg(promedio) prom from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "rpec.escl__id = ${params.escl} and " +
+        sql = "select avg(promedio) prom from rpec where rpec.escl__id = ${params.escl} and " +
                 "tpen__id = 2 and prdo__id = ${params.prdo}"
 
 //        println "promedio: $sql"
@@ -193,9 +191,8 @@ class ReportesGrafController extends seguridad.Shield {
 //                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
 //                "prdo__id = ${params.prdo} and tpen__id = 2 "
 
-        sql = "select count(distinct(prof.prof__id, rpec.dcta__id)) cnta from rpec, prof, escl " +
-                "where prof.prof__id = rpec.prof__id and " +
-                "rpec.escl__id = ${params.escl} and " +
+        sql = "select count(distinct(prof__id, dcta__id)) cnta from rpec " +
+                "where rpec.escl__id = ${params.escl} and " +
                 "prdo__id = ${params.prdo} and tpen__id = 2 "
 //        println "prof: $sql"
         data.prof = cn.rows(sql.toString())[0].cnta
@@ -234,12 +231,8 @@ class ReportesGrafController extends seguridad.Shield {
         }
         data.fcex = Math.round(data.fcex * 100)/100
 
-//        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-//                "escl.escl__id = prof.escl__id and rpec.escl__id = ${params.escl} and " +
-//                "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
-
-        sql = "select count(*) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
-                "rpec.escl__id = ${params.escl} and " +
+        /**** recomendaciones **/
+        sql = "select count(*) cnta from rpec where rpec.escl__id = ${params.escl} and " +
                 "con_rcmn > 0 and tpen__id = 2 and prdo__id = ${params.prdo}"
 
 //        println "rcmn: $sql"
