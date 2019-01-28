@@ -2102,16 +2102,10 @@ class ReportesController extends seguridad.Shield {
 
         switch(tipo){
             case '1':
-//                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
-//                        "where prof.prof__id = rpec.prof__id and " +
-//                        "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-//                        "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
-//                        "group by clase order by clase"
-
-                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl, pfes " +
+                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
                         "where prof.prof__id = rpec.prof__id and " +
-                        "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-                        "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
+                        "escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                        "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
                         "group by clase order by clase"
 
 //                println "sql: $sql"
@@ -2165,7 +2159,7 @@ class ReportesController extends seguridad.Shield {
 //                println "data: $data"
 //                println("data 2 " + data2)
 
-                data = data2
+//                data = data2
 
                 subtitulo = "PROFESORES POR DESEMPEÑO"
                 break;
@@ -2409,17 +2403,17 @@ class ReportesController extends seguridad.Shield {
         def totl = 0
         def cuenta = 0
 
-//        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
-//                "where prof.prof__id = rpec.prof__id and " +
-//                "escl.escl__id = prof.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-//                "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
-//                "group by clase order by clase"
-
-        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl, pfes " +
+        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
                 "where prof.prof__id = rpec.prof__id and " +
-                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-                "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
+                "escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+                "univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
                 "group by clase order by clase"
+
+//        def sql2 = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl, pfes " +
+//                "where prof.prof__id = rpec.prof__id and " +
+//                "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
+//                "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
+//                "group by clase order by clase"
 
         cn.eachRow(sql2.toString()) { d ->
             data2[d.clase] = d.cnta
@@ -2431,9 +2425,9 @@ class ReportesController extends seguridad.Shield {
         switch(tipo){
             case '1':
 
-                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl, pfes where prof.prof__id = rpec.prof__id and " +
-                        "pfes.escl__id = escl.escl__id and pfes.prof__id = prof.prof__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
-                        "prof.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
+                sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
+                        "rpec.escl__id = escl.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
+                        "rpec.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
 
 //                println "sql: $sql"
 
