@@ -30,6 +30,7 @@ import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Image
 import java.awt.Paint
+import java.awt.Stroke
 import java.awt.geom.Rectangle2D
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO
@@ -366,12 +367,18 @@ class ReportesController extends seguridad.Shield {
     private static JFreeChart createChart(CategoryDataset categorydataset,titulo)
     {
         SpiderWebPlot spiderwebplot = new SpiderWebPlot(categorydataset);
+
+        Stroke dashed =  new BasicStroke(1.5f,BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f);
+
 //        spiderwebplot.setSeriesPaint(0, Color.GREEN);
 //        spiderwebplot.setSeriesPaint(0, new Color(61, 72, 84));
         spiderwebplot.setSeriesPaint(0, new Color(13, 123, 220)); //color del texto del eje
-        spiderwebplot.setSeriesOutlinePaint(Color.RED)
-        spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(1.8f))
+        spiderwebplot.setSeriesOutlinePaint(new Color(13, 123, 220))
+        spiderwebplot.setSeriesOutlineStroke(0,new BasicStroke(4.0f))
+        spiderwebplot.setBaseSeriesOutlineStroke(dashed)
+//        spiderwebplot.setSeriesOutlineStroke(0, new BasicStroke(4.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER,10.0f))
 //        spiderwebplot.setLabelPaint(new Color(13, 123, 220))
+//        spiderwebplot.setLabelPaint(new Color(0, 43, 120))  //color del texto del eje
         spiderwebplot.setLabelPaint(new Color(0, 43, 120))  //color del texto del eje
 //        spiderwebplot.setBackgroundPaint(Color.LIGHT_GRAY)
         spiderwebplot.setOutlinePaint(new Color(13, 123, 220))  //linea del gráfico
@@ -1293,9 +1300,9 @@ class ReportesController extends seguridad.Shield {
         parrafoUniversidad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
         Paragraph parrafoProfesor = new Paragraph("PROFESOR: " + profesor?.nombre + " " + profesor?.apellido, fontTitulo)
         parrafoProfesor.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + profesor?.escuela?.facultad?.nombre, fontTitulo)
+        Paragraph parrafoFacultad = new Paragraph("FACULTAD: " + dicta?.escuela?.facultad?.nombre, fontTitulo)
         parrafoFacultad.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-        Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + profesor?.escuela?.nombre, fontTitulo)
+        Paragraph parrafoEscuela = new Paragraph("ESCUELA:" + dicta?.escuela?.nombre, fontTitulo)
         parrafoEscuela.setAlignment(com.lowagie.text.Element.ALIGN_CENTER);
 //        Paragraph parrafoPromedio = new Paragraph("PROMEDIO: " + (percentform.format(rpec?.promedio)), fontNormal)
         document.add(parrafoUniversidad)
