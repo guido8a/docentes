@@ -206,15 +206,15 @@
     <tr>
         <td class="cabecera">Materia</td>
         <td class="cabecera">Código Materia</td>
-        <td class="cabecera">Curso</td>
+        <td class="cabecera">Curso en que <br>Dicta la materia</td>
         <td class="cabecera">Paralelo</td>
-        <td class="cabecera">N° Identificación Prof.</td>
+        <td class="cabecera">N° de Identificación del Profesor (CI)</td>
     </tr>
     <tr>
         <td>Texto</td>
         <td>Texto: código</td>
-        <td>Texto</td>
-        <td>Numérico</td>
+        <td>Texto <span class="text-info">(Se refiere al curso en que se dicta la materia no el que cursa el alumno )</span></td>
+        <td>Numérico <span class="text-info">Paralelo en que se dicta la materia</span></td>
         <td>Numérico</td>
     </tr>
     <tr style="height: 10px"></tr>
@@ -222,7 +222,7 @@
         <td class="cabecera">Nombre Profesor</td>
         <td class="cabecera">Apellido Profesor</td>
         <td class="cabecera">Sexo Profesor</td>
-        <td class="cabecera">Título Profesor</td>
+        <td class="cabecera">Título del Profesor</td>
     </tr>
     <tr>
         <td>Texto: char(31)</td>
