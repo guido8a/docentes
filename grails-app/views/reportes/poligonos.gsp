@@ -201,7 +201,8 @@
                         borderColor: "rgba(60,120,198,1)",
                         pointBorderColor: "#fff",
                         pointBackgroundColor: "rgba(179,181,198,1)",
-                        data: data2
+                        data: data2,
+                        borderDash: [10,4]
                     },
                     {
                         label: ["Heteroevaluación"],
