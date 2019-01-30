@@ -265,7 +265,7 @@
     %{--</div>--}%
 
     <div style="text-align: center;"><h1 class="titulo" style="font-size: 26px;">
-        Sistema de Gestión de Conocimiento para la Mejora de la</br>Enseñanza - Aprendizaje</h1>
+        Sistema para Gestión de Conocimiento para la Mejora de la</br>Enseñanza - Aprendizaje</h1>
     </div>
     <div style="text-align: center;"><h1 class="titl" style="font-size: 26px;">${univ.nombre}</h1></div>
 

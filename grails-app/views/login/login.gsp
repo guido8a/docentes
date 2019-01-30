@@ -77,7 +77,7 @@
         </div>
 
         <div style="text-align: center;"><h1 class="titulo" style="font-size: 26px;">
-            Sistema de Gestión de Conocimiento para la Mejora de la </br>Enseñanza - Aprendizaje
+            Sistema para Gestión de Conocimiento para la Mejora de la </br>Enseñanza - Aprendizaje
         </div>
         <div style="width: 100%;height: 20px;float: left;margin-top: 30px;text-align: center">
             <a href="#" id="ingresar" class="btn btn-primary btn-sm" style="width: 120px; margin: auto">

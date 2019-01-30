@@ -75,7 +75,7 @@
                     <th style="width: 3%">C</th>  %{--curso y paralelo--}%
                     <th style="width: 5%">Dicta</th>  %{--curso y paralelo--}%
                     <th style="width: 7%">Auto Ev.</th>
-                    <th style="width: 7%">Etero Ev.</th>
+                    <th style="width: 7%">Hetero Ev.</th>
                     <th style="width: 7%;">Cuellos</th>
                     <th style="width: 7%;">Poten.</th>
                     <th style="width: 7%;">Fact. E.</th>
