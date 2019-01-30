@@ -1278,4 +1278,35 @@ class Reportes2Controller extends seguridad.Shield {
         response.getOutputStream().write(b)
     }
 
+
+    def porProfesor () {
+        def facultad =  Facultad.get(params.facultad)
+        def periodo = Periodo.get(params.periodo)
+        def escuelaNombre = Escuela.get(params.escl)?.nombre
+
+        if(session.perfil.codigo == 'ADMG') {
+//            println ".... univ: ${facultad.universidad.id}"
+            session.univ = facultad.universidad.id
+        }
+        return [facultad: facultad, periodo: periodo, pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
+    }
+
+    def tblaProf_ajax () {
+        println "tblaProf_ajax ---> $params"
+        def cn = dbConnectionService.getConnection()
+
+        params.nombres = "%" + params.nombres + '%'
+        params.apellidos = "%" + params.apellidos + '%'
+        params.cedula = params.cedula + '%'
+
+        params.periodo = 4
+        params.escuela = 4
+
+        def sql = "select * from resultados(${params.escuela}, ${params.periodo})"
+        println "sql: $sql"
+        def res = cn.rows(sql.toString());
+
+        return [escuela: params.escuela, periodo: params.periodo, data: res]
+    }
+
 }
