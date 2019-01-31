@@ -12,7 +12,7 @@
                 <tbody>
                 <g:each in="${data}" var="p" status="j">
                     <tr data-id="${p.prof__id}" class="${p?.potn>0? 'potn': ''}" style="font-weight: ${p?.fcex>0? 'bold': ''};
-                      background-color: ${p?.ccbb>0? '#ffefef': ''}">
+                    background-color: ${p?.ccbb>0? '#ffefef': ''}">
                         <td style="width: 15%">${p?.prof}</td>
                         <td style="width: 20%">${p?.proftitl}</td>
                         <td style="width: 15%">${p?.matedscr}</td>
@@ -24,10 +24,10 @@
                         <td style="width: 7%;">${p?.potn}</td>
                         <td style="width: 7%;">${p?.fcex}</td>
                         <td style="width: 6%; text-align: center">
-                                <button class="btn ${p?.rcmn? 'btn-danger' : 'btn-info'} btnAlumnos" type="button" style="margin-top: 10px"
-                                        data-id="${p.prof__id}" data-esc="${p.escl__id}" title="Detalle de la Evaluación. ${p?.rcmn? 'Tiene Recomendaciones':''}">
-                                    <i class="fa fa-search-plus"></i>
-                                </button>
+                            <button class="btn ${p?.rcmn? 'btn-danger' : 'btn-info'} btnProfesor" type="button" style="margin-top: 10px"
+                                    data-id="${p.prof__id}" data-esc="${p.escl__id}" data-dicta="${p?.dcta__id}" title="Detalle de la Evaluación. ${p?.rcmn? 'Tiene Recomendaciones':''}">
+                                <i class="fa fa-search-plus"></i>
+                            </button>
                         </td>
                     </tr>
                 </g:each>
@@ -39,43 +39,12 @@
 
 <script type="text/javascript">
 
-/*
-    $(".btnIM").click(function () {
-        var idProfe = $(this).data('id');
-        var nomProfe = $(this).data('nom');
-        var perio = ${params.periodo};
-
-        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de enviar este reporte al profesor " + "<b style='color: rgba(63,113,186,0.9)'>" + nomProfe + "</b>" + "?", function (result) {
-            if (result) {
-                %{--location.href = "${createLink(controller: 'reportes', action: 'reporteEnviarProfesores')}?profesor=" + idProfe + "&periodo=" + perio--}%
-
-                openLoader("Enviando...");
-                $.ajax({
-                    type: 'POST',
-                    url: "${createLink(controller: 'reportes', action: 'reporteEnviarProfesores')}",
-                    data:{
-                        profesor: idProfe,
-                        periodo: perio
-                    },
-                    success: function (msg){
-                        closeLoader();
-                        var parts = msg.split("_");
-                        if(parts[0] == 'ok'){
-                            log("Email enviado correctamente", "success")
-                        }else{
-                            log(parts[1], "error")
-                        }
-                    }
-                });
-
-
-
-            }
-        });
+    $(".btnProfesor").click(function () {
+        var profesor = $(this).data("id");
+        var escuela = $(this).data("esc");
+        var dicta = $(this).data("dicta");
+        location.href="${createLink(controller: 'reportes2', action: 'resultado')}?profesor=" + profesor + "&escuela=" + escuela + "&periodo=" + '${periodo}' + "&dicta=" + dicta
     });
-*/
-
-
 
 
 </script>

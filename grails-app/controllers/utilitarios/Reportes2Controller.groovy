@@ -24,6 +24,7 @@ import com.itextpdf.text.pdf.PdfWriter
 //import javafx.scene.layout.BackgroundFill
 import org.fusesource.jansi.Ansi
 import org.xhtmlrenderer.css.parser.property.PrimitivePropertyBuilders
+import seguridad.Persona
 
 import java.awt.Color;
 
@@ -1307,6 +1308,56 @@ class Reportes2Controller extends seguridad.Shield {
         def res = cn.rows(sql.toString());
 
         return [escuela: params.escuela, periodo: params.periodo, data: res]
+    }
+
+
+    def resultado () {
+
+        def profesorP = Profesor.get(params.profesor)
+        def periodo = Periodo.get(params.periodo)
+        def escuela = Escuela.get(params.escuela)
+        def dicta = Dictan.get(params.dicta)
+        def vrbl = Variables.findAllBySiglaIsNotNull([sort: 'orden'])
+
+        def cn = dbConnectionService.getConnection()
+        def prsn = Persona.get(session.usuario.id)
+        def sql
+
+        def profesor = []
+        def dc, ad
+        def pp
+
+        pp = profesorP
+
+        sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea, tpen__id, prof__id " +
+                "from rpec " +
+                "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 2 and " +
+                "prof__id = ${profesorP?.id} and dcta__id = ${dicta?.id}"
+
+        dc = "0_0_0_0_0_0"
+        cn.eachRow(sql.toString()) { d ->
+            dc = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+        }
+
+        sql = "select ddsc*100 ddsc, ddac*100 ddac, ddhd*100 ddhd, ddci*100 ddci, dcni*100 dcni, d_ea*100 d_ea " +
+                "from rpec " +
+                "where rpec.escl__id = ${escuela?.id} and rpec.prdo__id = ${periodo?.id} and tpen__id = 1 and " +
+                "prof__id = ${profesorP?.id} limit 1"
+        ad = "0_0_0_0_0_0"
+        cn.eachRow(sql.toString()) { d ->
+            ad = "${d.ddsc}_${d.ddac}_${d.ddhd}_${d.ddci}_${d.dcni}_${d.d_ea}"
+        }
+
+        profesor.add(dc)
+        profesor.add(ad)
+
+        sql = "select estdmini, estdoptm from auxl, prdo where univ__id = ${prsn.universidad.id} and " +
+                "prdo.prdo__id = auxl.prdo__id"
+        def minMax = cn.rows(sql.toString())
+
+        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm, vrbl: vrbl, profesorP: profesorP]
+
+
     }
 
 }
