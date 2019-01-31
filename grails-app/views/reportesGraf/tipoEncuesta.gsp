@@ -71,8 +71,8 @@
 
     </g:else>
 
-    <div class="col-md-1">Período:</div>
-    <div class="col-sm-1" id="divPeriodos">
+    <div class="col-md-1" style="width: 70px">Período:</div>
+    <div class="col-sm-2" id="divPeriodos">
 
     </div>
 

@@ -101,23 +101,23 @@
 
         </g:if>
         <g:else>
-            <div class="form-group col-md-1" style="margin-left: 180px">
-                <div class="col-md-1">Período:</div>
+            <div class="form-group col-md-3" style="margin-left: 180px">
+                <div class="col-md-3">Período:</div>
 
                 <div class="input-group">
-                    <div class="col-md-2">
+                    <div class="col-md-6">
                         <g:select name="periodo_name" id="periodoId" optionKey="id" optionValue="nombre"
-                                  class="form-control" style="width: 90px"
+                                  class="form-control" style="width: 160px"
                                   from="${docentes.Periodo.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id)).sort{it.nombre}}"/>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group col-md-5" style="margin-left: 80px">
-                <div class="col-md-1">Facultad:</div>
+            <div class="form-group col-md-6" style="margin-left: 80px">
+                <div class="col-md-2">Facultad:</div>
 
-                <div class="input-group col-md-12">
-                    <div class="col-md-10">
+                <div class="input-group col-md-10">
+                    <div class="col-md-9">
                         <g:select from="${docentes.Facultad.findAllByUniversidad(docentes.Universidad.get(seguridad.Persona.get(session.usuario.id)?.universidad?.id),[sort: 'nombre', order: 'asc'])}" optionValue="nombre"
                                   optionKey="id" name="facultad_name" id="facultad" class="form-control"
                                   noSelection="${[0:'Todas ...']}"/>
