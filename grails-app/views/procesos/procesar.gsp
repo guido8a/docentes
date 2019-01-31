@@ -214,7 +214,7 @@
                                     label     : "<i class='fa fa-close'></i> Aceptar",
                                     className : "btn-success",
                                     callback  : function () {
-                                        %{--location.href=${createLink(controller:'inicio', action: 'index')}--}%
+                                        location.href=${createLink(controller:'inicio', action: 'index')}
                                         location.href="${createLink(controller:'procesos', action: 'totales')}/" + periodo
                                     }
                                 }

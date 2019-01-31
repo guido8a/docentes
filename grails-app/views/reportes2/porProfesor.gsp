@@ -3,6 +3,11 @@
 <head>
     <meta name="layout" content="main">
     <title>Desempeño</title>
+    <style>
+    .potn{
+        background: #ddf8ff;
+    }
+    </style>
 </head>
 
 <body>
@@ -79,7 +84,7 @@
                     <th style="width: 7%;">Cuellos</th>
                     <th style="width: 7%;">Poten.</th>
                     <th style="width: 7%;">Fact. E.</th>
-                    <th style="width: 7%;">Ver..</th>
+                    <th style="width: 7%;"> Ver ...</th>
                 </tr>
                 </thead>
             </table>

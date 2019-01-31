@@ -792,11 +792,13 @@ class ProcesosController extends seguridad.Shield {
         def inicio = true
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
         def sql1 = "select * from tiene_rcmn(${partes[0]}, ${params.periodo})"
+        def sql2 = "select * from ajustar(${partes[0]}, ${params.periodo})"
         def regla = (params.parcial.toInteger() * 100 / total)
 
         try {
             cn.execute(sql.toString())
             cn.execute(sql1.toString())
+            cn.execute(sql2.toString())
             render regla
         } catch (e) {
             println "error $e"
@@ -833,24 +835,24 @@ class ProcesosController extends seguridad.Shield {
     }
 
     def totales() {
-        println "totales: $params"
         def cn = dbConnectionService.getConnection()
-        def sql = "select * from ajustar(${params.id})"
-        try {
-            cn.execute(sql.toString())
-        } catch (e) {
-            println "error $e"
-        }
+//        def sql = "select * from ajustar(${facl}, ${prdo})"
+//        try {
+//            cn.execute(sql.toString())
+//        } catch (e) {
+//            println "error $e"
+//        }
 
-        sql = "select * from totales(${params.id})"
+        def sql = "select * from totales(${params.id})"
         println "sql totales: $sql"
         try {
             cn.execute(sql.toString())
-//            redirect controller: 'inicio', action: 'index'
             redirect action: 'procesar'
+//            return "oK"
         } catch (e) {
             println "error $e"
             render "error"
+//            return "error"
         }
     }
 

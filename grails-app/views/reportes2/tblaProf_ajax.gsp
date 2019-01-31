@@ -8,10 +8,11 @@
 <div class="row-fluid" style="width: 99.7%;height: 450px;overflow-y: auto;float: right;">
     <div class="span12">
         <div style="width: 1060px; height: 450px;">
-            <table class="table table-condensed table-bordered table-striped">
+            <table class="table table-condensed table-bordered">
                 <tbody>
                 <g:each in="${data}" var="p" status="j">
-                    <tr data-id="${p.prof__id}" style="background-color: ${(p?.potn>0 && p?.fcex>0)? '#ddffdd': ''}">
+                    <tr data-id="${p.prof__id}" class="${p?.potn>0? 'potn': ''}" style="font-weight: ${p?.fcex>0? 'bold': ''};
+                      background-color: ${p?.ccbb>0? '#ffefef': ''}">
                         <td style="width: 15%">${p?.prof}</td>
                         <td style="width: 20%">${p?.proftitl}</td>
                         <td style="width: 15%">${p?.matedscr}</td>
@@ -24,7 +25,7 @@
                         <td style="width: 7%;">${p?.fcex}</td>
                         <td style="width: 6%; text-align: center">
                                 <button class="btn ${p?.rcmn? 'btn-danger' : 'btn-info'} btnAlumnos" type="button" style="margin-top: 10px"
-                                        data-id="${p.prof__id}" data-esc="${p.escl__id}" title="Detalle de la Evaluación">
+                                        data-id="${p.prof__id}" data-esc="${p.escl__id}" title="Detalle de la Evaluación. ${p?.rcmn? 'Tiene Recomendaciones':''}">
                                     <i class="fa fa-search-plus"></i>
                                 </button>
                         </td>
