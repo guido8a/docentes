@@ -13,39 +13,58 @@
 <body>
 
 <div style="text-align: center; margin-top: -30px">
-<h3>Resultado de evaluaciones por Profesor</h3>
+    <h3>Resultado de evaluaciones por Profesor</h3>
 </div>
 <div class="btn-toolbar toolbar">
-    %{--<div class="btn-group">--}%
-        %{--<g:link controller="reportes" action="reportes" class="btn btn-primary" title="Regresar a lista de informes">--}%
-            %{--<i class="fa fa-chevron-left"></i> Reportes--}%
-        %{--</g:link>--}%
-    %{--</div>--}%
 
-    <div class="col-sm-1 row" style="text-align: right">
-        Facultad
+    <g:hiddenField name="uni_name" id="universidadId" value="${seguridad.Persona.get(session.usuario.id)?.universidad?.id}"/>
+
+
+    <div class="row text-info" style="font-size: 11pt; margin-bottom: 5px">
+        <div class="col-md-1">Período</div>
+        <div class="col-md-2" id="divPeriodos">
+
+        </div>
+
+        <div class="col-md-1">Facultad</div>
+        <div class="col-md-3" id="divFacultad">
+
+        </div>
+
+        <div class="col-md-1">Carrera</div>
+        <div class="col-md-3" id="divEscuela">
+
+        </div>
     </div>
-    <div class="col-sm-3">
-        <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                  class="form-control"
-                  from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-    </div>
-    <div class="col-sm-1 row" style="text-align: right">
-        Carrera
-    </div>
-    <div class="col-sm-3">
-        <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                  class="form-control"
-                  from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-    </div>
-    <div class="col-sm-1 row" style="text-align: right">
-        Periodo
-    </div>
-    <div class="col-sm-2">
-        <g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"
-                  class="form-control"
-                  from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>
-    </div>
+
+
+
+
+
+    %{--<div class="col-sm-1 row" style="text-align: right">--}%
+    %{--Facultad--}%
+    %{--</div>--}%
+    %{--<div class="col-sm-3">--}%
+    %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+    %{--class="form-control"--}%
+    %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+    %{--</div>--}%
+    %{--<div class="col-sm-1 row" style="text-align: right">--}%
+    %{--Carrera--}%
+    %{--</div>--}%
+    %{--<div class="col-sm-3">--}%
+    %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+    %{--class="form-control"--}%
+    %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+    %{--</div>--}%
+    %{--<div class="col-sm-1 row" style="text-align: right">--}%
+    %{--Periodo--}%
+    %{--</div>--}%
+    %{--<div class="col-sm-2">--}%
+    %{--<g:select name="universidad_name" id="universidadId" optionKey="id" optionValue="nombre"--}%
+    %{--class="form-control"--}%
+    %{--from="${docentes.Universidad.findAllByNombreNotEqual("Todas",[sort: 'nombre', order: 'asc'])}"/>--}%
+    %{--</div>--}%
 </div>
 
 <div class="panel panel-info col-md-12" style="margin-top: 10px;" >
@@ -101,6 +120,45 @@
 
 <script type="text/javascript">
 
+
+    cargarPeriodo($("#universidadId").val());
+    cargarFacultad($("#universidadId").val());
+
+    $("#universidadId").change(function () {
+        var id = $("#universidadId option:selected").val();
+        cargarPeriodo(id);
+        cargarFacultad(id);
+    });
+
+    function cargarPeriodo(id) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportesGraf', action: 'periodo_ajax')}',
+            data:{
+                universidad: id
+            },
+            success: function (msg){
+                $("#divPeriodos").html(msg)
+            }
+        });
+    }
+
+
+    function cargarFacultad (id) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportesGraf', action: 'facultadSel_ajax')}',
+            data:{
+                universidad: id
+            },
+            success: function (msg){
+                $("#divFacultad").html(msg)
+            }
+        });
+    }
+
+
+
     buscar();
 
     function buscar () {
@@ -108,8 +166,8 @@
         var ced = $("#cedulaBusqueda").val();
         var nom = $("#nombresBusqueda").val();
         var ape = $("#apellidosBusqueda").val();
-        var escl = 4;
-        var prdo = 4;
+        var escl = $("#escuelaId").val();
+        var prdo = $("#periodoId").val();
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes2', action: 'tblaProf_ajax')}",

@@ -1299,8 +1299,8 @@ class Reportes2Controller extends seguridad.Shield {
         params.apellidos = "%" + params.apellidos + '%'
         params.cedula = params.cedula + '%'
 
-        params.periodo = 4
-        params.escuela = 4
+//        params.periodo = 4
+//        params.escuela = 4
 
         def sql = "select * from resultados(${params.escuela}, ${params.periodo})"
         println "sql: $sql"
