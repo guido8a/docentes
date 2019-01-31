@@ -77,7 +77,7 @@
                     <th style="width: 15%">Profesor</th>
                     <th style="width: 20%">Título</th>
                     <th style="width: 15%">Materia</th>
-                    <th style="width: 3%">C</th>  %{--curso y paralelo--}%
+                    <th style="width: 3%">&nbsp;&nbsp;C</th>  %{--curso y paralelo--}%
                     <th style="width: 5%">Dicta</th>  %{--curso y paralelo--}%
                     <th style="width: 7%">Auto Ev.</th>
                     <th style="width: 7%">Hetero Ev.</th>
