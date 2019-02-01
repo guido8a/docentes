@@ -10,6 +10,7 @@
 <head>
     <meta name="layout" content="main">
     <title>Resultados</title>
+    <script src="${resource(dir: 'js', file: 'Chart.js')}"></script>
 </head>
 
 <body>
@@ -22,41 +23,154 @@
 </div>
 
 
-<div class="chart-container grafico" id="chart-area" style="height: 510px; margin-bottom: 20px">
-    <div id="graf">
+<div class="chart-container grafico" id="chart-area" style="height: 510px; margin-bottom: 50px">
+    <div id="graf" style="margin-left: 80px">
         <canvas id="nuevoGrafico" ></canvas>
-        <script type="text/javascript">
-            graficar($("#nuevoGrafico"), "${prof[0]}", "${prof[1]}", ${minimo}, ${optimo}, true);
-        </script>
     </div>
 </div>
 
 
-<div style="position: absolute; left: 10px; top: 33%; width: 250px;">
+%{--<div style="position: absolute; left: 10%; top: 40%; width: 250px;">--}%
+    <div id="tabla0" style="margin-left: 5%; margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
     <table class="table table-condensed table-bordered table-striped">
-        <tbody>
+        <tbody style="font-size: 11px">
         <g:each in="${vrbl}" var="va" status="j">
-            <tr>
-                <td>${va.sigla}</td>
+                <td style="color: #bf2523">${va.sigla}</td>
                 <td>${va.descripcion}</td>
+        </g:each>
+        </tbody>
+    </table>
+</div>
+
+
+<div id="tabla" style="margin-left: 5%; margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+
+    <h3 style="color: #3f71ba; text-align: center">Cuellos de Botella</h3>
+
+    <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+        <thead>
+        <tr>
+            <th class="centrado" rowspan="2" style="width: 30%">Asignatura</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Paralelo</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Tipo</th>
+            <th class="centrado" rowspan="2" style="width: 30%">Causa</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Frecuencias</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <g:each in="${cuellos}" var="cuello">
+            <tr style="font-size: 11px">
+                <td>${cuello?.mate}</td>
+                <td>${cuello?.prll}</td>
+                <td>${cuello?.tipo}</td>
+                <td>${cuello?.causa}</td>
+                <td>${cuello?.frec}</td>
             </tr>
         </g:each>
         </tbody>
     </table>
 </div>
 
+
+
+<div id="tabla2" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+
+   <h3 style="color: #3f71ba; text-align: center">Potenciadores</h3>
+
+    <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+        <thead>
+        <tr>
+            <th class="centrado" rowspan="2" style="width: 30%">Asignatura</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Paralelo</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Tipo</th>
+            <th class="centrado" rowspan="2" style="width: 30%">Causa</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Frecuencias</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <g:each in="${potenciadores}" var="potenciador">
+            <tr style="font-size: 11px">
+                <td>${potenciador?.mate}</td>
+                <td>${potenciador?.prll}</td>
+                <td>${potenciador?.tipo}</td>
+                <td>${potenciador?.causa}</td>
+                <td>${potenciador?.frec}</td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
+
+<div id="tabla3" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+
+    <h3 style="color: #3f71ba; text-align: center">Factores de Éxito</h3>
+
+    <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+        <thead>
+        <tr>
+            <th class="centrado" rowspan="2" style="width: 30%">Asignatura</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Paralelo</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Tipo</th>
+            <th class="centrado" rowspan="2" style="width: 30%">Causa</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Frecuencias</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <g:each in="${factores}" var="factor">
+            <tr style="font-size: 11px">
+                <td>${factor?.mate}</td>
+                <td>${factor?.prll}</td>
+                <td>${factor?.tipo}</td>
+                <td>${factor?.causa}</td>
+                <td>${factor?.frec}</td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
+
+<div id="tabla4" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+
+    <h3 style="color: #3f71ba; text-align: center">Recomendaciones</h3>
+
+    <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
+        <thead>
+        <tr>
+            <th class="centrado" rowspan="2" style="width: 80%">Descripción</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Grado</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <g:each in="${recomendaciones}" var="recomendacion">
+            <tr style="font-size: 11px">
+                <td>${recomendacion?.rcmndscr}</td>
+                <td>${recomendacion?.ref}</td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
+
+
 <script type="text/javascript">
+
+
+    graficar($("#nuevoGrafico"), "${prof[0]}", "${prof[1]}", ${minimo}, ${optimo}, true);
+    var myChart;
 
     function graficar(area, serie1, serie2, vlmn, vlop, etqt) {
         var canvas = area;
-        var myChart;
+
         var data1 = serie1.split("_");
         var data2 = serie2.split("_");
         var vl = parseInt(vlmn);
         var op = parseInt(vlop);
         var minimo = [vl, vl, vl, vl, vl, vl];
         var optimo = [op, op, op, op, op, op];
-//        console.log("mn", minimo, 'op:', optimo)
         var chartData = {
             type: 'radar',
             data: {
@@ -78,8 +192,6 @@
                         borderColor: "rgba(255,99,132,1)",
                         pointBorderColor: "#fff",
                         pointBackgroundColor: "rgba(255,99,132,1)",
-//                        pointBorderColor: "#fff",
-//                        data: [68.77,75.61,90.69,96.62,86.82, 95]
                         data: data1
                     },
                     {   label: ["Mínimo"],
@@ -119,9 +231,8 @@
             }
         };
 
-        myChart = new Chart(canvas, chartData, 1);
+        myChart = new Chart(canvas, chartData, 1)
     }
-
 
 </script>
 

@@ -1355,7 +1355,30 @@ class Reportes2Controller extends seguridad.Shield {
                 "prdo.prdo__id = auxl.prdo__id"
         def minMax = cn.rows(sql.toString())
 
-        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm, vrbl: vrbl, profesorP: profesorP]
+
+        //cuellos
+
+        def sqlC = "select * from cuellos(${escuela?.facultad?.id},${escuela?.id},${periodo?.id}) where prof__id = ${profesorP?.id} and tipo ilike '%cuell%' and dcta__id = ${dicta?.id};"
+        def cuellos = cn.rows(sqlC.toString())
+
+        //potenciadores
+
+        def sqlP = "select * from cuellos(${escuela?.facultad?.id},${escuela?.id},${periodo?.id}) where prof__id = ${profesorP?.id} and tipo ilike '%pot%' and dcta__id = ${dicta?.id};"
+        def potenciadores = cn.rows(sqlP.toString())
+
+        //factores de éxito
+
+        def sqlF = "select * from f_exito(${escuela?.facultad?.id},${escuela?.id},${periodo?.id}) where prof__id = ${profesorP?.id} and dcta__id = ${dicta?.id};"
+        def factores = cn.rows(sqlF.toString())
+
+        //recomendaciones
+
+        def sqlR = "select * from informe(${profesorP?.id}, ${periodo?.id}) where dcta__id = ${dicta?.id};"
+        def recomendaciones = cn.rows(sqlR.toString())
+
+
+        [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm, vrbl: vrbl, profesorP: profesorP,
+         cuellos: cuellos, potenciadores: potenciadores, factores: factores, recomendaciones: recomendaciones]
 
 
     }
