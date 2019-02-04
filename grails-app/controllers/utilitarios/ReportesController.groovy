@@ -667,7 +667,7 @@ class ReportesController extends seguridad.Shield {
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
-                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and" +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
                         "escl.escl__id = dcta.escl__id order by dcni DESC, profapll, matedscr"
 
                 val = 'dcni'
@@ -683,7 +683,7 @@ class ReportesController extends seguridad.Shield {
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
-                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and" +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
                         "escl.escl__id = dcta.escl__id order by ddac DESC, profapll, matedscr"
                 val = 'ddac'
                 break;
@@ -698,7 +698,7 @@ class ReportesController extends seguridad.Shield {
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
-                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and" +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
                         "escl.escl__id = dcta.escl__id order by ddci DESC, profapll, matedscr"
                 val = 'ddci'
 
@@ -730,7 +730,7 @@ class ReportesController extends seguridad.Shield {
                         "from rpec, prof, escl, tpen, dcta, crso, mate " +
                         "where prof.prof__id = rpec.prof__id and rpec.facl__id = ${params.facl} and escl.escl__id = ${params.escl} and " +
                         "rpec.prdo__id = ${params.periodo} and tpen.tpen__id = rpec.tpen__id and tpencdgo = 'DC' and " +
-                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and" +
+                        "dcta.dcta__id = rpec.dcta__id and crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
                         "escl.escl__id = dcta.escl__id order by ddsc DESC, profapll, matedscr"
                 val = 'ddsc'
 
