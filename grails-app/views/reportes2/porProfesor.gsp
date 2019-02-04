@@ -93,13 +93,13 @@
             <table class="table table-condensed table-bordered table-striped" style="margin-top: 10px">
                 <thead>
                 <tr>
-                    <th style="width: 15%">Profesor</th>
+                    <th style="width: 14%">Profesor</th>
                     <th style="width: 20%">Título</th>
                     <th style="width: 15%">Materia</th>
                     <th style="width: 3%">&nbsp;&nbsp;C</th>  %{--curso y paralelo--}%
                     <th style="width: 5%">Dicta</th>  %{--curso y paralelo--}%
                     <th style="width: 7%">Auto Ev.</th>
-                    <th style="width: 7%">Hetero Ev.</th>
+                    <th style="width: 8%">Hetero Ev.</th>
                     <th style="width: 7%;">Cuellos</th>
                     <th style="width: 7%;">Poten.</th>
                     <th style="width: 7%;">Fact. E.</th>

@@ -13,16 +13,16 @@
                 <g:each in="${data}" var="p" status="j">
                     <tr data-id="${p.prof__id}" class="${p?.potn>0? 'potn': ''}" style="font-weight: ${p?.fcex>0? 'bold': ''};
                     background-color: ${p?.ccbb>0? '#ffefef': ''}">
-                        <td style="width: 15%">${p?.prof}</td>
+                        <td style="width: 14%">${p?.prof}</td>
                         <td style="width: 20%">${p?.proftitl}</td>
                         <td style="width: 15%">${p?.matedscr}</td>
-                        <td style="width: 3%;">${p?.clse}</td>
+                        <td style="width: 3%; text-align: center">${p?.clse}</td>
                         <td style="width: 5%;">${p?.crso}</td>
-                        <td style="width: 7%;">${p?.auto}</td>
-                        <td style="width: 7%;">${p?.almn}</td>
-                        <td style="width: 7%;">${p?.ccbb}</td>
-                        <td style="width: 7%;">${p?.potn}</td>
-                        <td style="width: 7%;">${p?.fcex}</td>
+                        <td style="width: 7%; text-align: right">${p?.auto}</td>
+                        <td style="width: 8%; text-align: right">${p?.almn}</td>
+                        <td style="width: 7%; text-align: right">${p?.ccbb}</td>
+                        <td style="width: 7%; text-align: right">${p?.potn}</td>
+                        <td style="width: 7%; text-align: right">${p?.fcex}</td>
                         <td style="width: 6%; text-align: center">
                             <button class="btn ${p?.rcmn? 'btn-danger' : 'btn-info'} btnProfesor" type="button" style="margin-top: 10px"
                                     data-id="${p.prof__id}" data-esc="${p.escl__id}" data-dicta="${p?.dcta__id}" title="Detalle de la Evaluación. ${p?.rcmn? 'Tiene Recomendaciones':''}">

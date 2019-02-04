@@ -15,11 +15,12 @@
 
 <body>
 
-<div style="text-align: center; margin-top: -30px">
-    <h3>Resultado de ${profesorP?.nombre + " " + profesorP?.apellido}</h3>
-</div>
 <div class="btn-toolbar toolbar">
-    <g:link id="btnRegresar" action="porProfesor" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Regresar</g:link>
+    <g:link id="btnRegresar" action="porProfesor" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Regresar a Resultados por profesor</g:link>
+</div>
+
+<div style="text-align: center; margin-top: 0px">
+    <h3>Evaluación de ${profesorP?.nombre + " " + profesorP?.apellido}</h3>
 </div>
 
 
@@ -33,7 +34,7 @@
 %{--<div style="position: absolute; left: 10%; top: 40%; width: 250px;">--}%
     <div id="tabla0" style="margin-left: 5%; margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
     <table class="table table-condensed table-bordered table-striped">
-        <tbody style="font-size: 11px">
+        <tbody style="font-size: 12px">
         <g:each in="${vrbl}" var="va" status="j">
                 <td style="color: #bf2523">${va.sigla}</td>
                 <td>${va.descripcion}</td>
@@ -50,17 +51,17 @@
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
         <tr>
-            <th class="centrado" rowspan="2" style="width: 30%">Asignatura</th>
-            <th class="centrado" rowspan="2" style="width: 10%">Paralelo</th>
-            <th class="centrado" rowspan="2" style="width: 20%">Tipo</th>
-            <th class="centrado" rowspan="2" style="width: 30%">Causa</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Asignatura</th>
+            <th class="centrado" rowspan="2" style="width: 8%">Paralelo</th>
+            <th class="centrado" rowspan="2" style="width: 16%">Tipo</th>
+            <th class="centrado" rowspan="2" style="width: 46%">Causa</th>
             <th class="centrado" rowspan="2" style="width: 10%">Frecuencias</th>
         </tr>
         </thead>
 
         <tbody>
         <g:each in="${cuellos}" var="cuello">
-            <tr style="font-size: 11px">
+            <tr style="font-size: 12px">
                 <td>${cuello?.mate}</td>
                 <td>${cuello?.prll}</td>
                 <td>${cuello?.tipo}</td>
@@ -76,22 +77,22 @@
 
 <div id="tabla2" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
 
-   <h3 style="color: #3f71ba; text-align: center">Potenciadores</h3>
+   <h3 style="color: #3f71ba; text-align: center">Potenciadores de Nivel</h3>
 
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
         <tr>
-            <th class="centrado" rowspan="2" style="width: 30%">Asignatura</th>
-            <th class="centrado" rowspan="2" style="width: 10%">Paralelo</th>
-            <th class="centrado" rowspan="2" style="width: 20%">Tipo</th>
-            <th class="centrado" rowspan="2" style="width: 30%">Causa</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Asignatura</th>
+            <th class="centrado" rowspan="2" style="width: 8%">Paralelo</th>
+            <th class="centrado" rowspan="2" style="width: 16%">Tipo</th>
+            <th class="centrado" rowspan="2" style="width: 46%">Causa</th>
             <th class="centrado" rowspan="2" style="width: 10%">Frecuencias</th>
         </tr>
         </thead>
 
         <tbody>
         <g:each in="${potenciadores}" var="potenciador">
-            <tr style="font-size: 11px">
+            <tr style="font-size: 12px">
                 <td>${potenciador?.mate}</td>
                 <td>${potenciador?.prll}</td>
                 <td>${potenciador?.tipo}</td>
@@ -110,20 +111,20 @@
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
         <tr>
-            <th class="centrado" rowspan="2" style="width: 30%">Asignatura</th>
-            <th class="centrado" rowspan="2" style="width: 10%">Paralelo</th>
-            <th class="centrado" rowspan="2" style="width: 20%">Tipo</th>
-            <th class="centrado" rowspan="2" style="width: 30%">Causa</th>
+            <th class="centrado" rowspan="2" style="width: 20%">Asignatura</th>
+            <th class="centrado" rowspan="2" style="width: 8%">Paralelo</th>
+            %{--<th class="centrado" rowspan="2" style="width: 14%">Tipo</th>--}%
+            <th class="centrado" rowspan="2" style="width: 62%">Causa</th>
             <th class="centrado" rowspan="2" style="width: 10%">Frecuencias</th>
         </tr>
         </thead>
 
         <tbody>
         <g:each in="${factores}" var="factor">
-            <tr style="font-size: 11px">
+            <tr style="font-size: 12px">
                 <td>${factor?.mate}</td>
                 <td>${factor?.prll}</td>
-                <td>${factor?.tipo}</td>
+                %{--<td>${factor?.tipo}</td>--}%
                 <td>${factor?.causa}</td>
                 <td>${factor?.frec}</td>
             </tr>
@@ -139,14 +140,14 @@
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
         <tr>
-            <th class="centrado" rowspan="2" style="width: 80%">Descripción</th>
-            <th class="centrado" rowspan="2" style="width: 20%">Grado</th>
+            <th class="centrado" rowspan="2" style="width: 90%">Descripción</th>
+            <th class="centrado" rowspan="2" style="width: 10%">Grado</th>
         </tr>
         </thead>
 
         <tbody>
         <g:each in="${recomendaciones}" var="recomendacion">
-            <tr style="font-size: 11px">
+            <tr style="font-size: 12px">
                 <td>${recomendacion?.rcmndscr}</td>
                 <td>${recomendacion?.ref}</td>
             </tr>
@@ -155,6 +156,9 @@
     </table>
 </div>
 
+<div style="height: 10px">
+
+</div>
 
 <script type="text/javascript">
 
