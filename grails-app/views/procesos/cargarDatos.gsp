@@ -53,7 +53,7 @@
 
 <div class="col-md-9">
     <div class="panel panel-primary">
-        <div class="panel-heading">Formato de los archivos Excel (.xls)</div>
+        <div class="panel-heading">Formato de los archivos Excel (.xlsx)</div>
 
         <div class="panel-body" id="formato">
 

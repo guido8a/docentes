@@ -157,102 +157,109 @@ class ProcesosController extends seguridad.Shield {
             def cntanmro = 0
             def cntadscr = 0
 
+
             // archivos excel xls
-            if (ext == "xls") {
-                fileName = params.tipoTabla
-                def fn = fileName
-                fileName = fileName + "." + ext
+            if (ext == 'xls') {
 
-                def pathFile = path + fileName
-                def src = new File(pathFile)
+                def str = "<h3>Formato de archivo incorrecto</h3>"
 
-                def i = 1
-                while (src.exists()) {
-                    pathFile = path + fn + "_" + i + "." + ext
-                    src = new File(pathFile)
-                    i++
-                }
+                flash.message = "Seleccione un archivo Excel con extensión xlsx para ser procesado"
+                redirect(action: 'cargarDatos', params: [html: str])
 
-                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo nombre
-
-                //********* procesar excel ***********
-
-                def file = new File(pathFile)
-                WorkbookSettings ws = new WorkbookSettings();
-                ws.setEncoding("Cp1252");
-                Workbook workbook = Workbook.getWorkbook(file, ws)
-
-                // ------------------- carga registros -----------------
-                def sheet = 0
-                Sheet s = workbook.getSheet(sheet)  // procesa solo la primera página
-                if (!s.getSettings().isHidden()) {
-                    println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
-                    htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
-                    Cell[] row = null
-
-                    s.getRows().times { j ->
-                        row = s.getRow(j)
-//                        println row*.getContents()
-//                        println row.length
-
-                        switch (tipo) {
-                            case 'Facultades':
-                                if (row.length >= 2) {
-                                    def faclnmro = row[0].getContents()
-                                    def facldscr = row[1].getContents()
-                                    if (faclnmro != "CODIGO") {  // no es el título
-                                        if (cn.rows("select count(*) cnta from facl where faclcdgo = '${faclnmro}'".toString())[0].cnta > 0) {
-                                            cntanmro++
-                                        }
-                                        if (cn.rows("select count(*) cnta from facl where facldscr = '${facldscr}'".toString())[0].cnta > 0) {
-                                            cntadscr++
-                                        }
-                                        contador++
-                                    }
-                                } //row ! empty
-                                break
-                            case 'Escuelas':
-                                if (row.length >= 3) {
-                                    def esclnmro = row[0].getContents()
-                                    def escldscr = row[1].getContents()
-                                    def faclnmro = row[2].getContents()
-                                    if (faclnmro != "CODIGO") {  // no es el título
-                                        if (cn.rows("select count(*) cnta from escl where esclcdgo = '${esclnmro}' and " +
-                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
-                                            cntanmro++
-                                        }
-                                        if (cn.rows("select count(*) cnta from escl where escldscr = '${escldscr}' and " +
-                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
-                                            cntadscr++
-                                        }
-                                        contador++
-                                    }
-                                } //row ! empty
-                                break
-                            case 'Todo':
-                                def rslt = cargaDatos(row)
-                                errores += rslt.errores
-                                contador += rslt.cnta
-                                break
-                        }
-                    } //rows.each
-                } //sheet ! hidden
-                htmlInfo += "<p>Se han procesado $contador registros</p>"
-
-                if (contador > 0) {
-                    doneHtml = "<div class='alert alert-success'>Se ha verificado correctamente $contador registros</div>"
-                    doneHtml += "<p>Existen $cntanmro registros con código repetido y, </p>"
-                    doneHtml += "<p>existen $cntadscr registros con nombre repetido</p>"
-                }
-
-                def str = htmlInfo
-                str += doneHtml
-                if (errores != "") {
-                    str += "<h3>Errores al cargar el archivo de datos</h3>"
-                    str += "<ol>" + errores + "</ol>"
-                }
-
-                redirect(action: 'mensajeUpload', params: [html: str])
+//                fileName = params.tipoTabla
+//                def fn = fileName
+//                fileName = fileName + "." + ext
+//
+//                def pathFile = path + fileName
+//                def src = new File(pathFile)
+//
+//                def i = 1
+//                while (src.exists()) {
+//                    pathFile = path + fn + "_" + i + "." + ext
+//                    src = new File(pathFile)
+//                    i++
+//                }
+//
+//                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo nombre
+//
+//                //********* procesar excel ***********
+//
+//                def file = new File(pathFile)
+//                WorkbookSettings ws = new WorkbookSettings();
+//                ws.setEncoding("Cp1252");
+//                Workbook workbook = Workbook.getWorkbook(file, ws)
+//
+//                // ------------------- carga registros -----------------
+//                def sheet = 0
+//                Sheet s = workbook.getSheet(sheet)  // procesa solo la primera página
+//                if (!s.getSettings().isHidden()) {
+//                    println "hoja: ${s.getName()} sheet: $sheet, registros: ${s.getRows()}"
+//                    htmlInfo += "<h2>Hoja " + (sheet + 1) + ": " + s.getName() + "</h2>"
+//                    Cell[] row = null
+//
+//                    s.getRows().times { j ->
+//                        row = s.getRow(j)
+////                        println row*.getContents()
+////                        println row.length
+//
+//                        switch (tipo) {
+//                            case 'Facultades':
+//                                if (row.length >= 2) {
+//                                    def faclnmro = row[0].getContents()
+//                                    def facldscr = row[1].getContents()
+//                                    if (faclnmro != "CODIGO") {  // no es el título
+//                                        if (cn.rows("select count(*) cnta from facl where faclcdgo = '${faclnmro}'".toString())[0].cnta > 0) {
+//                                            cntanmro++
+//                                        }
+//                                        if (cn.rows("select count(*) cnta from facl where facldscr = '${facldscr}'".toString())[0].cnta > 0) {
+//                                            cntadscr++
+//                                        }
+//                                        contador++
+//                                    }
+//                                } //row ! empty
+//                                break
+//                            case 'Escuelas':
+//                                if (row.length >= 3) {
+//                                    def esclnmro = row[0].getContents()
+//                                    def escldscr = row[1].getContents()
+//                                    def faclnmro = row[2].getContents()
+//                                    if (faclnmro != "CODIGO") {  // no es el título
+//                                        if (cn.rows("select count(*) cnta from escl where esclcdgo = '${esclnmro}' and " +
+//                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
+//                                            cntanmro++
+//                                        }
+//                                        if (cn.rows("select count(*) cnta from escl where escldscr = '${escldscr}' and " +
+//                                                "facl__id = (select facl__id from facl where faclcdgo = '${faclnmro}')".toString())[0].cnta > 0) {
+//                                            cntadscr++
+//                                        }
+//                                        contador++
+//                                    }
+//                                } //row ! empty
+//                                break
+//                            case 'Todo':
+//                                def rslt = cargaDatos(univ, row, prdo)
+//                                errores += rslt.errores
+//                                contador += rslt.cnta
+//                                break
+//                        }
+//                    } //rows.each
+//                } //sheet ! hidden
+//                htmlInfo += "<p>Se han procesado $contador registros</p>"
+//
+//                if (contador > 0) {
+//                    doneHtml = "<div class='alert alert-success'>Se ha verificado correctamente $contador registros</div>"
+//                    doneHtml += "<p>Existen $cntanmro registros con código repetido y, </p>"
+//                    doneHtml += "<p>existen $cntadscr registros con nombre repetido</p>"
+//                }
+//
+//                def str = htmlInfo
+//                str += doneHtml
+//                if (errores != "") {
+//                    str += "<h3>Errores al cargar el archivo de datos</h3>"
+//                    str += "<ol>" + errores + "</ol>"
+//                }
+//
+//                redirect(action: 'mensajeUpload', params: [html: str])
 
             } else if (ext == 'xlsx') {
 
@@ -377,7 +384,7 @@ class ProcesosController extends seguridad.Shield {
 
 
             } else {
-                flash.message = "Seleccione un archivo Excel con extensión xls o xlsx para ser procesado"
+                flash.message = "Seleccione un archivo Excel con extensión xlsx para ser procesado"
                 redirect(action: 'validar')
             }
         } else {
@@ -390,6 +397,10 @@ class ProcesosController extends seguridad.Shield {
      * Carga datos del archivo único
      */
     def cargaDatos(univ, row, prdo) {
+
+
+        println("-- " + row)
+
         def sql = ""
         def cdgo = ""
         def dscr = ""
