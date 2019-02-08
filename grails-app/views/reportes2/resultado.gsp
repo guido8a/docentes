@@ -16,11 +16,15 @@
 <body>
 
 <div class="btn-toolbar toolbar">
-    <g:link id="btnRegresar" action="porProfesor" class="btn btn-primary"><i class="fa fa-chevron-left"></i> Regresar a Resultados por profesor</g:link>
+    <g:link id="btnRegresar" action="porProfesor" class="btn btn-primary"><i class="fa fa-chevron-left"></i>
+        Regresar a Resultados por profesor</g:link>
+
+    <g:link action="acuerdos" class="btn btn-info"><i class="fa fa-pencil"></i>
+        Registrar acuerdos con el profesor</g:link>
 </div>
 
 <div style="text-align: center; margin-top: 0px">
-    <h3>Evaluación de ${profesorP?.nombre + " " + profesorP?.apellido}</h3>
+    <h3>Desempeño académico de ${profesorP?.nombre + " " + profesorP?.apellido}</h3>
 </div>
 
 
@@ -32,11 +36,12 @@
 
 
 %{--<div style="position: absolute; left: 10%; top: 40%; width: 250px;">--}%
-    <div id="tabla0" style="margin-left: 5%; margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+    <div id="tabla0" style="margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
     <table class="table table-condensed table-bordered table-striped">
         <tbody style="font-size: 12px">
         <g:each in="${vrbl}" var="va" status="j">
-                <td style="color: #bf2523">${va.sigla}</td>
+                <td style="color: #13567d; font-weight: bold; background-color: #fff7df">${va.sigla}</td>
+                %{--<td class="text-info">${va.sigla}</td>--}%
                 <td>${va.descripcion}</td>
         </g:each>
         </tbody>
@@ -44,7 +49,7 @@
 </div>
 
 
-<div id="tabla" style="margin-left: 5%; margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+<div id="tabla" style="margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
 
     <h3 style="color: #3f71ba; text-align: center">Cuellos de Botella</h3>
 
@@ -75,7 +80,7 @@
 
 
 
-<div id="tabla2" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+<div id="tabla2" style="margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
 
    <h3 style="color: #3f71ba; text-align: center">Potenciadores de Nivel</h3>
 
@@ -104,7 +109,7 @@
     </table>
 </div>
 
-<div id="tabla3" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+<div id="tabla3" style="margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
 
     <h3 style="color: #3f71ba; text-align: center">Factores de Éxito</h3>
 
@@ -133,7 +138,7 @@
     </table>
 </div>
 
-<div id="tabla4" style="margin-left: 5%; margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+<div id="tabla4" style="margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
 
     <h3 style="color: #3f71ba; text-align: center">Recomendaciones</h3>
 
