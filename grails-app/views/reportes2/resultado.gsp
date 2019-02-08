@@ -25,6 +25,7 @@
 
 <div style="text-align: center; margin-top: 0px">
     <h3>Desempeño académico de ${profesorP?.nombre + " " + profesorP?.apellido}</h3>
+    <h4>${dicta.materia.nombre + " - Curso: " + dicta.curso.nombre + " - " + dicta.paralelo}</h4>
 </div>
 
 
