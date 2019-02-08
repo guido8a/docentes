@@ -19,8 +19,8 @@
     <g:link id="btnRegresar" action="porProfesor" class="btn btn-primary"><i class="fa fa-chevron-left"></i>
         Regresar a Resultados por profesor</g:link>
 
-    <g:link action="acuerdos" class="btn btn-info"><i class="fa fa-pencil"></i>
-        Registrar acuerdos con el profesor</g:link>
+    <a href="#"  class="btn btn-info" id="btnAcuerdo" data-dicta="${dicta?.id}"><i class="fa fa-pencil"></i>
+        Registrar acuerdos con el profesor</a>
 </div>
 
 <div style="text-align: center; margin-top: 0px">
@@ -36,13 +36,13 @@
 
 
 %{--<div style="position: absolute; left: 10%; top: 40%; width: 250px;">--}%
-    <div id="tabla0" style="margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
+<div id="tabla0" style="margin-top: 20px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
     <table class="table table-condensed table-bordered table-striped">
         <tbody style="font-size: 12px">
         <g:each in="${vrbl}" var="va" status="j">
-                <td style="color: #13567d; font-weight: bold; background-color: #fff7df">${va.sigla}</td>
-                %{--<td class="text-info">${va.sigla}</td>--}%
-                <td>${va.descripcion}</td>
+            <td style="color: #13567d; font-weight: bold; background-color: #fff7df">${va.sigla}</td>
+        %{--<td class="text-info">${va.sigla}</td>--}%
+            <td>${va.descripcion}</td>
         </g:each>
         </tbody>
     </table>
@@ -82,7 +82,7 @@
 
 <div id="tabla2" style="margin-top: 10px; width: 100%; border-style: solid; border-width: 1px; border-color: #888">
 
-   <h3 style="color: #3f71ba; text-align: center">Potenciadores de Nivel</h3>
+    <h3 style="color: #3f71ba; text-align: center">Potenciadores de Nivel</h3>
 
     <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
         <thead>
@@ -166,6 +166,60 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnAcuerdo").click(function () {
+        var dicta = $(this).data("dicta");
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes2', action: 'texto_ajax')}',
+            data:{
+                dicta: dicta
+            },
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgTextoAcuerdo",
+                    title   : "Acuerdo - " + "${profesorP?.nombre + " " + profesorP?.apellido}",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                bootbox.hideAll();
+                                guardarTexto(dicta);
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    function guardarTexto(dicta){
+        var texto2 = $("#textoAcuerdo").val();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'reportes2', action: 'guardarTexto_ajax')}',
+            data:{
+                dicta: dicta,
+                texto: texto2
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    log("Texto guardado correctamente","success")
+                }else{
+                    log("Error al guardar el texto","error")
+                }
+            }
+        });
+    }
 
 
     graficar($("#nuevoGrafico"), "${prof[0]}", "${prof[1]}", ${minimo}, ${optimo}, true);

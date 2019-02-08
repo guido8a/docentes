@@ -1,6 +1,7 @@
 package utilitarios
 
 import com.lowagie.text.html.WebColors
+import docentes.Acuerdo
 import docentes.Dictan
 import docentes.Escuela
 import docentes.Facultad
@@ -1378,8 +1379,44 @@ class Reportes2Controller extends seguridad.Shield {
 
 
         [prof: profesor, minimo: minMax.estdmini, optimo: minMax.estdoptm, vrbl: vrbl, profesorP: profesorP,
-         cuellos: cuellos, potenciadores: potenciadores, factores: factores, recomendaciones: recomendaciones]
+         cuellos: cuellos, potenciadores: potenciadores, factores: factores, recomendaciones: recomendaciones, dicta: dicta]
 
+
+    }
+
+    def texto_ajax () {
+
+        def dicta = Dictan.get(params.dicta)
+        def acuerdo = Acuerdo.findByDictan(dicta)
+
+        return[acuerdo: acuerdo]
+
+    }
+
+    def guardarTexto_ajax () {
+
+//        println("params gt " + params)
+
+        def dicta = Dictan.get(params.dicta)
+        def acuerdo = Acuerdo.findByDictan(dicta)
+
+        if(acuerdo){
+            acuerdo.texto = params.texto
+            acuerdo.fechaModificada = new Date()
+        }else{
+            acuerdo = new Acuerdo()
+            acuerdo.dictan = dicta
+            acuerdo.fecha = new Date()
+            acuerdo.texto = params.texto
+        }
+
+        try{
+            acuerdo.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al guardar el texto del acuerdo " + e + acuerdo?.errors)
+            render "no"
+        }
 
     }
 
