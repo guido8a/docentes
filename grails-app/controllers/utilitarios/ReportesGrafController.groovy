@@ -518,8 +518,8 @@ class ReportesGrafController extends seguridad.Shield {
         def ees = []
 
         tam.times{
-            ges.add('G' + (it + 1))
-            ees.add('E' + (it + 1))
+            ges.add('G' + (it))
+            ees.add('E' + (it))
         }
 
         datos.eachWithIndex { q, k ->
