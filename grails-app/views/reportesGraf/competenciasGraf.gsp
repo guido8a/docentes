@@ -224,18 +224,18 @@
                             ddGP.push(valores[1]);
                             valoresG1.push(valores[2]);
                             valoresG2.push(valores[3]);
-                            ges ++;
                             facultades += "<li>" + parts[0] +  " " + ges + " : " + parts[1] + "</li>";
                             leyenda.push(parts[0] + ges);
+                            ges ++;
                         }else{
                             leyendaE.push(parts[1]);
                             ddEE.push(valores[0]);
                             ddEP.push(valores[1]);
                             valoresE1.push(valores[2]);
                             valoresE2.push(valores[3]);
-                            es ++;
                             facultades2 += "<li>" + parts[0] +  " " + es + " : " + parts[1] + "</li>";
                             leyenda2.push(parts[0] + " " + es);
+                            es ++;
                         }
 
                         indice++

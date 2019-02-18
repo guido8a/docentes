@@ -488,7 +488,7 @@ class ReportesGrafController extends seguridad.Shield {
         def datos = cn.rows(sql.toString())
 
         datos.each {
-            la = it.cmpt.substring(0, 8) + "..."
+//            la = it.cmpt.substring(0, 6) + "..."
             data.put((it.tipo + "_" + it.cmpt), it.estdpc01 + "_" + it.profpcnt + "_" + it.estdpc01 + "_" + it.estdpc02)
         }
 
@@ -745,7 +745,7 @@ class ReportesGrafController extends seguridad.Shield {
         def tam = textos.size()
 
         tam.times{
-            table2.addCell(crearCelda(tipo, 'G' + (it + 1), 'E' + (it + 1)))
+            table2.addCell(crearCelda(tipo, 'G' + (it), 'E' + (it)))
             table2.addCell(crearCeldaTexto(textos[it]))
         }
 
