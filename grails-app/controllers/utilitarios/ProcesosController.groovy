@@ -804,12 +804,14 @@ class ProcesosController extends seguridad.Shield {
         def sql = "select * from desempeno(${partes[0]}, ${params.periodo})"
         def sql1 = "select * from tiene_rcmn(${partes[0]}, ${params.periodo})"
         def sql2 = "select * from ajustar(${partes[0]}, ${params.periodo})"
+        def sql3 = "select * from rsmn_cmpt(${partes[0]}, ${params.periodo})"
         def regla = (params.parcial.toInteger() * 100 / total)
 
         try {
             cn.execute(sql.toString())
             cn.execute(sql1.toString())
             cn.execute(sql2.toString())
+            cn.execute(sql3.toString())
             render regla
         } catch (e) {
             println "error $e"
