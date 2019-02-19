@@ -75,9 +75,8 @@
                 </div>
 
                 <div class="col-md-1 negrilla control-label">Asignatura común: </div>
-                <div class="col-md-3">
-                    <g:select from="${materias}" optionValue="materia" optionKey="id"  name="materia" id="materia" class="form-control"/>
-                    %{--<g:textField name="materia" id="materia" class="form-control" maxlength="20"/>--}%
+                <div class="col-md-3" id="divMaterias">
+                    %{--<g:select from="${materias}" optionValue="materia" optionKey="id"  name="materia" id="materia" class="form-control"/>--}%
                 </div>
 
                 <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar">
@@ -120,11 +119,14 @@
     });
 
     function cargarEscuelas (facultad) {
+        var periodo = $("#periodoId option:selected").val();
         $.ajax({
             type: 'POST',
-            url:'${createLink(controller: 'reportesGraf', action: 'escuelas_ajax')}',
+            %{--url:'${createLink(controller: 'reportesGraf', action: 'escuelas_ajax')}',--}%
+            url:'${createLink(controller: 'reportes', action: 'escuelasCom_ajax')}',
             data:{
-                facultad: facultad
+                facultad: facultad,
+                periodo: periodo
             },
             success: function (msg){
                 $("#divEscuela").html(msg)
@@ -171,7 +173,12 @@
     }
 
     $("#btnBuscar").click(function () {
-        buscar();
+        var mtria = $("#materia option:selected").val();
+        if(mtria == '-1'){
+         log("Seleccione una materia!","error")
+        }else{
+            buscar();
+        }
     });
 
     $("input").keyup(function (ev) {

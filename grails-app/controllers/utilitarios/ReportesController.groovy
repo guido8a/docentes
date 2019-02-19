@@ -1018,7 +1018,7 @@ class ReportesController extends seguridad.Shield {
                 "  where escl__id = 2 and dcta.dcta__id in (select dcta__id from rpec where tpen__id = 2 and " +
                 "  prdo__id = 4) " +
                 "  group by mate__id having count(*) > 1) and mate.mate__id = dcta.mate__id and " +
-                "  prof.prof__id = dcta.prof__id --AND mate.mate__id in (103, 115) " +
+                "  prof.prof__id = dcta.prof__id " +
                 "order by matedscr"
         def materias = cn.rows(sql.toString())
 
@@ -3251,6 +3251,34 @@ class ReportesController extends seguridad.Shield {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
 
+    }
+
+    def escuelasCom_ajax () {
+        def facultad = Facultad.get(params.facultad)
+        def periodo = Periodo.get(params.periodo)
+        def escuelas = Escuela.findAllByFacultad(facultad, [sort: 'nombre', order: 'asc'])
+
+        return [escuelas: escuelas, periodo: periodo]
+    }
+
+    def asignatura_ajax() {
+
+//        println("params as " + params )
+
+        def cn = dbConnectionService.getConnection()
+        def escuelas = Escuela.get(params.escuela)
+        def periodo = Periodo.get(params.periodo)
+        def sql = "select distinct mate.mate__id id, matedscr materia from mate, prof, dcta " +
+                "where dcta.mate__id in (select mate__id from dcta " +
+                "  where escl__id = ${escuelas?.id} and dcta.dcta__id in (select dcta__id from rpec where tpen__id = 2 and " +
+                "  prdo__id = ${periodo?.id}) " +
+                "  group by mate__id having count(*) > 1) and mate.mate__id = dcta.mate__id and " +
+                "  prof.prof__id = dcta.prof__id " +
+                "order by matedscr"
+        def materias = cn.rows(sql.toString())
+
+
+        return[materias: materias]
     }
 
 
