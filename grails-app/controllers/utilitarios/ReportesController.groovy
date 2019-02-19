@@ -1008,33 +1008,54 @@ class ReportesController extends seguridad.Shield {
     }
 
     def poligonos () {
+        def cn = dbConnectionService.getConnection()
         def facultades = Facultad.findAllByUniversidad(session.usuario.universidad)
         def escuelas   = Escuela.findAllByFacultad(facultades.first())
         def periodo = Periodo.get(params.periodo)
         def escuelaNombre = Escuela.get(params.escl)?.nombre
+        def sql = "select distinct mate.mate__id id, matedscr materia from mate, prof, dcta " +
+                "where dcta.mate__id in (select mate__id from dcta " +
+                "  where escl__id = 2 and dcta.dcta__id in (select dcta__id from rpec where tpen__id = 2 and " +
+                "  prdo__id = 4) " +
+                "  group by mate__id having count(*) > 1) and mate.mate__id = dcta.mate__id and " +
+                "  prof.prof__id = dcta.prof__id --AND mate.mate__id in (103, 115) " +
+                "order by matedscr"
+        def materias = cn.rows(sql.toString())
 
         if(session.perfil.codigo == 'ADMG') {
 //            println ".... univ: ${facultad.universidad.id}"
             session.univ = facultad.universidad.id
         }
-        return [facultad: facultades, escl: escuelas, periodo: periodo,
+        return [facultad: facultades, escl: escuelas, periodo: periodo, materias: materias,
                 pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
     }
 
     def graficoProf_ajax() {
-//        println "graficoProf_ajax: $params"
+        println "graficoProf_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def prsn = Persona.get(session.usuario.id)
         def sql
-        sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, " +
-                      "rpec.dcta__id " +
-                "from rpec, prof, mate, crso, dcta " +
-                "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id = 2 and " +
-                       "dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and " +
-                       "crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
-                       "prof.profnmbr ilike '%${params.nombres}%' and prof.profapll ilike '%${params.apellidos}%' and " +
-                       "prof.profcdla ilike '${params.cedula}%' " +
-                "order by profapll, profnmbr"
+        if(params.mate) {
+            sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, " +
+                    "rpec.dcta__id " +
+                    "from rpec, prof, mate, crso, dcta " +
+                    "where rpec.prdo__id = ${params.prdo} and tpen__id = 2 and " +
+                    "dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and " +
+                    "crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
+                    "mate.mate__id = ${params.mate} " +
+                    // "and prof.profcdla ilike '${params.cedula}%' " +
+                    "order by profapll, profnmbr"
+        } else {
+            sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, " +
+                    "rpec.dcta__id " +
+                    "from rpec, prof, mate, crso, dcta " +
+                    "where rpec.escl__id = ${params.escl} and rpec.prdo__id = ${params.prdo} and tpen__id = 2 and " +
+                    "dcta.dcta__id = rpec.dcta__id and prof.prof__id = rpec.prof__id and " +
+                    "crso.crso__id = dcta.crso__id and mate.mate__id = dcta.mate__id and " +
+                    "prof.profnmbr ilike '%${params.nombres}%' and prof.profapll ilike '%${params.apellidos}%' " +
+                    // "and prof.profcdla ilike '${params.cedula}%' " +
+                    "order by profapll, profnmbr"
+        }
         println "sql: $sql"
 
         def prof = cn.rows(sql.toString())

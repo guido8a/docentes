@@ -1,9 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 16/01/17
-  Time: 10:20
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
@@ -64,18 +58,28 @@
     <div class="panel-body">
         <div class="list-group" style="text-align: center">
             <div>
+%{--
                 <div class="col-md-1 negrilla control-label">Cédula: </div>
                 <div class="col-md-2" id="divCedula">
                     <g:textField name="cedula" id="cedulaBusqueda" class="form-control number" maxlength="20"/>
                 </div>
-                <div class="col-md-1 negrilla control-label">Nombres: </div>
-                <div class="col-md-3">
-                    <g:textField name="nombres" id="nombresBusqueda" class="form-control"/>
+--}%
+
+                <div class="col-md-1 negrilla control-label">Prof. Nombres: </div>
+                <div class="col-md-2">
+                    <g:textField name="nombres" id="nombresBusqueda" class="form-control" maxlength="20"/>
                 </div>
-                <div class="col-md-1 negrilla control-label">Apellidos: </div>
-                <div class="col-md-3">
-                    <g:textField name="apellidos" id="apellidosBusqueda" class="form-control"/>
+                <div class="col-md-1 negrilla control-label">Prof. Apellidos: </div>
+                <div class="col-md-2">
+                    <g:textField name="apellidos" id="apellidosBusqueda" class="form-control" maxlength="20"/>
                 </div>
+
+                <div class="col-md-1 negrilla control-label">Asignatura común: </div>
+                <div class="col-md-3">
+                    <g:select from="${materias}" optionValue="materia" optionKey="id"  name="materia" id="materia" class="form-control"/>
+                    %{--<g:textField name="materia" id="materia" class="form-control" maxlength="20"/>--}%
+                </div>
+
                 <a href="#" id="btnBuscar" class="btn btn-info" title="Buscar">
                     <i class="fa fa-search-plus"></i>
                 </a>
@@ -141,21 +145,21 @@
 
     function buscar () {
         openLoader("Buscando...");
-        var cdla = $("#cedulaBusqueda").val();
+//        var cdla = $("#cedulaBusqueda").val();
         var nmbr = $("#nombresBusqueda").val();
         var apll = $("#apellidosBusqueda").val();
-//        var facl = $("#facultadId").val();
+        var mate = $("#materia").val();
         var escl = $("#escuelaId option:selected").val();
         var prdo = $("#periodoId").val();
-//        console.log('buscar ... ', escl);
+        console.log('buscar ... ', nmbr, apll, escl);
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes', action: 'graficoProf_ajax')}",
             data:{
-                cedula: cdla,
+//                cedula: cdla,
                 nombres: nmbr,
                 apellidos: apll,
-//                facultad: facl,
+                mate: mate,
                 prdo: prdo,
                 escl: escl
             },
