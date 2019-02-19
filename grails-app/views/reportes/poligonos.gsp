@@ -155,7 +155,7 @@
         var mate = $("#materia").val();
         var escl = $("#escuelaId option:selected").val();
         var prdo = $("#periodoId").val();
-        console.log('buscar ... ', nmbr, apll, escl);
+//        console.log('buscar ... ', nmbr, apll, escl);
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'reportes', action: 'graficoProf_ajax')}",

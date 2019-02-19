@@ -1008,25 +1008,16 @@ class ReportesController extends seguridad.Shield {
     }
 
     def poligonos () {
-        def cn = dbConnectionService.getConnection()
         def facultades = Facultad.findAllByUniversidad(session.usuario.universidad)
         def escuelas   = Escuela.findAllByFacultad(facultades.first())
         def periodo = Periodo.get(params.periodo)
         def escuelaNombre = Escuela.get(params.escl)?.nombre
-        def sql = "select distinct mate.mate__id id, matedscr materia from mate, prof, dcta " +
-                "where dcta.mate__id in (select mate__id from dcta " +
-                "  where escl__id = 2 and dcta.dcta__id in (select dcta__id from rpec where tpen__id = 2 and " +
-                "  prdo__id = 4) " +
-                "  group by mate__id having count(*) > 1) and mate.mate__id = dcta.mate__id and " +
-                "  prof.prof__id = dcta.prof__id " +
-                "order by matedscr"
-        def materias = cn.rows(sql.toString())
 
         if(session.perfil.codigo == 'ADMG') {
 //            println ".... univ: ${facultad.universidad.id}"
             session.univ = facultad.universidad.id
         }
-        return [facultad: facultades, escl: escuelas, periodo: periodo, materias: materias,
+        return [facultad: facultades, escl: escuelas, periodo: periodo,
                 pantalla: params.pantalla, escuela: params.escl, nombre: escuelaNombre]
     }
 
@@ -3271,7 +3262,7 @@ class ReportesController extends seguridad.Shield {
         def sql = "select distinct mate.mate__id id, matedscr materia from mate, prof, dcta " +
                 "where dcta.mate__id in (select mate__id from dcta " +
                 "  where escl__id = ${escuelas?.id} and dcta.dcta__id in (select dcta__id from rpec where tpen__id = 2 and " +
-                "  prdo__id = ${periodo?.id}) " +
+                "  prdo__id = ${periodo?.id} and escl__id = ${escuelas?.id}) " +
                 "  group by mate__id having count(*) > 1) and mate.mate__id = dcta.mate__id and " +
                 "  prof.prof__id = dcta.prof__id " +
                 "order by matedscr"
