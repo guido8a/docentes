@@ -5,4 +5,4 @@
   Time: 14:46
 --%>
 
-<g:select from="${materias}" optionValue="materia" optionKey="id"  name="materia" id="materia" class="form-control" noSelection="${['-1':'Seleccione...']}"/>
+<g:select from="${materias}" optionValue="materia" optionKey="id"  name="materia" id="materia" class="form-control" noSelection="${['-1':'TODAS']}"/>

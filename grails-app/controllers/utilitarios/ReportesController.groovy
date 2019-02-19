@@ -1031,11 +1031,11 @@ class ReportesController extends seguridad.Shield {
     }
 
     def graficoProf_ajax() {
-        println "graficoProf_ajax: $params"
+//        println "graficoProf_ajax: $params"
         def cn = dbConnectionService.getConnection()
         def prsn = Persona.get(session.usuario.id)
         def sql
-        if(params.mate) {
+        if(params.mate != '-1') {
             sql = "select rpec.prof__id id, matedscr, profnmbr||' '||profapll profesor, crsodscr||' '|| dctaprll curso, " +
                     "rpec.dcta__id " +
                     "from rpec, prof, mate, crso, dcta " +

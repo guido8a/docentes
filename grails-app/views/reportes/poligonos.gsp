@@ -140,14 +140,16 @@
     });
 
     $("#btnLimpiar").click(function () {
-        $("#cedulaBusqueda").val('');
+//        $("#cedulaBusqueda").val('');
         $("#nombresBusqueda").val('');
         $("#apellidosBusqueda").val('');
+        $("#divTablaProfesores").addClass('hidden')
     });
 
     function buscar () {
         openLoader("Buscando...");
 //        var cdla = $("#cedulaBusqueda").val();
+        $("#divTablaProfesores").removeClass('hidden')
         var nmbr = $("#nombresBusqueda").val();
         var apll = $("#apellidosBusqueda").val();
         var mate = $("#materia").val();
@@ -173,12 +175,7 @@
     }
 
     $("#btnBuscar").click(function () {
-        var mtria = $("#materia option:selected").val();
-        if(mtria == '-1'){
-         log("Seleccione una materia!","error")
-        }else{
             buscar();
-        }
     });
 
     $("input").keyup(function (ev) {

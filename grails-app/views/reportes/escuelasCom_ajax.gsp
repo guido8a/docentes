@@ -8,7 +8,6 @@
 <div class="col-md-12">
     <g:select from="${escuelas}" optionValue="nombre" optionKey="id"  name="escuela_name" id="escuelaId" class="form-control"/>
 </div>
-%{--</div>--}%
 
 <script type="text/javascript">
 
@@ -18,6 +17,7 @@
         });
 
         $("#escuelaId").change(function () {
+            $("#divTablaProfesores").addClass('hidden')
             var esc = $(this).val();
             $.ajax({
                 type: 'POST',
