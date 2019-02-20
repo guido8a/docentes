@@ -72,10 +72,10 @@
     <div class="panel-body">
         <div class="list-group" style="text-align: center">
             <div>
-                <div class="col-md-1 negrilla control-label">Cédula: </div>
-                <div class="col-md-2" id="divCedula">
-                    <g:textField name="cedula" id="cedulaBusqueda" class="form-control number" maxlength="20"/>
-                </div>
+                %{--<div class="col-md-1 negrilla control-label">Cédula: </div>--}%
+                %{--<div class="col-md-2" id="divCedula">--}%
+                    %{--<g:textField name="cedula" id="cedulaBusqueda" class="form-control number" maxlength="20"/>--}%
+                %{--</div>--}%
                 <div class="col-md-1 negrilla control-label">Nombres: </div>
                 <div class="col-md-3">
                     <g:textField name="nombres" id="nombresBusqueda" class="form-control"/>

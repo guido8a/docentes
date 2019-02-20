@@ -1294,7 +1294,7 @@ class Reportes2Controller extends seguridad.Shield {
     }
 
     def tblaProf_ajax () {
-        println "tblaProf_ajax ---> $params"
+//        println "tblaProf_ajax ---> $params"
         def cn = dbConnectionService.getConnection()
 
         params.nombres = "%" + params.nombres + '%'
@@ -1304,8 +1304,9 @@ class Reportes2Controller extends seguridad.Shield {
 //        params.periodo = 4
 //        params.escuela = 4
 
-        def sql = "select * from resultados(${params.escuela}, ${params.periodo})"
-        println "sql: $sql"
+//        def sql = "select * from resultados(${params.escuela}, ${params.periodo})"
+        def sql = "select * from resultados(${params.escuela}, ${params.periodo}) where prof ILIKE '${params.nombres}' and prof ILIKE '${params.apellidos}'"
+//        println "sql: $sql"
         def res = cn.rows(sql.toString());
 
         return [escuela: params.escuela, periodo: params.periodo, data: res]
