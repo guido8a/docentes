@@ -17,7 +17,10 @@
 
 <div class="btn-toolbar toolbar">
     <g:link id="btnRegresar" action="porProfesor" class="btn btn-primary"><i class="fa fa-chevron-left"></i>
-        Regresar a Resultados por profesor</g:link>
+        Ir a Resumen Individual</g:link>
+
+    <g:link id="btnRegresar" controller="reportes" action="poligonos" class="btn btn-success"><i class="fa fa-chevron-left"></i>
+        Ir a Desemepeño por Carrera</g:link>
 
     <a href="#"  class="btn btn-info" id="btnAcuerdo" data-dicta="${dicta?.id}"><i class="fa fa-pencil"></i>
         Registrar acuerdos con el profesor</a>

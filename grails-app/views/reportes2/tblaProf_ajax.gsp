@@ -24,8 +24,9 @@
                         <td style="width: 7%; text-align: right">${p?.potn}</td>
                         <td style="width: 7%; text-align: right">${p?.fcex}</td>
                         <td style="width: 6%; text-align: center">
-                            <button class="btn ${p?.rcmn? 'btn-danger' : 'btn-info'} btnProfesor" type="button" style="margin-top: 10px"
-                                    data-id="${p.prof__id}" data-esc="${p.escl__id}" data-dicta="${p?.dcta__id}" title="Detalle de la Evaluación. ${p?.rcmn? 'Tiene Recomendaciones':''}">
+                            <button class="btn ${p?.rcmn? 'btn-danger' : 'btn-info'} btnProfesor" type="button"
+                                    style="margin-top: 10px" data-id="${p.prof__id}" data-esc="${p.escl__id}"
+                                    data-dicta="${p?.dcta__id}" title="Detalle de la Evaluación. ${p?.rcmn? 'Tiene Recomendaciones':''}">
                                 <i class="fa fa-search-plus"></i>
                             </button>
                         </td>
@@ -43,7 +44,8 @@
         var profesor = $(this).data("id");
         var escuela = $(this).data("esc");
         var dicta = $(this).data("dicta");
-        location.href="${createLink(controller: 'reportes2', action: 'resultado')}?profesor=" + profesor + "&escuela=" + escuela + "&periodo=" + '${periodo}' + "&dicta=" + dicta
+        location.href="${createLink(controller: 'reportes2', action: 'resultado')}?profesor=" + profesor +
+                "&escuela=" + escuela + "&periodo=" + '${periodo}' + "&dicta=" + dicta
     });
 
 

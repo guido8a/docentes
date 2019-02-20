@@ -1313,7 +1313,7 @@ class Reportes2Controller extends seguridad.Shield {
 
 
     def resultado () {
-
+        println "resultado: $params"
         def profesorP = Profesor.get(params.profesor)
         def periodo = Periodo.get(params.periodo)
         def escuela = Escuela.get(params.escuela)

@@ -24,13 +24,15 @@
 </head>
 
 <body>
-
+<div style="text-align: center; margin-top: -30px"><h3>Desempeño de los Profesores por Carrera</h3></div>
 <div class="btn-toolbar toolbar">
+%{--
     <div class="btn-group col-md-1">
         <g:link controller="reportes" action="reportes" class="btn btn-primary" title="Regresar a lista de informes">
             <i class="fa fa-chevron-left"></i> Reportes
         </g:link>
     </div>
+--}%
 
     <div class="col-md-1" style="text-align: right">Período:</div>
     <div class="col-md-2">
@@ -46,7 +48,7 @@
                   value="" />
     </div>
     <div class="col-md-1">Carrera:</div>
-    <div class="col-md-2" style="width: 280px">
+    <div class="col-md-4">
         <div id="divEscuela">
         </div>
     </div>

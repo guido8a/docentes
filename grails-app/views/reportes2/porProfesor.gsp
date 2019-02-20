@@ -13,7 +13,7 @@
 <body>
 
 <div style="text-align: center; margin-top: -30px">
-    <h3>Resultado de evaluaciones por Profesor</h3>
+    <h3>Resumen Individual por Profesor</h3>
 </div>
 <div class="btn-toolbar toolbar">
 
@@ -21,7 +21,7 @@
 
 
     <div class="row text-info" style="font-size: 11pt; margin-bottom: 5px">
-        <div class="col-md-1">Período</div>
+        <div class="col-md-1" style="text-align: right">Período</div>
         <div class="col-md-2" id="divPeriodos" style="margin-left: 0px">
 
         </div>

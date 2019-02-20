@@ -8,11 +8,16 @@
                     <g:set var="prof" value="${'<strong>' + profesor?.profesor + '</strong><br>Asignatura: ' +
                             profesor?.matedscr + '<br>Curso: ' + profesor?.curso}"></g:set>
                     <g:if test="${j%2 == 0}">
-                        <tr data-id="${profesor.id}" data-dicta="${profesor.dcta__id}">
+                        <tr data-id="${profesor.id}" data-dicta="${profesor?.dcta__id}">
                     </g:if>
                     <g:set var="fila" value="${fila==1? 0 : 1}"/>
                     %{--<td style="width: 15%"><strong>${profesor?.profesor}</strong><br>Asignatura: ${profesor?.matedscr}<br>Curso: ${profesor?.curso}<br>--}%
-                    <td style="width: 15%">${raw(prof)}<br>
+                    <td style="width: 15%">
+                        <a href="#" class="individual" data-id="${profesor.id}" data-dicta="${profesor?.dcta__id}"
+                           style="text-decoration: none">
+                            ${raw(prof)}<br>
+                        </a>
+
                         <span style="border-width: medium; border-color:#3C78C6 !important; border-bottom: solid"> Autoevaluación</span>
                         <span style="border-width: medium; border-color:#FF6384 !important; border-bottom: solid"> Heteroevaluación</span>
                         <span style="margin-top: 10px; margin-left: 20px !important">
@@ -107,5 +112,14 @@
 
         location.href = "${createLink(controller: 'reportes', action: 'reportePoligonos')}?profe=" + id + "&periodo=" + periodo + "&escl=" + escuela + "&dicta=" + dicta
     })
+
+    $(".individual").click(function () {
+        var profesor = $(this).data("id");
+        var dicta = $(this).data("dicta");
+        var escuela = $("#escuelaId option:selected").val();
+        location.href="${createLink(controller: 'reportes2', action: 'resultado')}?profesor=" + profesor +
+                "&escuela=" + escuela + "&periodo=" + '${periodo.id}' + "&dicta=" + dicta
+    });
+
 
 </script>
