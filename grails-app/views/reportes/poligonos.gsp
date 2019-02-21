@@ -67,11 +67,11 @@
                 </div>
 --}%
 
-                <div class="col-md-1 negrilla control-label">Prof. Nombres: </div>
+                <div class="col-md-1 negrilla control-label">Profesor Nombres: </div>
                 <div class="col-md-2">
                     <g:textField name="nombres" id="nombresBusqueda" class="form-control" maxlength="20"/>
                 </div>
-                <div class="col-md-1 negrilla control-label">Prof. Apellidos: </div>
+                <div class="col-md-1 negrilla control-label">Profesor Apellidos: </div>
                 <div class="col-md-2">
                     <g:textField name="apellidos" id="apellidosBusqueda" class="form-control" maxlength="20"/>
                 </div>

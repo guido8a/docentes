@@ -1047,7 +1047,7 @@ class ReportesController extends seguridad.Shield {
                     // "and prof.profcdla ilike '${params.cedula}%' " +
                     "order by profapll, profnmbr"
         }
-        println "sql: $sql"
+//        println "sql: $sql"
 
         def prof = cn.rows(sql.toString())
 
