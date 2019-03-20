@@ -249,7 +249,7 @@
                             labels: leyenda,
                             datasets: [
                                 {
-                                    label: ["Niveles bajos"],
+                                    label: ["Estudiantes: hasta 5to Sem."],
                                     backgroundColor: "rgba(55, 160, 235, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
@@ -257,7 +257,7 @@
                                     data: valoresG1
                                 },
                                 {
-                                    label: ["Niveles Altos"],
+                                    label: ["Estudiantes: mayor a 5to Sem."],
                                     backgroundColor: "rgba(120, 200, 215, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
@@ -319,7 +319,7 @@
                             labels: leyenda2,
                             datasets: [
                                 {
-                                    label: ["Niveles Bajos"],
+                                    label: ["Estudiantes: hasta 5to Sem."],
                                     backgroundColor: "rgba(55, 160, 235, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
@@ -327,7 +327,7 @@
                                     data: valoresE1
                                 },
                                 {
-                                    label: ["Niveles Altos"],
+                                    label: ["Estudiantes: mayor a 5to Sem."],
                                     backgroundColor: "rgba(120, 200, 215, 0.7)",
                                     borderWidth: 2,
                                     stack: 'Stack 0',
