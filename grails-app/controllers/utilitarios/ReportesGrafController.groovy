@@ -547,7 +547,7 @@ class ReportesGrafController extends seguridad.Shield {
 
                     //2
 //                    dataset.addValue( 0 , "Serie 21" ,  ges[k]);
-                    dataset.addValue( 0 , "." ,  ges[k]);
+                    dataset.addValue( 0 , "" ,  ges[k]);
 
 
                 }else{
@@ -563,7 +563,7 @@ class ReportesGrafController extends seguridad.Shield {
 
                     //2
 //                    dataset.addValue( 0 , "Serie 21" ,  ees[k]);
-                    dataset.addValue( 0 , "." ,  ees[k]);
+                    dataset.addValue( 0 , "" ,  ees[k]);
                 }
 //            }
 
@@ -596,7 +596,7 @@ class ReportesGrafController extends seguridad.Shield {
         map.mapKeyToGroup("Estudiantes: hasta 5to Sem.", "G1");
 
         map.mapKeyToGroup("Profesores", "G2");
-        map.mapKeyToGroup(".", "G2");
+        map.mapKeyToGroup("", "G2");
 
         renderer.setSeriesToGroupMap(map);
 
