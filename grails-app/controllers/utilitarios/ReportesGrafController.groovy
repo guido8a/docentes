@@ -504,8 +504,11 @@ class ReportesGrafController extends seguridad.Shield {
 
     static CategoryDataset createDataset(datos, tipo) {
 
-        final String P = "Profesores";
-        final String E = "Estudiantes";
+//        final String P = "Profesores";
+//        final String E = "Estudiantes";
+
+        final String P = "Estudiantes: mayor 5to Sem.";
+        final String E = "Estudiantes: hasta 5to Sem.";
 
         final DefaultCategoryDataset dataset =
                 new DefaultCategoryDataset( );
@@ -539,11 +542,12 @@ class ReportesGrafController extends seguridad.Shield {
                     dataset.addValue( parts1[k][2].toDouble() , P ,  ges[k]);
 
                     //2
-//                    dataset.addValue( parts1[k][1].toDouble() , E ,  ges[k]);
-                    dataset.addValue( parts1[k][1].toDouble() , "Serie 2" ,  ges[k]);
+//                    dataset.addValue( parts1[k][1].toDouble() , "Serie 2" ,  ges[k]);
+                    dataset.addValue( parts1[k][1].toDouble() , "Profesores" ,  ges[k]);
 
                     //2
-                    dataset.addValue( 0 , "Serie 21" ,  ges[k]);
+//                    dataset.addValue( 0 , "Serie 21" ,  ges[k]);
+                    dataset.addValue( 0 , "." ,  ges[k]);
 
 
                 }else{
@@ -554,10 +558,12 @@ class ReportesGrafController extends seguridad.Shield {
                     dataset.addValue( parts1[k][2].toDouble() , P ,  ees[k]);
 
                     //2
-                    dataset.addValue( parts1[k][1].toDouble() , "Serie 2" ,  ees[k]);
+//                    dataset.addValue( parts1[k][1].toDouble() , "Serie 2" ,  ees[k]);
+                    dataset.addValue( parts1[k][1].toDouble() , "Profesores" ,  ees[k]);
 
                     //2
-                    dataset.addValue( 0 , "Serie 21" ,  ees[k]);
+//                    dataset.addValue( 0 , "Serie 21" ,  ees[k]);
+                    dataset.addValue( 0 , "." ,  ees[k]);
                 }
 //            }
 
@@ -575,16 +581,22 @@ class ReportesGrafController extends seguridad.Shield {
 
         JFreeChart chart = ChartFactory.createBarChart(
                 "${titulo}", "Competencia", "Valor",
-                createDataset(datos, tipo), PlotOrientation.VERTICAL, false, true, false);
+                createDataset(datos, tipo), PlotOrientation.VERTICAL, true, true, false);
 
         GroupedStackedBarRenderer renderer = new GroupedStackedBarRenderer();
         KeyToGroupMap map = new KeyToGroupMap("G1");
 
-        map.mapKeyToGroup("Estudiantes", "G1");
-        map.mapKeyToGroup("Profesores", "G1");
+//        map.mapKeyToGroup("Estudiantes", "G1");
+//        map.mapKeyToGroup("Profesores", "G1");
+//
+//        map.mapKeyToGroup("Serie 2", "G2");
+//        map.mapKeyToGroup("Serie 21", "G2");
 
-        map.mapKeyToGroup("Serie 2", "G2");
-        map.mapKeyToGroup("Serie 21", "G2");
+        map.mapKeyToGroup("Estudiantes: mayor 5to Sem.", "G1");
+        map.mapKeyToGroup("Estudiantes: hasta 5to Sem.", "G1");
+
+        map.mapKeyToGroup("Profesores", "G2");
+        map.mapKeyToGroup(".", "G2");
 
         renderer.setSeriesToGroupMap(map);
 
